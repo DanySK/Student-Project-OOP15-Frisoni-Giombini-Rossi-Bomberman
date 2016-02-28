@@ -5,6 +5,7 @@ import model.level.LevelImpl;
 import view.game.GameFrame;
 import view.game.GameFrameImpl;
 import view.menu.AbstractMenuPanel.MenuPanelObserver;
+import view.menu.CreditsView;
 import view.menu.MenuFrame;
 import view.menu.MenuFrame.MenuCard;
 import view.menu.MenuView;
@@ -47,5 +48,13 @@ public class MenuController implements MenuObserver {
 
     @Override
     public void credits() {
+        final CreditsView creditsView = (CreditsView) MenuCard.CREDITS.getPanel();
+        creditsView.setObserver(new MenuPanelObserver() {
+            @Override
+            public void back() {
+                MenuController.this.menuFrame.replaceCard(MenuCard.HOME);
+            }
+        });
+        this.menuFrame.replaceCard(MenuCard.CREDITS);
     }
 }
