@@ -62,7 +62,7 @@ public enum SoundEffect {
     /**
      * Dark mode selected sound.
      */
-    BOO_LAUGH("/sounds/boo_laugh.wav", 0.6),
+    BOO_LAUGH("/sounds/boo_laugh.wav", 0.5),
     /**
      * Hero's death sound.
      */

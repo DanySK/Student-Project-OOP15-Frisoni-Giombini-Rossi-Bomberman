@@ -86,7 +86,17 @@ public class SettingsView extends AbstractMenuPanel {
         final ButtonGroup groupDarkMode = new ButtonGroup();
         final JRadioButton radDarkModeOn = factory.createRadioButton(on);
         final JRadioButton radDarkModeOff = factory.createRadioButton(off, true);
-        radDarkModeOn.addActionListener(e -> SoundEffect.BOO_LAUGH.playOnce());
+        radDarkModeOn.addActionListener(e -> {
+            try {
+                ((SettingsObserver) observer).setDarkMode(true);
+            } catch(Exception exc) {}
+            SoundEffect.BOO_LAUGH.playOnce();
+        });
+        radDarkModeOff.addActionListener(e -> {
+            try {
+                ((SettingsObserver) observer).setDarkMode(false);
+            } catch(Exception exc) {}
+        });
         groupDarkMode.add(radDarkModeOn);
         groupDarkMode.add(radDarkModeOff);
         settings.add(factory.createHorizontalComponentPanel(
@@ -105,5 +115,21 @@ public class SettingsView extends AbstractMenuPanel {
         panel.add(settings);
         panel.setOpaque(false);
         return panel;
+    }
+    
+    /**
+     * This interface indicates the operations that an observer
+     * of a SettingsView can do.
+     *
+     */
+    public interface SettingsObserver extends MenuPanelObserver {
+
+        /**
+         * Sets the Dark Mode on / off.
+         * 
+         * @param darkMode
+         *              true if enabled, false otherwise
+         */
+        void setDarkMode(boolean darkMode);
     }
 }

@@ -22,7 +22,7 @@ public abstract class AbstractMenuPanel extends JPanel {
      */
     private static final long serialVersionUID = 6859160481343879042L;
     
-    private MenuPanelObserver observer;
+    protected MenuPanelObserver observer;
     
     /**
      * Constructs a new AbstractMenuPanel.
