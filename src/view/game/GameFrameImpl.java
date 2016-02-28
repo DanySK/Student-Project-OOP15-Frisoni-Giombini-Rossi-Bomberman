@@ -145,7 +145,7 @@ public class GameFrameImpl implements GameFrame {
         private static final float RADIUS_FACTOR = 1.7f;
         private static final float ALFA = 1f;
 
-        private float radius;
+        private final float radius;
         private int mX, mY;
         
         /**

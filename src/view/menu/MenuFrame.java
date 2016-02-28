@@ -16,7 +16,7 @@ public interface MenuFrame {
         HOME(new MenuView()),
         RANKING(new MenuView()),
         SETTINGS(new SettingsView()),
-        CREDITS(new MenuView());
+        CREDITS(new CreditsView());
 
         private final JPanel panel;
 

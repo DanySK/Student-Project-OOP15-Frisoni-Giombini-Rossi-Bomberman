@@ -30,11 +30,11 @@ public enum SoundEffect {
     /**
      * Button focus sound.
      */
-    FOCUS("/sounds/focus.wav", 1.0),
+    FOCUS("/sounds/focus.wav", 0.1),
     /**
      * Button selection sound.
      */
-    SELECT("/sounds/select.wav", 1.0),
+    SELECT("/sounds/select.wav", 0.3),
     /**
      * Game in pause sound.
      */

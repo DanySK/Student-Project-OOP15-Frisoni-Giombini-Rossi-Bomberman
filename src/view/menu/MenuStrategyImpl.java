@@ -38,7 +38,7 @@ public class MenuStrategyImpl implements MenuStrategy {
         INFO("credits", ImageLoader.getLoader().createImageIcon(GameImage.CREDITS)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
-                //observer.credits();
+                observer.credits();
             }
         };
 

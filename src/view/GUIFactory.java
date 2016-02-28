@@ -15,6 +15,7 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import view.menu.FadingLabel;
 import view.menu.GradientPanel;
 
 /**
@@ -57,6 +58,17 @@ public interface GUIFactory {
      * @return the specified title label
      */
     JComponent createTitleLabel(String text);
+    
+    /**
+     * Creates a customized {@link JLabel} with a fading effect.
+     * 
+     * @param text
+     *          the content of the label
+     * @param color
+     *          the color of the text
+     * @return the specified fading label
+     */
+    FadingLabel createFadingLabelOfColor(String text, Color color);
     
     /**
      * @return a {@link Font} suitable for full frame mode.
@@ -150,6 +162,15 @@ public interface GUIFactory {
             title.setForeground(Color.WHITE);
             title.setBorder(REGULAR_BORDER);
             return title;
+        }
+        
+        @Override
+        public FadingLabel createFadingLabelOfColor(final String text, final Color color) {
+            final FadingLabel label = new FadingLabel(text);
+            label.setFont(SMALL_FONT);
+            label.setForeground(color);
+            label.setBorder(REGULAR_BORDER);
+            return label;
         }
 
         @Override
