@@ -66,7 +66,7 @@ public class HeroViewImpl implements HeroView {
 
     @Override
     public int getY() {
-        return this.hero.getY() + (Sprite.getSpriteHeight() - this.size);
+        return this.hero.getY() - this.size * Sprite.getSpriteHeight() / Sprite.getSpriteWidth() + this.size;
     }
 
     @Override

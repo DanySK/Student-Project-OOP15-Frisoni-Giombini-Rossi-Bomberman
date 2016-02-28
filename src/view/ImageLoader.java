@@ -49,7 +49,7 @@ public final class ImageLoader {
         /**
          * Ranking button image.
          */
-        RANKING(MENU_FOLDER + "ranking.png"),
+        SCORES(MENU_FOLDER + "ranking.png"),
         /**
          * Settings button image.
          */

@@ -124,7 +124,7 @@ public class MenuView extends JPanel {
         /**
          * Show the scores of the player.
          */
-        void ranking();
+        void scores();
 
         /**
          * Show settings menu.

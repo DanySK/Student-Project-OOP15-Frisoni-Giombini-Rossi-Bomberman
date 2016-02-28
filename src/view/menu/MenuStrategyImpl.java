@@ -23,7 +23,7 @@ public class MenuStrategyImpl implements MenuStrategy {
                 observer.play();
             }
         },
-        CLASSIFICA("ranking", ImageLoader.getLoader().createImageIcon(GameImage.RANKING)) {
+        PUNTEGGI("scores", ImageLoader.getLoader().createImageIcon(GameImage.SCORES)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 //observer.ranking();

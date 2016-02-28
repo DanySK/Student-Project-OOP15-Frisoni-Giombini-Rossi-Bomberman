@@ -31,7 +31,7 @@ public class MenuController implements MenuObserver {
     }
 
     @Override
-    public void ranking() {
+    public void scores() {
     }
 
     @Override
