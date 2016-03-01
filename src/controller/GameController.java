@@ -30,27 +30,20 @@ public class GameController {
         listener.getSource().addEObserver((s, action) -> {
             switch (action) {
             case MOVE_DOWN:
-                GameController.this.level.setHeroMoving(true);
                 GameController.this.level.moveHero(Direction.DOWN);
                 GameController.this.view.repaintGamePanel();
                 break;
             case MOVE_RIGHT:
-                GameController.this.level.setHeroMoving(true);
                 GameController.this.level.moveHero(Direction.RIGHT);
                 GameController.this.view.repaintGamePanel();
                 break;
             case MOVE_UP:
-                GameController.this.level.setHeroMoving(true);
                 GameController.this.level.moveHero(Direction.UP);
                 GameController.this.view.repaintGamePanel();
                 break;
             case MOVE_LEFT:
-                GameController.this.level.setHeroMoving(true);
                 GameController.this.level.moveHero(Direction.LEFT);
                 GameController.this.view.repaintGamePanel();
-                break;
-            case STILL:
-                GameController.this.level.setHeroMoving(false);
                 break;
             default:
                 break;
