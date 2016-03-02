@@ -22,36 +22,38 @@ public interface Level {
     
     /**
      * Moves the Hero in the specified direction.
+     * 
      * @param dir
      *          the movement direction
      */
     void moveHero(Direction dir);
     
     /**
+     * This method return a TileType map, the background of the game.
+     * 
      * @return the map
+     *                  the map that represents tiles' types.
      */
     TileType[][] getMap();
 
     /**
+     * This method return the hero position-
+     * 
      * @return Hero's position.
      */
     Point getHeroPosition();
     
     /**
+     * This method return the entity Hero.
      * 
      * @return the Hero.
      */
     Hero getHero();
     
-    /**
-     * Sets the movement state of the hero.
-     * 
-     * @param b
-     *          true if the hero is moving, false otherwise
-     */
-    void setHeroMoving(boolean b);
 
     /**
+     * This method allow to know the size of the map.
+     * 
      * @return the side's size of the map.
      */
     int getSize();
@@ -65,6 +67,8 @@ public interface Level {
     void setTileDimension(final int dim);
     
     /**
+     * This method is used to know whether the game is over or not. 
+     * 
      * @return true if the game is over, otherwise false
      */
     boolean isGameOver();

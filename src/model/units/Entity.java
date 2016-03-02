@@ -15,12 +15,22 @@ public interface Entity {
     
     /**
      * This method returns the steps that the entity make.
+     * 
      * @return the steps that the entity make
      */
     int numberOfSteps();
     
     /**
+     * This method returns the position where the hero would be if there's no collision.
+     * 
+     * @param p
+     *          the point whose coordinates are to be added
+     * @return the position where the hero would move
+     */
+    Point getPossiblePos(Point p);
+    /**
      * This method update the entity's position.
+     * 
      * @param p
      *          the point whose coordinates are to be added
      */
@@ -28,6 +38,7 @@ public interface Entity {
     
     /**
      * This method update the entity's direction.
+     * 
      * @param dir
      *          the new direction
      */
@@ -45,18 +56,21 @@ public interface Entity {
     
     /**
      * This method is used to know the entity's position.
+     * 
      * @return the current position of the entity
      */
     Point getPosition();
     
     /**
-     * This method is used to know the geometrical figure of the entity.
-     * @return the geometrical figure of the entity
+     * This method is used to know the geometric figure of the entity.
+     * 
+     * @return the geometric figure of the entity
      */
     Rectangle getHitbox();
     
     /**
      * This method is used to know the x coordinate of the entity's position.
+     * 
      * @return the x coordinate
      */
     int getX();
@@ -64,6 +78,7 @@ public interface Entity {
     
     /**
      * This methods is used to know the y coordinate of the entity's position.
+     * 
      * @return the y coordinate
      */
     int getY();
@@ -71,12 +86,14 @@ public interface Entity {
     
     /**
      * This method is used to know the actual speed of the entity.
+     * 
      * @return the actual speed
      */
     int getSpeed();
     
     /**
      * This method is used to know the actual direction of the entity.
+     * 
      * @return the entity's direction
      */
     Direction getDirection();

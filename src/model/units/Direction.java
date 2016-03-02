@@ -4,11 +4,28 @@ import java.awt.Point;
 
 /**
  * Possible movement directions and their opposites.
+ * Each direction is associated to a point that is
+ * used to calculate the new position.
  */
 public enum Direction {
+    /**
+     * Upward movement.
+     */
     UP(new Point(0, -1)),
+    
+    /**
+     * Downward movement.
+     */
     DOWN(new Point(0, 1)),
+    
+    /**
+     * Shifting left.
+     */
     LEFT(new Point(-1, 0)),
+    
+    /**
+     * Shifting right.
+     */
     RIGHT(new Point(1, 0));
 
     static {
@@ -25,10 +42,23 @@ public enum Direction {
         this.p = p;
     }
 
-    public Point getPoint(final int index) {
-        return Direction.values()[index].p;
+    /**
+     * This method return the point associated to the
+     * Direction.
+     * 
+     * @return
+     *          the relative Point
+     */
+    public Point getPoint() {
+        return this.p;
     }
     
+    /**
+     * This method return the opposite direction.
+     * 
+     * @return
+     *          the opposite direction
+     */
     public Direction getOppositeDirection() {
         return this.opposite;
     }
