@@ -2,7 +2,7 @@ package controller;
 
 import model.level.Level;
 import model.units.Direction;
-import view.HeroKeyBindings;
+import view.InputHandler;
 import view.game.GameFrame;
 
 /**
@@ -26,7 +26,7 @@ public class GameController {
         this.level = level;
         this.view = view;
         
-        final HeroKeyBindings listener = new HeroKeyBindings();
+        final InputHandler listener = new InputHandler();
         listener.getSource().addEObserver((s, action) -> {
             switch (action) {
             case MOVE_DOWN:

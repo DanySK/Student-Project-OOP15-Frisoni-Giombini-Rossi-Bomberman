@@ -17,25 +17,25 @@ import view.menu.MenuView.MenuObserver;
 public class MenuStrategyImpl implements MenuStrategy {
 
     private enum MainMenuButton implements MenuButton {
-        GIOCA("play", ImageLoader.getLoader().createImageIcon(GameImage.PLAY)) {
+        PLAY("play", ImageLoader.getLoader().createImageIcon(GameImage.PLAY)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 observer.play();
             }
         },
-        PUNTEGGI("scores", ImageLoader.getLoader().createImageIcon(GameImage.SCORES)) {
+        SCORES("scores", ImageLoader.getLoader().createImageIcon(GameImage.SCORES)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 //observer.ranking();
             }
         },
-        IMPOSTAZIONI("settings", ImageLoader.getLoader().createImageIcon(GameImage.SETTINGS)) {
+        SETTINGS("settings", ImageLoader.getLoader().createImageIcon(GameImage.SETTINGS)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 observer.settings();
             }
         },
-        INFO("credits", ImageLoader.getLoader().createImageIcon(GameImage.CREDITS)) {
+        CREDITS("credits", ImageLoader.getLoader().createImageIcon(GameImage.CREDITS)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 observer.credits();

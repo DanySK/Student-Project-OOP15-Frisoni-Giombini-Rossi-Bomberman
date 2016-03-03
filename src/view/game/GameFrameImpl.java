@@ -106,6 +106,7 @@ public class GameFrameImpl implements GameFrame {
     @Override
     public void initView() {
         this.gamePanel.initGamePanel();
+        repaintGamePanel();
         this.frame.setVisible(true);
     }
 

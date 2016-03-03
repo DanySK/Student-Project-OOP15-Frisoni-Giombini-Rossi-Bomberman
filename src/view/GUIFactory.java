@@ -82,7 +82,7 @@ public interface GUIFactory {
      *          the text to show
      * @return the specified radio button
      */
-    JRadioButton createRadioButton(final String text);
+    JRadioButton createRadioButton(String text);
     
     /**
      * Creates a customized {@link JRadioButton}.
@@ -93,7 +93,7 @@ public interface GUIFactory {
      *          the initial state of the button
      * @return the specified radio button
      */
-    JRadioButton createRadioButton(final String text, final boolean selected);
+    JRadioButton createRadioButton(String text, boolean selected);
     
     /**
      * Creates a customized {@link JComboBox}.
@@ -102,7 +102,7 @@ public interface GUIFactory {
      *          the items to add to the combo box
      * @return the specified combo box
      */
-    <E> JComboBox<E> createComboBox(final E[] items);
+    <E> JComboBox<E> createComboBox(E[] items);
     
     /**
      * Creates an horizontal customized panel with the given description and
@@ -114,7 +114,7 @@ public interface GUIFactory {
      *          the radio buttons
      * @return the specified panel
      */
-    JPanel createHorizontalComponentPanel(final String text, final JComponent... components);
+    JPanel createHorizontalComponentPanel(String text, JComponent... components);
     
     /**
      * A standard implementation of {@link GUIFactory}.

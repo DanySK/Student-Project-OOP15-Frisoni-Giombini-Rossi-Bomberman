@@ -79,6 +79,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.gameOverImage.run();
     }
     
+    /**
+     * Initializes the game panel.
+     */
     public void initGamePanel() {
         this.hero = new HeroViewImpl(this.model.getHero(), this.tileSize);
         this.timer = new Timer(DELAY, this);

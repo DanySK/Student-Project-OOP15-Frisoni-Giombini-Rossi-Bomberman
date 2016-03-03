@@ -1,10 +1,11 @@
 package view;
 
 /**
- * This enumeration describes the actions that a hero can do.
+ * This enumeration describes the actions that can be performed from
+ * a user input.
  *
  */
-public enum HeroAction {
+public enum InputAction {
     /**
      * Downward movement.
      */
@@ -22,11 +23,11 @@ public enum HeroAction {
      */
     MOVE_LEFT,
     /**
-     * Standing position.
-     */
-    STILL,
-    /**
      * Planting a bomb.
      */
-    PLANT_BOMB;
+    PLANT_BOMB,
+    /**
+     * Pausing the game.
+     */
+    PAUSE;
 }

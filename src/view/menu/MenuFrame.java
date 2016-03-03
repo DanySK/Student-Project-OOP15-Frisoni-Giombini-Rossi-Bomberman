@@ -14,7 +14,7 @@ public interface MenuFrame {
      */
     enum MenuCard {
         HOME(new MenuView()),
-        RANKING(new MenuView()),
+        SCORES(new MenuView()),
         SETTINGS(new SettingsView()),
         CREDITS(new CreditsView());
 

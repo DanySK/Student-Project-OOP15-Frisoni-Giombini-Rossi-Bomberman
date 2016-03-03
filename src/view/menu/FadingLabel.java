@@ -37,7 +37,7 @@ public class FadingLabel extends JLabel {
     private float fromAlpha;
 
     /**
-     * 
+     * Constructs a new fading label.
      */
     public FadingLabel() {
         init();
