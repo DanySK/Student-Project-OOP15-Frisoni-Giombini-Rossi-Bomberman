@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import view.GUIFactory;
 import view.LanguageHandler;
+import view.menu.MenuFrame.MenuCard;
 
 /**
  * This abstract class represents a standard menu panel with:
@@ -21,8 +22,6 @@ public abstract class AbstractMenuPanel extends JPanel {
      * Auto-generated UID.
      */
     private static final long serialVersionUID = 6859160481343879042L;
-    
-    protected MenuPanelObserver observer;
     
     /**
      * Constructs a new AbstractMenuPanel.
@@ -66,33 +65,10 @@ public abstract class AbstractMenuPanel extends JPanel {
         // Sets the "back" button
         final JButton btnBack = factory.createButton(
                 LanguageHandler.getHandler().getLocaleResource().getString("goBack"));
-        btnBack.addActionListener(e -> observer.back());
+        btnBack.addActionListener(e -> MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME));
         panel.add(btnBack, BorderLayout.SOUTH);
         
         this.setLayout(new BorderLayout());
         this.add(panel);
-    }
-    
-    /**
-     * Set the observer of the AbstractMenuPanel.
-     * 
-     * @param observer
-     *          the observer to use
-     */
-    public void setObserver(final MenuPanelObserver observer) {
-        this.observer = observer;
-    }
-    
-    /**
-     * This interface indicates the operations that an observer
-     * of an AbstractMenuPanel can do.
-     *
-     */
-    public interface MenuPanelObserver {
-
-        /**
-         * Return to the main menu.
-         */
-        void back();
     }
 }

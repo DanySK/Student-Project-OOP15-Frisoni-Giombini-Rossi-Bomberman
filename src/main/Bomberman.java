@@ -5,14 +5,13 @@ import javax.swing.SwingUtilities;
 import controller.MenuController;
 import view.FontLoader;
 import view.SoundEffect;
-import view.menu.MenuFrameImpl;
 
 /**
  * This is the launcher class for Bomberman game with MVC implementation.
  */
 public final class Bomberman {
 
-    private Bomberman() {}
+    private Bomberman() { }
     
     /**
      * The entry point for the application.
@@ -31,7 +30,7 @@ public final class Bomberman {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MenuController(new MenuFrameImpl());
+                new MenuController();
             }
         });
     }

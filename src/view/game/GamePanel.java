@@ -44,7 +44,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int tileSize;
     private final Map<TileType, Image> tilesImages;
     private HeroView hero;
-    private Timer timer;
 
     /**
      * Creates a new GamePanel.
@@ -84,8 +83,8 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     public void initGamePanel() {
         this.hero = new HeroViewImpl(this.model.getHero(), this.tileSize);
-        this.timer = new Timer(DELAY, this);
-        this.timer.start();
+        final Timer timer = new Timer(DELAY, this);
+        timer.start();
     }
 
     /**
@@ -93,16 +92,16 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     @Override
     public void paintComponent(final Graphics g) {
-        // Draw BoardMap
+        // Draw the map
         final TileType[][] map = this.model.getMap();
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[0].length; y++) {
                 g.drawImage(this.tilesImages.get(map[x][y]), x * this.tileSize, y * this.tileSize, this);
             }
         }
-        // Draw the Hero
+        // Draw the hero
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
-        // Draw GameOver screen
+        // Draw the GameOver screen
         if (this.model.isGameOver()) {
             g.drawImage(this.gameOverImage.getImage(), 0, 0, null);
         }

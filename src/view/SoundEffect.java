@@ -83,7 +83,7 @@ public enum SoundEffect {
      * @param volume
      *          number between 0 and 1 (loudest)
      */
-    private SoundEffect(final String soundFileName, final double volume) {
+    SoundEffect(final String soundFileName, final double volume) {
         try {
             final URL url = this.getClass().getResource(soundFileName);
             final AudioInputStream audio = AudioSystem.getAudioInputStream(url);
