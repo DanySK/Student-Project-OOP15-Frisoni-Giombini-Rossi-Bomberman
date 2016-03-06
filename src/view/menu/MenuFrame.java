@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 /**
  * This interface handles the panel changes inside the {@link MenuFrameImpl}.
- * It defines the possible "cards" that can be replaced and shown. 
+ * It defines the possible "cards" that can be replaced and shown.
  *
  */
 public interface MenuFrame {
@@ -45,7 +45,7 @@ public interface MenuFrame {
     void initView();
     
     /**
-     * Change the {@MenuCard} shown in the main frame with another provided.
+     * Change the {@link MenuCard} shown in the main frame with another provided.
      * 
      * @param card
      *          the new card

@@ -4,10 +4,8 @@ import model.level.Level;
 import model.level.LevelImpl;
 import view.game.GameFrame;
 import view.game.GameFrameImpl;
-import view.menu.AbstractMenuPanel.MenuPanelObserver;
-import view.menu.CreditsView;
-import view.menu.MenuFrame;
 import view.menu.MenuFrame.MenuCard;
+import view.menu.MenuFrameImpl;
 import view.menu.MenuView;
 import view.menu.MenuView.MenuObserver;
 import view.menu.SettingsView;
@@ -20,20 +18,17 @@ import view.menu.SettingsView;
  */
 public class MenuController implements MenuObserver {
     
-    private final MenuFrame menuFrame;
     private boolean darkMode;
     
     /**
      * Construct a controller for the menu of game.
-     * 
-     * @param menuFrame
-     *                  the initial frame         
+     *   
      */
-    public MenuController(final MenuFrame menuFrame) {
+    public MenuController() {
         final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
         menuView.setObserver(this);
-        this.menuFrame = menuFrame;
-        this.menuFrame.initView();
+        MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
+        MenuFrameImpl.getMenuFrame().initView();
         this.darkMode = false;
     }
     
@@ -53,27 +48,15 @@ public class MenuController implements MenuObserver {
         final SettingsView settingsView = (SettingsView) MenuCard.SETTINGS.getPanel();
         settingsView.setObserver(new SettingsView.SettingsObserver() {
             @Override
-            public void back() {
-                MenuController.this.menuFrame.replaceCard(MenuCard.HOME);
-            }
-
-            @Override
-            public void setDarkMode(boolean darkMode) {
+            public void setDarkMode(final boolean darkMode) {
                 MenuController.this.darkMode = darkMode;
             }
         });
-        this.menuFrame.replaceCard(MenuCard.SETTINGS);
+        MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.SETTINGS);
     }
 
     @Override
     public void credits() {
-        final CreditsView creditsView = (CreditsView) MenuCard.CREDITS.getPanel();
-        creditsView.setObserver(new MenuPanelObserver() {
-            @Override
-            public void back() {
-                MenuController.this.menuFrame.replaceCard(MenuCard.HOME);
-            }
-        });
-        this.menuFrame.replaceCard(MenuCard.CREDITS);
+        MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.CREDITS);
     }
 }

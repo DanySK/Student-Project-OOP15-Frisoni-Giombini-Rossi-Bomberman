@@ -17,25 +17,42 @@ import view.ImageLoader.GameImage;
  * It defines also the starting page and the background music.
  *
  */
-public class MenuFrameImpl implements MenuFrame {
+public final class MenuFrameImpl implements MenuFrame {
     
     private static final String FRAME_NAME = "Bomberman";
     
     private static final double WIDTH_PERC = 0.5;
     private static final double HEIGHT_PERC = 0.6;
     
+    private static volatile MenuFrame menuFrame;
     private final JFrame frame;
 
     /**
      * Constructs a new MainFrame.
      */
-    public MenuFrameImpl() {
+    private MenuFrameImpl() {
         this.frame = new JFrame();
         initialize();
-        replaceCard(MenuCard.HOME);
         SoundEffect.THEME.playLoop();
     }
 
+    /**
+     * This method returns the MenuFrame.
+     * If the MenuFrame is null it creates a new one on the first call.
+     * 
+     * @return the menu frame.
+     */
+    public static MenuFrame getMenuFrame() {
+        if (menuFrame == null) {
+            synchronized (MenuFrameImpl.class) {
+                if (menuFrame == null) {
+                    menuFrame = new MenuFrameImpl();
+                }
+            }
+        }
+        return menuFrame;
+    }
+    
     private void initialize() {
         this.frame.setTitle(FRAME_NAME);
         this.frame.setIconImage(ImageLoader.getLoader().createImage(GameImage.ICON));
@@ -72,7 +89,7 @@ public class MenuFrameImpl implements MenuFrame {
     }
 
     @Override
-    public final void replaceCard(final MenuCard card) {
+    public void replaceCard(final MenuCard card) {
         Objects.requireNonNull(card);
         final CardLayout cl = (CardLayout) (this.frame.getContentPane().getLayout());
         cl.show(this.frame.getContentPane(), card.name());

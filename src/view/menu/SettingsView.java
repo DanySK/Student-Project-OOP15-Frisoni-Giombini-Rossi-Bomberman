@@ -31,6 +31,8 @@ public class SettingsView extends AbstractMenuPanel {
 
     private static final Insets IMAGE_INSETS = new Insets(40, 40, 40, 20);
 
+    private SettingsObserver observer;
+    
     @Override
     public String getTitle() {
         return LanguageHandler.getHandler().getLocaleResource().getString("settings");
@@ -41,7 +43,7 @@ public class SettingsView extends AbstractMenuPanel {
         final GUIFactory factory = new GUIFactory.Standard();
         final String on = LanguageHandler.getHandler().getLocaleResource().getString("on");
         final String off = LanguageHandler.getHandler().getLocaleResource().getString("off");
-        
+
         final JPanel panel = new JPanel();
         final GridBagLayout gblPanel = new GridBagLayout();
         gblPanel.columnWeights = new double[]{1.0, 1.0};
@@ -87,15 +89,11 @@ public class SettingsView extends AbstractMenuPanel {
         final JRadioButton radDarkModeOn = factory.createRadioButton(on);
         final JRadioButton radDarkModeOff = factory.createRadioButton(off, true);
         radDarkModeOn.addActionListener(e -> {
-            if (observer instanceof SettingsObserver) {
-                ((SettingsObserver) observer).setDarkMode(true);
-            }
+            observer.setDarkMode(true);
             SoundEffect.BOO_LAUGH.playOnce();
         });
         radDarkModeOff.addActionListener(e -> {
-            if (observer instanceof SettingsObserver) {
-                ((SettingsObserver) observer).setDarkMode(false);
-            }
+            observer.setDarkMode(false);
         });
         groupDarkMode.add(radDarkModeOn);
         groupDarkMode.add(radDarkModeOff);
@@ -118,11 +116,21 @@ public class SettingsView extends AbstractMenuPanel {
     }
     
     /**
+     * Set the observer of the SettingsView.
+     * 
+     * @param observer
+     *          the observer to use
+     */
+    public void setObserver(final SettingsObserver observer) {
+        this.observer = observer;
+    }
+
+    /**
      * This interface indicates the operations that an observer
      * of a SettingsView can do.
      *
      */
-    public interface SettingsObserver extends MenuPanelObserver {
+    public interface SettingsObserver {
 
         /**
          * Sets the Dark Mode on / off.

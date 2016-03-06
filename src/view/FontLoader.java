@@ -1,7 +1,9 @@
 package view;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -12,8 +14,7 @@ public final class FontLoader {
 
     private static final String BASE_PATH = "/font/";
 
-    private FontLoader() {
-    }
+    private FontLoader() { }
 
     /**
      * Registers a font.
@@ -21,12 +22,14 @@ public final class FontLoader {
      *          the font name
      */
     public static void loadFont(final String name) {
+        final InputStream fontStream = FontLoader.class.getResourceAsStream(BASE_PATH + name);
         try {
-            final InputStream fontStream = FontLoader.class.getResourceAsStream(BASE_PATH + name);
             final Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
+        } catch (FontFormatException e) {
+            System.err.println("The font format is not valid: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("I/O error during the font loading: " + e.getMessage());
         }
     }
 }

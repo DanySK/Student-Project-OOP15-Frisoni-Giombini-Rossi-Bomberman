@@ -98,6 +98,8 @@ public interface GUIFactory {
     /**
      * Creates a customized {@link JComboBox}.
      * 
+     * @param <E>
+     *          the type of the combo box elements
      * @param items
      *          the items to add to the combo box
      * @return the specified combo box
@@ -106,12 +108,12 @@ public interface GUIFactory {
     
     /**
      * Creates an horizontal customized panel with the given description and
-     * the specified {@link JRadioButton}.
+     * the specified components on the right.
      * 
      * @param text
      *          the description for the choice
-     * @param buttons
-     *          the radio buttons
+     * @param components
+     *          the components to add
      * @return the specified panel
      */
     JPanel createHorizontalComponentPanel(String text, JComponent... components);

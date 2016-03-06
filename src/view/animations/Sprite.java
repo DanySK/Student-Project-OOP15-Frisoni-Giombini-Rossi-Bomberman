@@ -10,58 +10,61 @@ import view.ImageLoader;
 import view.ImageLoader.GameImage;
 
 /**
- * This class represents a sprite of the game. 
+ * This class uses a Singleton Pattern to get one or more sprites of the game
+ * from the sprite-sheet.
  *
  */
 public final class Sprite {
-    
+
     // The sheet containing all the sprite images of the game
-    private static BufferedImage spriteSheet;
-    
+    private static volatile BufferedImage spriteSheet;
+
     // The dimension of each sprite in the sheet
     private static final int SPRITE_HEIGHT = 32;
     private static final int SPRITE_WIDTH = 24;
-    
-    private Sprite() {}
-    
+
+    private Sprite() { }
+
     /**
      * This method returns the sprite in the specified position of the sheet.
      * 
-     * @param xGrid
-     *          the x coordinate (column)
-     * @param yGrid
-     *          the y coordinate (row)
+     * @param pointGrid
+     *          the coordinate to use
      * @return the sprite image
      */
     public static BufferedImage getSprite(final Point pointGrid) {
         if (spriteSheet == null) {
-            spriteSheet = ImageLoader.getLoader().createBufferedImage(GameImage.SPRITE_SHEET);
+            synchronized (Sprite.class) {
+                if (spriteSheet == null) {
+                    spriteSheet = ImageLoader.getLoader().createBufferedImage(GameImage.SPRITE_SHEET);
+                }
+            }
         }
         return spriteSheet.getSubimage(pointGrid.x * SPRITE_WIDTH, pointGrid.y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
     }
-    
+
     /**
      * This method returns the sprite in the specified position of the sheet.
      * 
-     * @param coordinates
-     *          the coordinates where find the sprite
+     * @param pointGrids
+     *          the coordinates where find the sprites
      * @return a list with all the sprites in the specified positions
      */
     public static List<BufferedImage> getSprites(final Point... pointGrids) {
         return Arrays.stream(pointGrids).map(p -> getSprite(p)).collect(Collectors.toList());
     }
-    
+
     /**
-     * @return the height of a sprite
+     * @return the height of a sprite.
      */
     public static int getSpriteHeight() {
         return SPRITE_HEIGHT;
     }
-    
+
     /**
-     * @return the width of a sprite
+     * @return the width of a sprite.
      */
-    public static int getSpriteWidth () {
+    public static int getSpriteWidth() {
         return SPRITE_WIDTH;
     }
 }

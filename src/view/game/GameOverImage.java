@@ -66,7 +66,7 @@ public class GameOverImage implements Runnable {
     }
  
     /**
-     * @return the buffered image to display at the end of the game
+     * @return the buffered image to display at the end of the game.
      */
     public BufferedImage getImage() {
         return this.image;
