@@ -1,6 +1,9 @@
 package model;
 
 import java.awt.Rectangle;
+import java.util.Optional;
+
+import model.units.PowerUpType;
 import model.utilities.MapPoint;
 
 /**
@@ -10,6 +13,7 @@ import model.utilities.MapPoint;
 public class Tile {
 
     private final TileType type;
+    private final Optional<PowerUpType> powerup;
     private final Rectangle boundBox;
     private final int row;
     private final int column;
@@ -26,8 +30,10 @@ public class Tile {
      * @param tileSize
      *          tile's width/height
      */
-    public Tile(final TileType type, final int row, final int column, final int tileSize) {
+    public Tile(final TileType type, final Optional<PowerUpType> powerup, final int row, 
+                final int column, final int tileSize) {
         this.type = type;
+        this.powerup = powerup;
         this.row = row;
         this.column = column;
         this.boundBox = new Rectangle(MapPoint.getCoordinate(this.row, tileSize),
@@ -72,5 +78,14 @@ public class Tile {
      */
     public Rectangle getBoundBox() {
         return (Rectangle) this.boundBox.clone();
+    }
+    
+    /**
+     * Returns the Powerup.
+     * 
+     * @return the powerup associated
+     */
+    public Optional<PowerUpType> getPowerup(){
+        return this.powerup;
     }
 }

@@ -1,5 +1,10 @@
 package model;
 
+import java.util.Optional;
+import java.util.Random;
+
+import model.units.PowerUpType;
+
 /**
  * This class allows to establish which type of tile
  * there will be in a specific position.
@@ -8,7 +13,8 @@ public class TilesFactory {
 
     private final int rows;
     private final int columns;
-    private final double density;
+    private final double blockDensity;
+    private final double powerupDensity;
     private final int tileDimension;
 
     /**
@@ -23,10 +29,12 @@ public class TilesFactory {
      * @param tileDimension
      *          the dimension of a tile
      */
-    public TilesFactory(final int rows, final int columns, final double density, final int tileDimension) {
+    public TilesFactory(final int rows, final int columns, final double blockDensity, 
+                        final double powerupDensity, final int tileDimension) {
         this.rows = rows;
         this.columns = columns;
-        this.density = density;
+        this.blockDensity = blockDensity;
+        this.powerupDensity = powerupDensity;
         this.tileDimension = tileDimension;
     }
 
@@ -40,7 +48,9 @@ public class TilesFactory {
      * @return the new tile
      */
     public Tile createForCoordinates(final int row, final int column) {
-        return new Tile(getTypeForCoordinates(row, column), row, column, this.tileDimension);
+        TileType type = getTypeForCoordinates(row, column);
+        Optional<PowerUpType> powerup = this.getPowerup(type);
+        return new Tile(type, powerup, row, column, this.tileDimension);
     }
 
     /**
@@ -55,7 +65,7 @@ public class TilesFactory {
     private TileType getTypeForCoordinates(final int row, final int column) {
         if (tileIsConcrete(row, column)) {
             return TileType.CONCRETE;
-        } else if (Math.random() < density && !isEntryPoint(row, column)) {
+        } else if (Math.random() < this.blockDensity && !isEntryPoint(row, column)) {
             return TileType.RUBBLE;
         } else {
             return TileType.WALKABLE;
@@ -89,5 +99,21 @@ public class TilesFactory {
      */
     private boolean isEntryPoint(final int row, final int column) {
         return row <= 2 && column <= 2;
+    }
+    
+    /**
+     * Gets a correct type of powerup for the specified block.
+     * 
+     * @param type
+     *          block type
+     * @return an Optional<Powerup> because a block might not have a powerup
+     */
+    private Optional<PowerUpType> getPowerup(final TileType type){
+        if(!type.equals(TileType.RUBBLE) || Math.random() < this.powerupDensity){
+            return Optional.empty();
+        }
+        else{
+            return Optional.of(PowerUpType.values()[new Random().nextInt(PowerUpType.values().length)]);
+        }
     }
 }

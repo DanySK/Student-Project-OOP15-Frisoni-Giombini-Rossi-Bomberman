@@ -2,40 +2,44 @@ package model.units;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
+
+import model.level.Collision;
 
 /**
  * This class represent the entity that is 
  * the foundation of every entity in the game.
  *
  */
-public abstract class AbstractEntity implements Entity {
+public abstract class AbstractEntity extends LevelElementImpl implements Entity {
 
     private static final int START_SPEED = 1;
     private static final int DIVISION_FACTOR = 10;
     private static final int UNDEFINED = 0;
 
-    private final Point curPos;
     private Direction curDir;
-    private final Rectangle hitBox;
+    private Collision collision;
     private final int curSpeed;
     private int step;
+    
 
     /**
      * Constructs a new Entity.
      */
     public AbstractEntity(final Point pos, final Direction dir, final Dimension dim) {
-        this.curPos = pos;
+        super(pos, dim);
+        this.collision = new Collision(this);
         this.curDir = dir;
-        this.hitBox = new Rectangle(pos.x, pos.y, dim.width, dim.height);
         this.curSpeed = START_SPEED;
         this.setStep();
     }
+    
+    //public abstract boolean checkCollision(Direction dir, Set<Rectangle> blockSet);
 
     /**
      * Abstract method, the implementation is 
      * different depending on the type of the entity.
      */
+    @Override
     public abstract void move(Direction d);
 
     /**
@@ -53,8 +57,8 @@ public abstract class AbstractEntity implements Entity {
      */
     @Override
     public Point getPossiblePos(final Point pos){
-        return new Point(this.getX() + pos.x * this.numberOfSteps(),
-                         this.getY() + pos.y * this.numberOfSteps());
+        return new Point(super.getX() + pos.x * this.numberOfSteps(),
+                         super.getY() + pos.y * this.numberOfSteps());
     }
     
     /**
@@ -62,7 +66,7 @@ public abstract class AbstractEntity implements Entity {
      */
     @Override
     public void updatePosition(final Point pos) {
-        this.curPos.setLocation(pos);
+        super.curPos.setLocation(pos);
         this.updateHitbox();
     }
     
@@ -79,7 +83,7 @@ public abstract class AbstractEntity implements Entity {
      */
     @Override
     public void updateHitbox() {
-        this.hitBox.setLocation(this.curPos);        
+        super.hitBox.setLocation(this.curPos);        
     }
 
     /**
@@ -89,7 +93,7 @@ public abstract class AbstractEntity implements Entity {
     public final void setStep() {
         this.step = UNDEFINED;
         for(int i = 2; i <= DIVISION_FACTOR; i++){
-            if(this.hitBox.width % i == 0){
+            if(super.hitBox.width % i == 0){
                 this.step = i;
                 break;
             }
@@ -97,38 +101,6 @@ public abstract class AbstractEntity implements Entity {
         if(this.step == UNDEFINED){
             this.step = START_SPEED;
         }
-    }
-
-    /**
-     * Return the entity's position.
-     */
-    @Override
-    public Point getPosition() {
-        return new Point(this.curPos);
-    }
-
-    /**
-     * Return the entity's hitBox.
-     */
-    @Override
-    public Rectangle getHitbox() {
-        return (Rectangle) this.hitBox.clone();
-    }
-
-    /**
-     * The x coordinate of the entity.
-     */
-    @Override
-    public int getX() {
-        return this.curPos.x;
-    }
-
-    /**
-     * The y coordinate of the entity.
-     */
-    @Override
-    public int getY() {
-        return this.curPos.y;
     }
 
     /**
@@ -147,4 +119,9 @@ public abstract class AbstractEntity implements Entity {
         return this.curDir;
     }
 
+    public Collision getCollision(){
+        return this.collision;
+    }
+
+    
 }

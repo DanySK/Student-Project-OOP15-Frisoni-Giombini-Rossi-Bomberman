@@ -19,4 +19,52 @@ public interface Hero extends Entity {
      *          true if he's in movement, false otherwise
      */
     boolean isMoving();
+    
+    /**
+     * Increase hero's attack level.
+     */
+    void increaseAttack();
+    
+    /**
+     * Adds a life to the hero.
+     */
+    void increaseLife();
+    
+    /**
+     * Sets the flamepass.
+     */
+    void setFlamepass();
+    
+    /**
+     * Increase the number of bombs.
+     */
+    void increaseBomb();
+    
+    /**
+     * This method return the attack level.
+     * 
+     * @return the hero's attack level
+     */
+    int getAttack();
+    
+    /**
+     * This method return the number of lives.
+     * 
+     * @return the number of remaining lives 
+     */
+    int getRemainingLives();
+    
+    /**
+     * Checks if the hero's got the flamepass.
+     * 
+     * @return true if he's got this powerup, false otherwise
+     */
+    boolean checkFlamepass();
+    
+    /**
+     * This methods return how many bombs the hero's got.
+     * 
+     * @return the number of bombs
+     */
+    //int getBombs();
 }

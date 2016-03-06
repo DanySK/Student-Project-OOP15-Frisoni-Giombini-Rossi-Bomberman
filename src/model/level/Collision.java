@@ -1,13 +1,11 @@
 package model.level;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 
-import model.Tile;
-import model.TileType;
 import model.units.Direction;
-import model.units.Hero;
+import model.units.Entity;
 
 /**
  * This class is used to implement collision between
@@ -15,9 +13,8 @@ import model.units.Hero;
  */
 public class Collision {
 
-    private Tile[][] map;
-    private Hero hero;
-    private Direction curDir;
+    private Entity entity;
+    private Rectangle entityRec;
     
     /**
      * The constructor initialize Collision's element
@@ -28,27 +25,14 @@ public class Collision {
      * @param hero 
      *          the hero entity
      */
-    public Collision(final Tile[][] map, final Hero hero){
-        this.map = map;
-        this.hero = hero;
-        this.curDir = Direction.DOWN;
+    public Collision(final Entity entity){
+        this.entity = entity;
+        this.entityRec = this.entity.getHitbox();
     }
-    
-    /**
-     * This method build a List of all indestructible blocks.
-     * 
-     * @return the list of blocks
-     */
-    private List<Rectangle> getBlocks(){
-        List<Rectangle> blockList = new ArrayList<>();
-        for(int i = 0; i < this.map.length; i++){
-            for(int j = 0; j < this.map.length; j++){
-                if(!this.map[i][j].getType().equals(TileType.WALKABLE)){
-                    blockList.add(this.map[i][j].getBoundBox());
-                }
-            }
-        }
-        return blockList;
+        
+    public boolean hasCollision(Direction dir, Set<Rectangle> blockSet){
+        this.entityRec = this.updateEntityRec(dir);
+        return this.blockCollision(blockSet);
     }
     
     /**
@@ -56,25 +40,31 @@ public class Collision {
      * 
      * @return true if there's a collision, false otherwise
      */
-    public boolean blockCollision(){
-        List<Rectangle> blockList = this.getBlocks();
-        Rectangle heroRec = this.getHeroRec();
-        for(Rectangle rec: blockList){
-            if(heroRec.intersects(rec)){
+    public boolean blockCollision(Set<Rectangle> blockSet){
+        return this.elementCollision(blockSet, new Predicate<Rectangle>(){
+            @Override
+            public boolean test(Rectangle rec) {
+                return entityRec.intersects(rec);
+            }
+        });
+    }
+    
+    public boolean powerupCollision(Set<Rectangle> powerUpSet){
+        return this.elementCollision(powerUpSet, new Predicate<Rectangle>(){
+            @Override
+            public boolean test(Rectangle rec) {
+                return entityRec.contains(rec);
+            }
+        });
+    }
+    
+    private boolean elementCollision(Set<Rectangle> set, Predicate<Rectangle> pred){
+        for(Rectangle rec: set){
+            if(pred.test(rec)){
                 return false;
             }
         }
         return true;
-    }
-    
-    /**
-     * This method set the Direction where the entity would go
-     * 
-     * @param dir
-     *          the direction where to go
-     */
-    public void setDirection(Direction dir){
-        this.curDir = dir;
     }
     
     /**
@@ -83,11 +73,14 @@ public class Collision {
      * @return
      *          the Rectangle related to the new possible position
      */
-    public Rectangle getHeroRec(){
-        return new Rectangle(this.hero.getPossiblePos(this.curDir.getPoint()).x, 
-                             this.hero.getPossiblePos(this.curDir.getPoint()).y, 
-                             this.hero.getHitbox().width, 
-                             this.hero.getHitbox().height);
+    public Rectangle updateEntityRec(Direction dir){
+        return new Rectangle(this.entity.getPossiblePos(dir.getPoint()).x, 
+                             this.entity.getPossiblePos(dir.getPoint()).y, 
+                             this.entity.getHitbox().width, 
+                             this.entity.getHitbox().height);
     }
     
+    public Rectangle getEntityRec(){
+        return this.entityRec;
+    }
 }

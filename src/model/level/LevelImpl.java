@@ -2,7 +2,12 @@ package model.level;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Predicate;
 
 import model.Tile;
 import model.TileType;
@@ -11,6 +16,7 @@ import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
 import model.utilities.MapPoint;
+import model.utilities.PowerUp;
 
 /**
  * This class represent the Model, as it contains
@@ -21,15 +27,16 @@ public class LevelImpl implements Level {
 
     private static final Point START_HERO_POS = new Point(1, 1);
     private static final double BLOCK_DENSITY = 0.5;
+    private static final double POWERUP_DENSITY = 0.2;
     private static final int MIN_TILES = 9;
     private static final int MAX_TILES = 11;
 
     private Tile[][] map;
     private Hero hero;
-    private Collision collision;
     private int tileDimension;
     private int nTiles;
     private boolean inGame;
+    private Collision collision;
 
     /**
      * The constructor is used to set the size of the map,
@@ -49,7 +56,7 @@ public class LevelImpl implements Level {
         this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension), 
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
-        this.collision = new Collision(this.map, this.hero);
+        this.collision = new Collision(this.hero);
     }
 
     /**
@@ -60,7 +67,8 @@ public class LevelImpl implements Level {
         if(this.map != null){
             throw new UnsupportedOperationException();
         } else {
-            final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY, this.tileDimension);
+            final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY,
+                                                            POWERUP_DENSITY, this.tileDimension);
             this.map = new Tile[this.nTiles][this.nTiles];
             for (int i = 0; i < this.nTiles; i++) {
                 for (int j = 0; j < this.nTiles; j++) {
@@ -88,8 +96,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        this.collision.setDirection(dir);
-        if(this.collision.blockCollision()){
+        if(this.collision.hasCollision(dir, this.getBlocks())){
             this.hero.setMoving(true);
             this.hero.move(dir);
         }
@@ -113,6 +120,72 @@ public class LevelImpl implements Level {
         return mapType;
     }
 
+    /**
+     * This method return a set that represents 
+     * powerup's types in the map.
+     */
+    @Override
+    public Set<PowerUp> getPowerupInLevel() {
+        Set<PowerUp> powerupSet = new HashSet<>();
+        for(int i = 0; i < this.nTiles; i++){
+            for(int j = 0; j < this.nTiles; j++){
+                if(!this.map[i][j].getPowerup().equals(Optional.empty())){
+                    powerupSet.add(new PowerUp(i, j, this.map[i][j].getPowerup().get()));
+                }
+            }
+        }
+        return powerupSet;
+    }
+    
+    /**
+     * This method build a Set of all indestructible blocks.
+     * 
+     * @return the set of blocks
+     */
+    private Set<Rectangle> getBlocks(){
+        return this.getGenericSet(new Predicate<Tile>(){
+            @Override
+            public boolean test(Tile tile) {
+                return !tile.getType().equals(TileType.WALKABLE);
+            }
+        });
+    }
+    
+    /**
+     * This method build a Set of all PowerUp.
+     * 
+     * @return the PowerUp sets
+     */
+    private Set<Rectangle> getPowerUp(){
+        return this.getGenericSet(new Predicate<Tile>(){
+            @Override
+            public boolean test(Tile tile) {
+                return !tile.getPowerup().equals(Optional.empty());
+            }
+        });
+    }
+    
+    /**
+     * This method allows to get a generic set of Rectangle.
+     * 
+     * @param pred 
+     *          the predicate
+     * 
+     * @return a set of Rectangle
+     */
+    private Set<Rectangle> getGenericSet(Predicate<Tile> pred){
+        Set<Rectangle> set = new HashSet<>();
+        for(int i = 0; i < this.map.length; i++){
+            for(int j = 0; j < this.map.length; j++){
+                if(pred.test(this.map[i][j])){
+                    set.add(this.map[i][j].getBoundBox());
+                }
+            }
+        }
+        return set;
+        
+    }
+    
     /**
      * This method return the hero's position.
      */

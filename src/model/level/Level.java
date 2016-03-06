@@ -1,10 +1,12 @@
 package model.level;
 
 import java.awt.Point;
+import java.util.Set;
 
 import model.TileType;
 import model.units.Direction;
 import model.units.Hero;
+import model.utilities.PowerUp;
 
 /**
  * This interface handles a level of the game.
@@ -35,6 +37,13 @@ public interface Level {
      *                  the map that represents tiles' types.
      */
     TileType[][] getMap();
+    
+    /**
+     * Gets all the powerup: their coordinates and their type.
+     * 
+     * @return a map where are contained informations of all powerups
+     */
+    Set<PowerUp> getPowerupInLevel();
 
     /**
      * This method return the hero position-

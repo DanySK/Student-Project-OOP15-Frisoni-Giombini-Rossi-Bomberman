@@ -35,6 +35,5 @@ public final class MapPoint {
      */
     public static int getCoordinate(final int coordinate, final int tileDimension){
         return coordinate * tileDimension;
-    }
-
+    }    
 }

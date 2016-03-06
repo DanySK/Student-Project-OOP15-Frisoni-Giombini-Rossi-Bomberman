@@ -8,6 +8,7 @@ import java.awt.Point;
  * used to calculate the new position.
  */
 public enum Direction {
+    
     /**
      * Upward movement.
      */

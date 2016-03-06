@@ -1,9 +1,16 @@
 package model.units;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 
-public interface Entity {
+public interface Entity extends LevelElement{
+    
+    /**
+     * This methods check if the entity collide
+     * with other game elements.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
+    //boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet);
     
     /**
      * This method allow the entity to move.
@@ -20,14 +27,6 @@ public interface Entity {
      */
     int numberOfSteps();
     
-    /**
-     * This method returns the position where the hero would be if there's no collision.
-     * 
-     * @param p
-     *          the point whose coordinates are to be added
-     * @return the position where the hero would move
-     */
-    Point getPossiblePos(Point p);
     /**
      * This method update the entity's position.
      * 
@@ -52,37 +51,16 @@ public interface Entity {
     /**
      * This method allows to set the entity's step.
      */
-    void setStep();
+    void setStep();    
     
     /**
-     * This method is used to know the entity's position.
+     * This method returns the position where the hero would be if there's no collision.
      * 
-     * @return the current position of the entity
+     * @param p
+     *          the point whose coordinates are to be added
+     * @return the position where the hero would move
      */
-    Point getPosition();
-    
-    /**
-     * This method is used to know the geometric figure of the entity.
-     * 
-     * @return the geometric figure of the entity
-     */
-    Rectangle getHitbox();
-    
-    /**
-     * This method is used to know the x coordinate of the entity's position.
-     * 
-     * @return the x coordinate
-     */
-    int getX();
-    
-    
-    /**
-     * This methods is used to know the y coordinate of the entity's position.
-     * 
-     * @return the y coordinate
-     */
-    int getY();
-    
+    Point getPossiblePos(Point p);
     
     /**
      * This method is used to know the actual speed of the entity.
@@ -96,6 +74,5 @@ public interface Entity {
      * 
      * @return the entity's direction
      */
-    Direction getDirection();
-    
+    Direction getDirection();    
 }

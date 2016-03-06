@@ -11,7 +11,7 @@ public enum TileType {
     WALKABLE,
     
     /**
-     * The destroyed block.
+     * The destructible block.
      */
     RUBBLE,
     
