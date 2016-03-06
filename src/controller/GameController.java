@@ -17,8 +17,8 @@ public class GameController {
     /**
      * Construct a controller for the game.
      * 
-     * @param map
-     *            the map's model
+     * @param level
+     *            the level's model
      * @param view
      *            the view for the game rendering
      */

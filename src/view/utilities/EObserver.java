@@ -4,7 +4,7 @@ package view.utilities;
  * A representation of an event observer in the observer design pattern.
  * 
  * @param <T>
- *      the type of the event notification 
+ *      the type of the event notification
  */
 public interface EObserver<T> {
     /**

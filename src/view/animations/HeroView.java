@@ -19,12 +19,12 @@ public interface HeroView {
     Image getImage();
     
     /**
-     * @return the x coordinate for the hero's representation
+     * @return the x coordinate for the hero's representation.
      */
     int getX();
     
     /**
-     * @return the y coordinate for the hero's representation
+     * @return the y coordinate for the hero's representation.
      */
     int getY();
     

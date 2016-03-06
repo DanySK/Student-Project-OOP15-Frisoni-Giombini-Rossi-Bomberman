@@ -45,6 +45,7 @@ public class GameFrameImpl implements GameFrame {
 
     /**
      * Creates a new frame for the game rendering.
+     * 
      * @param model
      *          the level data
      * @param darkMode
@@ -57,7 +58,7 @@ public class GameFrameImpl implements GameFrame {
     }
 
     private void createView() {
-        // Sets panels
+        // Sets the panels
         this.gamePanel = new GamePanel(this.model);
         this.statisticPanel = new StatisticPanel(this.model);
         this.loggerPanel = new LoggerPanel(this.model);
@@ -96,7 +97,7 @@ public class GameFrameImpl implements GameFrame {
     /**
      * Custom exit procedure to save the score before closing.
      */
-    public void exitProcedure() {
+    private void exitProcedure() {
         // model.setHighScores();
         // highScoreProperties.saveProperties();
         this.frame.dispose();

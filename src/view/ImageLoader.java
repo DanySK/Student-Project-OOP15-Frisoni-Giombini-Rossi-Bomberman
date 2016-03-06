@@ -47,9 +47,9 @@ public final class ImageLoader {
          */
         PLAY(MENU_FOLDER + "play.png"),
         /**
-         * Ranking button image.
+         * Scores button image.
          */
-        SCORES(MENU_FOLDER + "ranking.png"),
+        SCORES(MENU_FOLDER + "scores.png"),
         /**
          * Settings button image.
          */
@@ -70,6 +70,26 @@ public final class ImageLoader {
          * Rubble wall.
          */
         RUBBLE(TILES_FOLDER + "rubble.png"),
+        /**
+         * Attack-up power-up.
+         */
+        ATTACK_UP(TILES_FOLDER + "attack.png"),
+        /**
+         * Life-up power-up.
+         */
+        LIFE_UP(TILES_FOLDER + "life.png"),
+        /**
+         * Increases number of bombs power-up.
+         */
+        BOMBS_UP(TILES_FOLDER + "bombs.png"),
+        /**
+         * Speed-up power-up.
+         */
+        SPEED_UP(TILES_FOLDER + "speed.png"),
+        /**
+         * Increases the range of a bomb explosion power-up.
+         */
+        RANGE_UP(TILES_FOLDER + "range.png"),
         /**
          * Sprite sheet.
          */
@@ -122,7 +142,7 @@ public final class ImageLoader {
      * 
      * @param img
      *          the GameImage to use
-     * @return the ImageIcon.
+     * @return the specified ImageIcon.
      */
     public ImageIcon createImageIcon(final GameImage img) {
         final java.net.URL imgURL = MenuView.class.getResource(img.getPath());
@@ -137,7 +157,7 @@ public final class ImageLoader {
      * 
      * @param img
      *          the GameImage to use
-     * @return the Image
+     * @return the specified Image.
      */
     public Image createImage(final GameImage img) {
         return createImageIcon(img).getImage();
@@ -152,7 +172,7 @@ public final class ImageLoader {
      *          the width of the image
      * @param height
      *          the height of the image
-     * @return the sized Image
+     * @return the sized Image.
      */
     public Image createImageOfSize(final GameImage img, final int width, final int height) {
         return createImage(img).getScaledInstance(width, height, Image.SCALE_DEFAULT);
@@ -163,7 +183,7 @@ public final class ImageLoader {
      * 
      * @param img
      *          the GameImage to use
-     * @return the BufferedImage
+     * @return the specified BufferedImage.
      */
     public BufferedImage createBufferedImage(final GameImage img) {
         final ImageIcon icon = createImageIcon(img);
@@ -172,7 +192,7 @@ public final class ImageLoader {
                 icon.getIconHeight(),
                 BufferedImage.TYPE_INT_ARGB);
         final Graphics g = bi.createGraphics();
-        icon.paintIcon(null, g, 0,0);
+        icon.paintIcon(null, g, 0, 0);
         g.dispose();
         return bi;
     }

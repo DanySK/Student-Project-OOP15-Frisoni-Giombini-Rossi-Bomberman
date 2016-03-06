@@ -77,7 +77,7 @@ public class Animation {
     }
 
     /**
-     * @return the current frame of the animation
+     * @return the current frame of the animation.
      */
     public BufferedImage getCurrentFrame() {
         return this.frames.get(this.currentFrame);

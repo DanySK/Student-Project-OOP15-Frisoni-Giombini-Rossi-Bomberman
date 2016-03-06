@@ -43,7 +43,7 @@ public class StatisticPanel {
     }
     
     /**
-     * @return the logger panel
+     * @return the logger panel.
      */
     public JPanel getPanel() {
         return this.panel;

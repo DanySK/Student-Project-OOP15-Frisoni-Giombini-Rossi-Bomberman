@@ -11,6 +11,7 @@ public interface GameFrame {
     
     /**
      * This method adds a new KeyListener to the view.
+     * 
      * @param listener
      *          the keyListener to add
      */
