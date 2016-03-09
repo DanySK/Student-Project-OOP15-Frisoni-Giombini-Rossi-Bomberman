@@ -7,8 +7,11 @@ import org.junit.Test;
 /**
  * This class is used to test the correct operation of the game loop
  */
-public class TestAbstractGameLoop {
+public class TestGameLoop {
     
+    private final static int TEST_FPS = 60;
+    private static final int RANGE = TEST_FPS+10;
+    private static final int MILLIS = 1000;
     private volatile int countModel;
     private volatile int countView; 
     
@@ -20,7 +23,7 @@ public class TestAbstractGameLoop {
         AbstractGameLoop game = new GameLoop();
         game.start();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
@@ -29,7 +32,7 @@ public class TestAbstractGameLoop {
         game.stopped();
         final int n = this.countView;
         try {
-            Thread.sleep(1000);
+            Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
@@ -42,33 +45,31 @@ public class TestAbstractGameLoop {
      */
     @Test
     public void test2() {
-        this.countModel = 0;
-        this.countView = 0;
         final AbstractGameLoop game1 = new GameLoop();
         game1.start();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
         System.out.print("Test2: " + this.countView + " and " + this.countModel + " before pause, ");
         game1.pause();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
         System.out.print(this.countView + " and " + this.countModel + " after pause, ");
-        Assert.assertTrue(this.countModel < 100);
-        game1.stopPause();
+        Assert.assertTrue(this.countModel < RANGE);
+        game1.unPause();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
         game1.stopped();
         System.out.println(this.countView + " and " + this.countModel + " after stopped.");
-        Assert.assertTrue(this.countModel >= 60);
+        Assert.assertTrue(this.countModel >= TEST_FPS);
     }
 
     /**
@@ -76,25 +77,21 @@ public class TestAbstractGameLoop {
      */
     @Test
     public void test3() {
-        this.countModel = 0;
-        this.countView = 0;
         final AbstractGameLoop game2 = new GameLoop();
         game2.start();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
         game2.stopped();
-        System.out.println("Test3: the result is " + this.countView + " for View and " + this.countModel + " for Model, the result expected is 60.");
+        System.out.println("Test3: the result is " + this.countView + " for View and " + this.countModel + " for Model, the result expected is " + TEST_FPS + ".");
     }
     
     /**
      * This class implements the abstract methods of AbstractGameLoop.
      */
     private class GameLoop extends AbstractGameLoop{
-        
-        private final static int TEST_FPS = 60;
         
         /**
          * Constructor for GameLoop.

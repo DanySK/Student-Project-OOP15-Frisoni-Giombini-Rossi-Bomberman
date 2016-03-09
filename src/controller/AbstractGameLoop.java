@@ -1,12 +1,12 @@
 package controller;
 
-
 /**
+ *  Implementation of {@link GameLoop}.
  *  A "clock" for the game. 
  *  The GameLoop synchronizes model and view every frame.
  *
  */
-public abstract class AbstractGameLoop extends Thread {
+public abstract class AbstractGameLoop extends Thread implements GameLoop{
 
     private final static double TIME_FACTOR = 1000000000.0;
     private final static int MAX_SKIPPED_FRAMES = 5;
@@ -33,8 +33,9 @@ public abstract class AbstractGameLoop extends Thread {
         int skippedFrames = 0;
         this.running = true;
 
-        while(running) {
-            if(!this.isPaused()){
+
+        while(this.running) {
+            if(!this.paused){
                 final double currTime = System.nanoTime();
                 while(skippedFrames < MAX_SKIPPED_FRAMES && currTime > nextTime) {
                     updateModel();
@@ -51,47 +52,46 @@ public abstract class AbstractGameLoop extends Thread {
         }
     }
 
-    /**
-     * When the Hero dies, the game is stopped.
-     */
+    @Override
     public void stopped() {
         this.running = false;
     }
 
     /**
-     * 
      * @return true if the game is running, otherwise false.
      */
-    public boolean isRunning() {
+    private boolean isRunning() {
         return this.running;
     }
 
     /**
      * @return true if the game is paused, otherwise false.
      */
-    public boolean isPaused() {
+    private boolean isPaused() {
         return this.paused;
     }
 
-    /**
-     * Change the state of game in stop pause
-     */
-    public void stopPause() {
-        if (this.isRunning()) {
+    @Override
+    public void unPause() {
+        if (this.isPaused()) {
             this.paused = false;
         }
     }
 
-    /**
-     * Change the state of game in pause
-     */
+    @Override
     public void pause() {
         if (this.isRunning()) {
             this.paused = true;
         }
     }
 
+    /**
+     * This method is used to update the position of the Hero.
+     */
     public abstract void updateModel();
 
+    /**
+     * This method is used to update the graphics of the game.
+     */
     public abstract void updateView();
 }

@@ -2,6 +2,9 @@ package controller;
 
 import model.level.Level;
 import model.level.LevelImpl;
+import model.units.Direction;
+import view.InputAction;
+import view.InputHandler;
 import view.game.GameFrame;
 import view.game.GameFrameImpl;
 import view.menu.MenuFrame.MenuCard;
@@ -17,9 +20,10 @@ import view.menu.SettingsView;
  *
  */
 public class MenuController implements MenuObserver {
-    
+
+    private final static int FPS = 60;
     private boolean darkMode;
-    
+
     /**
      * Construct a controller for the menu of game.
      *   
@@ -31,12 +35,45 @@ public class MenuController implements MenuObserver {
         MenuFrameImpl.getMenuFrame().initView();
         this.darkMode = false;
     }
-    
+
     @Override
     public void play() {
         final Level model = new LevelImpl();
         final GameFrame view = new GameFrameImpl(model, this.darkMode);
-        new GameController(model, view);
+        final InputHandler inputListener = new InputHandler();
+        // Adds a new keyListener to the view to control the hero
+        view.setKeyListener(inputListener);
+        model.initLevel(view.getTileSize());
+        view.initView();
+        AbstractGameLoop game = new AbstractGameLoop(FPS){
+
+            @Override
+            public void updateModel() {
+                if (inputListener.isInputActive(InputAction.MOVE_DOWN)) {
+                    model.moveHero(Direction.DOWN);
+                }
+                if (inputListener.isInputActive(InputAction.MOVE_LEFT)) {
+                    model.moveHero(Direction.LEFT);
+                }
+                if (inputListener.isInputActive(InputAction.MOVE_RIGHT)) {
+                    model.moveHero(Direction.RIGHT);
+                }
+                if (inputListener.isInputActive(InputAction.MOVE_UP)) {
+                    model.moveHero(Direction.UP);
+                }
+                if (!inputListener.isInputActive(InputAction.MOVE_DOWN) &&
+                        !inputListener.isInputActive(InputAction.MOVE_LEFT) &&
+                        !inputListener.isInputActive(InputAction.MOVE_RIGHT) &&
+                        !inputListener.isInputActive(InputAction.MOVE_UP)) {
+                    model.getHero().setMoving(false);
+                }
+            }
+            @Override
+            public void updateView() {
+                view.repaintGamePanel();
+            }
+        };
+        game.start();
     }
 
     @Override
