@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
@@ -107,6 +108,15 @@ public interface GUIFactory {
     <E> JComboBox<E> createComboBox(E[] items);
     
     /**
+     * Creates a customized {@link JTextField}.
+     * 
+     * @param isEditable
+     *          true if the text field is editable, false otherwise
+     * @return the specified text field
+     */
+    JTextField createTextField(boolean isEditable);
+    
+    /**
      * Creates an horizontal customized panel with the given description and
      * the specified components on the right.
      * 
@@ -125,13 +135,21 @@ public interface GUIFactory {
     class Standard implements GUIFactory {
         
         private static final String FONT_FAMILY = "Char BB";
+        private static final Font DESCRIPTION_FONT = new Font(FONT_FAMILY, Font.PLAIN, 24);
         private static final Font SMALL_FONT = new Font(FONT_FAMILY, Font.PLAIN, 32);
         private static final Font MEDIUM_FONT = new Font(FONT_FAMILY, Font.PLAIN, 56);
         private static final Font BIG_FONT = new Font(FONT_FAMILY, Font.PLAIN, 72);
+        
         private static final Color COLOR_BUTTON = new Color(50, 50, 50);
         private static final Color PRIMARY_COLOR = new Color(60, 60, 60);
         private static final Color SECONDARY_COLOR = new Color(30, 30, 30);
+        private static final int LINE_BORDER_THICKNESS = 2;
+        private static final Color LINE_BORDER_COLOR = Color.BLACK;
+        private static final Border SMALL_BORDER = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         private static final Border REGULAR_BORDER = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+        private static final Border LINE_BORDER = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(LINE_BORDER_COLOR, LINE_BORDER_THICKNESS),
+                SMALL_BORDER);
         
         @Override
         public JPanel createGradientPanel() {
@@ -213,6 +231,18 @@ public interface GUIFactory {
             combo.setForeground(Color.WHITE);
             combo.setEditable(false);
             return combo;
+        }
+        
+        @Override
+        public JTextField createTextField(final boolean isEditable) {
+            final JTextField field = new JTextField();
+            field.setFont(DESCRIPTION_FONT);
+            field.setBorder(LINE_BORDER);
+            field.setBackground(PRIMARY_COLOR);
+            field.setForeground(Color.WHITE);
+            field.setHorizontalAlignment(JTextField.CENTER);
+            field.setEditable(isEditable);
+            return field;
         }
         
         @Override

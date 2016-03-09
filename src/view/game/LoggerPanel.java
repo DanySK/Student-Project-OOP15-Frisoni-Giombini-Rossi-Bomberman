@@ -1,16 +1,15 @@
 package view.game;
 
-import java.awt.Color;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
+import javax.swing.SwingUtilities;
 
 import model.level.Level;
+import view.GUIFactory;
 
 /**
  * A class for making a {@link JPanel} with log messages to display to the user.
@@ -18,13 +17,7 @@ import model.level.Level;
  */
 public class LoggerPanel {
     
-    private static final int BORDER_THICKNESS = 2;
-    private static final int MARGIN = 10;
-    private static final Color BORDER_COLOR = Color.BLACK;
-    private static final Color BG_COLOR = new Color(60, 60, 60);
-    private static final Color FG_COLOR = Color.WHITE;
-    private static final String START_MSG = "< ";
-    private static final String END_MSG = " >";
+    private static final long TEXT_DELAY = 4000L;
     
     //private final Level model;
     
@@ -44,21 +37,12 @@ public class LoggerPanel {
     }
     
     private void createControl() {
+        final GUIFactory factory = new GUIFactory.Standard();
+        
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.X_AXIS));
-        this.panel.setBackground(BG_COLOR);
         
-        final Border line = BorderFactory.createLineBorder(BORDER_COLOR, BORDER_THICKNESS);
-        final Border empty = new EmptyBorder(MARGIN, MARGIN, MARGIN, MARGIN);
-        final CompoundBorder border = new CompoundBorder(line, empty);
-        
-        this.logField = new JTextField();
-        this.logField.setBorder(border);
-        this.logField.setBackground(BG_COLOR);
-        this.logField.setForeground(FG_COLOR);
-        this.logField.setHorizontalAlignment(JTextField.CENTER);
-        this.logField.setEditable(false);
-        
+        this.logField = factory.createTextField(false);
         this.panel.add(this.logField);
     }
     
@@ -66,7 +50,29 @@ public class LoggerPanel {
      * Updates the text to display.
      */
     public final void updateControl() {
-        this.logField.setText(START_MSG + END_MSG);
+        showText("");
+    }
+    
+    /**
+     * Displays a text for a certain amount of time.
+     * 
+     * @param text
+     *            the text to show
+     */
+    private void showText(final String text) {
+        this.logField.setText(text);
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoggerPanel.this.logField.setText("");
+                    }
+                });
+            }
+        }, TEXT_DELAY, 1);
     }
     
     /**

@@ -19,7 +19,7 @@ public enum PowerUpType {
             hero.increaseBomb();
         }
     },
-    SPEED() {
+    RANGE() {
         @Override
         public void doApply(Hero hero) {
         }
@@ -28,6 +28,16 @@ public enum PowerUpType {
         @Override
         public void doApply(Hero hero) {
             hero.setFlamepass();
+        }
+    },
+    CONFUSION() {
+        @Override
+        public void doApply(Hero hero) {
+        }
+    },
+    HURT() {
+        @Override
+        public void doApply(Hero hero) {
         }
     },
     MYSTERY() {
@@ -46,8 +56,10 @@ public enum PowerUpType {
         ATTACK.message = "Attacco aumentato!";
         LIFE.message = "Hai guadagnato una vita in più!";
         BOMB.message = "Usa la tua nuova bomba!";
-        SPEED.message = "Sfrutta la tua maggiore velocità!";
-        FLAMEPASS.message = "Puoi passare attraverso il fuoco!";
+        RANGE.message = "";
+        FLAMEPASS.message = "";
+        CONFUSION.message = "";
+        HURT.message = "";
         MYSTERY.message = "Mystery...";//non metterlo perchè poi sa di che tipo è quindi posso fare il getter?
     }
     private String message;

@@ -83,13 +83,25 @@ public final class ImageLoader {
          */
         BOMBS_UP(TILES_FOLDER + "bombs.png"),
         /**
-         * Speed-up power-up.
-         */
-        SPEED_UP(TILES_FOLDER + "speed.png"),
-        /**
          * Increases the range of a bomb explosion power-up.
          */
         RANGE_UP(TILES_FOLDER + "range.png"),
+        /**
+         * Flame-pass power-up.
+         */
+        FLAMEPASS(TILES_FOLDER + "flamePass.png"),
+        /**
+         * Confused direction power-up.
+         */
+        CONFUSION(TILES_FOLDER + "confusion.png"),
+        /**
+         * Life-down power-up.
+         */
+        LIFE_DOWN(TILES_FOLDER + "hurt.png"),
+        /**
+         * Mystery power-up.
+         */
+        MYSTERY(TILES_FOLDER + "mystery.png"),
         /**
          * Sprite sheet.
          */

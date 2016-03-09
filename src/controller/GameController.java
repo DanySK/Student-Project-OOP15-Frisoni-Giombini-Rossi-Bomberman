@@ -1,7 +1,6 @@
 package controller;
 
 import model.level.Level;
-import model.units.Direction;
 import view.InputHandler;
 import view.game.GameFrame;
 
@@ -26,7 +25,7 @@ public class GameController {
         this.level = level;
         this.view = view;
         
-        final InputHandler listener = new InputHandler();
+        final InputHandler listener = new InputHandler();/*
         listener.getSource().addEObserver((s, action) -> {
             switch (action) {
             case MOVE_DOWN:
@@ -48,7 +47,7 @@ public class GameController {
             default:
                 break;
             }
-        });
+        });*/
         
         // Adds a new keyListener to the view to control the hero
         this.view.setKeyListener(listener);

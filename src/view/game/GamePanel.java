@@ -15,6 +15,8 @@ import javax.swing.Timer;
 
 import model.TileType;
 import model.level.Level;
+import model.units.PowerUpType;
+import model.utilities.PowerUp;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.animations.HeroView;
@@ -33,16 +35,17 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = -6689261673710076779L;
 
     private static final double SCALE = 0.6;
-    
+
     // The delay used for updating animations
     private static final int DELAY = 10;
 
     private final Level model;
-    
+
     private final GameOverImage gameOverImage;
-    
+
     private final int tileSize;
     private final Map<TileType, Image> tilesImages;
+    private final Map<PowerUpType, Image> powerUpImages;
     private HeroView hero;
 
     /**
@@ -52,9 +55,9 @@ public class GamePanel extends JPanel implements ActionListener {
      *          the level containing data to display
      */
     public GamePanel(final Level model) {
-        
+
         this.model = model;
-        
+
         /*
          * Calculates the panel size according to the screen resolution
          * and the map's side (number of tiles in height/width).
@@ -73,11 +76,24 @@ public class GamePanel extends JPanel implements ActionListener {
         tilesImages.put(TileType.WALKABLE, ImageLoader.getLoader().createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.RUBBLE, ImageLoader.getLoader().createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.CONCRETE, ImageLoader.getLoader().createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
-        
+
+        /*
+         * EnumMap for associating the power-ups' types with images.
+         */
+        powerUpImages = new EnumMap<>(PowerUpType.class);
+        powerUpImages.put(PowerUpType.ATTACK, ImageLoader.getLoader().createImageOfSize(GameImage.ATTACK_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.LIFE, ImageLoader.getLoader().createImageOfSize(GameImage.LIFE_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.BOMB, ImageLoader.getLoader().createImageOfSize(GameImage.BOMBS_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.RANGE, ImageLoader.getLoader().createImageOfSize(GameImage.RANGE_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.FLAMEPASS, ImageLoader.getLoader().createImageOfSize(GameImage.FLAMEPASS, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.CONFUSION, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.HURT, ImageLoader.getLoader().createImageOfSize(GameImage.LIFE_DOWN, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
+
         this.gameOverImage = new GameOverImage(this);
         this.gameOverImage.run();
     }
-    
+
     /**
      * Initializes the game panel.
      */
@@ -92,6 +108,10 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     @Override
     public void paintComponent(final Graphics g) {
+        // Draw the power-ups
+        for (final PowerUp p : this.model.getPowerupInLevel()) {
+            g.drawImage(this.powerUpImages.get(p.getType()), p.getX() * this.tileSize, p.getY() * this.tileSize, this);
+        }
         // Draw the map
         final TileType[][] map = this.model.getMap();
         for (int x = 0; x < map.length; x++) {
@@ -107,14 +127,14 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         Toolkit.getDefaultToolkit().sync();
     }
-    
+
     /**
      * @return the center point of the sprite associated to the hero.
      */
     public Point getHeroViewCenterPoint() {
         return this.hero.getCenterPoint();
     }
-    
+
     /**
      * @return the size of a tile.
      */
@@ -136,7 +156,7 @@ public class GamePanel extends JPanel implements ActionListener {
         final int height = (int) screen.getHeight();
         return Math.toIntExact(Math.round((height * scale) / nTiles));
     }
-    
+
     @Override
     public void actionPerformed(final ActionEvent e) {
         updateSprite();

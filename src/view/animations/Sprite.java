@@ -20,8 +20,8 @@ public final class Sprite {
     private static volatile BufferedImage spriteSheet;
 
     // The dimension of each sprite in the sheet
-    private static final int SPRITE_HEIGHT = 32;
-    private static final int SPRITE_WIDTH = 24;
+    private static final int SPRITE_HEIGHT = 31;
+    private static final int SPRITE_WIDTH = 18;
 
     private Sprite() { }
 
