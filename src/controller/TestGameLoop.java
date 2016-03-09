@@ -10,7 +10,7 @@ import org.junit.Test;
 public class TestGameLoop {
     
     private final static int TEST_FPS = 60;
-    private static final int RANGE = TEST_FPS+10;
+    private static final int RANGE = TEST_FPS + 10;
     private static final int MILLIS = 1000;
     private volatile int countModel;
     private volatile int countView; 
@@ -20,7 +20,7 @@ public class TestGameLoop {
      */
     @Test
     public void test1() {
-        AbstractGameLoop game = new GameLoop();
+        final AbstractGameLoop game = new GameLoop();
         game.start();
         try {
             Thread.sleep(MILLIS);
