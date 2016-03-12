@@ -24,11 +24,11 @@ public interface Hero extends Entity {
      * Increase hero's attack level.
      */
     void increaseAttack();
-    
+            
     /**
-     * Adds a life to the hero.
+     * Increase the number of bombs.
      */
-    void increaseLife();
+    void increaseBomb();
     
     /**
      * Sets the flamepass.
@@ -36,10 +36,10 @@ public interface Hero extends Entity {
     void setFlamepass();
     
     /**
-     * Increase the number of bombs.
+     * Set the hero to be confused.
      */
-    void increaseBomb();
-    
+    void setConfusion();
+
     /**
      * This method return the attack level.
      * 

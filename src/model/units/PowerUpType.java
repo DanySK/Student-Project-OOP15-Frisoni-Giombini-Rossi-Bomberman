@@ -2,6 +2,8 @@ package model.units;
 
 import java.util.Random;
 
+import view.LanguageHandler;
+
 public enum PowerUpType {
     ATTACK(){
         public void doApply(Hero hero){
@@ -10,7 +12,7 @@ public enum PowerUpType {
     },
     LIFE(){
         public void doApply(Hero hero){
-            hero.increaseLife();
+            hero.modifyLife(INC_LIFE);
         }
     },
     BOMB() {
@@ -22,6 +24,7 @@ public enum PowerUpType {
     RANGE() {
         @Override
         public void doApply(Hero hero) {
+            //aumenta raggio bomba
         }
     },
     FLAMEPASS() {
@@ -33,11 +36,13 @@ public enum PowerUpType {
     CONFUSION() {
         @Override
         public void doApply(Hero hero) {
+            hero.setConfusion();
         }
     },
     HURT() {
         @Override
         public void doApply(Hero hero) {
+            hero.modifyLife(DEC_LIFE);
         }
     },
     MYSTERY() {
@@ -53,15 +58,19 @@ public enum PowerUpType {
     };
 
     static {
-        ATTACK.message = "Attacco aumentato!";
-        LIFE.message = "Hai guadagnato una vita in più!";
-        BOMB.message = "Usa la tua nuova bomba!";
-        RANGE.message = "";
-        FLAMEPASS.message = "";
-        CONFUSION.message = "";
-        HURT.message = "";
-        MYSTERY.message = "Mystery...";//non metterlo perchè poi sa di che tipo è quindi posso fare il getter?
+        ATTACK.message = LanguageHandler.getHandler().getLocaleResource().getString("attack");
+        LIFE.message = LanguageHandler.getHandler().getLocaleResource().getString("life");
+        BOMB.message = LanguageHandler.getHandler().getLocaleResource().getString("bomb");
+        RANGE.message = LanguageHandler.getHandler().getLocaleResource().getString("range");
+        FLAMEPASS.message = LanguageHandler.getHandler().getLocaleResource().getString("flamepass");
+        CONFUSION.message = LanguageHandler.getHandler().getLocaleResource().getString("confusion");
+        HURT.message = LanguageHandler.getHandler().getLocaleResource().getString("hurt");
+        MYSTERY.message = " ";
     }
+    
+    
+    private static final int INC_LIFE = 1;
+    private static final int DEC_LIFE = -1;
     private String message;
     
     public void apply(Hero hero){

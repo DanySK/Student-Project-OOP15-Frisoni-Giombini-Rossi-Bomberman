@@ -1,6 +1,8 @@
 package model.units;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.Set;
 
 public interface Entity extends LevelElement{
     
@@ -10,7 +12,7 @@ public interface Entity extends LevelElement{
      * 
      * @return true if there's a collision, false otherwise
      */
-    //boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet);
+    boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet);
     
     /**
      * This method allow the entity to move.
@@ -18,14 +20,15 @@ public interface Entity extends LevelElement{
      * @param dir
      *          the direction where to move
      */
-    void move(Direction dir);
+    void move(Direction dir, Set<Rectangle> set);
     
     /**
-     * This method returns the steps that the entity make.
+     * Method that modify the current value of lives.
      * 
-     * @return the steps that the entity make
+     * @param change
+     *          life to be added
      */
-    int numberOfSteps();
+    void modifyLife(final int change);
     
     /**
      * This method update the entity's position.
@@ -46,12 +49,7 @@ public interface Entity extends LevelElement{
     /**
      * This method update the parameters in the hitBox.
      */
-    void updateHitbox();
-    
-    /**
-     * This method allows to set the entity's step.
-     */
-    void setStep();    
+    void updateHitbox();    
     
     /**
      * This method returns the position where the hero would be if there's no collision.
@@ -74,5 +72,12 @@ public interface Entity extends LevelElement{
      * 
      * @return the entity's direction
      */
-    Direction getDirection();    
+    Direction getDirection();
+    
+    /**
+     * Checks if the entity is dead.
+     * 
+     * @return
+     */
+    boolean isDead();
 }

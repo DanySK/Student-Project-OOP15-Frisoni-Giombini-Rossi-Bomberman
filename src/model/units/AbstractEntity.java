@@ -2,6 +2,8 @@ package model.units;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.Set;
 
 import model.level.Collision;
 
@@ -12,15 +14,14 @@ import model.level.Collision;
  */
 public abstract class AbstractEntity extends LevelElementImpl implements Entity {
 
-    private static final int START_SPEED = 1;
-    private static final int DIVISION_FACTOR = 10;
-    private static final int UNDEFINED = 0;
+    private static final int SPEED = 1;
+    private static final int INITIAL_LIVES = 1;
 
     private Direction curDir;
     private Collision collision;
     private final int curSpeed;
-    private int step;
-    
+    private int lives;
+
 
     /**
      * Constructs a new Entity.
@@ -29,26 +30,27 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         super(pos, dim);
         this.collision = new Collision(this);
         this.curDir = dir;
-        this.curSpeed = START_SPEED;
-        this.setStep();
+        this.curSpeed = SPEED;   
+        this.lives = INITIAL_LIVES;
     }
-    
-    //public abstract boolean checkCollision(Direction dir, Set<Rectangle> blockSet);
+
+    public abstract boolean checkCollision(Direction dir, Set<Rectangle> blockSet);
 
     /**
      * Abstract method, the implementation is 
      * different depending on the type of the entity.
      */
     @Override
-    public abstract void move(Direction d);
+    public void move(Direction d, Set<Rectangle> blockSet){
+        if(this.checkCollision(d, blockSet)){
+            this.updatePosition(this.getPossiblePos(d.getPoint()));
+            this.updateDirection(d);
+        }
+    }
 
-    /**
-     * This method calculates the number of
-     * steps that the entity does at a time.
-     */
     @Override
-    public int numberOfSteps() {
-        return this.curSpeed * this.step;
+    public void modifyLife(int change) {
+        this.lives += change;        
     }
     
     /**
@@ -57,10 +59,10 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
      */
     @Override
     public Point getPossiblePos(final Point pos){
-        return new Point(super.getX() + pos.x * this.numberOfSteps(),
-                         super.getY() + pos.y * this.numberOfSteps());
+        return new Point(super.getX() + pos.x * this.curSpeed,
+                super.getY() + pos.y * this.curSpeed);
     }
-    
+
     /**
      * Updates the position to the one received.
      */
@@ -69,7 +71,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         super.curPos.setLocation(pos);
         this.updateHitbox();
     }
-    
+
     /**
      * Updates the direction.
      */
@@ -84,23 +86,6 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     @Override
     public void updateHitbox() {
         super.hitBox.setLocation(this.curPos);        
-    }
-
-    /**
-     * This method initialize the step that the entity does.
-     */
-    @Override
-    public final void setStep() {
-        this.step = UNDEFINED;
-        for(int i = 2; i <= DIVISION_FACTOR; i++){
-            if(super.hitBox.width % i == 0){
-                this.step = i;
-                break;
-            }
-        }
-        if(this.step == UNDEFINED){
-            this.step = START_SPEED;
-        }
     }
 
     /**
@@ -123,5 +108,9 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         return this.collision;
     }
 
-    
+    @Override
+    public boolean isDead() {
+        return this.lives == 0;
+    }
+
 }

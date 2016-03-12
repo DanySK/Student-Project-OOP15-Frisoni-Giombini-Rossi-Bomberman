@@ -3,8 +3,9 @@ package model.level;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -15,6 +16,7 @@ import model.TilesFactory;
 import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
+import model.units.PowerUpType;
 import model.utilities.MapPoint;
 import model.utilities.PowerUp;
 
@@ -27,16 +29,15 @@ public class LevelImpl implements Level {
 
     private static final Point START_HERO_POS = new Point(1, 1);
     private static final double BLOCK_DENSITY = 0.5;
-    private static final double POWERUP_DENSITY = 0.2;
+    private static final double POWERUP_DENSITY = 0.75;
     private static final int MIN_TILES = 9;
-    private static final int MAX_TILES = 11;
+    private static final int MAX_TILES = 19;
 
     private Tile[][] map;
     private Hero hero;
     private int tileDimension;
     private int nTiles;
     private boolean inGame;
-    private Collision collision;
 
     /**
      * The constructor is used to set the size of the map,
@@ -56,7 +57,6 @@ public class LevelImpl implements Level {
         this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension), 
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
-        this.collision = new Collision(this.hero);
     }
 
     /**
@@ -85,7 +85,7 @@ public class LevelImpl implements Level {
     private void setNumberTiles() {
         int tiles = 0;
         while (tiles % 2 == 0) {
-            tiles = new Random().nextInt(MAX_TILES) + MIN_TILES;
+            tiles = new Random().nextInt(MAX_TILES - MIN_TILES) + MIN_TILES;
         }
         this.nTiles = tiles;
     }
@@ -96,13 +96,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        if(this.collision.hasCollision(dir, this.getBlocks())){
-            this.hero.setMoving(true);
-            this.hero.move(dir);
-        }
-        else{
-            this.hero.setMoving(false);
-        }
+        this.hero.move(dir, this.getBlocks());
     }
     
     /**
@@ -129,7 +123,7 @@ public class LevelImpl implements Level {
         Set<PowerUp> powerupSet = new HashSet<>();
         for(int i = 0; i < this.nTiles; i++){
             for(int j = 0; j < this.nTiles; j++){
-                if(!this.map[i][j].getPowerup().equals(Optional.empty())){
+                if(this.map[i][j].getType().equals(TileType.WALKABLE) && this.map[i][j].getPowerup().isPresent()){
                     powerupSet.add(new PowerUp(i, j, this.map[i][j].getPowerup().get()));
                 }
             }
@@ -156,13 +150,16 @@ public class LevelImpl implements Level {
      * 
      * @return the PowerUp sets
      */
-    private Set<Rectangle> getPowerUp(){
-        return this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile tile) {
-                return !tile.getPowerup().equals(Optional.empty());
+    private Map<Rectangle, PowerUpType> getPowerUp(){
+        Map<Rectangle, PowerUpType> map = new HashMap<>();
+        for(int i = 0; i < this.map.length; i++){
+            for(int j = 0; j < this.map.length; j++){
+                if(this.map[i][j].getPowerup().isPresent()){
+                    map.put(this.map[i][j].getBoundBox(), this.map[i][j].getPowerup().get());
+                }
             }
-        });
+        }
+        return map;
     }
     
     /**
