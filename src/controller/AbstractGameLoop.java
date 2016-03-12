@@ -6,10 +6,10 @@ package controller;
  *  The GameLoop synchronizes model and view every frame.
  *
  */
-public abstract class AbstractGameLoop extends Thread implements GameLoop{
+public abstract class AbstractGameLoop extends Thread implements GameLoop {
 
     private final static double TIME_FACTOR = 1000000000.0;
-    private final static int MAX_SKIPPED_FRAMES = 5;
+    private final static double SLEEP_FACTOR = 0.0000001;
 
     private final int game_speed;
     private boolean running;
@@ -29,25 +29,27 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop{
      */
     public void run() {
         double nextTime = System.nanoTime();
-        double lastSecondTime = (int) (nextTime / TIME_FACTOR);
-        int skippedFrames = 0;
         this.running = true;
-
 
         while(this.running) {
             if(!this.paused){
                 final double currTime = System.nanoTime();
-                while(skippedFrames < MAX_SKIPPED_FRAMES && currTime > nextTime) {
-                    updateModel();
+                if(currTime >= nextTime) {
                     nextTime += TIME_FACTOR / this.game_speed;
-                    skippedFrames++;
+                    updateModel();
+                    updateView();
                 }
-                skippedFrames = 0;
-                final int thisSecond = (int) (nextTime / TIME_FACTOR);
-                if (thisSecond > lastSecondTime) {
-                    lastSecondTime = thisSecond;
+                else{
+                    long sleepTime = (long)(SLEEP_FACTOR * (nextTime - currTime));
+                    if(sleepTime > 0) {
+                        try {
+                            Thread.sleep(sleepTime);
+                        }
+                        catch(InterruptedException e) {
+                            // do nothing
+                        }
+                    }
                 }
-                updateView();
             }
         }
     }

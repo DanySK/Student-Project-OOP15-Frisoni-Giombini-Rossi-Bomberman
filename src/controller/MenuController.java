@@ -21,7 +21,7 @@ import view.menu.SettingsView;
  */
 public class MenuController implements MenuObserver {
 
-    private final static int FPS = 60;
+    private final static int FPS = 40;
     private boolean darkMode;
 
     /**
