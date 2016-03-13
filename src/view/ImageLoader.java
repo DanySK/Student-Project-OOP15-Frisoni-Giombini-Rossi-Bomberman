@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import view.menu.MenuView;
+import view.menu.views.MenuView;
 
 /**
  * This class uses a Singleton Pattern to make an image loader
@@ -58,6 +58,14 @@ public final class ImageLoader {
          * Credits button image.
          */
         CREDITS(MENU_FOLDER + "credits.png"),
+        /**
+         * The Bomberman's image displayed the first time.
+         */
+        WELCOME(MENU_FOLDER + "welcome.png"),
+        /**
+         * The background explosion displayed the first time.
+         */
+        EXPLOSION(MENU_FOLDER + "explosion.gif"),
         /**
          * Walkable floor.
          */

@@ -8,10 +8,10 @@ import view.InputHandler;
 import view.game.GameFrame;
 import view.game.GameFrameImpl;
 import view.menu.MenuFrame.MenuCard;
+import view.menu.views.MenuView;
+import view.menu.views.SettingsView;
+import view.menu.views.MenuView.MenuObserver;
 import view.menu.MenuFrameImpl;
-import view.menu.MenuView;
-import view.menu.MenuView.MenuObserver;
-import view.menu.SettingsView;
 
 /**
  * Implementation of {@link MenuObserver}.
@@ -21,7 +21,7 @@ import view.menu.SettingsView;
  */
 public class MenuController implements MenuObserver {
 
-    private final static int FPS = 40;
+    private final static int FPS = 60;
     private boolean darkMode;
 
     /**
@@ -41,12 +41,11 @@ public class MenuController implements MenuObserver {
         final Level model = new LevelImpl();
         final GameFrame view = new GameFrameImpl(model, this.darkMode);
         final InputHandler inputListener = new InputHandler();
-        // Adds a new keyListener to the view to control the hero
         view.setKeyListener(inputListener);
         model.initLevel(view.getTileSize());
         view.initView();
-        AbstractGameLoop game = new AbstractGameLoop(FPS){
-
+        
+        final AbstractGameLoop game = new AbstractGameLoop(FPS) {
             @Override
             public void updateModel() {
                 if (inputListener.isInputActive(InputAction.MOVE_DOWN)) {
@@ -70,7 +69,7 @@ public class MenuController implements MenuObserver {
             }
             @Override
             public void updateView() {
-                view.repaintGamePanel();
+                view.update();
             }
         };
         game.start();
@@ -78,6 +77,7 @@ public class MenuController implements MenuObserver {
 
     @Override
     public void scores() {
+        MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.SCORES);
     }
 
     @Override

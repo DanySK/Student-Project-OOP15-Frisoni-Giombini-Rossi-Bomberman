@@ -2,6 +2,12 @@ package view.menu;
 
 import javax.swing.JPanel;
 
+import view.menu.views.CreditsView;
+import view.menu.views.MenuView;
+import view.menu.views.ScoresView;
+import view.menu.views.SettingsView;
+import view.menu.views.WelcomeView;
+
 /**
  * This interface handles the panel changes inside the {@link MenuFrameImpl}.
  * It defines the possible "cards" that can be replaced and shown.
@@ -14,9 +20,10 @@ public interface MenuFrame {
      */
     enum MenuCard {
         HOME(new MenuView()),
-        SCORES(new MenuView()),
+        SCORES(new ScoresView()),
         SETTINGS(new SettingsView()),
-        CREDITS(new CreditsView());
+        CREDITS(new CreditsView()),
+        WELCOME(new WelcomeView());
 
         private final JPanel panel;
 

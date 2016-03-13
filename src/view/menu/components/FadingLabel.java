@@ -1,4 +1,4 @@
-package view.menu;
+package view.menu.components;
 
 import java.awt.AlphaComposite;
 import java.awt.EventQueue;

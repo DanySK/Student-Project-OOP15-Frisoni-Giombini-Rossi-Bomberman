@@ -107,7 +107,7 @@ public class GameFrameImpl implements GameFrame {
     @Override
     public void initView() {
         this.gamePanel.initGamePanel();
-        repaintGamePanel();
+        update();
         this.frame.setVisible(true);
     }
 
@@ -117,8 +117,9 @@ public class GameFrameImpl implements GameFrame {
     }
     
     @Override
-    public void repaintGamePanel() {
-        if (!this.frame.hasFocus()) { }
+    public void update() {
+        if (!this.frame.hasFocus()) {
+        }
         this.gamePanel.repaint();
         if (this.darkMode) {
             this.layerUI.moveLight(this.gamePanel.getHeroViewCenterPoint(), this.jlayer);

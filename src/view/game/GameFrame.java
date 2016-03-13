@@ -29,7 +29,7 @@ public interface GameFrame {
     int getTileSize();
 
     /**
-     * This method repaints the game panel.
+     * This method updates the view and repaints the game panel.
      */
-    void repaintGamePanel();
+    void update();
 }

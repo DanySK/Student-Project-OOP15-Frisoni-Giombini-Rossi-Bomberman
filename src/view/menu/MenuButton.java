@@ -2,7 +2,7 @@ package view.menu;
 
 import javax.swing.ImageIcon;
 
-import view.menu.MenuView.MenuObserver;
+import view.menu.views.MenuView.MenuObserver;
 
 /**
  * This interface models a menu button.

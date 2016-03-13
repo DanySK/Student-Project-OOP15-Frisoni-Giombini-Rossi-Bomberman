@@ -1,4 +1,4 @@
-package view.menu;
+package view.menu.views;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -16,6 +16,8 @@ import javax.swing.event.AncestorListener;
 
 import view.GUIFactory;
 import view.LanguageHandler;
+import view.menu.AbstractMenuPanel;
+import view.menu.components.FadingLabel;
 
 /**
  * This class handles the credits scene of the menu.

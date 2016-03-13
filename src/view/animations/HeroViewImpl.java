@@ -23,10 +23,10 @@ public class HeroViewImpl implements HeroView {
     private static final List<BufferedImage> WALK_RIGHT = Sprite.getSprites(new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1), new Point(4, 1));
     private static final List<BufferedImage> WALK_UP = Sprite.getSprites(new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2), new Point(4, 2));
     private static final List<BufferedImage> WALK_LEFT = Sprite.getSprites(new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3), new Point(4, 3));
-    private static final List<BufferedImage> STAND_DOWN = Sprite.getSprites(new Point(8, 0), new Point(9, 0), new Point(10, 0));
-    private static final List<BufferedImage> STAND_RIGHT = Sprite.getSprites(new Point(8, 1), new Point(9, 1), new Point(10, 1));
-    private static final List<BufferedImage> STAND_UP = Sprite.getSprites(new Point(8, 2), new Point(9, 2), new Point(10, 2));
-    private static final List<BufferedImage> STAND_LEFT = Sprite.getSprites(new Point(8, 3), new Point(9, 3), new Point(10, 3));
+    private static final List<BufferedImage> STAND_DOWN = Sprite.getSprites(new Point(6, 0), new Point(7, 0), new Point(8, 0));
+    private static final List<BufferedImage> STAND_RIGHT = Sprite.getSprites(new Point(6, 1), new Point(7, 1), new Point(8, 1));
+    private static final List<BufferedImage> STAND_UP = Sprite.getSprites(new Point(6, 2), new Point(7, 2), new Point(8, 2));
+    private static final List<BufferedImage> STAND_LEFT = Sprite.getSprites(new Point(6, 3), new Point(7, 3), new Point(8, 3));
     
     // Animation states
     private Animation walkDown, walkRight, walkUp, walkLeft;
@@ -34,7 +34,6 @@ public class HeroViewImpl implements HeroView {
 
     private final Hero hero;
     private final int size;
-    private double currSpeed;
     private Optional<Animation> currAnimation;
 
     /**
@@ -49,7 +48,7 @@ public class HeroViewImpl implements HeroView {
         this.hero = Objects.requireNonNull(hero);
         this.size = size;
         this.currAnimation = Optional.empty();
-        updateDelayAnimations();
+        loadAnimations(ANIMATION_DELAY);
         updateAnimation();
     }
 
@@ -93,16 +92,8 @@ public class HeroViewImpl implements HeroView {
         standLeft = new Animation(STAND_LEFT, delay);
     }
 
-    private void updateDelayAnimations() {
-        this.currSpeed = this.hero.getSpeed();
-        loadAnimations(ANIMATION_DELAY);
-    }
-
     private void updateAnimation() {
         Animation nextAnimation;
-        if (this.hero.getSpeed() != this.currSpeed) {
-            updateDelayAnimations();
-        }
         switch (this.hero.getDirection()) {
         case DOWN:
             nextAnimation = this.hero.isMoving() ? walkDown : standDown;

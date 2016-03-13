@@ -12,9 +12,9 @@ import java.util.Map;
  * 
  */
 public final class InputHandler extends KeyAdapter {
-    
+
     private final EnumMap<InputAction, Boolean> inputs = new EnumMap<>(InputAction.class);
-    
+
     private static final Map<Integer, InputAction> MAP;
     static {
         MAP = new HashMap<>();
@@ -29,7 +29,7 @@ public final class InputHandler extends KeyAdapter {
         MAP.put(KeyEvent.VK_SPACE, InputAction.PLANT_BOMB);     // Plant a bomb
         MAP.put(KeyEvent.VK_P, InputAction.PAUSE);              // Pause the game
     }
-    
+
     /**
      * Constructs a new InputHandler.
      */
@@ -38,19 +38,21 @@ public final class InputHandler extends KeyAdapter {
             this.inputs.put(i, false);
         }
     }
-    
+
     @Override
     public void keyPressed(final KeyEvent evt) {
         if (MAP.containsKey(evt.getKeyCode())) {
             this.inputs.put(MAP.get(evt.getKeyCode()), true);
         }
     }
-    
+
     @Override
     public void keyReleased(final KeyEvent evt) {
-        this.inputs.put(MAP.get(evt.getKeyCode()), false);
+        if (MAP.containsKey(evt.getKeyCode())) {
+            this.inputs.put(MAP.get(evt.getKeyCode()), false);
+        }
     }
-    
+
     /**
      * Checks if the key associated with the specified @{link InputAction} is pressed or not.
      * 

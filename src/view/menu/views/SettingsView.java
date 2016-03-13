@@ -1,4 +1,4 @@
-package view.menu;
+package view.menu.views;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +15,8 @@ import javax.swing.JRadioButton;
 import view.GUIFactory;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.menu.AbstractMenuPanel;
+import view.menu.components.StretchIcon;
 import view.LanguageHandler;
 import view.SoundEffect;
 

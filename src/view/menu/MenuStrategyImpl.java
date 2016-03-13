@@ -7,8 +7,8 @@ import javax.swing.ImageIcon;
 
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.menu.views.MenuView.MenuObserver;
 import view.LanguageHandler;
-import view.menu.MenuView.MenuObserver;
 
 /**
  * An implementation of {@link MenuStrategy}.
@@ -26,7 +26,7 @@ public class MenuStrategyImpl implements MenuStrategy {
         SCORES("scores", ImageLoader.getLoader().createImageIcon(GameImage.SCORES)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
-                //observer.ranking();
+                observer.scores();
             }
         },
         SETTINGS("settings", ImageLoader.getLoader().createImageIcon(GameImage.SETTINGS)) {

@@ -1,4 +1,4 @@
-package view.menu;
+package view.menu.views;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -14,6 +14,9 @@ import javax.swing.SwingConstants;
 import view.GUIFactory;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.menu.MenuStrategy;
+import view.menu.MenuStrategyImpl;
+import view.menu.components.StretchIcon;
 import view.LanguageHandler;
 
 /**

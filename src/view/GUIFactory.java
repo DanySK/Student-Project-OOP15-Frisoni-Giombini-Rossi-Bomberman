@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -12,12 +13,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import view.menu.FadingLabel;
-import view.menu.GradientPanel;
+import view.menu.components.FadingLabel;
+import view.menu.components.GradientPanel;
 
 /**
  * This interface uses an Abstract Factory pattern to define
@@ -112,9 +114,18 @@ public interface GUIFactory {
      * 
      * @param isEditable
      *          true if the text field is editable, false otherwise
+     * @param fontSize
+     *          the font size for the text
      * @return the specified text field
      */
-    JTextField createTextField(boolean isEditable);
+    JTextField createTextField(boolean isEditable, int fontSize);
+    
+    /**
+     * Creates a customized {@link JTabbedPane}.
+     * 
+     * @return the specified tabbed pane
+     */
+    JTabbedPane createLeftTabbedPane();
     
     /**
      * Creates an horizontal customized panel with the given description and
@@ -179,6 +190,7 @@ public interface GUIFactory {
             final JLabel title = new JLabel(text);
             title.setFont(MEDIUM_FONT);
             title.setHorizontalAlignment(SwingConstants.CENTER);
+            title.setAlignmentX(Component.CENTER_ALIGNMENT);
             title.setForeground(Color.WHITE);
             title.setBorder(REGULAR_BORDER);
             return title;
@@ -234,15 +246,27 @@ public interface GUIFactory {
         }
         
         @Override
-        public JTextField createTextField(final boolean isEditable) {
+        public JTextField createTextField(final boolean isEditable, final int fontSize) {
             final JTextField field = new JTextField();
-            field.setFont(DESCRIPTION_FONT);
+            field.setFont(new Font(FONT_FAMILY, Font.PLAIN, fontSize));
             field.setBorder(LINE_BORDER);
             field.setBackground(PRIMARY_COLOR);
             field.setForeground(Color.WHITE);
+            field.setCaretColor(Color.WHITE);
             field.setHorizontalAlignment(JTextField.CENTER);
             field.setEditable(isEditable);
             return field;
+        }
+        
+        @Override
+        public JTabbedPane createLeftTabbedPane() {
+            final JTabbedPane jtb = new JTabbedPane();
+            jtb.setFont(DESCRIPTION_FONT);
+            jtb.setBackground(PRIMARY_COLOR);
+            jtb.setForeground(Color.WHITE);
+            jtb.setTabPlacement(JTabbedPane.LEFT);
+            jtb.setOpaque(false);
+            return jtb;
         }
         
         @Override

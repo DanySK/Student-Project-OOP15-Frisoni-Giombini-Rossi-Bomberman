@@ -18,6 +18,7 @@ import view.GUIFactory;
 public class LoggerPanel {
     
     private static final long TEXT_DELAY = 4000L;
+    private static final int TEXT_SIZE = 24;
     
     //private final Level model;
     
@@ -42,7 +43,7 @@ public class LoggerPanel {
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.X_AXIS));
         
-        this.logField = factory.createTextField(false);
+        this.logField = factory.createTextField(false, TEXT_SIZE);
         this.panel.add(this.logField);
     }
     
