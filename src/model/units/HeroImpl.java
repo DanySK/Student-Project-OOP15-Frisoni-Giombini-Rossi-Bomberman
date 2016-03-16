@@ -55,7 +55,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
             return true;
         }
         else{
-            this.setMoving(false);
             return false;
         }
     }
@@ -113,10 +112,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
                 });
             }
         }, TIMER_DELAY, 1);
-    }
-
-    private void set(boolean bol){
-        
     }
     
     @Override
