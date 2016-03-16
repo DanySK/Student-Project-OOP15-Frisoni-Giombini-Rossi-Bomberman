@@ -1,9 +1,11 @@
 package view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -16,7 +18,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.data.category.CategoryDataset;
 
 import view.menu.components.FadingLabel;
 import view.menu.components.GradientPanel;
@@ -140,6 +150,21 @@ public interface GUIFactory {
     JPanel createHorizontalComponentPanel(String text, JComponent... components);
     
     /**
+     * Creates a customized bar chart with a dark theme.
+     * 
+     * @param title
+     *          the title of the chart
+     * @param categoryAxisLabel
+     *          the label for the x axis
+     * @param valueAxisLabel
+     *          the label for the y axis
+     * @param dataset
+     *          the data required for the chart rendering
+     * @return a bar chart
+     */
+    JFreeChart createDarkBarChart(String title, String categoryAxisLabel, String valueAxisLabel, CategoryDataset dataset);
+    
+    /**
      * A standard implementation of {@link GUIFactory}.
      *
      */
@@ -154,13 +179,27 @@ public interface GUIFactory {
         private static final Color COLOR_BUTTON = new Color(50, 50, 50);
         private static final Color PRIMARY_COLOR = new Color(60, 60, 60);
         private static final Color SECONDARY_COLOR = new Color(30, 30, 30);
+        private static final Color PINK_BOMBERMAN_COLOR = new Color(227, 110, 155);
+        private static final Color VIOLET_BOMBERMAN_COLOR = new Color(105, 93, 179);
+        
         private static final int LINE_BORDER_THICKNESS = 2;
         private static final Color LINE_BORDER_COLOR = Color.BLACK;
+        private static final Insets TABBED_PANE_AREA_INSETS = new Insets(2, 2, 2, 2);
         private static final Border SMALL_BORDER = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         private static final Border REGULAR_BORDER = BorderFactory.createEmptyBorder(10, 10, 10, 10);
         private static final Border LINE_BORDER = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(LINE_BORDER_COLOR, LINE_BORDER_THICKNESS),
                 SMALL_BORDER);
+        
+        /*
+         * Static initializer to set a custom developer Look-And-Feel
+         * This only effects the developer defaults, not the system or look and feel defaults.
+         */
+        static {
+            UIManager.put("TabbedPane.selected", VIOLET_BOMBERMAN_COLOR);
+            UIManager.put("TabbedPane.contentAreaColor", Color.WHITE);
+            UIManager.put("TabbedPane.contentBorderInsets", TABBED_PANE_AREA_INSETS);
+        }
         
         @Override
         public JPanel createGradientPanel() {
@@ -265,6 +304,7 @@ public interface GUIFactory {
             jtb.setBackground(PRIMARY_COLOR);
             jtb.setForeground(Color.WHITE);
             jtb.setTabPlacement(JTabbedPane.LEFT);
+            jtb.setBorder(SMALL_BORDER);
             jtb.setOpaque(false);
             return jtb;
         }
@@ -278,6 +318,44 @@ public interface GUIFactory {
             }
             panel.setOpaque(false);
             return panel;
+        }
+
+        @Override
+        public JFreeChart createDarkBarChart(final String title, final String categoryAxisLabel,
+                final String valueAxisLabel, final CategoryDataset dataset) {
+            
+            // Creates the chart
+            final JFreeChart chart = ChartFactory.createBarChart(title,
+                    categoryAxisLabel, valueAxisLabel, dataset);
+            
+            // Customization of the chart
+            chart.setBackgroundPaint(Color.DARK_GRAY);
+            chart.getTitle().setFont(DESCRIPTION_FONT);
+            chart.getTitle().setPaint(Color.WHITE);
+            
+            // Customization of the plot
+            final CategoryPlot plot = chart.getCategoryPlot();
+            plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
+            plot.getDomainAxis().setTickLabelPaint(Color.WHITE);
+            plot.getRangeAxis().setTickLabelPaint(Color.WHITE);
+            plot.setOutlinePaint(Color.BLACK);
+            plot.setOutlineStroke(new BasicStroke(2.0f));
+            plot.setBackgroundPaint(Color.DARK_GRAY.brighter());
+            plot.setRangeGridlinesVisible(true);
+            plot.setRangeGridlinePaint(Color.BLACK);
+            plot.setDomainGridlinesVisible(true);
+            plot.setDomainGridlinePaint(Color.BLACK);
+            plot.setDataset(dataset);
+            
+            /*
+             * Customization of the bars.
+             * Sets a default color only for the first two series.
+             */
+            final CategoryItemRenderer renderer = plot.getRenderer();
+            renderer.setSeriesPaint(0, PINK_BOMBERMAN_COLOR);
+            renderer.setSeriesPaint(1, VIOLET_BOMBERMAN_COLOR);
+            
+            return chart;
         }
     }
 }
