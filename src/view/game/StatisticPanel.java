@@ -21,7 +21,10 @@ public class StatisticPanel {
     private JPanel panel;
     
     /**
+     * Creates a new StatisticPanel.
      * 
+     * @param controller
+     *          the controller of the game
      */
     public StatisticPanel(final GameController controller) {
         // this.model = model;

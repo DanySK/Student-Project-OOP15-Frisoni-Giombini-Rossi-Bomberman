@@ -11,20 +11,25 @@ import view.InputAction;
 import view.InputHandler;
 import view.game.GameFrame;
 
-public class GameControllerImpl implements GameController{
+/**
+ * The view can call only the functions of this interface.
+ *
+ */
+public class GameControllerImpl implements GameController {
     
-    private final static int FPS = 60;
+    private static final int FPS = 60;
     private final Level model;
     private final GameFrame view;
 
-    public GameControllerImpl(final Level model, final GameFrame view){
+    public GameControllerImpl(final Level model, final GameFrame view) {
         this.model = model;
         this.view = view;
         this.startGame();
     }
     
-    private void startGame(){
+    private void startGame() {
         view.setObserver(this);
+        view.initView();
         final InputHandler inputListener = new InputHandler();
         view.setKeyListener(inputListener);
         model.initLevel(view.getTileSize());
@@ -44,10 +49,10 @@ public class GameControllerImpl implements GameController{
                 if (inputListener.isInputActive(InputAction.MOVE_UP)) {
                     model.moveHero(Direction.UP);
                 }
-                if (!inputListener.isInputActive(InputAction.MOVE_DOWN) &&
-                        !inputListener.isInputActive(InputAction.MOVE_LEFT) &&
-                        !inputListener.isInputActive(InputAction.MOVE_RIGHT) &&
-                        !inputListener.isInputActive(InputAction.MOVE_UP)) {
+                if (!inputListener.isInputActive(InputAction.MOVE_DOWN)
+                        && !inputListener.isInputActive(InputAction.MOVE_LEFT)
+                        && !inputListener.isInputActive(InputAction.MOVE_RIGHT)
+                        && !inputListener.isInputActive(InputAction.MOVE_UP)) {
                     model.getHero().setMoving(false);
                 }
             }
@@ -58,7 +63,7 @@ public class GameControllerImpl implements GameController{
         };   
         
         view.setGameLoop(game);
-        view.initView();
+        view.showView();
         game.start();
     }
     

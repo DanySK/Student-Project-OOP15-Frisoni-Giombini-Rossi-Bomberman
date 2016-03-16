@@ -29,7 +29,7 @@ public class TestGameLoop {
         }
         Assert.assertTrue(this.countModel > 0 && this.countView > 0);
         System.out.print("Test1: " + this.countView + " and " + this.countModel + " before stopped, ");
-        game.stopped();
+        game.stopLoop();
         final int n = this.countView;
         try {
             Thread.sleep(MILLIS);
@@ -67,7 +67,7 @@ public class TestGameLoop {
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
-        game1.stopped();
+        game1.stopLoop();
         System.out.println(this.countView + " and " + this.countModel + " after stopped.");
         Assert.assertTrue(this.countModel >= TEST_FPS);
     }
@@ -84,7 +84,7 @@ public class TestGameLoop {
         } catch (final InterruptedException e) {
             Assert.assertTrue("Interrupted", false);
         }
-        game2.stopped();
+        game2.stopLoop();
         System.out.println("Test3: the result is " + this.countView + " for View and " + this.countModel + " for Model, the result expected is " + TEST_FPS + ".");
     }
     

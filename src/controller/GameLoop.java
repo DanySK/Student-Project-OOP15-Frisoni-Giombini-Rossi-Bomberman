@@ -3,14 +3,14 @@ package controller;
 public interface GameLoop {
     
     /**
-     * @return true if the game is running, otherwise false.
+     * @return true if the game is running, false.
      */
     boolean isRunning();
     
     /**
-     * When the Hero dies, the game is stopped.
+     * Change the state of game in pause.
      */
-    void stopped();
+    void pause();
     
     /**
      * Change the state of game in stop pause.
@@ -18,8 +18,7 @@ public interface GameLoop {
     void unPause();
     
     /**
-     * Change the state of game in pause.
+     * Stops the game.
      */
-    void pause();
-    
+    void stopLoop();
 }

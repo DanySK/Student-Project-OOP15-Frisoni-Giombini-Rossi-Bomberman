@@ -51,8 +51,8 @@ public class GamePanel extends JPanel implements ActionListener {
     /**
      * Creates a new GamePanel.
      * 
-     * @param model
-     *          the level containing data to display
+     * @param controller
+     *          the controller of the game
      */
     public GamePanel(final GameController controller) {
 

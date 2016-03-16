@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RadialGradientPaint;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -48,8 +50,6 @@ public class GameFrameImpl implements GameFrame {
     /**
      * Creates a new frame for the game rendering.
      * 
-     * @param model
-     *          the level data
      * @param darkMode
      *          true if the dark mode is active, false otherwise
      */
@@ -57,7 +57,8 @@ public class GameFrameImpl implements GameFrame {
         this.darkMode = darkMode;
     }
 
-    private void createView() {
+    @Override
+    public void initView() {
         // Sets the panels
         this.gamePanel = new GamePanel(this.observer);
         this.statisticPanel = new StatisticPanel(this.observer);
@@ -73,6 +74,16 @@ public class GameFrameImpl implements GameFrame {
             @Override
             public void windowClosing(final WindowEvent event) {
                 exitProcedure();
+            }
+        });
+        this.frame.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(final FocusEvent e) {
+                GameFrameImpl.this.gameLoop.unPause();
+            }
+            @Override
+            public void focusLost(final FocusEvent e) {
+                GameFrameImpl.this.gameLoop.pause();
             }
         });
 
@@ -100,28 +111,31 @@ public class GameFrameImpl implements GameFrame {
     private void exitProcedure() {
         // model.setHighScores();
         // highScoreProperties.saveProperties();
+        this.gameLoop.stopLoop();
         this.frame.dispose();
         // System.exit(0);
     }
     
     @Override
     public void setObserver(final GameController observer) {
-        this.observer = observer;
-        createView();
+        this.observer = Objects.requireNonNull(observer);
     }
     
     @Override
     public void setGameLoop(final GameLoop gameLoop) {
-        this.gameLoop = gameLoop;
+        this.gameLoop = Objects.requireNonNull(gameLoop);
+    }
+    
+    @Override
+    public void setKeyListener(final KeyListener listener) {
+        this.frame.addKeyListener(Objects.requireNonNull(listener));
     }
 
     @Override
-    public void initView() {
+    public void showView() {
         this.gamePanel.initGamePanel();
-        this.frame.setVisible(true);
-        this.frame.toFront();
-        this.frame.requestFocus();
         update();
+        this.frame.setVisible(true);
     }
 
     @Override
@@ -131,21 +145,11 @@ public class GameFrameImpl implements GameFrame {
     
     @Override
     public void update() {
-        if (!this.frame.isFocusOwner()) {
-        } else {
-            this.gameLoop.unPause();
-        }
         this.gamePanel.repaint();
         if (this.darkMode) {
             this.layerUI.moveLight(this.gamePanel.getHeroViewCenterPoint(), this.jlayer);
         }
     }
-    
-    @Override
-    public void setKeyListener(final KeyListener listener) {
-        this.frame.addKeyListener(Objects.requireNonNull(listener));
-    }
-
 
     /**
      * This class overlays a radial gradient (for a spotlight effect) to a panel.

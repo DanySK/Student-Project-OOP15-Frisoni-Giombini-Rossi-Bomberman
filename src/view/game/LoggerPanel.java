@@ -28,8 +28,8 @@ public class LoggerPanel {
     /**
      * Creates a new LoggerPanel.
      * 
-     * @param model
-     *          the model with the data
+     * @param controller
+     *          the controller of the game
      */
     public LoggerPanel(final GameController controller) {
         //this.model = model;

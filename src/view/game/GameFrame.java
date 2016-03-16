@@ -13,6 +13,22 @@ import controller.GameLoop;
 public interface GameFrame {
     
     /**
+     * Sets an observer of the game frame.
+     * 
+     * @param observer
+     *          the controller to attach
+     */
+    void setObserver(GameController observer);
+    
+    /**
+     * Sets the game loop to be controlled.
+     * 
+     * @param gameLoop
+     *          the loop that handles the game
+     */
+    void setGameLoop(GameLoop gameLoop);
+    
+    /**
      * This method adds a new KeyListener to the view.
      * 
      * @param listener
@@ -20,15 +36,16 @@ public interface GameFrame {
      */
     void setKeyListener(KeyListener listener);
     
-    void setObserver(GameController observer);
-    
-    void setGameLoop(GameLoop gameLoop);
-    
     /**
      * This method is called before the UI is used.
-     * It shows the user interface on the screen.
+     * It creates and initializes the view.
      */
     void initView();
+    
+    /**
+     * This method shows the user interface on the screen.
+     */
+    void showView();
     
     /**
      * @return the size of a tile.

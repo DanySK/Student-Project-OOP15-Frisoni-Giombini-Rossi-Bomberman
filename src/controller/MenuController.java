@@ -41,8 +41,10 @@ public class MenuController implements MenuObserver {
             final WelcomeView welcome = (WelcomeView) MenuCard.WELCOME.getPanel();
             welcome.setObserver(new WelcomeView.WelcomeObserver() {
                 @Override
-                public void setName(String name) {
+                public void setName(final String name) {
                     score.saveName(name);
+                    final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
+                    menuView.setObserver(MenuController.this);
                     MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
                 }
             });

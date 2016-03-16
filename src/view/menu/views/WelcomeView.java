@@ -134,7 +134,7 @@ public class WelcomeView extends JPanel {
      * @param observer
      *          the observer to use
      */
-    public void setObserver(WelcomeObserver observer) {
+    public void setObserver(final WelcomeObserver observer) {
         this.observer = observer;
     }
     

@@ -15,7 +15,7 @@ import java.util.Properties;
  * Implementation of {@link ScoreManagement}.
  * This class keeps in memory all of the players data and of respective scores and their timing.
  */
-public class ScoresManagementImpl implements ScoresManagement{
+public class ScoresManagementImpl implements ScoresManagement {
 
     private static final int MAX_LENGTH = 10;
     private Optional<List<Pair<Integer, Integer>>> scores = Optional.empty();
@@ -25,11 +25,11 @@ public class ScoresManagementImpl implements ScoresManagement{
     /**
      * Constructor for ScoreManagementImpl.
      */
-    public ScoresManagementImpl(){
-        this.fileName = System.getProperty("user.home")+System.getProperty("file.separator")+"Scores.properties";
+    public ScoresManagementImpl() {
+        this.fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Scores.properties";
         //System.out.println("Using file: "+fileName);
         this.prop = new Properties();
-        if(this.scores.equals(Optional.empty())){
+        if (this.scores.equals(Optional.empty())) {
             this.scores = Optional.of(new ArrayList<>());
         }
         File file = new File(this.fileName);
@@ -39,10 +39,10 @@ public class ScoresManagementImpl implements ScoresManagement{
     }
 
     @Override
-    public void saveName(final String playerName){
-        try(
+    public void saveName(final String playerName) {
+        try (
                 OutputStream output = new FileOutputStream(this.fileName);
-                ){
+                ) {
             this.prop.setProperty("NAME:", playerName);
             this.prop.setProperty("N_SCORES:", String.valueOf(this.scores.get().size()));
             this.prop.store(output, null);
@@ -54,13 +54,13 @@ public class ScoresManagementImpl implements ScoresManagement{
     /**
      * This method read file and saves scores and their respective times in the list.
      */
-    private void readScores(){
+    private void readScores() {
         try(
                 InputStream input = new FileInputStream(this.fileName);
-                ){
+                ) {
             this.prop.load(input);
-            for(int i = 1; i <= Integer.valueOf(this.prop.getProperty("N_SCORES:")); i++){
-                this.scores.get().add(new Pair<>(Integer.valueOf(this.prop.getProperty(i+" SCORE:")), Integer.valueOf(this.prop.getProperty(i+" TIME:"))));
+            for (int i = 1; i <= Integer.valueOf(this.prop.getProperty("N_SCORES:")); i++) {
+                this.scores.get().add(new Pair<>(Integer.valueOf(this.prop.getProperty(i + " SCORE:")), Integer.valueOf(this.prop.getProperty(i + " TIME:"))));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,14 +69,13 @@ public class ScoresManagementImpl implements ScoresManagement{
 
     @Override
     public void saveScore(int score, int time) {
-        if(score < 0 || time < 0){
+        if (score < 0 || time < 0) {
             throw new IllegalArgumentException();
         }
-        if(this.scores.get().size() < MAX_LENGTH){
+        if (this.scores.get().size() < MAX_LENGTH) {
             this.scores.get().add(new Pair<>(score, time));
-        }
-        else{
-            if(score > this.checkMinScore()){
+        } else {
+            if(score > this.checkMinScore()) {
                 this.scores.get().remove(this.getIndexMinScore());
                 this.scores.get().add(new Pair<>(score, time));
             }
@@ -87,14 +86,14 @@ public class ScoresManagementImpl implements ScoresManagement{
     /**
      * This method writes scores and their respective times to file.
      */
-    private void writeScores(){
-        try(
+    private void writeScores() {
+        try (
                 OutputStream output = new FileOutputStream(this.fileName);
-                ){
+                ) {
             this.prop.setProperty("N_SCORES:", String.valueOf(this.scores.get().size()));
-            for(int i = 1; i <= this.scores.get().size(); i++){
-                this.prop.setProperty(i+" SCORE:", String.valueOf(this.scores.get().get(i-1).getX()));
-                this.prop.setProperty(i+" TIME:", String.valueOf(this.scores.get().get(i-1).getY()));
+            for (int i = 1; i <= this.scores.get().size(); i++) {
+                this.prop.setProperty(i + " SCORE:", String.valueOf(this.scores.get().get(i-1).getX()));
+                this.prop.setProperty(i + " TIME:", String.valueOf(this.scores.get().get(i-1).getY()));
             }
             this.prop.store(output, null);
         } catch (IOException e) {
@@ -112,8 +111,8 @@ public class ScoresManagementImpl implements ScoresManagement{
      */
     private int getIndexMinScore() {
         int index = -1;
-        for(int i = 0; i < this.scores.get().size(); i++){
-            if(this.scores.get().get(i).getX() == this.checkMinScore()){
+        for (int i = 0; i < this.scores.get().size(); i++) {
+            if(this.scores.get().get(i).getX() == this.checkMinScore()) {
                 index = i;
             }
         }
@@ -122,8 +121,8 @@ public class ScoresManagementImpl implements ScoresManagement{
 
     private int checkMinScore() {
         int min = Integer.MAX_VALUE;
-        for(int i = 0; i < this.scores.get().size(); i++){
-            if(this.scores.get().get(i).getX() < min){
+        for (int i = 0; i < this.scores.get().size(); i++) {
+            if (this.scores.get().get(i).getX() < min) {
                 min = this.scores.get().get(i).getX();
             }
         }

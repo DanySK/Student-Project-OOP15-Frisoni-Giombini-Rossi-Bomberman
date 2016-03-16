@@ -8,18 +8,18 @@ package controller;
  */
 public abstract class AbstractGameLoop extends Thread implements GameLoop {
 
-    private final static double TIME_FACTOR = 1000000000.0;
-    private final static double SLEEP_FACTOR = 0.0000001;
+    private static final double TIME_FACTOR = 1000000000.0;
+    private static final double SLEEP_FACTOR = 0.0000001;
 
-    private final int game_speed;
+    private final int gameSpeed;
     private boolean running;
     private boolean paused;
 
     /**
      * Constructor for AbstractGameLoop.
      */
-    public AbstractGameLoop(final int game_speed) {
-        this.game_speed = game_speed;
+    public AbstractGameLoop(final int gameSpeed) {
+        this.gameSpeed = gameSpeed;
         this.running = false;
         this.paused = false;
     }
@@ -31,21 +31,19 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         double nextTime = System.nanoTime();
         this.running = true;
 
-        while(this.running) {
-            if(!this.paused){
+        while (this.running) {
+            if (!this.paused) {
                 final double currTime = System.nanoTime();
-                if(currTime >= nextTime) {
-                    nextTime += TIME_FACTOR / this.game_speed;
+                if (currTime >= nextTime) {
+                    nextTime += TIME_FACTOR / this.gameSpeed;
                     updateModel();
                     updateView();
-                }
-                else{
-                    long sleepTime = (long)(SLEEP_FACTOR * (nextTime - currTime));
-                    if(sleepTime > 0) {
+                } else {
+                    long sleepTime = (long) (SLEEP_FACTOR * (nextTime - currTime));
+                    if (sleepTime > 0) {
                         try {
                             Thread.sleep(sleepTime);
-                        }
-                        catch(InterruptedException e) {
+                        } catch (InterruptedException e) {
                             // do nothing
                         }
                     }
@@ -55,7 +53,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     }
 
     @Override
-    public void stopped() {
+    public void stopLoop() {
         this.running = false;
     }
 
