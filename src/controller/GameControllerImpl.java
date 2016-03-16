@@ -79,4 +79,9 @@ public class GameControllerImpl implements GameController{
         return model.isGameOver();
     }
 
+    @Override
+    public int getLevelSize() {
+        return model.getSize();
+    }
+
 }

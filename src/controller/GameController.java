@@ -16,5 +16,7 @@ public interface GameController {
     
     boolean isGameOver();
     
+    int getLevelSize();
+    
     //Set<Bomb> getPlantedBombs();
 }
