@@ -19,7 +19,8 @@ import javax.swing.JLayer;
 import javax.swing.JPanel;
 import javax.swing.plaf.LayerUI;
 
-import model.level.Level;
+import controller.GameController;
+import controller.GameLoop;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 
@@ -33,7 +34,8 @@ public class GameFrameImpl implements GameFrame {
 
     private JFrame frame;
 
-    private final Level model;
+    private GameController observer;
+    private GameLoop gameLoop;
 
     private StatisticPanel statisticPanel;
     private GamePanel gamePanel;
@@ -51,17 +53,15 @@ public class GameFrameImpl implements GameFrame {
      * @param darkMode
      *          true if the dark mode is active, false otherwise
      */
-    public GameFrameImpl(final Level model, final boolean darkMode) {
-        this.model = Objects.requireNonNull(model);
+    public GameFrameImpl(final boolean darkMode) {
         this.darkMode = darkMode;
-        createView();
     }
 
     private void createView() {
         // Sets the panels
-        this.gamePanel = new GamePanel(this.model);
-        this.statisticPanel = new StatisticPanel(this.model);
-        this.loggerPanel = new LoggerPanel(this.model);
+        this.gamePanel = new GamePanel(this.observer);
+        this.statisticPanel = new StatisticPanel(this.observer);
+        this.loggerPanel = new LoggerPanel(this.observer);
 
         // Sets the frame
         this.frame = new JFrame();
@@ -103,12 +103,25 @@ public class GameFrameImpl implements GameFrame {
         this.frame.dispose();
         // System.exit(0);
     }
+    
+    @Override
+    public void setObserver(final GameController observer) {
+        this.observer = observer;
+        createView();
+    }
+    
+    @Override
+    public void setGameLoop(final GameLoop gameLoop) {
+        this.gameLoop = gameLoop;
+    }
 
     @Override
     public void initView() {
         this.gamePanel.initGamePanel();
-        update();
         this.frame.setVisible(true);
+        this.frame.toFront();
+        this.frame.requestFocus();
+        update();
     }
 
     @Override
@@ -118,7 +131,9 @@ public class GameFrameImpl implements GameFrame {
     
     @Override
     public void update() {
-        if (!this.frame.hasFocus()) {
+        if (!this.frame.isFocusOwner()) {
+        } else {
+            this.gameLoop.unPause();
         }
         this.gamePanel.repaint();
         if (this.darkMode) {

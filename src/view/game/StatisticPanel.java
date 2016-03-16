@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import model.level.Level;
+import controller.GameController;
 
 /**
  * A class for making a JPanel with statistic information of the hero to display to the user.
@@ -23,7 +23,7 @@ public class StatisticPanel {
     /**
      * 
      */
-    public StatisticPanel(final Level model) {
+    public StatisticPanel(final GameController controller) {
         // this.model = model;
         createControl();
         updateControl();

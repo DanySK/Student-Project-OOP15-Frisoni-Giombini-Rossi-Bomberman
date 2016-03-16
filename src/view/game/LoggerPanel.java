@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import model.level.Level;
+import controller.GameController;
 import view.GUIFactory;
 
 /**
@@ -31,7 +31,7 @@ public class LoggerPanel {
      * @param model
      *          the model with the data
      */
-    public LoggerPanel(final Level model) {
+    public LoggerPanel(final GameController controller) {
         //this.model = model;
         createControl();
         updateControl();

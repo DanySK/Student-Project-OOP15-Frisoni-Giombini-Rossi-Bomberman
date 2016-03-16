@@ -11,16 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import view.GUIFactory;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.LanguageHandler;
 import view.menu.components.FadingLabel;
 import view.menu.components.StretchIcon;
-import view.LanguageHandler;
 
 /**
  * This class handles the view displayed the first time that the application
@@ -39,6 +41,8 @@ public class WelcomeView extends JPanel {
     private static final Insets TEXT_FIELD_INSETS = new Insets(5, 5, 5, 5);
     private static final int INPUT_TEXT_SIZE = 32;
 
+    private WelcomeObserver observer;
+    
     /**
      * Creates a WelcomeView.
      */
@@ -104,9 +108,12 @@ public class WelcomeView extends JPanel {
         // Sets input field
         cnst.gridwidth = 1;
         cnst.insets = TEXT_FIELD_INSETS;
-        panel.add(factory.createTextField(true, INPUT_TEXT_SIZE), cnst);
+        final JTextField nameField = factory.createTextField(true, INPUT_TEXT_SIZE);
+        panel.add(nameField, cnst);
         cnst.gridx++;
-        panel.add(factory.createButton(LanguageHandler.getHandler().getLocaleResource().getString("play")), cnst);
+        final JButton save = factory.createButton(LanguageHandler.getHandler().getLocaleResource().getString("play"));
+        save.addActionListener(e -> this.observer.setName(nameField.getText()));
+        panel.add(save, cnst);
         this.setLayout(new BorderLayout());
         this.add(panel);
         
@@ -119,5 +126,31 @@ public class WelcomeView extends JPanel {
                 }
             }
         }).start();
+    }
+    
+    /**
+     * Set the observer of the WelcomeView.
+     * 
+     * @param observer
+     *          the observer to use
+     */
+    public void setObserver(WelcomeObserver observer) {
+        this.observer = observer;
+    }
+    
+    /**
+     * This interface indicates the operations that an observer
+     * of a WelcomeView can do.
+     *
+     */
+    public interface WelcomeObserver {
+
+        /**
+         * Sets the user name.
+         * 
+         * @param name
+         *              the name of the user
+         */
+        void setName(String name);
     }
 }

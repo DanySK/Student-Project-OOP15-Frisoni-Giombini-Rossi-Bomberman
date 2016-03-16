@@ -35,7 +35,7 @@ public class MenuController implements MenuObserver {
     @Override
     public void play() {
         final Level model = new LevelImpl();
-        final GameFrame view = new GameFrameImpl(model, this.darkMode);
+        final GameFrame view = new GameFrameImpl(this.darkMode);
         new GameControllerImpl(model, view);
     }
 

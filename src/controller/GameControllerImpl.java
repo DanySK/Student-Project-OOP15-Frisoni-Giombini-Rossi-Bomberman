@@ -24,10 +24,10 @@ public class GameControllerImpl implements GameController{
     }
     
     private void startGame(){
+        view.setObserver(this);
         final InputHandler inputListener = new InputHandler();
         view.setKeyListener(inputListener);
         model.initLevel(view.getTileSize());
-        view.initView();
         
         final AbstractGameLoop game = new AbstractGameLoop(FPS) {
             @Override
@@ -56,6 +56,9 @@ public class GameControllerImpl implements GameController{
                 view.update();
             }
         };
+        
+        view.setGameLoop(game);
+        view.initView();
         game.start();
     }
     
@@ -78,10 +81,9 @@ public class GameControllerImpl implements GameController{
     public boolean isGameOver() {
         return model.isGameOver();
     }
-
+    
     @Override
     public int getLevelSize() {
         return model.getSize();
     }
-
 }
