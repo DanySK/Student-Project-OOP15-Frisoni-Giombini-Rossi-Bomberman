@@ -61,25 +61,22 @@ public class GameControllerImpl implements GameController{
     
     @Override
     public Hero getHero() {
-        return null;
+        return model.getHero();
     }
 
     @Override
     public Set<PowerUp> getPowerUpInLevel() {
-        // TODO Auto-generated method stub
-        return null;
+        return model.getPowerupInLevel();
     }
 
     @Override
     public TileType[][] getMap() {
-        // TODO Auto-generated method stub
-        return null;
+        return model.getMap();
     }
 
     @Override
     public boolean isGameOver() {
-        // TODO Auto-generated method stub
-        return false;
+        return model.isGameOver();
     }
 
 }
