@@ -59,10 +59,8 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         this.running = false;
     }
 
-    /**
-     * @return true if the game is running, otherwise false.
-     */
-    private boolean isRunning() {
+    @Override
+    public boolean isRunning() {
         return this.running;
     }
 

@@ -55,7 +55,7 @@ public class GameControllerImpl implements GameController{
             public void updateView() {
                 view.update();
             }
-        };
+        };   
         
         view.setGameLoop(game);
         view.initView();
