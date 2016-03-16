@@ -6,6 +6,19 @@ import java.awt.Rectangle;
 public interface LevelElement {
 
     /**
+     * This method update the entity's position.
+     * 
+     * @param p
+     *          the point whose coordinates are to be added
+     */
+    void updatePosition(Point p);
+    
+    /**
+     * This method update the parameters in the hitBox.
+     */
+    void updateHitbox();
+    
+    /**
      * This method is used to know the element's position.
      * 
      * @return the current position of the entity

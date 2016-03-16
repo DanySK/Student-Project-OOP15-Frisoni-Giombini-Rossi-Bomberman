@@ -13,6 +13,18 @@ public class LevelElementImpl implements LevelElement{
         this.curPos = pos;
         this.hitBox = new Rectangle(pos.x, pos.y, dim.width, dim.height);
     }
+    
+    @Override
+    public void updatePosition(Point p) {
+        this.curPos.setLocation(p);
+        this.updateHitbox();
+    }
+    
+    @Override
+    public void updateHitbox() {
+        this.hitBox.setLocation(this.curPos);
+    }
+    
     @Override
     public Point getPosition() {
         return new Point(this.curPos);
@@ -32,5 +44,4 @@ public class LevelElementImpl implements LevelElement{
     public int getY() {
         return this.curPos.y;
     }
-
 }

@@ -12,7 +12,7 @@ import model.utilities.MapPoint;
  */
 public class Tile {
 
-    private final TileType type;
+    private TileType type;
     private final Optional<PowerUpType> powerup;
     private final Rectangle boundBox;
     private final int row;
@@ -87,5 +87,15 @@ public class Tile {
      */
     public Optional<PowerUpType> getPowerup(){
         return this.powerup;
+    }
+    
+    /**
+     * Sets a new TileType for the tile.
+     * 
+     * @param newType
+     *          the new type 
+     */
+    public void setType(TileType newType){
+        this.type = newType;
     }
 }

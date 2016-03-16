@@ -24,7 +24,7 @@ public enum PowerUpType {
     RANGE() {
         @Override
         public void doApply(Hero hero) {
-            //aumenta raggio bomba
+            hero.increaseRange();
         }
     },
     FLAMEPASS() {

@@ -3,6 +3,7 @@ package model.level;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,9 +14,11 @@ import java.util.function.Predicate;
 import model.Tile;
 import model.TileType;
 import model.TilesFactory;
+import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
+import model.units.LevelElement;
 import model.units.PowerUpType;
 import model.utilities.MapPoint;
 import model.utilities.PowerUp;
@@ -35,6 +38,7 @@ public class LevelImpl implements Level {
 
     private Tile[][] map;
     private Hero hero;
+    private Set<Bomb> plantedBombs = new HashSet<>();
     private int tileDimension;
     private int nTiles;
     private boolean inGame;
@@ -68,7 +72,7 @@ public class LevelImpl implements Level {
             throw new UnsupportedOperationException();
         } else {
             final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY,
-                                                            POWERUP_DENSITY, this.tileDimension);
+                    POWERUP_DENSITY, this.tileDimension);
             this.map = new Tile[this.nTiles][this.nTiles];
             for (int i = 0; i < this.nTiles; i++) {
                 for (int j = 0; j < this.nTiles; j++) {
@@ -96,9 +100,31 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        this.hero.move(dir, this.getBlocks());
+        this.hero.move(dir, this.getBlocks(), this.getRectangles(this.plantedBombs));
     }
-    
+
+    @Override
+    public Set<Tile> plantBomb() { 
+        try{
+            Bomb b = this.hero.plantBomb(this.nTiles, this.plantedBombs);
+            this.hero.detonateBomb(b, this.plantedBombs);
+            //check enemies
+            if(!this.hero.checkFlamepass()){
+                if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
+                    this.hero.modifyLife(-1);
+                    if(this.hero.isDead()){
+                        this.inGame = false;
+                    }
+                }
+            }
+            return this.getAllAfflictedTiles(b);
+
+        }catch (IllegalStateException e){
+            //System.out.println("There's already a bomb here!");
+            return Collections.emptySet();
+        }
+    }
+
     /**
      * This methods return a map that represents
      * tiles' types in the background.
@@ -130,7 +156,41 @@ public class LevelImpl implements Level {
         }
         return powerupSet;
     }
-    
+
+    @Override
+    public Set<Bomb> getPlantedBombs() {
+        return this.plantedBombs;
+    }
+
+    @Override
+    public Set<Tile> getAllAfflictedTiles(Bomb b) {
+        Set<Tile> afflictedTiles = new HashSet<>();
+        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX() + b.getRange(), b.getY(), 1, 1));
+        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX() - b.getRange(), b.getY(), -1, 1));
+        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX(), b.getY() - b.getRange(), 1, -1));
+        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX(), b.getY() + b.getRange(), 1, 1));
+        return afflictedTiles;
+    }
+
+    private Set<Tile> getAfflictedTiles(Bomb b, int maxX, int maxY, int contX, int contY) {
+        boolean stop = false;
+        Set<Tile> afflictedTiles = new HashSet<>();
+        for(int i = b.getX(); i <= maxX && !stop; i += contX){
+            for(int j = b.getY(); j <= maxY && !stop; j += contY){
+                if(this.map[i][j].getType().equals(TileType.CONCRETE)){ //come fare con la chiave o la porta
+                    stop = true;
+                }
+                else {
+                    if(this.map[i][j].getType().equals(TileType.RUBBLE)){
+                        this.map[i][j].setType(TileType.WALKABLE);
+                    }
+                    afflictedTiles.add(this.map[i][j]);
+                }
+            }
+        }
+        return afflictedTiles;
+    }
+
     /**
      * This method build a Set of all indestructible blocks.
      * 
@@ -144,7 +204,7 @@ public class LevelImpl implements Level {
             }
         });
     }
-    
+
     /**
      * This method build a Set of all PowerUp.
      * 
@@ -161,7 +221,7 @@ public class LevelImpl implements Level {
         }
         return map;
     }
-    
+
     /**
      * This method allows to get a generic set of Rectangle.
      * 
@@ -180,9 +240,9 @@ public class LevelImpl implements Level {
             }
         }
         return set;
-        
+
     }
-    
+
     /**
      * This method return the hero's position.
      */
@@ -221,5 +281,13 @@ public class LevelImpl implements Level {
     @Override
     public boolean isGameOver() {
         return this.inGame;
+    }
+    
+    private <X extends LevelElement> Set<Rectangle> getRectangles(Set<X> set ){
+        Set<Rectangle> rectangles = new HashSet<>();
+        for(LevelElement x: set){
+            rectangles.add(x.getHitbox());
+        }
+        return rectangles;
     }
 }

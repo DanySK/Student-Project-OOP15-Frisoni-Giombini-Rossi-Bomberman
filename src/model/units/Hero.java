@@ -1,5 +1,9 @@
 package model.units;
 
+import java.util.Set;
+
+import model.Tile;
+
 /**
  * This class models a Hero.
  *
@@ -39,6 +43,11 @@ public interface Hero extends Entity {
      * Set the hero to be confused.
      */
     void setConfusion();
+    
+    /**
+     * This method increase the range of a hero's bomb.
+     */
+    void increaseRange();
 
     /**
      * This method return the attack level.
@@ -59,12 +68,20 @@ public interface Hero extends Entity {
      * 
      * @return true if he's got this powerup, false otherwise
      */
-    boolean checkFlamepass();
+    boolean checkFlamepass();  
     
     /**
-     * This methods return how many bombs the hero's got.
      * 
-     * @return the number of bombs
      */
-    //int getBombs();
+    Bomb plantBomb(final int nTiles, final Set<Bomb> plantedBombs);
+    
+    /**
+     * 
+     * @param b
+     */
+    void detonateBomb(Bomb b, Set<Bomb> plantedBombs);
+    
+    long getBombDelay();
+    
+    boolean checkFlameCollision(final Set<Tile> afflictedTiles);
 }

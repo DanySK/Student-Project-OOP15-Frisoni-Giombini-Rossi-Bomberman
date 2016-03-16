@@ -9,6 +9,9 @@ import java.util.TimerTask;
 
 import javax.swing.SwingUtilities;
 
+import model.Tile;
+import model.utilities.MapPoint;
+
 /**
  * Implementation of {@link Hero}.
  *
@@ -16,8 +19,9 @@ import javax.swing.SwingUtilities;
 public class HeroImpl extends AbstractEntity implements Hero {
 
     private static final int INITIAL_ATTACK = 2;
-    private static final int TIMER_DELAY = 5;
+    private static final long TIMER_DELAY = 5000L;
 
+    private Detonator detonator;
     private boolean inMovement;
     private int attack;
     private int lives;
@@ -36,6 +40,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
      */
     public HeroImpl(final Point pos, final Direction dir, final Dimension dim) {
         super(pos, dir, dim);
+        this.detonator = new Detonator(dim);
         this.inMovement = false;
         this.attack = INITIAL_ATTACK;
         this.flamepass = false;
@@ -43,17 +48,18 @@ public class HeroImpl extends AbstractEntity implements Hero {
     }
 
     @Override
-    public boolean checkCollision(Direction dir, Set<Rectangle> blockSet) {
+    public boolean checkCollision(Direction dir, Set<Rectangle> blockSet, Set<Rectangle> bombSet) {
         super.getCollision().updateEntityRec(this.getCorrectDirection(dir));
-        if(super.getCollision().blockCollision(blockSet)){
+        if(super.getCollision().blockCollision(blockSet) && super.getCollision().bombCollision(bombSet)){
             this.setMoving(true);
             return true;
         }
         else{
+            this.setMoving(false);
             return false;
         }
     }
-    
+
     @Override
     public void setMoving(boolean b) {
         this.inMovement = b;  
@@ -108,11 +114,22 @@ public class HeroImpl extends AbstractEntity implements Hero {
             }
         }, TIMER_DELAY, 1);
     }
+
+    private void set(boolean bol){
+        
+    }
     
     @Override
     public void increaseBomb() {
-        //DA FARE DOPO LE BOMBE!        
+        this.detonator.addBomb();       
     }
+
+    @Override
+    public void increaseRange() {
+        if(this.detonator.hasBombs()){
+            this.detonator.increaseRange(); 
+        }
+    } 
 
     @Override
     public int getAttack() {
@@ -122,7 +139,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public int getRemainingLives() {
         return this.lives;
-    }
+    } 
 
     @Override
     public boolean checkFlamepass() {
@@ -133,7 +150,32 @@ public class HeroImpl extends AbstractEntity implements Hero {
         return this.isConfused ? dir.getOppositeDirection() : dir;
     }
 
-   
+    @Override
+    public Bomb plantBomb(int nTiles, Set<Bomb> plantedBombs) {
+        Bomb b = this.detonator.plantBomb(new Point(MapPoint.getMapPos(this.getX(), nTiles, this.getHitbox().width),
+                MapPoint.getMapPos(this.getY(), nTiles, this.getHitbox().width)));
+        if(plantedBombs.contains(b)){
+            throw new IllegalStateException();
+        }
+        else{
+            this.detonator.removeBomb(b);
+            return b;
+        }
+    }
 
+    @Override
+    public void detonateBomb(Bomb b, Set<Bomb> plantedBombs) {
+        this.detonator.detonate(b, plantedBombs);        
+    }
+
+    @Override
+    public long getBombDelay() {
+        return this.detonator.getBombDelay();        
+    }
+
+    @Override
+    public boolean checkFlameCollision(Set<Tile> afflictedTiles) {
+        return this.getCollision().fireCollision(afflictedTiles);
+    } 
     
 }

@@ -7,7 +7,7 @@ import java.awt.Point;
  * of an element in the map.
  */
 public final class MapPoint {
-    
+
     private MapPoint() { }
 
     /**
@@ -35,5 +35,32 @@ public final class MapPoint {
      */
     public static int getCoordinate(final int coordinate, final int tileDimension){
         return coordinate * tileDimension;
-    }    
+    }  
+    
+    /**
+     * Calculates the position in the map as a position in the matrix.
+     * 
+     * @param coordinate
+     *          the coordinate
+     * @param nTiles
+     *          the number of tiles
+     * @param tileDimension
+     *          the width of the tile
+     * @return the coordinate in the map
+     */
+    public static int getMapPos(int coordinate, int nTiles, int tileDimension){
+        int index = 0;
+        boolean stop = false;
+        for(int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 && !stop; i += tileDimension){
+            if(coordinate <= i){
+                stop = true;
+            }
+            else{
+                index++;
+            }
+        }
+        return index;
+    }
+
+
 }

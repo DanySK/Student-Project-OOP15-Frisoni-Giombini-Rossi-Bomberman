@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
+import model.level.Collision;
+
 public interface Entity extends LevelElement{
     
     /**
@@ -12,7 +14,7 @@ public interface Entity extends LevelElement{
      * 
      * @return true if there's a collision, false otherwise
      */
-    boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet);
+    boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet);
     
     /**
      * This method allow the entity to move.
@@ -20,7 +22,7 @@ public interface Entity extends LevelElement{
      * @param dir
      *          the direction where to move
      */
-    void move(Direction dir, Set<Rectangle> set);
+    void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet);
     
     /**
      * Method that modify the current value of lives.
@@ -31,25 +33,12 @@ public interface Entity extends LevelElement{
     void modifyLife(final int change);
     
     /**
-     * This method update the entity's position.
-     * 
-     * @param p
-     *          the point whose coordinates are to be added
-     */
-    void updatePosition(Point p);
-    
-    /**
      * This method update the entity's direction.
      * 
      * @param dir
      *          the new direction
      */
     void updateDirection(Direction dir);
-    
-    /**
-     * This method update the parameters in the hitBox.
-     */
-    void updateHitbox();    
     
     /**
      * This method returns the position where the hero would be if there's no collision.
@@ -61,18 +50,13 @@ public interface Entity extends LevelElement{
     Point getPossiblePos(Point p);
     
     /**
-     * This method is used to know the actual speed of the entity.
-     * 
-     * @return the actual speed
-     */
-    int getSpeed();
-    
-    /**
      * This method is used to know the actual direction of the entity.
      * 
      * @return the entity's direction
      */
     Direction getDirection();
+    
+    Collision getCollision();
     
     /**
      * Checks if the entity is dead.
