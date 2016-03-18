@@ -55,6 +55,14 @@ public enum PowerUpType {
             }
             powerup.doApply(hero);
         }
+    },
+    KEY(){
+
+        @Override
+        public void doApply(Hero hero) {
+            hero.setKey();
+        }
+
     };
 
     static {
@@ -66,19 +74,20 @@ public enum PowerUpType {
         CONFUSION.message = LanguageHandler.getHandler().getLocaleResource().getString("confusion");
         HURT.message = LanguageHandler.getHandler().getLocaleResource().getString("hurt");
         MYSTERY.message = " ";
+        KEY.message = " ";
     }
-    
-    
+
+
     private static final int INC_LIFE = 1;
     private static final int DEC_LIFE = -1;
     private String message;
-    
+
     public void apply(Hero hero){
         this.doApply(hero);
     }
-    
+
     public abstract void doApply(Hero hero);
-    
+
     public String getMessage(){
         return this.message;
     }

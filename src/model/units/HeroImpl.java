@@ -27,6 +27,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     private int lives;
     private boolean flamepass;
     private boolean isConfused;
+    private boolean key;
 
     /**
      * This allow to create a Hero.
@@ -45,12 +46,13 @@ public class HeroImpl extends AbstractEntity implements Hero {
         this.attack = INITIAL_ATTACK;
         this.flamepass = false;
         this.isConfused = false;
+        this.key = false;
     }
 
     @Override
     public boolean checkCollision(Direction dir, Set<Rectangle> blockSet, Set<Rectangle> bombSet) {
         super.getCollision().updateEntityRec(this.getCorrectDirection(dir));
-        if(super.getCollision().blockCollision(blockSet) && super.getCollision().bombCollision(bombSet)){
+        if(super.getCollision().blockCollision(blockSet) && super.getCollision().bombCollision(bombSet, this.getHitbox())){
             this.setMoving(true);
             return true;
         }
@@ -113,7 +115,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
             }
         }, TIMER_DELAY, 1);
     }
-    
+
     @Override
     public void increaseBomb() {
         this.detonator.addBomb();       
@@ -147,15 +149,13 @@ public class HeroImpl extends AbstractEntity implements Hero {
 
     @Override
     public Bomb plantBomb(int nTiles, Set<Bomb> plantedBombs) {
-        Bomb b = this.detonator.plantBomb(new Point(MapPoint.getMapPos(this.getX(), nTiles, this.getHitbox().width),
-                MapPoint.getMapPos(this.getY(), nTiles, this.getHitbox().width)));
-        if(plantedBombs.contains(b)){
-            throw new IllegalStateException();
+        if(this.detonator.hasBombs()){
+            Bomb b = this.detonator.plantBomb(new Point(MapPoint.getPos(this.getX(), nTiles, this.getHitbox().width),
+                    MapPoint.getPos(this.getY(), nTiles, this.getHitbox().width)));
+           this.detonator.removeBomb(b);
+           return b;
         }
-        else{
-            this.detonator.removeBomb(b);
-            return b;
-        }
+        throw new IllegalStateException();
     }
 
     @Override
@@ -170,7 +170,11 @@ public class HeroImpl extends AbstractEntity implements Hero {
 
     @Override
     public boolean checkFlameCollision(Set<Tile> afflictedTiles) {
-        return this.getCollision().fireCollision(afflictedTiles);
-    } 
-    
+        return this.getCollision().fireCollision(afflictedTiles, this.getHitbox());
+    }
+
+    @Override
+    public void setKey() {
+        this.key = true;
+    }
 }

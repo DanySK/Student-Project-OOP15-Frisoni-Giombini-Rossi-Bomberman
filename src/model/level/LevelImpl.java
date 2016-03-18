@@ -104,25 +104,39 @@ public class LevelImpl implements Level {
     }
 
     @Override
-    public Set<Tile> plantBomb() { 
-        try{
-            Bomb b = this.hero.plantBomb(this.nTiles, this.plantedBombs);
-            this.hero.detonateBomb(b, this.plantedBombs);
-            //check enemies
-            if(!this.hero.checkFlamepass()){
-                if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
-                    this.hero.modifyLife(-1);
-                    if(this.hero.isDead()){
-                        this.inGame = false;
+    public Set<Tile> plantBomb() {
+        if(!this.checkBomb()){
+            try{
+                Bomb b = this.hero.plantBomb(this.nTiles, this.plantedBombs);
+                this.hero.detonateBomb(b, this.plantedBombs);
+                //check enemies
+                if(!this.hero.checkFlamepass()){
+                    if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
+                        this.hero.modifyLife(-1);
+                        if(this.hero.isDead()){
+                            this.inGame = false;
+                            System.out.println("Hero is dead!");
+                        }
                     }
                 }
-            }
-            return this.getAllAfflictedTiles(b);
-
-        }catch (IllegalStateException e){
-            //System.out.println("There's already a bomb here!");
-            return Collections.emptySet();
+                return this.getAllAfflictedTiles(b);
+            }catch(IllegalStateException e){
+                System.out.println("No more bombs!");
+            }    
         }
+        return new HashSet<>();
+    }
+
+    private boolean checkBomb(){
+        final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
+                MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));
+        for(Bomb b: this.plantedBombs){
+            if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
+                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -165,20 +179,32 @@ public class LevelImpl implements Level {
     @Override
     public Set<Tile> getAllAfflictedTiles(Bomb b) {
         Set<Tile> afflictedTiles = new HashSet<>();
-        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX() + b.getRange(), b.getY(), 1, 1));
-        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX() - b.getRange(), b.getY(), -1, 1));
-        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX(), b.getY() - b.getRange(), 1, -1));
-        afflictedTiles.addAll(this.getAfflictedTiles(b, b.getX(), b.getY() + b.getRange(), 1, 1));
+        afflictedTiles.addAll(this.getAfflictedTiles(b, MapPoint.getInvCoordinate(b.getX(), this.tileDimension) - b.getRange(),
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension),
+                MapPoint.getInvCoordinate(b.getX(), this.tileDimension) + b.getRange(),
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
+        afflictedTiles.addAll(this.getAfflictedTiles(b, MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension) - b.getRange(),
+                MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension) + b.getRange()));
         return afflictedTiles;
     }
 
-    private Set<Tile> getAfflictedTiles(Bomb b, int maxX, int maxY, int contX, int contY) {
-        boolean stop = false;
+    private Set<Tile> getAfflictedTiles(Bomb b, int x, int y, int maxX, int maxY){
         Set<Tile> afflictedTiles = new HashSet<>();
-        for(int i = b.getX(); i <= maxX && !stop; i += contX){
-            for(int j = b.getY(); j <= maxY && !stop; j += contY){
+        boolean stop = false;
+        for(int i = x; i <= maxX && !stop; i++){
+            for(int j = y; j <= maxY && !stop; j++){
                 if(this.map[i][j].getType().equals(TileType.CONCRETE)){ //come fare con la chiave o la porta
-                    stop = true;
+                    if(i < MapPoint.getInvCoordinate(b.getX(), this.tileDimension) &&
+                            j == MapPoint.getInvCoordinate(b.getY(), this.tileDimension) || 
+                            (i == MapPoint.getInvCoordinate(b.getX(), this.tileDimension) &&
+                            j < MapPoint.getInvCoordinate(b.getY(), this.tileDimension))){
+                        afflictedTiles.clear();
+                    }
+                    else{
+                        stop = true;
+                    }
                 }
                 else {
                     if(this.map[i][j].getType().equals(TileType.RUBBLE)){
@@ -282,7 +308,7 @@ public class LevelImpl implements Level {
     public boolean isGameOver() {
         return this.inGame;
     }
-    
+
     private <X extends LevelElement> Set<Rectangle> getRectangles(Set<X> set ){
         Set<Rectangle> rectangles = new HashSet<>();
         for(LevelElement x: set){

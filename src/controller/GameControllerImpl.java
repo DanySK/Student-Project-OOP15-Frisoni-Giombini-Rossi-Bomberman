@@ -54,7 +54,7 @@ public class GameControllerImpl implements GameController {
                         && !inputListener.isInputActive(InputAction.MOVE_RIGHT)
                         && !inputListener.isInputActive(InputAction.MOVE_UP)) {
                     model.getHero().setMoving(false);
-                }
+                }  
             }
             @Override
             public void updateView() {

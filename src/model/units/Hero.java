@@ -84,4 +84,6 @@ public interface Hero extends Entity {
     long getBombDelay();
     
     boolean checkFlameCollision(final Set<Tile> afflictedTiles);
+    
+    void setKey();
 }

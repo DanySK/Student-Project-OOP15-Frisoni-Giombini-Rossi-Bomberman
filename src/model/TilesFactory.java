@@ -16,6 +16,7 @@ public class TilesFactory {
     private final double blockDensity;
     private final double powerupDensity;
     private final int tileDimension;
+    private boolean isDoorPlaced;
 
     /**
      * Construct a TileFactory.
@@ -36,6 +37,7 @@ public class TilesFactory {
         this.blockDensity = blockDensity;
         this.powerupDensity = powerupDensity;
         this.tileDimension = tileDimension;
+        this.isDoorPlaced = false;
     }
 
     /**
@@ -83,10 +85,17 @@ public class TilesFactory {
      * @return true if the tile is concrete, false otherwise
      */
     private boolean tileIsConcrete(final int row, final int column) {
-        return row == 0 || column == 0 || row == rows - 1 || column == columns - 1
+        return row == 0 || column == 0 || row == this.rows - 1 || column == this.columns - 1
                 || row % 2 == 0 && column % 2 == 0;
     }
 
+    /*private boolean isDoorPoint(final int row, final int col){
+        return row == this.rows - 2 && col == this.columns - 2;
+    }
+    
+    private boolean isDoorArea(final int row, final int col){
+        return row >= this.rows - 3 && row < this.rows - 1 && col >= this.columns - 3 && col < this.columns -1;
+    }*/
 
     /**
      * Check if the tile refers to a spawn point of the hero.

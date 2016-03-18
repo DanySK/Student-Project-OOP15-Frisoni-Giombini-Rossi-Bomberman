@@ -15,7 +15,7 @@ public class Detonator {
 
     private static final int INITIAL_BOMBS = 3;
     private static final Point INITIAL_POS = new Point(0, 0);
-    private static final long BOMB_DELAY = 3000L;
+    private static final long BOMB_DELAY = 6000L;
 
     private final Dimension dim;
     private List<Bomb> bombList = new ArrayList<>();
@@ -44,7 +44,7 @@ public class Detonator {
     }
 
     public Bomb plantBomb(Point p){
-        Bomb b = this.getBomb();
+        final Bomb b = this.getBomb();
         b.updatePosition(p);
         return b;
     }
@@ -64,15 +64,15 @@ public class Detonator {
             }
         }, BOMB_DELAY, 1);
     }
-    
+
     public boolean hasBombs(){
         return this.bombList.size() > 0;
     }
-    
+
     public void removeBomb(Bomb b){
         this.bombList.remove(b);
     }
-    
+
     public long getBombDelay(){
         return BOMB_DELAY;
     }

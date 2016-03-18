@@ -48,7 +48,7 @@ public final class MapPoint {
      *          the width of the tile
      * @return the coordinate in the map
      */
-    public static int getMapPos(int coordinate, int nTiles, int tileDimension){
+    public static int getPos(int coordinate, int nTiles, int tileDimension){
         int index = 0;
         boolean stop = false;
         for(int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 && !stop; i += tileDimension){
@@ -59,8 +59,11 @@ public final class MapPoint {
                 index++;
             }
         }
-        return index;
+        return index * tileDimension;
     }
 
+    public static int getInvCoordinate(int coordinate, int tileDimension){
+        return coordinate / tileDimension;
+    }
 
 }
