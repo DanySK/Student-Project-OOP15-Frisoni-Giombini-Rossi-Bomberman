@@ -4,7 +4,6 @@ package controller;
  *  Implementation of {@link GameLoop}.
  *  A "clock" for the game. 
  *  The GameLoop synchronizes model and view every frame.
- *
  */
 public abstract class AbstractGameLoop extends Thread implements GameLoop {
 
@@ -14,6 +13,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     private final int gameSpeed;
     private boolean running;
     private boolean paused;
+    protected boolean checkPause;
 
     /**
      * Constructor for AbstractGameLoop.
@@ -22,6 +22,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         this.gameSpeed = gameSpeed;
         this.running = false;
         this.paused = false;
+        this.checkPause = false;
     }
 
     /**
@@ -30,7 +31,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     public void run() {
         double nextTime = System.nanoTime();
         this.running = true;
-
+        
         while (this.running) {
             if (!this.paused) {
                 final double currTime = System.nanoTime();
@@ -65,7 +66,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     /**
      * @return true if the game is paused, otherwise false.
      */
-    private boolean isPaused() {
+    protected boolean isPaused() {
         return this.paused;
     }
 

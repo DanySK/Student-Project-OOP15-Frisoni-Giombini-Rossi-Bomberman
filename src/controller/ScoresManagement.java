@@ -2,6 +2,8 @@ package controller;
 
 import java.util.List;
 
+import controller.utilities.Pair;
+
 public interface ScoresManagement {
 
     /**
@@ -18,9 +20,8 @@ public interface ScoresManagement {
     
     /**
      * This method create a file where the scores will be saved.
-     * @param nameFile is the file's name.
      */
-    void createFile(final String nameFile);
+    void createFile();
     
     /**
      * This method save the player's name in file.

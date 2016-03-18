@@ -1,15 +1,17 @@
-package controller;
+package controller.test;
 
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import controller.AbstractGameLoop;
+
 /**
- * This class is used to test the correct operation of the game loop
+ * This class is used to test the correct operation of the game loop.
  */
 public class TestGameLoop {
     
-    private final static int TEST_FPS = 60;
+    private static final int TEST_FPS = 60;
     private static final int RANGE = TEST_FPS + 10;
     private static final int MILLIS = 1000;
     private volatile int countModel;

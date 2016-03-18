@@ -4,6 +4,7 @@ import java.util.Set;
 
 import model.TileType;
 import model.level.Level;
+import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
 import model.utilities.PowerUp;
@@ -12,8 +13,8 @@ import view.InputHandler;
 import view.game.GameFrame;
 
 /**
+ * Implementation of {@link GameController}.
  * The view can call only the functions of this interface.
- *
  */
 public class GameControllerImpl implements GameController {
     
@@ -21,12 +22,20 @@ public class GameControllerImpl implements GameController {
     private final Level model;
     private final GameFrame view;
 
+    /**
+     * Constructor for GameControllerImpl.
+     * @param model the model object.
+     * @param view the view object.
+     */
     public GameControllerImpl(final Level model, final GameFrame view) {
         this.model = model;
         this.view = view;
         this.startGame();
     }
     
+    /**
+     * This method begins the game.
+     */
     private void startGame() {
         view.setObserver(this);
         view.initView();
@@ -54,8 +63,12 @@ public class GameControllerImpl implements GameController {
                         && !inputListener.isInputActive(InputAction.MOVE_RIGHT)
                         && !inputListener.isInputActive(InputAction.MOVE_UP)) {
                     model.getHero().setMoving(false);
-                }  
+                }
+                if (inputListener.isInputActive(InputAction.PLANT_BOMB)) {
+                    model.plantBomb();
+                }
             }
+            
             @Override
             public void updateView() {
                 view.update();
@@ -90,5 +103,15 @@ public class GameControllerImpl implements GameController {
     @Override
     public int getLevelSize() {
         return model.getSize();
+    }
+
+    @Override
+    public Set<Bomb> getPlantedBombs() {
+        return model.getPlantedBombs();
+    }
+
+    @Override
+    public long getBombDelay() {
+        return model.getHero().getBombDelay();
     }
 }

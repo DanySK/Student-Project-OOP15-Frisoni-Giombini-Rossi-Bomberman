@@ -28,7 +28,12 @@ public class MenuController implements MenuObserver {
      *   
      */
     public MenuController() {
-        final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Scores.properties";
+        final String nameDirectory = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman";
+        final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman/Scores.properties";
+        final File directory = new File(nameDirectory);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
         final File file = new File(fileName);
         if (file.exists()) {
             final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
@@ -36,12 +41,12 @@ public class MenuController implements MenuObserver {
             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
             MenuFrameImpl.getMenuFrame().initView();
         } else {
-            final ScoresManagement score = new ScoresManagementImpl();
-            score.createFile(fileName);
             final WelcomeView welcome = (WelcomeView) MenuCard.WELCOME.getPanel();
             welcome.setObserver(new WelcomeView.WelcomeObserver() {
                 @Override
                 public void setName(final String name) {
+                    final ScoresManagement score = new ScoresManagementImpl(fileName);
+                    score.createFile();
                     score.saveName(name);
                     final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
                     menuView.setObserver(MenuController.this);

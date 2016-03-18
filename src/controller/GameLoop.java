@@ -21,4 +21,5 @@ public interface GameLoop {
      * Stops the game.
      */
     void stopLoop();
+    
 }
