@@ -29,4 +29,10 @@ public interface ScoresManagement {
      */
     void saveName(final String playerName);
     
+    /**
+     * This method find the lowest score.
+     * @return the lowest score.
+     */
+    int getMinScore();
+    
 }

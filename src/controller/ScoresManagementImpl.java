@@ -127,11 +127,7 @@ public class ScoresManagementImpl implements ScoresManagement {
         return index;
     }
     
-    /**
-     * This method find the lowest score.
-     * @return the lowest score.
-     */
-    private int getMinScore() {
+    public int getMinScore() {
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < this.scores.get().size(); i++) {
             if (this.scores.get().get(i).getX() < min) {
