@@ -21,6 +21,7 @@ public class GameControllerImpl implements GameController {
     private static final int FPS = 60;
     private final Level model;
     private final GameFrame view;
+    private boolean isPlanted;
 
     /**
      * Constructor for GameControllerImpl.
@@ -31,6 +32,7 @@ public class GameControllerImpl implements GameController {
         this.model = model;
         this.view = view;
         this.startGame();
+        this.isPlanted = false;
     }
     
     /**
@@ -64,8 +66,12 @@ public class GameControllerImpl implements GameController {
                         && !inputListener.isInputActive(InputAction.MOVE_UP)) {
                     model.getHero().setMoving(false);
                 }
-                if (inputListener.isInputActive(InputAction.PLANT_BOMB)) {
+                if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
                     model.plantBomb();
+                    isPlanted = true;
+                }
+                if (!inputListener.isInputActive(InputAction.PLANT_BOMB)) {
+                    isPlanted = false;
                 }
             }
             
