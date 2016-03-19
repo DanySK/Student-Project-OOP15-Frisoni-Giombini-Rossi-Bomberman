@@ -35,7 +35,11 @@ public interface Level {
     /**
      * Plants a bomb.
      */
-    Set<Tile> plantBomb();
+    void plantBomb();
+    
+    Set<Tile> detonateBomb();
+    
+    boolean canPlantBomb();
 
     /**
      * This method return a TileType map, the background of the game.

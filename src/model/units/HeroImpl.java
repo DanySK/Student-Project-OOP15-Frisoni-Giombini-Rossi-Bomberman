@@ -22,7 +22,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     private static final long TIMER_DELAY = 5000L;
 
     private Detonator detonator;
-    private boolean inMovement;
     private int attack;
     private int lives;
     private boolean flamepass;
@@ -42,7 +41,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public HeroImpl(final Point pos, final Direction dir, final Dimension dim) {
         super(pos, dir, dim);
         this.detonator = new Detonator(dim);
-        this.inMovement = false;
         this.attack = INITIAL_ATTACK;
         this.flamepass = false;
         this.isConfused = false;
@@ -63,12 +61,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
 
     @Override
     public void setMoving(boolean b) {
-        this.inMovement = b;  
-    }
-
-    @Override
-    public boolean isMoving() {
-        return this.inMovement;
+        super.inMovement = b;
     }
 
     /**
@@ -148,19 +141,9 @@ public class HeroImpl extends AbstractEntity implements Hero {
     }
 
     @Override
-    public Bomb plantBomb(int nTiles, Set<Bomb> plantedBombs) {
-        if(this.detonator.hasBombs()){
-            Bomb b = this.detonator.plantBomb(new Point(MapPoint.getPos(this.getX(), nTiles, this.getHitbox().width),
-                    MapPoint.getPos(this.getY(), nTiles, this.getHitbox().width)));
-           this.detonator.removeBomb(b);
-           return b;
-        }
-        throw new IllegalStateException();
-    }
-
-    @Override
-    public void detonateBomb(Bomb b, Set<Bomb> plantedBombs) {
-        this.detonator.detonate(b, plantedBombs);        
+    public Bomb plantBomb(int nTiles) {
+        return this.detonator.plantBomb(new Point(MapPoint.getPos(this.getX(), nTiles, this.getHitbox().width),
+                MapPoint.getPos(this.getY(), nTiles, this.getHitbox().width)));
     }
 
     @Override
@@ -176,5 +159,15 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public void setKey() {
         this.key = true;
+    }
+
+    @Override
+    public boolean hasBomb() {
+        return this.detonator.hasBombs();
+    }
+
+    @Override
+    public Detonator getDetonator() {
+        return this.detonator;
     }
 }

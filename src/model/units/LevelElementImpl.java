@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+/**
+ * Implementation of {@link LevelElement}.
+ *
+ */
 public class LevelElementImpl implements LevelElement{
 
     protected Point curPos;
@@ -16,7 +20,7 @@ public class LevelElementImpl implements LevelElement{
     
     @Override
     public void updatePosition(Point p) {
-        this.curPos.setLocation(p);
+        this.curPos = new Point(p);
         this.updateHitbox();
     }
     

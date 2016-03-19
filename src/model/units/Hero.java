@@ -16,13 +16,6 @@ public interface Hero extends Entity {
      *          true if he's in movements, false otherwise
      */
     void setMoving(boolean b);
-
-    /**
-     * Check if the hero is in movement.
-     * @return
-     *          true if he's in movement, false otherwise
-     */
-    boolean isMoving();
     
     /**
      * Increase hero's attack level.
@@ -73,17 +66,16 @@ public interface Hero extends Entity {
     /**
      * 
      */
-    Bomb plantBomb(final int nTiles, final Set<Bomb> plantedBombs);
+    Bomb plantBomb(final int nTiles);
     
-    /**
-     * 
-     * @param b
-     */
-    void detonateBomb(Bomb b, Set<Bomb> plantedBombs);
     
     long getBombDelay();
     
     boolean checkFlameCollision(final Set<Tile> afflictedTiles);
+    
+    boolean hasBomb();
+    
+    Detonator getDetonator();
     
     void setKey();
 }

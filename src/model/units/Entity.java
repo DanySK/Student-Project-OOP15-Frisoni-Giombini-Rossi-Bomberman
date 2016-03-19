@@ -64,4 +64,11 @@ public interface Entity extends LevelElement{
      * @return
      */
     boolean isDead();
+    
+    /**
+     * Check if the hero is in movement.
+     * @return
+     *          true if he's in movement, false otherwise
+     */
+    boolean isMoving();
 }

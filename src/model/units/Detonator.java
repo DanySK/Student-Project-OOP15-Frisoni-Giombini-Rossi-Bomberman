@@ -2,78 +2,58 @@ package model.units;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.swing.SwingUtilities;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Detonator {
 
-    private static final int INITIAL_BOMBS = 3;
     private static final Point INITIAL_POS = new Point(0, 0);
     private static final long BOMB_DELAY = 6000L;
 
     private final Dimension dim;
-    private List<Bomb> bombList = new ArrayList<>();
+    private LinkedList<Bomb> bombList = new LinkedList<>();
 
     public Detonator(final Dimension dim){
         this.dim = dim;
-        this.initializeBombList();
-    }
-
-    private void initializeBombList(){
-        for(int i = 0; i < INITIAL_BOMBS; i++){
-            this.bombList.add(new BombImpl(INITIAL_POS, this.dim));
-        }
+        this.addBomb();
     }
 
     public void addBomb(){
-        this.bombList.add(new BombImpl(INITIAL_POS, this.dim ));
+        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim ));
     }
 
-    private Bomb getBomb(){
-        return this.bombList.get(0);
+    private Bomb getBombToPlant(){
+        return this.bombList.stream().filter(b -> !b.isPlanted()).findFirst().get();
+    }
+    
+    private Bomb getBombToReactivate(){
+        return this.bombList.stream().filter(b -> b.isPlanted()).findFirst().get();
     }
 
     public void increaseRange(){
-        this.bombList.get(new Random().nextInt(this.bombList.size())).increaseRange();
+        this.bombList.getFirst().increaseRange();
     }
 
     public Bomb plantBomb(Point p){
-        final Bomb b = this.getBomb();
+        final Bomb b = this.getBombToPlant();
         b.updatePosition(p);
+        b.setPlanted(true);
         return b;
     }
-
-    public void detonate(Bomb b, Set<Bomb> plantedBombs) {
-        final Timer timer = new Timer();
-        plantedBombs.add(b);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        plantedBombs.remove(b);
-                    }
-                });
-            }
-        }, BOMB_DELAY, 1);
-    }
-
-    public boolean hasBombs(){
-        return this.bombList.size() > 0;
-    }
-
-    public void removeBomb(Bomb b){
-        this.bombList.remove(b);
+    
+    public void reactivateBomb(){
+        this.getBombToReactivate().setPlanted(false);
     }
 
     public long getBombDelay(){
         return BOMB_DELAY;
+    }
+    
+    public boolean hasBombs(){
+        return this.bombList.stream().anyMatch(b -> !b.isPlanted());
+    }
+    
+    public LinkedList<Bomb> getPlantedBombs(){
+        return this.bombList.stream().filter(b -> b.isPlanted()).collect(Collectors.toCollection(LinkedList::new));
     }
 }

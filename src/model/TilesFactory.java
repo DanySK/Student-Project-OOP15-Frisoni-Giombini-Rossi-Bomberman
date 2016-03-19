@@ -2,6 +2,7 @@ package model;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import model.units.PowerUpType;
 
@@ -10,13 +11,13 @@ import model.units.PowerUpType;
  * there will be in a specific position.
  */
 public class TilesFactory {
-
+    
     private final int rows;
     private final int columns;
     private final double blockDensity;
     private final double powerupDensity;
     private final int tileDimension;
-    private boolean isDoorPlaced;
+    private boolean isKeyPresent;
 
     /**
      * Construct a TileFactory.
@@ -37,7 +38,7 @@ public class TilesFactory {
         this.blockDensity = blockDensity;
         this.powerupDensity = powerupDensity;
         this.tileDimension = tileDimension;
-        this.isDoorPlaced = false;
+        this.isKeyPresent = false;
     }
 
     /**
@@ -65,15 +66,19 @@ public class TilesFactory {
      * @return the type of tile
      */
     private TileType getTypeForCoordinates(final int row, final int column) {
-        if (tileIsConcrete(row, column)) {
+        if (this.tileIsConcrete(row, column)) {
             return TileType.CONCRETE;
-        } else if (Math.random() < this.blockDensity && !isEntryPoint(row, column)) {
+        } else if (Math.random() < this.blockDensity && !this.isEntryPoint(row, column)) {
             return TileType.RUBBLE;
-        } else {
+        }else {
             return TileType.WALKABLE;
         }
     }
 
+    public void setDoor(Set<Tile> walkableTiles){
+         walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
+    }
+    
     /**
      * Checks if the tile at the specified coordinates refers
      * to a concrete block.
@@ -88,14 +93,6 @@ public class TilesFactory {
         return row == 0 || column == 0 || row == this.rows - 1 || column == this.columns - 1
                 || row % 2 == 0 && column % 2 == 0;
     }
-
-    /*private boolean isDoorPoint(final int row, final int col){
-        return row == this.rows - 2 && col == this.columns - 2;
-    }
-    
-    private boolean isDoorArea(final int row, final int col){
-        return row >= this.rows - 3 && row < this.rows - 1 && col >= this.columns - 3 && col < this.columns -1;
-    }*/
 
     /**
      * Check if the tile refers to a spawn point of the hero.
@@ -122,7 +119,17 @@ public class TilesFactory {
             return Optional.empty();
         }
         else{
-            return Optional.of(PowerUpType.values()[new Random().nextInt(PowerUpType.values().length)]);
+            int pType = this.getPowerUpType();
+            if(this.isKeyPresent){
+                while(pType != PowerUpType.KEY.ordinal()){
+                    pType = this.getPowerUpType();
+                }
+            }
+            return Optional.of(PowerUpType.values()[pType]);
         }
+    }
+    
+    private int getPowerUpType(){
+        return new Random().nextInt(PowerUpType.values().length);
     }
 }

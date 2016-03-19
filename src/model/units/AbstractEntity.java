@@ -18,6 +18,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
 
     private Direction curDir;
     private Collision collision;
+    protected boolean inMovement;
     private int lives;
 
 
@@ -28,6 +29,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         super(pos, dim);
         this.collision = new Collision(this);
         this.curDir = dir; 
+        this.inMovement = false;
         this.lives = INITIAL_LIVES;
     }
 
@@ -83,6 +85,11 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     @Override
     public boolean isDead() {
         return this.lives == 0;
+    }
+    
+    @Override
+    public boolean isMoving() {
+        return this.inMovement;
     }
 
 }

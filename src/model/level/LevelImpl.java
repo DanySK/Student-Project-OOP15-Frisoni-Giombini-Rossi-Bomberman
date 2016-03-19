@@ -3,13 +3,15 @@ package model.level;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import model.Tile;
 import model.TileType;
@@ -38,7 +40,6 @@ public class LevelImpl implements Level {
 
     private Tile[][] map;
     private Hero hero;
-    private Set<Bomb> plantedBombs = new HashSet<>();
     private int tileDimension;
     private int nTiles;
     private boolean inGame;
@@ -79,9 +80,23 @@ public class LevelImpl implements Level {
                     this.map[i][j] = factory.createForCoordinates(i, j);
                 }
             }
+            this.getDoor(factory);
         }
     }
 
+    private void getDoor(TilesFactory factory){
+        factory.setDoor(this.getGenericSetXX(new Function<Tile, Optional<Tile>>(){
+            @Override
+            public Optional<Tile> apply(Tile t) {
+               if(t.getType().equals(TileType.WALKABLE)){
+                   return Optional.of(t);
+               } else {
+                   return Optional.empty();
+               }
+            }
+        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet()));
+    }
+    
     /**
      * This method generates a random value to set
      * as the size of the map.
@@ -100,43 +115,40 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        this.hero.move(dir, this.getBlocks(), this.getRectangles(this.plantedBombs));
+        this.hero.move(dir, this.getBlocks(), this.getRectangles(this.getPlantedBombs()));
     }
 
     @Override
-    public Set<Tile> plantBomb() {
-        if(!this.checkBomb()){
-            try{
-                Bomb b = this.hero.plantBomb(this.nTiles, this.plantedBombs);
-                this.hero.detonateBomb(b, this.plantedBombs);
-                //check enemies
-                if(!this.hero.checkFlamepass()){
-                    if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
-                        this.hero.modifyLife(-1);
-                        if(this.hero.isDead()){
-                            this.inGame = false;
-                            System.out.println("Hero is dead!");
-                        }
-                    }
-                }
-                return this.getAllAfflictedTiles(b);
-            }catch(IllegalStateException e){
-                System.out.println("No more bombs!");
-            }    
-        }
-        return new HashSet<>();
+    public void plantBomb() {
+        this.hero.plantBomb(this.nTiles);
     }
 
-    private boolean checkBomb(){
-        final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
-                MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));
-        for(Bomb b: this.plantedBombs){
-            if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
-                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
-                return true;
+    @Override
+    public Set<Tile> detonateBomb() {
+        Bomb b = this.hero.getDetonator().getPlantedBombs().getFirst();
+        if(!this.hero.checkFlamepass()){
+            if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
+                this.hero.modifyLife(-1);
+                if(this.hero.isDead()){
+                    this.inGame = false;
+                    System.out.println("Hero is dead!");
+                }
             }
         }
-        return false;
+        this.hero.getDetonator().reactivateBomb();
+        return this.getAllAfflictedTiles(b);
+    }
+
+    public boolean canPlantBomb(){
+        final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
+                MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));
+        for(Bomb b: this.getPlantedBombs()){
+            if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
+                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -160,20 +172,21 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<PowerUp> getPowerupInLevel() {
-        Set<PowerUp> powerupSet = new HashSet<>();
-        for(int i = 0; i < this.nTiles; i++){
-            for(int j = 0; j < this.nTiles; j++){
-                if(this.map[i][j].getType().equals(TileType.WALKABLE) && this.map[i][j].getPowerup().isPresent()){
-                    powerupSet.add(new PowerUp(i, j, this.map[i][j].getPowerup().get()));
+        return this.getGenericSetXX(new Function<Tile, Optional<PowerUp>>(){
+            @Override
+            public Optional<PowerUp> apply(Tile t) {
+                if(t.getType().equals(TileType.WALKABLE) && t.getPowerup().isPresent()){
+                    return Optional.of(new PowerUp(t.getRow(), t.getCol(), t.getPowerup().get()));
+                } else {
+                    return Optional.empty();
                 }
             }
-        }
-        return powerupSet;
+        }).stream().filter(p -> p.isPresent()).map(p -> p.get()).collect(Collectors.toSet());
     }
 
     @Override
     public Set<Bomb> getPlantedBombs() {
-        return this.plantedBombs;
+        return this.hero.getDetonator().getPlantedBombs().stream().collect(Collectors.toSet());
     }
 
     @Override
@@ -229,6 +242,16 @@ public class LevelImpl implements Level {
                 return !tile.getType().equals(TileType.WALKABLE);
             }
         });
+        /*return this.getGenericSetXX(new Function<Tile, Tile>(){
+
+            @Override
+            public Tile apply(Tile t) {
+                if ((!t.getType().equals(TileType.WALKABLE) && !t.getType().equals(TileType.DOOR_CLOSED) ||
+                        t.getPowerup().isPresent())){
+                    return t;
+                }
+            }
+        });*/
     }
 
     /**
@@ -266,7 +289,16 @@ public class LevelImpl implements Level {
             }
         }
         return set;
+    }
 
+    private <X> Set<X> getGenericSetXX (Function<Tile, X> func){
+        Set<X> set = new HashSet<>();
+        for(int i = 0; i < this.map.length; i++){
+            for(int j = 0; j < this.map.length; j++){
+                set.add(func.apply(this.map[i][j]));
+            }
+        }
+        return set;
     }
 
     /**
@@ -315,5 +347,8 @@ public class LevelImpl implements Level {
             rectangles.add(x.getHitbox());
         }
         return rectangles;
+        //return set.stream().map(p -> p.getHitbox());
     }
+
+
 }

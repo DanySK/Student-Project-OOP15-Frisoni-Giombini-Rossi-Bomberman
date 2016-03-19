@@ -57,12 +57,10 @@ public enum PowerUpType {
         }
     },
     KEY(){
-
         @Override
         public void doApply(Hero hero) {
             hero.setKey();
         }
-
     };
 
     static {
