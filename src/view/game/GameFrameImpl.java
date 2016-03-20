@@ -84,6 +84,7 @@ public class GameFrameImpl implements GameFrame {
             @Override
             public void focusLost(final FocusEvent e) {
                 GameFrameImpl.this.gameLoop.pause();
+                //renderFocusWarning();
             }
         });
 
@@ -150,6 +151,7 @@ public class GameFrameImpl implements GameFrame {
             this.layerUI.moveLight(this.gamePanel.getHeroViewCenterPoint(), this.jlayer);
         }
     }
+    
 
     /**
      * This class overlays a radial gradient (for a spotlight effect) to a panel.

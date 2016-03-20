@@ -79,6 +79,14 @@ public final class ImageLoader {
          */
         RUBBLE(TILES_FOLDER + "rubble.png"),
         /**
+         * Door closed tile.
+         */
+        DOOR_CLOSED(TILES_FOLDER + "door_closed.png"),
+        /**
+         * Door opened tile.
+         */
+        DOOR_OPENED(TILES_FOLDER + "door_opened.png"),
+        /**
          * Attack-up power-up.
          */
         ATTACK_UP(TILES_FOLDER + "attack.png"),

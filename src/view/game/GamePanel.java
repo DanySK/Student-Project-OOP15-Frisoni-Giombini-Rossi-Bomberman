@@ -15,10 +15,13 @@ import javax.swing.Timer;
 
 import controller.GameController;
 import model.TileType;
+import model.units.Bomb;
 import model.units.PowerUpType;
 import model.utilities.PowerUp;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.animations.BombView;
+import view.animations.BombViewImpl;
 import view.animations.HeroView;
 import view.animations.HeroViewImpl;
 
@@ -76,6 +79,8 @@ public class GamePanel extends JPanel implements ActionListener {
         tilesImages.put(TileType.WALKABLE, ImageLoader.getLoader().createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.RUBBLE, ImageLoader.getLoader().createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.CONCRETE, ImageLoader.getLoader().createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.DOOR_OPEN, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_OPENED, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.DOOR_CLOSED, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_CLOSED, this.tileSize, this.tileSize));
 
         /*
          * EnumMap for associating the power-ups' types with images.
@@ -118,6 +123,11 @@ public class GamePanel extends JPanel implements ActionListener {
             for (int y = 0; y < map[0].length; y++) {
                 g.drawImage(this.tilesImages.get(map[x][y]), x * this.tileSize, y * this.tileSize, this);
             }
+        }
+        // Draw the bombs
+        for (final Bomb b : this.controller.getPlantedBombs()) {
+            final BombView bv = new BombViewImpl(b, this.tileSize);
+            g.drawImage(bv.getImage(), bv.getX(), bv.getY(), null);
         }
         // Draw the hero
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
