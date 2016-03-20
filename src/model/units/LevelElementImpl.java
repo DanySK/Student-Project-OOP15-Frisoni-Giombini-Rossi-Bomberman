@@ -13,37 +13,71 @@ public class LevelElementImpl implements LevelElement{
     protected Point curPos;
     protected Rectangle hitBox;
     
+    /**
+     * It creates a LevelElementImpl, a game element.
+     * 
+     * @param pos
+     *          the initial position
+     * @param dim
+     *          the dimension
+     */
     public LevelElementImpl(final Point pos, final Dimension dim) {
         this.curPos = pos;
         this.hitBox = new Rectangle(pos.x, pos.y, dim.width, dim.height);
     }
     
+    /**
+     * Updates the position.
+     */
     @Override
-    public void updatePosition(Point p) {
+    public void updatePosition(final Point p) {
         this.curPos = new Point(p);
         this.updateHitbox();
     }
     
+    /**
+     * Updates the hitbox.
+     */
     @Override
     public void updateHitbox() {
         this.hitBox.setLocation(this.curPos);
     }
     
+    /**
+     * Gets the position.
+     * 
+     * @return the game element's position
+     */
     @Override
     public Point getPosition() {
         return new Point(this.curPos);
     }
 
+    /**
+     * Gets the hitbox.
+     * 
+     * @return the game element's hitbox
+     */
     @Override
     public Rectangle getHitbox() {
         return (Rectangle) this.hitBox.clone();
     }
 
+    /**
+     * Gets x coordinate.
+     * 
+     * @return x coordinate
+     */
     @Override
     public int getX() {
         return this.curPos.x;
     }
 
+    /**
+     * Gets y coordinate.
+     * 
+     * @return y coordinate.
+     */
     @Override
     public int getY() {
         return this.curPos.y;

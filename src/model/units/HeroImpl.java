@@ -14,14 +14,13 @@ import model.utilities.MapPoint;
 
 /**
  * Implementation of {@link Hero}.
- *
  */
 public class HeroImpl extends AbstractEntity implements Hero {
 
     private static final int INITIAL_ATTACK = 2;
     private static final long TIMER_DELAY = 5000L;
 
-    private Detonator detonator;
+    private final Detonator detonator;
     private int attack;
     private int lives;
     private boolean flamepass;
@@ -46,9 +45,14 @@ public class HeroImpl extends AbstractEntity implements Hero {
         this.isConfused = false;
         this.key = false;
     }
-
+    
+    /**
+     * Checks if hero's got any collision.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
     @Override
-    public boolean checkCollision(Direction dir, Set<Rectangle> blockSet, Set<Rectangle> bombSet) {
+    public boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet) {
         super.getCollision().updateEntityRec(this.getCorrectDirection(dir));
         if(super.getCollision().blockCollision(blockSet) && super.getCollision().bombCollision(bombSet, this.getHitbox())){
             this.setMoving(true);
@@ -59,8 +63,11 @@ public class HeroImpl extends AbstractEntity implements Hero {
         }
     }
 
+    /**
+     * Set the hero to be in movement or not.
+     */
     @Override
-    public void setMoving(boolean b) {
+    public void setMoving(final boolean b) {
         super.inMovement = b;
     }
 
@@ -92,6 +99,9 @@ public class HeroImpl extends AbstractEntity implements Hero {
         }, TIMER_DELAY, 1);
     }
 
+    /**
+     * Sets confusion.
+     */
     @Override
     public void setConfusion() {
         this.isConfused = true; 
@@ -109,11 +119,17 @@ public class HeroImpl extends AbstractEntity implements Hero {
         }, TIMER_DELAY, 1);
     }
 
+    /**
+     * Adds a bomb to his detonator.
+     */
     @Override
     public void increaseBomb() {
         this.detonator.addBomb();       
     }
 
+    /**
+     * Increases the range of a bomb.
+     */
     @Override
     public void increaseRange() {
         if(this.detonator.hasBombs()){
@@ -121,51 +137,89 @@ public class HeroImpl extends AbstractEntity implements Hero {
         }
     } 
 
+    /**
+     * Gets hero's attack.
+     * 
+     * @return hero's attack
+     */
     @Override
     public int getAttack() {
         return this.attack;
-    }
-
-    @Override
-    public int getRemainingLives() {
-        return this.lives;
     } 
-
+    
+    /**
+     * Checks if he has flamepass.
+     */
     @Override
     public boolean checkFlamepass() {
         return this.flamepass;
     }
 
-    private Direction getCorrectDirection(Direction dir) {
+    /**
+     * Gets the correct direction depending on the boolean confusion.
+     * 
+     * @param dir
+     *          the direction where he would move
+     * @return the direction where he will move
+     */
+    private Direction getCorrectDirection(final Direction dir) {
         return this.isConfused ? dir.getOppositeDirection() : dir;
     }
 
+    /**
+     * Gets the bomb to plant.
+     * 
+     * @return the bomb to plant
+     */
     @Override
-    public Bomb plantBomb(int nTiles) {
+    public Bomb plantBomb(final int nTiles) {
         return this.detonator.plantBomb(new Point(MapPoint.getPos(this.getX(), nTiles, this.getHitbox().width),
                 MapPoint.getPos(this.getY(), nTiles, this.getHitbox().width)));
     }
 
+    /**
+     * Gets bomb delay.
+     * 
+     * @return bomb delay
+     */
     @Override
     public long getBombDelay() {
         return this.detonator.getBombDelay();        
     }
 
+    /**
+     * Checks flame collisions.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
     @Override
-    public boolean checkFlameCollision(Set<Tile> afflictedTiles) {
+    public boolean checkFlameCollision(final Set<Tile> afflictedTiles) {
         return this.getCollision().fireCollision(afflictedTiles, this.getHitbox());
     }
 
+    /**
+     * Set the hero to own the key.
+     */
     @Override
     public void setKey() {
         this.key = true;
     }
 
+    /**
+     * Checks if he has bomb to plant.
+     * 
+     * @return true if there's a bomb, false otherwise
+     */
     @Override
     public boolean hasBomb() {
         return this.detonator.hasBombs();
     }
 
+    /**
+     * Gets hero's detonator.
+     * 
+     * @return hero's detonator
+     */
     @Override
     public Detonator getDetonator() {
         return this.detonator;

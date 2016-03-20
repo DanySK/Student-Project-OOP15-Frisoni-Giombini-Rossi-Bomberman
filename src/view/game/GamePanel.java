@@ -79,7 +79,7 @@ public class GamePanel extends JPanel implements ActionListener {
         tilesImages.put(TileType.WALKABLE, ImageLoader.getLoader().createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.RUBBLE, ImageLoader.getLoader().createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.CONCRETE, ImageLoader.getLoader().createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
-        tilesImages.put(TileType.DOOR_OPEN, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_OPENED, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.DOOR_OPENED, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_OPENED, this.tileSize, this.tileSize));
         tilesImages.put(TileType.DOOR_CLOSED, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_CLOSED, this.tileSize, this.tileSize));
 
         /*

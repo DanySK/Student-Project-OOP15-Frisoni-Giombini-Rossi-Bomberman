@@ -56,19 +56,31 @@ public interface Entity extends LevelElement{
      */
     Direction getDirection();
     
+    /**
+     * Gets entity's collision.
+     * 
+     * @return entity's collision
+     */
     Collision getCollision();
+    
+    /**
+     * Gets remaining lives.
+     * 
+     * @return remaining lives
+     */
+    int getRemainingLives();
     
     /**
      * Checks if the entity is dead.
      * 
-     * @return
+     * @return true if the entity is dead
      */
     boolean isDead();
     
     /**
      * Check if the hero is in movement.
-     * @return
-     *          true if he's in movement, false otherwise
+     * 
+     * @return true if he's in movement, false otherwise
      */
     boolean isMoving();
 }

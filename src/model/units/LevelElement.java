@@ -3,6 +3,9 @@ package model.units;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+/**
+ * This interface models a game element.
+ */
 public interface LevelElement {
 
     /**
@@ -38,7 +41,6 @@ public interface LevelElement {
      * @return the x coordinate
      */
     int getX();
-    
     
     /**
      * This methods is used to know the y coordinate of the element's position.

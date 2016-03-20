@@ -38,7 +38,7 @@ public final class MapPoint {
     }  
     
     /**
-     * Calculates the position in the map as a position in the matrix.
+     * Calculates the position in the map.
      * 
      * @param coordinate
      *          the coordinate
@@ -48,7 +48,7 @@ public final class MapPoint {
      *          the width of the tile
      * @return the coordinate in the map
      */
-    public static int getPos(int coordinate, int nTiles, int tileDimension){
+    public static int getPos(final int coordinate, final int nTiles, final int tileDimension){
         int index = 0;
         boolean stop = false;
         for(int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 && !stop; i += tileDimension){
@@ -62,7 +62,16 @@ public final class MapPoint {
         return index * tileDimension;
     }
 
-    public static int getInvCoordinate(int coordinate, int tileDimension){
+    /**
+     * Calculates the position in the matrix;
+     * 
+     * @param coordinate
+     *          the coordinate to convert
+     * @param tileDimension
+     *          the conversion factor
+     * @return the coordinate converted
+     */
+    public static int getInvCoordinate(final int coordinate, final int tileDimension){
         return coordinate / tileDimension;
     }
 

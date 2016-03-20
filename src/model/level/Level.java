@@ -37,15 +37,24 @@ public interface Level {
      */
     void plantBomb();
     
+    /**
+     * Detonates a bomb.
+     * 
+     * @return the set of afflicted tiles
+     */
     Set<Tile> detonateBomb();
     
+    /**
+     * Verifies if there's already a bomb in that tile.
+     * 
+     * @return true if the bomb can be planted, false otherwise
+     */
     boolean canPlantBomb();
 
     /**
      * This method return a TileType map, the background of the game.
      * 
-     * @return the map
-     *                  the map that represents tiles' types.
+     * @return the map the map that represents tiles' types.
      */
     TileType[][] getMap();
 
@@ -64,13 +73,6 @@ public interface Level {
     Set<Bomb> getPlantedBombs();
 
     /**
-     * Checks how what tiles are afflicted by the explosion.
-     * 
-     * @return the set of afflicted tiles
-     */
-    Set<Tile> getAllAfflictedTiles(final Bomb b);
-
-    /**
      * This method return the hero position-
      * 
      * @return Hero's position.
@@ -83,7 +85,6 @@ public interface Level {
      * @return the Hero.
      */
     Hero getHero();
-
 
     /**
      * This method allow to know the size of the map.

@@ -17,7 +17,7 @@ public class TilesFactory {
     private final double blockDensity;
     private final double powerupDensity;
     private final int tileDimension;
-    private boolean isKeyPresent;
+    private final boolean isKeyPresent;
 
     /**
      * Construct a TileFactory.
@@ -51,8 +51,8 @@ public class TilesFactory {
      * @return the new tile
      */
     public Tile createForCoordinates(final int row, final int column) {
-        TileType type = getTypeForCoordinates(row, column);
-        Optional<PowerUpType> powerup = this.getPowerup(type);
+        final TileType type = getTypeForCoordinates(row, column);
+        final Optional<PowerUpType> powerup = this.getPowerup(type);
         return new Tile(type, powerup, row, column, this.tileDimension);
     }
 
@@ -75,7 +75,13 @@ public class TilesFactory {
         }
     }
 
-    public void setDoor(Set<Tile> walkableTiles){
+    /**
+     * Set a random tile'type equals to the closed door.
+     * 
+     * @param walkableTiles
+     *          the set of walkable tiles
+     */
+    public void setDoor(final Set<Tile> walkableTiles){
          walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
     }
     
@@ -129,7 +135,12 @@ public class TilesFactory {
         }
     }
     
-    private int getPowerUpType(){
+    /**
+     * Gets a random powerup type.
+     * 
+     * @return a powerup type
+     */
+    public int getPowerUpType(){
         return new Random().nextInt(PowerUpType.values().length);
     }
 }

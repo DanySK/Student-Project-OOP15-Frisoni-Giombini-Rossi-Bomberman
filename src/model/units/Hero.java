@@ -11,7 +11,8 @@ import model.Tile;
 public interface Hero extends Entity {
 
     /**
-     * This method set the hero in movement or not.
+     * This method set the hero in movement or not. 
+     * 
      * @param b
      *          true if he's in movements, false otherwise
      */
@@ -50,13 +51,6 @@ public interface Hero extends Entity {
     int getAttack();
     
     /**
-     * This method return the number of lives.
-     * 
-     * @return the number of remaining lives 
-     */
-    int getRemainingLives();
-    
-    /**
      * Checks if the hero's got the flamepass.
      * 
      * @return true if he's got this powerup, false otherwise
@@ -64,18 +58,44 @@ public interface Hero extends Entity {
     boolean checkFlamepass();  
     
     /**
+     * Plants a bomb.
      * 
+     * @return the bomb to plant
      */
     Bomb plantBomb(final int nTiles);
     
-    
+    /**
+     * Gets bomb's delay.
+     * 
+     * @return bomb's delay
+     */
     long getBombDelay();
     
+    /**
+     * Checks collisions with flames.
+     * 
+     * @param afflictedTiles
+     *          set of afflicted tiles
+     * @return true if there's a collision, false otherwise
+     */
     boolean checkFlameCollision(final Set<Tile> afflictedTiles);
     
+    /**
+     * Checks if he has bombs.
+     * 
+     * @return true if there's at least a bomb, false otherwise
+     */
     boolean hasBomb();
     
+    /**
+     * Returns hero's deonator.
+     * 
+     * @return hero's detonator
+     */
     Detonator getDetonator();
     
+    /**
+     * Set the key.
+     */
     void setKey();
 }

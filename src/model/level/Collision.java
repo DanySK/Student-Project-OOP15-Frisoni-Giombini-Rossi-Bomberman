@@ -1,7 +1,6 @@
 package model.level;
 
 import java.awt.Rectangle;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -9,7 +8,6 @@ import model.Tile;
 import model.units.Direction;
 import model.units.Entity;
 import model.units.Hero;
-import model.units.PowerUpType;
 
 /**
  * This class is used to implement collision between
@@ -17,8 +15,8 @@ import model.units.PowerUpType;
  */
 public class Collision {
 
-    private Entity entity;
-    private Rectangle entityRec;
+    private final Entity entity;
+    private final Rectangle entityRec;
 
     /**
      * The constructor initialize Collision's element
@@ -37,39 +35,58 @@ public class Collision {
     /**
      * This method checks if there's a collision with blocks.
      * 
+     * @param blockSet
+     *          the set of concrete and rubble blocks
      * @return true if there's a collision, false otherwise
      */
-    public boolean blockCollision(Set<Rectangle> blockSet){
+    public boolean blockCollision(final Set<Rectangle> blockSet){
         return this.elementCollision(blockSet, new Predicate<Rectangle>(){
             @Override
-            public boolean test(Rectangle rec) {
+            public boolean test(final Rectangle rec) {
                 return entityRec.intersects(rec);
             }
         });
     }
 
-    //SISTEMARE!!!
-    public boolean powerupCollision(Map<Rectangle, PowerUpType> powerUpMap){
+    /**
+     * This method checks if there's a collision with power ups.
+     * 
+     * @param powerUpSet
+     *          the set of tiles that contains a power up
+     * @return true if there's a collision, false otherwise
+     */
+    public boolean powerUpCollision(final Set<Tile> powerUpSet){
         if(this.entity instanceof Hero){
-            return this.elementCollision(powerUpMap.keySet(), new Predicate<Rectangle>(){
+            return this.elementCollision(powerUpSet, new Predicate<Tile>(){
                 @Override
-                public boolean test(Rectangle rec) {
-                    if(entityRec.intersects(rec)){
-                        powerUpMap.get(rec).apply((Hero) entity);
+                public boolean test(final Tile t) {
+                    if(entityRec.intersects(t.getBoundBox())){
+                        t.getPowerup().get().apply((Hero) entity);
+                        return true;
+                    } else {
+                        return false;
                     }
-                    return false;
                 }
             });
-        }
-        else{
+
+        } else {
             return false;
         }
     }
-    
-    public boolean bombCollision(Set<Rectangle> bombSet, Rectangle recEntity){
+
+    /**
+     * This method checks if there's a collision with planted bombs.
+     * 
+     * @param bombSet
+     *          the set of planted bombs
+     * @param recEntity
+     *          the hero's hitbox in that specific moment
+     * @return true if there's a collision, false otherwise
+     */
+    public boolean bombCollision(final Set<Rectangle> bombSet, final Rectangle recEntity){
         return this.elementCollision(bombSet, new Predicate<Rectangle>(){
             @Override
-            public boolean test(Rectangle rec) {
+            public boolean test(final Rectangle rec) {
                 if(explosionIntersection(rec, recEntity)){
                     return false;
                 }
@@ -79,9 +96,18 @@ public class Collision {
             }
         });
     }
-    
-    public boolean fireCollision(Set<Tile> afflictedTiles, Rectangle recEntity){
-        for(Tile tile: afflictedTiles){
+
+    /**
+     * This method checks if there's a collision with all afflicted tiles.
+     * 
+     * @param afflictedTiles
+     *          the set of afflicted tiles
+     * @param recEntity 
+     *          hero's hitbox in that specific moment
+     * @return true if there's a collision, false otherwise
+     */
+    public boolean fireCollision(final Set<Tile> afflictedTiles, final Rectangle recEntity){ //è necessario verificare la collisione nel movimento?
+        for(final Tile tile: afflictedTiles){                                          //come nelle bombe?
             if(this.explosionIntersection(tile.getBoundBox(), recEntity)){
                 return true;
             }
@@ -89,26 +115,44 @@ public class Collision {
         return false;
     }
 
-    private boolean elementCollision(Set<Rectangle> set, Predicate<Rectangle> pred){
-        for(Rectangle rec: set){
+    /**
+     * This method is used to check if there's a collision whit a generic element.
+     * 
+     * @param set
+     *          the set of elements
+     * @param pred
+     *          the predicate
+     * @return true if there's a collision, false otherwise
+     */
+    private <X> boolean elementCollision(final Set<X> set, final Predicate<X> pred){
+        for(final X rec: set){
             if(pred.test(rec)){
                 return false;
             }
         }
         return true;
     }
-    
-    private boolean explosionIntersection(Rectangle rec, Rectangle eRec){       
+
+    /**
+     * This method is used to check a "static" collision, 
+     * if there's a collision without a movement.
+     * 
+     * @param rec       
+     *          the element hitbox
+     * @param eRec
+     *          the entity hitbox
+     * @return true if there's a collision, false otherwise
+     */
+    private boolean explosionIntersection(final Rectangle rec, final Rectangle eRec){       
         return eRec.intersects(rec);
     }
 
     /**
      * This method construct the new Rectangle that the entity would have.
      * 
-     * @return
-     *          the Rectangle related to the new possible position
+     * @return the Rectangle related to the new possible position
      */
-    public void updateEntityRec(Direction dir){
+    public void updateEntityRec(final Direction dir){
         this.entityRec.setBounds(new Rectangle(this.entity.getPossiblePos(dir.getPoint()).x, 
                 this.entity.getPossiblePos(dir.getPoint()).y, 
                 this.entity.getHitbox().width, 

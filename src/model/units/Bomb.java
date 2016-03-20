@@ -1,6 +1,8 @@
 package model.units;
 
-
+/**
+ * This interface shapes a Bomb.
+ */
 public interface Bomb extends LevelElement{
     
     /**
@@ -28,6 +30,6 @@ public interface Bomb extends LevelElement{
      * 
      * @return true if it is planted, otherwise false
      */
-    boolean isPlanted();
+    boolean isPositioned();
     
 }

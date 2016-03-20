@@ -17,7 +17,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     private static final int INITIAL_LIVES = 1;
 
     private Direction curDir;
-    private Collision collision;
+    private final Collision collision;
     protected boolean inMovement;
     private int lives;
 
@@ -40,15 +40,18 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
      * different depending on the type of the entity.
      */
     @Override
-    public void move(Direction d, Set<Rectangle> blockSet, Set<Rectangle> bombSet){
+    public void move(final Direction d, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet){
         if(this.checkCollision(d, blockSet, bombSet)){
             this.updatePosition(this.getPossiblePos(d.getPoint()));
             this.updateDirection(d);
         }
     }
 
+    /**
+     * Increases or decreases life.
+     */
     @Override
-    public void modifyLife(int change) {
+    public void modifyLife(final int change) {
         this.lives += change;        
     }
     
@@ -77,16 +80,35 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         return this.curDir;
     }
 
+    /**
+     * Return the collision.
+     */
     @Override
     public Collision getCollision(){
         return this.collision;
     }
 
+    /**
+     * Gets remaining lives.
+     * 
+     * @return remaining lives
+     */
+    @Override
+    public int getRemainingLives() {
+        return this.lives;
+    }
+    
+    /**
+     * Verifies if the entity is dead.
+     */
     @Override
     public boolean isDead() {
         return this.lives == 0;
     }
     
+    /**
+     * Verifies if the entity is in movement.
+     */
     @Override
     public boolean isMoving() {
         return this.inMovement;

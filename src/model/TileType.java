@@ -23,7 +23,7 @@ public enum TileType {
     /**
      * The open door.
      */
-    DOOR_OPEN,
+    DOOR_OPENED,
     
     /**
      * The closed door.

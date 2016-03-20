@@ -3,14 +3,11 @@ package model.level;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import model.Tile;
@@ -21,7 +18,6 @@ import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
 import model.units.LevelElement;
-import model.units.PowerUpType;
 import model.utilities.MapPoint;
 import model.utilities.PowerUp;
 
@@ -83,11 +79,17 @@ public class LevelImpl implements Level {
             this.getDoor(factory);
         }
     }
-
-    private void getDoor(TilesFactory factory){
-        factory.setDoor(this.getGenericSetXX(new Function<Tile, Optional<Tile>>(){
+    
+    /**
+     * Selects all the walkable tiles and set the door in a random way.
+     * 
+     * @param factory
+     *          the TilesFactory object
+     */
+    private void getDoor(final TilesFactory factory){
+        factory.setDoor(this.getGenericSet(new Function<Tile, Optional<Tile>>(){
             @Override
-            public Optional<Tile> apply(Tile t) {
+            public Optional<Tile> apply(final Tile t) {
                if(t.getType().equals(TileType.WALKABLE)){
                    return Optional.of(t);
                } else {
@@ -118,14 +120,20 @@ public class LevelImpl implements Level {
         this.hero.move(dir, this.getBlocks(), this.getRectangles(this.getPlantedBombs()));
     }
 
+    /**
+     * Plants a bomb.
+     */
     @Override
     public void plantBomb() {
         this.hero.plantBomb(this.nTiles);
     }
 
+    /**
+     * Detonates a bomb.
+     */
     @Override
     public Set<Tile> detonateBomb() {
-        Bomb b = this.hero.getDetonator().getPlantedBombs().getFirst();
+        final Bomb b = this.hero.getDetonator().getPlantedBombs().getFirst();
         if(!this.hero.checkFlamepass()){
             if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
                 this.hero.modifyLife(-1);
@@ -139,10 +147,13 @@ public class LevelImpl implements Level {
         return this.getAllAfflictedTiles(b);
     }
 
+    /**
+     * Verifies if a bomb can be planted.
+     */
     public boolean canPlantBomb(){
         final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
                 MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));
-        for(Bomb b: this.getPlantedBombs()){
+        for(final Bomb b: this.getPlantedBombs()){
             if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
                     MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
                 return false;
@@ -168,11 +179,11 @@ public class LevelImpl implements Level {
 
     /**
      * This method return a set that represents 
-     * powerup's types in the map.
+     * powerups in the map.
      */
     @Override
     public Set<PowerUp> getPowerupInLevel() {
-        return this.getGenericSetXX(new Function<Tile, Optional<PowerUp>>(){
+        return this.getGenericSet(new Function<Tile, Optional<PowerUp>>(){
             @Override
             public Optional<PowerUp> apply(Tile t) {
                 if(t.getType().equals(TileType.WALKABLE) && t.getPowerup().isPresent()){
@@ -184,35 +195,76 @@ public class LevelImpl implements Level {
         }).stream().filter(p -> p.isPresent()).map(p -> p.get()).collect(Collectors.toSet());
     }
 
+    /**
+     * This method returns the set of planted bombs.
+     */
     @Override
     public Set<Bomb> getPlantedBombs() {
         return this.hero.getDetonator().getPlantedBombs().stream().collect(Collectors.toSet());
     }
 
-    @Override
-    public Set<Tile> getAllAfflictedTiles(Bomb b) {
-        Set<Tile> afflictedTiles = new HashSet<>();
-        afflictedTiles.addAll(this.getAfflictedTiles(b, MapPoint.getInvCoordinate(b.getX(), this.tileDimension) - b.getRange(),
+    /**
+     * This method returns a set of all afflicted tiles.
+     */
+    private Set<Tile> getAllAfflictedTiles(final Bomb b) {
+        final Set<Tile> afflictedTiles = new HashSet<>();
+        afflictedTiles.addAll(this.getAfflictedTiles(b, 
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension),
-                MapPoint.getInvCoordinate(b.getX(), this.tileDimension) + b.getRange(),
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), b.getRange()),
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
         afflictedTiles.addAll(this.getAfflictedTiles(b, MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
-                MapPoint.getInvCoordinate(b.getY(), this.tileDimension) - b.getRange(),
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
-                MapPoint.getInvCoordinate(b.getY(), this.tileDimension) + b.getRange()));
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), b.getRange())));
         return afflictedTiles;
     }
 
-    private Set<Tile> getAfflictedTiles(Bomb b, int x, int y, int maxX, int maxY){
-        Set<Tile> afflictedTiles = new HashSet<>();
+    /**
+     * Checks boundaries.
+     * 
+     * @param coordinate
+     *          the coordinate
+     * @param range
+     *          the bomb's range
+     * @return the maximum possible coordinate
+     */
+    private int checkBoundaries(final int coordinate, final int range){
+        if((coordinate + range) > this.nTiles - 1){
+            return this.nTiles - 1;
+        } else if ((coordinate + range) < 0){
+            return 0;
+        } else {
+            return coordinate + range;
+        }
+    }
+    
+    /**
+     * This method returns the set of afflicted tiles 
+     * in a certain direction.
+     * 
+     * @param b
+     *          the bomb
+     * @param x
+     *          the x coordinate
+     * @param y
+     *          the y coordinate
+     * @param maxX
+     *          the maximum x
+     * @param maxY
+     *          the maximum y
+     * @return a set of afflicted tiles
+     */
+    private Set<Tile> getAfflictedTiles(final Bomb b, final int x, final int y, final int maxX, final int maxY){
+        final Set<Tile> afflictedTiles = new HashSet<>();
         boolean stop = false;
         for(int i = x; i <= maxX && !stop; i++){
             for(int j = y; j <= maxY && !stop; j++){
                 if(this.map[i][j].getType().equals(TileType.CONCRETE)){ //come fare con la chiave o la porta
                     if(i < MapPoint.getInvCoordinate(b.getX(), this.tileDimension) &&
                             j == MapPoint.getInvCoordinate(b.getY(), this.tileDimension) || 
-                            (i == MapPoint.getInvCoordinate(b.getX(), this.tileDimension) &&
-                            j < MapPoint.getInvCoordinate(b.getY(), this.tileDimension))){
+                            i == MapPoint.getInvCoordinate(b.getX(), this.tileDimension) &&
+                            j < MapPoint.getInvCoordinate(b.getY(), this.tileDimension)){
                         afflictedTiles.clear();
                     }
                     else{
@@ -231,68 +283,53 @@ public class LevelImpl implements Level {
     }
 
     /**
-     * This method build a Set of all indestructible blocks.
+     * This method builds a Set of all indestructible blocks,
+     * closed door included.
      * 
      * @return the set of blocks
      */
     private Set<Rectangle> getBlocks(){
-        return this.getGenericSet(new Predicate<Tile>(){
+        return this.getGenericSet(new Function<Tile, Optional<Rectangle>>(){
             @Override
-            public boolean test(Tile tile) {
-                return !tile.getType().equals(TileType.WALKABLE);
-            }
-        });
-        /*return this.getGenericSetXX(new Function<Tile, Tile>(){
-
-            @Override
-            public Tile apply(Tile t) {
-                if ((!t.getType().equals(TileType.WALKABLE) && !t.getType().equals(TileType.DOOR_CLOSED) ||
-                        t.getPowerup().isPresent())){
-                    return t;
+            public Optional<Rectangle> apply(final Tile t) {
+                if (!t.getType().equals(TileType.WALKABLE) && !t.getType().equals(TileType.DOOR_CLOSED)){
+                    return Optional.of(t.getBoundBox());
+                } else {
+                    return Optional.empty();
                 }
             }
-        });*/
+        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
     }
 
     /**
-     * This method build a Set of all PowerUp.
+     * This method build a Set of all Tiles that have a PowerUp.
      * 
      * @return the PowerUp sets
-     */
-    private Map<Rectangle, PowerUpType> getPowerUp(){
-        Map<Rectangle, PowerUpType> map = new HashMap<>();
-        for(int i = 0; i < this.map.length; i++){
-            for(int j = 0; j < this.map.length; j++){
-                if(this.map[i][j].getPowerup().isPresent()){
-                    map.put(this.map[i][j].getBoundBox(), this.map[i][j].getPowerup().get());
+     */    
+    private Set<Tile> getPowerUp(){
+        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+
+            @Override
+            public Optional<Tile> apply(final Tile t) {
+                if(t.getType().equals(TileType.WALKABLE) && t.getPowerup().isPresent()){
+                    return Optional.of(t);
+                } else {
+                    return Optional.empty();
                 }
             }
-        }
-        return map;
+            
+        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
     }
 
     /**
-     * This method allows to get a generic set of Rectangle.
-     * 
-     * @param pred 
-     *          the predicate
-     * 
-     * @return a set of Rectangle
+     * This method allows to get a generic set of elements.
+     *  
+     * @param func 
+     *          the function
+     * @return a set of elements
      */
-    private Set<Rectangle> getGenericSet(Predicate<Tile> pred){
-        Set<Rectangle> set = new HashSet<>();
-        for(int i = 0; i < this.map.length; i++){
-            for(int j = 0; j < this.map.length; j++){
-                if(pred.test(this.map[i][j])){
-                    set.add(this.map[i][j].getBoundBox());
-                }
-            }
-        }
-        return set;
-    }
-
-    private <X> Set<X> getGenericSetXX (Function<Tile, X> func){
-        Set<X> set = new HashSet<>();
+    private <X> Set<X> getGenericSet(final Function<Tile, X> func){
+        final Set<X> set = new HashSet<>();
         for(int i = 0; i < this.map.length; i++){
             for(int j = 0; j < this.map.length; j++){
                 set.add(func.apply(this.map[i][j]));
@@ -341,14 +378,14 @@ public class LevelImpl implements Level {
         return this.inGame;
     }
 
-    private <X extends LevelElement> Set<Rectangle> getRectangles(Set<X> set ){
-        Set<Rectangle> rectangles = new HashSet<>();
-        for(LevelElement x: set){
-            rectangles.add(x.getHitbox());
-        }
-        return rectangles;
-        //return set.stream().map(p -> p.getHitbox());
+    /**
+     * This method return a set of LevelElement's boundbox.
+     * 
+     * @param set
+     * @return
+     */
+    private <X extends LevelElement> Set<Rectangle> getRectangles(final Set<X> set ){
+        return set.stream().map(p -> p.getHitbox()).collect(Collectors.toSet());
     }
-
 
 }

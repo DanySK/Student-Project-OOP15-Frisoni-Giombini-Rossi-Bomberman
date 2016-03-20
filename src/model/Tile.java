@@ -95,7 +95,7 @@ public class Tile {
      * @param newType
      *          the new type 
      */
-    public void setType(TileType newType){
+    public void setType(final TileType newType){
         this.type = newType;
     }
 }
