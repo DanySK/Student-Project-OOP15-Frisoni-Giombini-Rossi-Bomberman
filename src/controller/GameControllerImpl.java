@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.Set;
-
 import model.TileType;
 import model.level.Level;
 import model.units.Bomb;
@@ -17,7 +16,7 @@ import view.game.GameFrame;
  * The view can call only the functions of this interface.
  */
 public class GameControllerImpl implements GameController {
-    
+
     private static final int FPS = 60;
     private final Level model;
     private final GameFrame view;
@@ -34,7 +33,7 @@ public class GameControllerImpl implements GameController {
         this.startGame();
         this.isPlanted = false;
     }
-    
+
     /**
      * This method begins the game.
      */
@@ -44,7 +43,7 @@ public class GameControllerImpl implements GameController {
         final InputHandler inputListener = new InputHandler();
         view.setKeyListener(inputListener);
         model.initLevel(view.getTileSize());
-        
+
         final AbstractGameLoop game = new AbstractGameLoop(FPS) {
             @Override
             public void updateModel() {
@@ -67,25 +66,34 @@ public class GameControllerImpl implements GameController {
                     model.getHero().setMoving(false);
                 }
                 if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
-                    model.plantBomb();
+                    if (model.getHero().hasBomb() && model.canPlantBomb()) {
+                        model.plantBomb();
+                        this.doOperationAfterDelay(model.getHero().getBombDelay(), new Runnable() {
+                            @Override
+                            public void run() {
+                                model.detonateBomb();
+                            }
+                            
+                        });
+                    }
                     isPlanted = true;
                 }
                 if (!inputListener.isInputActive(InputAction.PLANT_BOMB)) {
                     isPlanted = false;
                 }
             }
-            
+
             @Override
             public void updateView() {
                 view.update();
             }
         };   
-        
+
         view.setGameLoop(game);
         view.showView();
         game.start();
     }
-    
+
     @Override
     public Hero getHero() {
         return model.getHero();
@@ -105,7 +113,7 @@ public class GameControllerImpl implements GameController {
     public boolean isGameOver() {
         return model.isGameOver();
     }
-    
+
     @Override
     public int getLevelSize() {
         return model.getSize();
@@ -114,10 +122,5 @@ public class GameControllerImpl implements GameController {
     @Override
     public Set<Bomb> getPlantedBombs() {
         return model.getPlantedBombs();
-    }
-
-    @Override
-    public long getBombDelay() {
-        return model.getHero().getBombDelay();
     }
 }

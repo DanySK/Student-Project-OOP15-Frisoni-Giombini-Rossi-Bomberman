@@ -1,5 +1,9 @@
 package controller;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 /**
  *  Implementation of {@link GameLoop}.
  *  A "clock" for the game. 
@@ -11,9 +15,8 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     private static final double SLEEP_FACTOR = 0.0000001;
 
     private final int gameSpeed;
-    private boolean running;
-    private boolean paused;
-    protected boolean checkPause;
+    private volatile boolean running;
+    private volatile boolean paused;
 
     /**
      * Constructor for AbstractGameLoop.
@@ -22,16 +25,15 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         this.gameSpeed = gameSpeed;
         this.running = false;
         this.paused = false;
-        this.checkPause = false;
     }
 
     /**
      * This method is called as soon as the GameLoop is started.
      */
+    @Override
     public void run() {
         double nextTime = System.nanoTime();
         this.running = true;
-        
         while (this.running) {
             if (!this.paused) {
                 final double currTime = System.nanoTime();
@@ -48,7 +50,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                             // do nothing
                         }
                     }
-                }
+                }                
             }
         }
     }
@@ -81,6 +83,59 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     public void pause() {
         if (this.isRunning()) {
             this.paused = true;
+        }
+    }
+    
+    /**
+     * This method took a long time and an action type runnable,
+     * creates a new thread to control the time.
+     * @param delay is the time after which must take some action
+     * @param run is the action to take
+     */
+    protected void doOperationAfterDelay(final long delay, final Runnable run) {
+        new Agent(delay, run).start();
+    }
+
+    /**
+     * This class performs a certain action after a certain time.
+     */
+    private class Agent extends Thread {
+
+        final Runnable run;
+        final long delay;
+        long count = 0;
+        volatile boolean stop = false;
+
+        public Agent(final long delay, final Runnable run) {
+            this.run = run;
+            this.delay = delay;
+        }
+
+        @Override
+        public void run() {
+            while (!this.stop) {
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!paused) {
+                                try {
+                                    Thread.sleep(0001);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                count += 0001;
+                                if (count >= delay) {
+                                    run.run();
+                                    stop = true;
+                                }
+                            }
+                        }
+                    });
+                } catch (InvocationTargetException | InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 

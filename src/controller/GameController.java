@@ -43,10 +43,4 @@ public interface GameController {
      */
     Set<Bomb> getPlantedBombs();
     
-    /**
-     * This method return bomb delay.
-     * @return bomb delay
-     */
-    long getBombDelay();
-    
 }
