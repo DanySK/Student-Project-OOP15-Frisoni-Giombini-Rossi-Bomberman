@@ -16,7 +16,7 @@ public final class LanguageHandler extends ESource<Locale> {
     private static final String PATH_PROPERTIES = "languages.LabelsBundle";
 
     // The languages supported by the application.
-    private final Locale[] languages = new Locale[] {Locale.ITALY, Locale.UK};
+    private final Locale[] languages = new Locale[] {Locale.ITALY, Locale.UK, new Locale("pl")};
 
     private static volatile LanguageHandler singleton;
     private ResourceBundle res;
