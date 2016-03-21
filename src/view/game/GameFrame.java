@@ -29,7 +29,7 @@ public interface GameFrame {
     void setGameLoop(GameLoop gameLoop);
     
     /**
-     * This method adds a new KeyListener to the view.
+     * Adds a new KeyListener to the view.
      * 
      * @param listener
      *          the keyListener to add
@@ -43,17 +43,27 @@ public interface GameFrame {
     void initView();
     
     /**
-     * This method shows the user interface on the screen.
-     */
-    void showView();
-    
-    /**
      * @return the size of a tile.
      */
     int getTileSize();
+    
+    /**
+     * Shows the user interface on the screen.
+     */
+    void showView();
 
     /**
-     * This method updates the view and repaints the game panel.
+     * Updates the view and repaints the game panel.
      */
     void update();
+    
+    /**
+     * Shows a message associated to the pause-state of the game.
+     */
+    void showPauseMessage();
+    
+    /**
+     * Removes the pause message.
+     */
+    void removePauseMessage();
 }

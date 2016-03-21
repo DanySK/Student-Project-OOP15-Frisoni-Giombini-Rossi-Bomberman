@@ -36,9 +36,9 @@ public enum SoundEffect {
      */
     SELECT("/sounds/select.wav", 0.3),
     /**
-     * Game in pause sound.
+     * Game advice sound.
      */
-    PAUSE("/sounds/pause.wav", 1.0),
+    ADVICE("/sounds/advice.wav", 1.0),
     /**
      * Hero's footsteps sound.
      */

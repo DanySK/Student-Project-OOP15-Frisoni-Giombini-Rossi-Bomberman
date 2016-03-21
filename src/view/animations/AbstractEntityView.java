@@ -25,7 +25,7 @@ public abstract class AbstractEntityView implements EntityView {
     private final EnumMap<Direction, Animation> standingAnimations = new EnumMap<>(Direction.class);;
 
     private final Entity entity;
-    protected final int size;
+    private final int size;
     private Optional<Animation> currAnimation;
 
     /**
@@ -55,6 +55,13 @@ public abstract class AbstractEntityView implements EntityView {
      */
     public abstract EnumMap<Direction, List<BufferedImage>> standingFrames();
 
+    /**
+     * @return the size of the entity's view-representation.
+     */
+    protected int getSize() {
+        return this.size;
+    }
+    
     @Override
     public Image getImage() {
         updateAnimation();

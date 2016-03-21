@@ -64,9 +64,7 @@ public class BombViewImpl implements BombView {
         return BOMB_TRIGGER.size();
     }
     
-    /**
-     * @return the bomb represented.
-     */
+    @Override
     public Bomb getBomb() {
         return this.bomb;
     }

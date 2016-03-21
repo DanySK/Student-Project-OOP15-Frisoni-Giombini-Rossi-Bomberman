@@ -84,6 +84,11 @@ public interface GUIFactory {
     FadingLabel createFadingLabelOfColor(String text, Color color);
     
     /**
+     * @return a small {@link Font} for description texts.
+     */
+    Font getDescriptionFont();
+    
+    /**
      * @return a {@link Font} suitable for full frame mode.
      */
     Font getFullFrameFont();
@@ -244,6 +249,11 @@ public interface GUIFactory {
             return label;
         }
 
+        @Override
+        public Font getDescriptionFont() {
+            return DESCRIPTION_FONT;
+        }
+        
         @Override
         public Font getFullFrameFont() {
             return BIG_FONT;

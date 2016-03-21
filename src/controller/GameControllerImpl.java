@@ -107,8 +107,10 @@ public class GameControllerImpl implements GameController {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
                     if (!this.isPaused()) {
                         this.pause();
+                        view.showPauseMessage();
                     } else {
                         this.unPause();
+                        view.removePauseMessage();
                     }
                     inPaused = true;
                 }

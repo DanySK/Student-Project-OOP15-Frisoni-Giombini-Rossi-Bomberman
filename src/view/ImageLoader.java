@@ -87,6 +87,10 @@ public final class ImageLoader {
          */
         DOOR_OPENED(TILES_FOLDER + "door_opened.png"),
         /**
+         * Key to the door opening.
+         */
+        KEY(TILES_FOLDER + "key.png"),
+        /**
          * Attack-up power-up.
          */
         ATTACK_UP(TILES_FOLDER + "attack.png"),
