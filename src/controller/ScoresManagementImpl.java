@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -28,7 +29,8 @@ public class ScoresManagementImpl implements ScoresManagement {
      * Constructor for ScoreManagementImpl.
      */
     public ScoresManagementImpl(final String fileName) {
-        if (fileName == "" || fileName == null) {
+        Objects.requireNonNull(fileName);
+        if (fileName.equals("")) {
             throw new IllegalArgumentException();
         }
         this.fileName = fileName;
@@ -36,7 +38,7 @@ public class ScoresManagementImpl implements ScoresManagement {
         if (this.scores.equals(Optional.empty())) {
             this.scores = Optional.of(new ArrayList<>());
         }
-        File file = new File(this.fileName);
+        final File file = new File(this.fileName);
         if (file.exists()) {
             this.readScores();
         }
@@ -44,7 +46,8 @@ public class ScoresManagementImpl implements ScoresManagement {
 
     @Override
     public void saveName(final String playerName) {
-        if (playerName == "" || playerName == null) {
+        Objects.requireNonNull(playerName);
+        if (playerName.equals("")) {
             throw new IllegalArgumentException();
         }
         try (
@@ -53,8 +56,8 @@ public class ScoresManagementImpl implements ScoresManagement {
             this.prop.setProperty("NAME:", playerName);
             this.prop.setProperty("N_SCORES:", String.valueOf(this.scores.get().size()));
             this.prop.store(output, null);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            System.out.println(e);
         }
     }
 
@@ -70,8 +73,8 @@ public class ScoresManagementImpl implements ScoresManagement {
                 this.scores.get().add(new Pair<>(Integer.valueOf(this.prop.getProperty(i + " SCORE:")), 
                         Integer.valueOf(this.prop.getProperty(i + " TIME:"))));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            System.out.println(e);
         }
     }
 
@@ -104,8 +107,8 @@ public class ScoresManagementImpl implements ScoresManagement {
                 this.prop.setProperty(i + " TIME:", String.valueOf(this.scores.get().get(i - 1).getY()));
             }
             this.prop.store(output, null);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            System.out.println(e);
         }
     }
 
@@ -139,11 +142,11 @@ public class ScoresManagementImpl implements ScoresManagement {
 
     @Override
     public void createFile() {
-        File file = new File(this.fileName);
+        final File file = new File(this.fileName);
         try {
             file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            System.out.println(e);
         }
     }
 }

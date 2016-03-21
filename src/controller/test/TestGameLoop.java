@@ -114,6 +114,11 @@ public class TestGameLoop {
             countView++;
         }
 
+        @Override
+        public void updateGameState() {
+            
+        }
+
     }
     
 }

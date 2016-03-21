@@ -18,9 +18,10 @@ import view.game.GameFrame;
 public class GameControllerImpl implements GameController {
 
     private static final int FPS = 60;
-    private final Level model;
+    private final Level level;
     private final GameFrame view;
-    private boolean isPlanted;
+    private volatile boolean isPlanted;
+    private volatile boolean inPaused;
 
     /**
      * Constructor for GameControllerImpl.
@@ -28,10 +29,11 @@ public class GameControllerImpl implements GameController {
      * @param view the view object.
      */
     public GameControllerImpl(final Level model, final GameFrame view) {
-        this.model = model;
+        this.level = model;
         this.view = view;
         this.startGame();
         this.isPlanted = false;
+        this.inPaused = false;
     }
 
     /**
@@ -42,36 +44,45 @@ public class GameControllerImpl implements GameController {
         view.initView();
         final InputHandler inputListener = new InputHandler();
         view.setKeyListener(inputListener);
-        model.initLevel(view.getTileSize());
+        level.initLevel(view.getTileSize());
 
         final AbstractGameLoop game = new AbstractGameLoop(FPS) {
             @Override
             public void updateModel() {
                 if (inputListener.isInputActive(InputAction.MOVE_DOWN)) {
-                    model.moveHero(Direction.DOWN);
+                    level.moveHero(Direction.DOWN);
                 }
                 if (inputListener.isInputActive(InputAction.MOVE_LEFT)) {
-                    model.moveHero(Direction.LEFT);
+                    level.moveHero(Direction.LEFT);
                 }
                 if (inputListener.isInputActive(InputAction.MOVE_RIGHT)) {
-                    model.moveHero(Direction.RIGHT);
+                    level.moveHero(Direction.RIGHT);
                 }
                 if (inputListener.isInputActive(InputAction.MOVE_UP)) {
-                    model.moveHero(Direction.UP);
+                    level.moveHero(Direction.UP);
                 }
                 if (!inputListener.isInputActive(InputAction.MOVE_DOWN)
                         && !inputListener.isInputActive(InputAction.MOVE_LEFT)
                         && !inputListener.isInputActive(InputAction.MOVE_RIGHT)
                         && !inputListener.isInputActive(InputAction.MOVE_UP)) {
-                    model.getHero().setMoving(false);
+                    level.getHero().setMoving(false);
                 }
                 if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
-                    if (model.getHero().hasBomb() && model.canPlantBomb()) {
-                        model.plantBomb();
-                        this.doOperationAfterDelay(model.getHero().getBombDelay(), new Runnable() {
+                    if (level.getHero().hasBomb() && level.canPlantBomb()) {
+                        level.plantBomb();
+                        this.doOperationAfterDelay(level.getHero().getBombDelay(), new Runnable() {
                             @Override
                             public void run() {
-                                model.detonateBomb();
+                                level.detonateBomb();
+                                //view. inizia a disegnare
+                                /*doOperationAfterDelay(view dammi il tempo, new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        //view. puoi smettere di disegnare
+                                    }
+                                    
+                                });*/
                             }
                             
                         });
@@ -81,11 +92,32 @@ public class GameControllerImpl implements GameController {
                 if (!inputListener.isInputActive(InputAction.PLANT_BOMB)) {
                     isPlanted = false;
                 }
+                /*if (level.getHero().hasKey()) {
+                    //level.setOpenDoor();
+                }*/
             }
 
             @Override
             public void updateView() {
                 view.update();
+            }
+
+            @Override
+            public void updateGameState() {
+                if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
+                    if (!this.isPaused()) {
+                        this.pause();
+                    } else {
+                        this.unPause();
+                    }
+                    inPaused = true;
+                }
+                if (!inputListener.isInputActive(InputAction.PAUSE)) {
+                    inPaused = false;
+                }
+                if (level.isGameOver()) {
+                    super.stopLoop();
+                }
             }
         };   
 
@@ -96,31 +128,31 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public Hero getHero() {
-        return model.getHero();
+        return level.getHero();
     }
 
     @Override
     public Set<PowerUp> getPowerUpInLevel() {
-        return model.getPowerupInLevel();
+        return level.getPowerupInLevel();
     }
 
     @Override
     public TileType[][] getMap() {
-        return model.getMap();
+        return level.getMap();
     }
 
     @Override
     public boolean isGameOver() {
-        return model.isGameOver();
+        return level.isGameOver();
     }
 
     @Override
     public int getLevelSize() {
-        return model.getSize();
+        return level.getSize();
     }
 
     @Override
     public Set<Bomb> getPlantedBombs() {
-        return model.getPlantedBombs();
+        return level.getPlantedBombs();
     }
 }

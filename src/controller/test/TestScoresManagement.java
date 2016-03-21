@@ -60,7 +60,7 @@ public class TestScoresManagement {
         try {
             new ScoresManagementImpl("");
             fail("The file's name can't empty");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
         } catch (Exception e) {
             fail("Wrong exception thrown");
         }

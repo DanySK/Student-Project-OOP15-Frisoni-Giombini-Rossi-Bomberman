@@ -13,6 +13,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
 
     private static final double TIME_FACTOR = 1000000000.0;
     private static final double SLEEP_FACTOR = 0.0000001;
+    private static final long MILLI = 0001;
 
     private final int gameSpeed;
     private volatile boolean running;
@@ -39,10 +40,10 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                 final double currTime = System.nanoTime();
                 if (currTime >= nextTime) {
                     nextTime += TIME_FACTOR / this.gameSpeed;
-                    updateModel();
-                    updateView();
+                    this.updateModel();
+                    this.updateView();
                 } else {
-                    long sleepTime = (long) (SLEEP_FACTOR * (nextTime - currTime));
+                    final long sleepTime = (long) (SLEEP_FACTOR * (nextTime - currTime));
                     if (sleepTime > 0) {
                         try {
                             Thread.sleep(sleepTime);
@@ -50,8 +51,9 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                             // do nothing
                         }
                     }
-                }                
+                } 
             }
+            this.updateGameState();
         }
     }
 
@@ -92,8 +94,8 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      * @param delay is the time after which must take some action
      * @param run is the action to take
      */
-    protected void doOperationAfterDelay(final long delay, final Runnable run) {
-        new Agent(delay, run).start();
+    protected void doOperationAfterDelay(final long delay, final Runnable action) {
+        new Agent(delay, action).start();
     }
 
     /**
@@ -101,14 +103,16 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      */
     private class Agent extends Thread {
 
-        final Runnable run;
-        final long delay;
-        long count = 0;
-        volatile boolean stop = false;
+        private final Runnable action;
+        private final long delay;
+        private long count;
+        private volatile boolean stop;
 
-        public Agent(final long delay, final Runnable run) {
-            this.run = run;
+        public Agent(final long delay, final Runnable action) {
+            this.action = action;
             this.delay = delay;
+            this.count = 0;
+            this.stop = false;
         }
 
         @Override
@@ -120,20 +124,20 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                         public void run() {
                             if (!paused) {
                                 try {
-                                    Thread.sleep(0001);
+                                    Thread.sleep(MILLI);
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    System.out.println(e);
                                 }
-                                count += 0001;
+                                count += MILLI;
                                 if (count >= delay) {
-                                    run.run();
+                                    action.run();
                                     stop = true;
                                 }
                             }
                         }
                     });
                 } catch (InvocationTargetException | InterruptedException e1) {
-                    e1.printStackTrace();
+                    System.out.println(e1);
                 }
             }
         }
@@ -145,7 +149,12 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     public abstract void updateModel();
 
     /**
-     * This method is used to update the graphics of the game.
+     * This method is used to update the graphics of game.
      */
     public abstract void updateView();
+    
+    /**
+     * This method is used to update the state of game.
+     */
+    public abstract void updateGameState();
 }
