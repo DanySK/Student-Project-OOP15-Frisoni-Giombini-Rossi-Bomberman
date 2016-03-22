@@ -105,4 +105,8 @@ public class Tile {
     public void setKeyPowerUp(){
         this.powerup = Optional.of(PowerUpType.KEY);
     }
+    
+    public void removePowerUp(){
+        this.powerup = Optional.empty();
+    }
 }

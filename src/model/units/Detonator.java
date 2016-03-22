@@ -24,7 +24,7 @@ public class Detonator {
      */
     public Detonator(final Dimension dim){
         this.dim = dim;
-        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim));
+        this.addBomb();
     }
     
     /**

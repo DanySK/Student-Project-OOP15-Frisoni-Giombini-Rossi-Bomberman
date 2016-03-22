@@ -46,7 +46,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet,
             final Set<Tile> powerUpSet) {
-        super.getCollision().updateEntityRec(this.getCorrectDirection(dir));
+        super.getCollision().updateEntityRec(dir);
         if(super.getCollision().blockCollision(blockSet) && super.getCollision().bombCollision(bombSet, this.getHitbox()) &&
                 super.getCollision().powerUpCollision(powerUpSet)){
             this.setMoving(true);
@@ -120,7 +120,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
      *          the direction where he would move
      * @return the direction where he will move
      */
-    private Direction getCorrectDirection(final Direction dir) {
+    public Direction getCorrectDirection(final Direction dir) {
         return this.isConfused ? dir.getOppositeDirection() : dir;
     }
 

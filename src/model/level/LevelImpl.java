@@ -79,6 +79,14 @@ public class LevelImpl implements Level {
             }
             this.getDoor(factory);
             this.setKey(factory);
+            /*for (int i = 0; i < this.nTiles; i++) {
+                for (int j = 0; j < this.nTiles; j++) {
+                    if(this.map[i][j].getPowerup().isPresent()){
+                        System.out.println("ROW " + i + " COL " + j + " POWERUP " +this.map[i][j].getPowerup().get()); 
+                    }
+                    
+                }
+            }*/
         }
     }
 
@@ -134,7 +142,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        this.hero.move(dir, this.getBlocks(), this.getRectangles(this.getPlantedBombs()), this.getPowerUp());
+        this.hero.move(this.hero.getCorrectDirection(dir), this.getBlocks(), this.getRectangles(this.getPlantedBombs()), this.getPowerUp());
     }
 
     /**
@@ -166,14 +174,13 @@ public class LevelImpl implements Level {
      * Verifies if a bomb can be planted.
      */
     public boolean canPlantBomb(){
-        final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
-                MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));
-        /*final Point point = new Point(MapPoint.getCorrectPos(this.hero.getX(), this.nTiles, this.tileDimension) / this.tileDimension, 
-                MapPoint.getCorrectPos(this.hero.getY(), this.nTiles, this.tileDimension) / this.tileDimension);*/
+        /*final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
+                MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));*/
+        final Point point = new Point(MapPoint.getPos(this.hero.getX(), this.nTiles, this.tileDimension) / this.tileDimension,
+                MapPoint.getPos(this.hero.getY(), this.nTiles, this.tileDimension) / this.tileDimension);
         for(final Bomb b: this.getPlantedBombs()){
             if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
-                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point) ||
-                    this.map[point.x][point.y].equals(TileType.DOOR_CLOSED)){
+                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
                 return false;
             }
         }

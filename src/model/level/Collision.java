@@ -9,6 +9,7 @@ import model.TileType;
 import model.units.Direction;
 import model.units.Entity;
 import model.units.Hero;
+import model.units.PowerUpType;
 
 /**
  * This class is used to implement collision between
@@ -63,6 +64,7 @@ public class Collision {
                 public boolean test(final Tile t) {
                     if(entityRec.intersects(t.getBoundBox())){
                         t.getPowerup().get().apply((Hero) entity);
+                        t.removePowerUp();
                         t.setType(TileType.WALKABLE);
                     }
                     return false;
@@ -70,7 +72,6 @@ public class Collision {
             });
 
         } else {
-            System.out.println("da false");
             return false;
         }
     }

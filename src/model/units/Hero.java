@@ -69,6 +69,13 @@ public interface Hero extends Entity {
     boolean checkFlameCollision(final Set<Tile> afflictedTiles);
     
     /**
+     * 
+     * @param dir
+     * @return
+     */
+    Direction getCorrectDirection(final Direction dir);
+    
+    /**
      * Checks if he has bombs.
      * 
      * @return true if there's at least a bomb, false otherwise
