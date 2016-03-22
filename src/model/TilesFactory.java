@@ -11,13 +11,12 @@ import model.units.PowerUpType;
  * there will be in a specific position.
  */
 public class TilesFactory {
-    
+
     private final int rows;
     private final int columns;
     private final double blockDensity;
     private final double powerupDensity;
     private final int tileDimension;
-    private final boolean isKeyPresent;
 
     /**
      * Construct a TileFactory.
@@ -32,13 +31,12 @@ public class TilesFactory {
      *          the dimension of a tile
      */
     public TilesFactory(final int rows, final int columns, final double blockDensity, 
-                        final double powerupDensity, final int tileDimension) {
+            final double powerupDensity, final int tileDimension) {
         this.rows = rows;
         this.columns = columns;
         this.blockDensity = blockDensity;
         this.powerupDensity = powerupDensity;
         this.tileDimension = tileDimension;
-        this.isKeyPresent = false;
     }
 
     /**
@@ -53,6 +51,9 @@ public class TilesFactory {
     public Tile createForCoordinates(final int row, final int column) {
         final TileType type = getTypeForCoordinates(row, column);
         final Optional<PowerUpType> powerup = this.getPowerup(type);
+        /*if(powerup.isPresent()){
+            System.out.println("TYPE " + type + " ROW " + row + " COL " + column + " POWERUP " + powerup.get()) ;
+        }*/
         return new Tile(type, powerup, row, column, this.tileDimension);
     }
 
@@ -82,7 +83,11 @@ public class TilesFactory {
      *          the set of walkable tiles
      */
     public void setDoor(final Set<Tile> walkableTiles){
-         walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
+        walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
+    }
+
+    public void setKey(final Set<Tile> rubbleTiles) {
+        rubbleTiles.stream().findAny().get().setKeyPowerUp();
     }
     
     /**
@@ -112,7 +117,7 @@ public class TilesFactory {
     private boolean isEntryPoint(final int row, final int column) {
         return row <= 2 && column <= 2;
     }
-    
+
     /**
      * Gets a correct type of powerup for the specified block.
      * 
@@ -121,26 +126,25 @@ public class TilesFactory {
      * @return an Optional<Powerup> because a block might not have a powerup
      */
     private Optional<PowerUpType> getPowerup(final TileType type){
-        if(!type.equals(TileType.RUBBLE) || Math.random() < this.powerupDensity){
-            return Optional.empty();
+        if(!type.equals(TileType.RUBBLE)){
+                return Optional.empty();
         }
         else{
-            int pType = this.getPowerUpType();
-            if(this.isKeyPresent){
-                while(pType != PowerUpType.KEY.ordinal()){
-                    pType = this.getPowerUpType();
-                }
+            if(Math.random() < this.powerupDensity){
+                return Optional.empty();
+            } else {
+                int pType = this.getPowerUpType();
+                return Optional.of(PowerUpType.values()[pType]);
             }
-            return Optional.of(PowerUpType.values()[pType]);
         }
     }
-    
+
     /**
      * Gets a random powerup type.
      * 
      * @return a powerup type
      */
     public int getPowerUpType(){
-        return new Random().nextInt(PowerUpType.values().length);
+        return new Random().nextInt(PowerUpType.values().length - 1);
     }
 }

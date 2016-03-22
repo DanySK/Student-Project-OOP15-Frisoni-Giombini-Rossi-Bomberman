@@ -29,14 +29,9 @@ public interface Hero extends Entity {
     void increaseBomb();
     
     /**
-     * Sets the flamepass.
+     * Set the hero to be confused or not.
      */
-    void setFlamepass();
-    
-    /**
-     * Set the hero to be confused.
-     */
-    void setConfusion();
+    void setConfusion(final boolean b);
     
     /**
      * This method increase the range of a hero's bomb.
@@ -48,14 +43,7 @@ public interface Hero extends Entity {
      * 
      * @return the hero's attack level
      */
-    int getAttack();
-    
-    /**
-     * Checks if the hero's got the flamepass.
-     * 
-     * @return true if he's got this powerup, false otherwise
-     */
-    boolean checkFlamepass();  
+    int getAttack();  
     
     /**
      * Plants a bomb.
@@ -98,4 +86,12 @@ public interface Hero extends Entity {
      * Set the key.
      */
     void setKey();
+    
+    /**
+     * Checks if the hero's got the key.
+     * 
+     * @return true if he's got it, false otherwise
+     */
+    boolean hasKey();   
+    
 }

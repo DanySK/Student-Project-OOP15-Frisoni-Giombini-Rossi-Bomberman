@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
+import model.Tile;
 import model.level.Collision;
 
 /**
@@ -33,15 +34,16 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         this.lives = INITIAL_LIVES;
     }
 
-    public abstract boolean checkCollision(Direction dir, Set<Rectangle> blockSet, Set<Rectangle> plantedBombs);
+    public abstract boolean checkCollision(Direction dir, Set<Rectangle> blockSet, Set<Rectangle> plantedBombs, 
+            final Set<Tile> powerUpSet);
 
     /**
      * Abstract method, the implementation is 
      * different depending on the type of the entity.
      */
     @Override
-    public void move(final Direction d, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet){
-        if(this.checkCollision(d, blockSet, bombSet)){
+    public void move(final Direction d, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet, final Set<Tile> powerUpSet){
+        if(this.checkCollision(d, blockSet, bombSet, powerUpSet)){
             this.updatePosition(this.getPossiblePos(d.getPoint()));
             this.updateDirection(d);
         }
@@ -52,6 +54,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
      */
     @Override
     public void modifyLife(final int change) {
+        System.out.println("life");
         this.lives += change;        
     }
     

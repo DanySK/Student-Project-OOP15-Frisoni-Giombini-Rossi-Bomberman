@@ -92,7 +92,6 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpImages.put(PowerUpType.RANGE, ImageLoader.getLoader().createImageOfSize(GameImage.RANGE_UP, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.HURT, ImageLoader.getLoader().createImageOfSize(GameImage.LIFE_DOWN, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
         this.gameOverImage = new GameOverImage(this);
         this.gameOverImage.run();

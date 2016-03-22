@@ -24,14 +24,14 @@ public class Detonator {
      */
     public Detonator(final Dimension dim){
         this.dim = dim;
-        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim ));
+        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim));
     }
     
     /**
      * It adds a bomb to the List.
      */
     public void addBomb(){
-        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim ));
+        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim));
     }
 
     /**

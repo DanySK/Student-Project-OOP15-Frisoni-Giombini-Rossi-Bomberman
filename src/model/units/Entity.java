@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
+import model.Tile;
 import model.level.Collision;
 
 public interface Entity extends LevelElement{
@@ -14,7 +15,8 @@ public interface Entity extends LevelElement{
      * 
      * @return true if there's a collision, false otherwise
      */
-    boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet);
+    boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet, 
+            final Set<Tile> powerUpSet);
     
     /**
      * This method allow the entity to move.
@@ -22,7 +24,7 @@ public interface Entity extends LevelElement{
      * @param dir
      *          the direction where to move
      */
-    void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet);
+    void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet, final Set<Tile> powerUpSet);
     
     /**
      * Method that modify the current value of lives.

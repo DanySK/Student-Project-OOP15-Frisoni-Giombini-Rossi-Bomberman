@@ -28,5 +28,10 @@ public enum TileType {
     /**
      * The closed door.
      */
-    DOOR_CLOSED;
+    DOOR_CLOSED,
+    
+    /**
+     * The tile is uncovered.
+     */
+    POWERUP_STATUS;
 }

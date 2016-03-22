@@ -2,7 +2,6 @@ package model.units;
 
 import java.util.Random;
 
-import view.LanguageHandler;
 
 /**
  * The entire list of powerups realized in the game.
@@ -52,20 +51,20 @@ public enum PowerUpType {
     /**
      * Set flamepass.
      */
-    FLAMEPASS() {
+    CONFUSION_OFF() {
         @Override
         public void doApply(final Hero hero) {
-            hero.setFlamepass();
+            hero.setConfusion(false);
         }
     },
     
     /**
      * Set confusion.
      */
-    CONFUSION() {
+    CONFUSION_ON() {
         @Override
         public void doApply(final Hero hero) {
-            hero.setConfusion();
+            hero.setConfusion(true);
         }
     },
     
@@ -104,22 +103,8 @@ public enum PowerUpType {
         }
     };
 
-    static {
-        ATTACK.message = LanguageHandler.getHandler().getLocaleResource().getString("attack");
-        LIFE.message = LanguageHandler.getHandler().getLocaleResource().getString("life");
-        BOMB.message = LanguageHandler.getHandler().getLocaleResource().getString("bomb");
-        RANGE.message = LanguageHandler.getHandler().getLocaleResource().getString("range");
-        FLAMEPASS.message = LanguageHandler.getHandler().getLocaleResource().getString("flamepass");
-        CONFUSION.message = LanguageHandler.getHandler().getLocaleResource().getString("confusion");
-        HURT.message = LanguageHandler.getHandler().getLocaleResource().getString("hurt");
-        MYSTERY.message = " ";
-        KEY.message = " ";
-    }
-
-
     private static final int INC_LIFE = 1;
     private static final int DEC_LIFE = -1;
-    private String message;
     
     /**
      * Applies the powerup's power.
@@ -132,15 +117,6 @@ public enum PowerUpType {
     }
     
     public abstract void doApply(final Hero hero);
-
-    /**
-     * Gets powerup's message.
-     * 
-     * @return powerup's message
-     */
-    public String getMessage(){
-        return this.message;
-    }
-   
+    
 }
 

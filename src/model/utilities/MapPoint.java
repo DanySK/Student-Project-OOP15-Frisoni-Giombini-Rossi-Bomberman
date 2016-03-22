@@ -36,7 +36,7 @@ public final class MapPoint {
     public static int getCoordinate(final int coordinate, final int tileDimension){
         return coordinate * tileDimension;
     }  
-    
+
     /**
      * Calculates the position in the map.
      * 
@@ -60,6 +60,16 @@ public final class MapPoint {
             }
         }
         return index * tileDimension;
+    }
+
+    public static int getCorrectPos(final int coordinate, final int nTiles, final int tileDimension){
+        if((MapPoint.getPos(coordinate, nTiles, tileDimension) + tileDimension) - coordinate < 
+        (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) + tileDimension) - coordinate + tileDimension){
+            return MapPoint.getPos(coordinate, nTiles, tileDimension);
+        } else if ((MapPoint.getPos(coordinate, nTiles, tileDimension) + tileDimension) - coordinate > 
+        (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) + tileDimension) - coordinate + tileDimension){
+            return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
+        } else return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
     }
 
     /**

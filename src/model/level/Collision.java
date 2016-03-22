@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import model.Tile;
+import model.TileType;
 import model.units.Direction;
 import model.units.Entity;
 import model.units.Hero;
@@ -62,14 +63,14 @@ public class Collision {
                 public boolean test(final Tile t) {
                     if(entityRec.intersects(t.getBoundBox())){
                         t.getPowerup().get().apply((Hero) entity);
-                        return true;
-                    } else {
-                        return false;
+                        t.setType(TileType.WALKABLE);
                     }
+                    return false;
                 }
             });
 
         } else {
+            System.out.println("da false");
             return false;
         }
     }
@@ -84,6 +85,7 @@ public class Collision {
      * @return true if there's a collision, false otherwise
      */
     public boolean bombCollision(final Set<Rectangle> bombSet, final Rectangle recEntity){
+        if(this.entity instanceof Hero){
         return this.elementCollision(bombSet, new Predicate<Rectangle>(){
             @Override
             public boolean test(final Rectangle rec) {
@@ -95,6 +97,9 @@ public class Collision {
                 }
             }
         });
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -117,6 +122,7 @@ public class Collision {
 
     /**
      * This method is used to check if there's a collision whit a generic element.
+     * @param <Y>
      * 
      * @param set
      *          the set of elements

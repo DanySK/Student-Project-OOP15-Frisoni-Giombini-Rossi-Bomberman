@@ -38,13 +38,14 @@ public class LevelImpl implements Level {
     private Hero hero;
     private int tileDimension;
     private int nTiles;
-    private boolean inGame;
+    private boolean gameOver;
 
     /**
      * The constructor is used to set the size of the map,
      * because it's the first thing to do to start the game.
      */
     public LevelImpl() {
+        this.gameOver = false;
         this.setNumberTiles();
     }
 
@@ -77,9 +78,10 @@ public class LevelImpl implements Level {
                 }
             }
             this.getDoor(factory);
+            this.setKey(factory);
         }
     }
-    
+
     /**
      * Selects all the walkable tiles and set the door in a random way.
      * 
@@ -90,15 +92,30 @@ public class LevelImpl implements Level {
         factory.setDoor(this.getGenericSet(new Function<Tile, Optional<Tile>>(){
             @Override
             public Optional<Tile> apply(final Tile t) {
-               if(t.getType().equals(TileType.WALKABLE)){
-                   return Optional.of(t);
-               } else {
-                   return Optional.empty();
-               }
+                if(t.getType().equals(TileType.WALKABLE)){
+                    return Optional.of(t);
+                } else {
+                    return Optional.empty();
+                }
             }
         }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet()));
     }
-    
+
+    private void setKey(final TilesFactory factory){
+        factory.setKey(this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+
+            @Override
+            public Optional<Tile> apply(Tile t) {
+                if(t.getType().equals(TileType.RUBBLE)){
+                    return Optional.of(t);
+                } else {
+                    return Optional.empty();
+                }
+            }
+
+        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet()));
+    }
+
     /**
      * This method generates a random value to set
      * as the size of the map.
@@ -117,7 +134,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        this.hero.move(dir, this.getBlocks(), this.getRectangles(this.getPlantedBombs()));
+        this.hero.move(dir, this.getBlocks(), this.getRectangles(this.getPlantedBombs()), this.getPowerUp());
     }
 
     /**
@@ -134,13 +151,11 @@ public class LevelImpl implements Level {
     @Override
     public Set<Tile> detonateBomb() {
         final Bomb b = this.hero.getDetonator().getPlantedBombs().getFirst();
-        if(!this.hero.checkFlamepass()){
-            if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
-                this.hero.modifyLife(-1);
-                if(this.hero.isDead()){
-                    this.inGame = false;
-                    System.out.println("Hero is dead!");
-                }
+        if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
+            this.hero.modifyLife(-1);
+            if(this.hero.isDead()){
+                this.gameOver = true;
+                System.out.println("Hero is dead!");
             }
         }
         this.hero.getDetonator().reactivateBomb();
@@ -153,9 +168,12 @@ public class LevelImpl implements Level {
     public boolean canPlantBomb(){
         final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
                 MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));
+        /*final Point point = new Point(MapPoint.getCorrectPos(this.hero.getX(), this.nTiles, this.tileDimension) / this.tileDimension, 
+                MapPoint.getCorrectPos(this.hero.getY(), this.nTiles, this.tileDimension) / this.tileDimension);*/
         for(final Bomb b: this.getPlantedBombs()){
             if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
-                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
+                    MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point) ||
+                    this.map[point.x][point.y].equals(TileType.DOOR_CLOSED)){
                 return false;
             }
         }
@@ -186,7 +204,7 @@ public class LevelImpl implements Level {
         return this.getGenericSet(new Function<Tile, Optional<PowerUp>>(){
             @Override
             public Optional<PowerUp> apply(Tile t) {
-                if(t.getType().equals(TileType.WALKABLE) && t.getPowerup().isPresent()){
+                if(t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent()){
                     return Optional.of(new PowerUp(t.getRow(), t.getCol(), t.getPowerup().get()));
                 } else {
                     return Optional.empty();
@@ -238,7 +256,7 @@ public class LevelImpl implements Level {
             return coordinate + range;
         }
     }
-    
+
     /**
      * This method returns the set of afflicted tiles 
      * in a certain direction.
@@ -273,7 +291,11 @@ public class LevelImpl implements Level {
                 }
                 else {
                     if(this.map[i][j].getType().equals(TileType.RUBBLE)){
-                        this.map[i][j].setType(TileType.WALKABLE);
+                        if(this.map[i][j].getPowerup().isPresent()){
+                            this.map[i][j].setType(TileType.POWERUP_STATUS);
+                        } else {
+                            this.map[i][j].setType(TileType.WALKABLE);
+                        }
                     }
                     afflictedTiles.add(this.map[i][j]);
                 }
@@ -292,7 +314,8 @@ public class LevelImpl implements Level {
         return this.getGenericSet(new Function<Tile, Optional<Rectangle>>(){
             @Override
             public Optional<Rectangle> apply(final Tile t) {
-                if (!t.getType().equals(TileType.WALKABLE) && !t.getType().equals(TileType.DOOR_CLOSED)){
+                if (!t.getType().equals(TileType.WALKABLE) && !t.getType().equals(TileType.DOOR_CLOSED) &&
+                        !t.getType().equals(TileType.POWERUP_STATUS)){
                     return Optional.of(t.getBoundBox());
                 } else {
                     return Optional.empty();
@@ -311,13 +334,13 @@ public class LevelImpl implements Level {
 
             @Override
             public Optional<Tile> apply(final Tile t) {
-                if(t.getType().equals(TileType.WALKABLE) && t.getPowerup().isPresent()){
+                if(t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent()){
                     return Optional.of(t);
                 } else {
                     return Optional.empty();
                 }
             }
-            
+
         }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
     }
 
@@ -375,7 +398,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public boolean isGameOver() {
-        return this.inGame;
+        return this.gameOver;
     }
 
     /**
@@ -386,6 +409,19 @@ public class LevelImpl implements Level {
      */
     private <X extends LevelElement> Set<Rectangle> getRectangles(final Set<X> set ){
         return set.stream().map(p -> p.getHitbox()).collect(Collectors.toSet());
+    }
+
+    /**
+     * Set the open door.
+     */
+    public void setOpenDoor(){
+        for(int i = 0; i < this.nTiles; i++){
+            for(int j = 0; j < this.nTiles; j++){
+                if(this.map[i][j].equals(TileType.DOOR_CLOSED)){
+                    this.map[i][j].setType(TileType.DOOR_OPENED);
+                }
+            }
+        }
     }
 
 }

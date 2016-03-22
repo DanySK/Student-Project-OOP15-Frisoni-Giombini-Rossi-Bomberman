@@ -107,5 +107,10 @@ public interface Level {
      * @return true if the game is over, otherwise false
      */
     boolean isGameOver();
+    
+    /**
+     * Set the tile type of the door to door_opened.
+     */
+    void setOpenDoor();
 
 }

@@ -13,7 +13,7 @@ import model.utilities.MapPoint;
 public class Tile {
 
     private TileType type;
-    private final Optional<PowerUpType> powerup;
+    private Optional<PowerUpType> powerup;
     private final Rectangle boundBox;
     private final int row;
     private final int column;
@@ -97,5 +97,12 @@ public class Tile {
      */
     public void setType(final TileType newType){
         this.type = newType;
+    }
+    
+    /**
+     * Sets the key.
+     */
+    public void setKeyPowerUp(){
+        this.powerup = Optional.of(PowerUpType.KEY);
     }
 }
