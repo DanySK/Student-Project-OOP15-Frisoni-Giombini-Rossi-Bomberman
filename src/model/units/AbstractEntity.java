@@ -16,11 +16,15 @@ import model.level.Collision;
 public abstract class AbstractEntity extends LevelElementImpl implements Entity {
 
     private static final int INITIAL_LIVES = 1;
+    private static final int INITIAL_ATTACK = 1;
+    private static final int INITIAL_SCORE = 0;
 
     private Direction curDir;
     private final Collision collision;
     protected boolean inMovement;
     private int lives;
+    private int attack;
+    protected int score;
 
 
     /**
@@ -32,6 +36,8 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         this.curDir = dir; 
         this.inMovement = false;
         this.lives = INITIAL_LIVES;
+        this.attack = INITIAL_ATTACK;
+        this.score = INITIAL_SCORE;
     }
 
     public abstract boolean checkCollision(Direction dir, Set<Rectangle> blockSet, Set<Rectangle> plantedBombs, 
@@ -115,6 +121,43 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     @Override
     public boolean isMoving() {
         return this.inMovement;
+    }
+    
+    /**
+     * Checks flame collisions.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
+    @Override
+    public boolean checkFlameCollision(final Set<Tile> afflictedTiles) {
+        return this.getCollision().fireCollision(afflictedTiles, this.getHitbox());
+    }
+
+    /**
+     * Gets entiry's attack.
+     * 
+     * @return entity's attack
+     */
+    @Override
+    public int getAttack() {
+        return this.attack;
+    }
+
+    /**
+     * Increase attack level.
+     */
+    @Override
+    public void increaseAttack() {
+        this.attack++;        
+    }
+    
+    /**
+     * Gets entity's score.
+     * 
+     * @return entity's score
+     */
+    public int getScore(){
+        return this.score;
     }
 
 }

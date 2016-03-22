@@ -19,6 +19,15 @@ public interface Entity extends LevelElement{
             final Set<Tile> powerUpSet);
     
     /**
+     * Checks collisions with flames.
+     * 
+     * @param afflictedTiles
+     *          set of afflicted tiles
+     * @return true if there's a collision, false otherwise
+     */
+    boolean checkFlameCollision(final Set<Tile> afflictedTiles);
+    
+    /**
      * This method allow the entity to move.
      * 
      * @param dir
@@ -85,4 +94,23 @@ public interface Entity extends LevelElement{
      * @return true if he's in movement, false otherwise
      */
     boolean isMoving();
+    
+    /**
+     * This method return the attack level.
+     * 
+     * @return the hero's attack level
+     */
+    int getAttack();
+    
+    /**
+     * Increase hero's attack level.
+     */
+    void increaseAttack();
+    
+    /**
+     * Gets the entity's score.
+     * 
+     * @return entity's score
+     */
+    int getScore();
 }

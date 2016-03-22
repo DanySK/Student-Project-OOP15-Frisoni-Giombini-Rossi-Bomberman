@@ -13,10 +13,7 @@ import model.utilities.MapPoint;
  */
 public class HeroImpl extends AbstractEntity implements Hero {
 
-    private static final int INITIAL_ATTACK = 2;
-
     private final Detonator detonator;
-    private int attack;
     private boolean isConfused;
     private boolean key;
 
@@ -33,7 +30,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public HeroImpl(final Point pos, final Direction dir, final Dimension dim) {
         super(pos, dir, dim);
         this.detonator = new Detonator(dim);
-        this.attack = INITIAL_ATTACK;
         this.isConfused = false;
         this.key = false;
     }
@@ -66,15 +62,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     }
 
     /**
-     * Increase the attack level.
-     */
-    @Override
-    public void increaseAttack() {
-        System.out.println("attack");
-        this.attack++;        
-    }
-
-    /**
      * Sets confusion.
      */
     @Override
@@ -101,16 +88,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
         if(this.detonator.hasBombs()){
             this.detonator.increaseRange(); 
         }
-    } 
-
-    /**
-     * Gets hero's attack.
-     * 
-     * @return hero's attack
-     */
-    @Override
-    public int getAttack() {
-        return this.attack;
     } 
 
     /**
@@ -145,16 +122,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public long getBombDelay() {
         return this.detonator.getBombDelay();        
-    }
-
-    /**
-     * Checks flame collisions.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
-    @Override
-    public boolean checkFlameCollision(final Set<Tile> afflictedTiles) {
-        return this.getCollision().fireCollision(afflictedTiles, this.getHitbox());
     }
 
     /**
@@ -194,6 +161,14 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public boolean hasKey() {
         return this.key;
+    }
+
+    /**
+     * Increases hero's score.
+     */
+    @Override
+    public void increaseScore(int enemyScore) {
+        super.score += enemyScore; 
     }
     
 }

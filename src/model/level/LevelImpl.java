@@ -159,6 +159,7 @@ public class LevelImpl implements Level {
     @Override
     public Set<Tile> detonateBomb() {
         final Bomb b = this.hero.getDetonator().getPlantedBombs().getFirst();
+        //controlla nemici e in caso aggiungi punteggio all'hero
         if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
             this.hero.modifyLife(-1);
             if(this.hero.isDead()){
@@ -236,12 +237,12 @@ public class LevelImpl implements Level {
         afflictedTiles.addAll(this.getAfflictedTiles(b, 
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension),
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), b.getRange()),
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), +b.getRange()),
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
         afflictedTiles.addAll(this.getAfflictedTiles(b, MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), b.getRange())));
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));
         return afflictedTiles;
     }
 
@@ -308,6 +309,10 @@ public class LevelImpl implements Level {
                 }
             }
         }
+        /*for(Tile t: afflictedTiles){
+            System.out.println("Tile " + t.getRow() + " " + t.getCol());
+        }
+        System.out.println("stop");*/
         return afflictedTiles;
     }
 
@@ -338,7 +343,6 @@ public class LevelImpl implements Level {
      */    
     private Set<Tile> getPowerUp(){
         return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
-
             @Override
             public Optional<Tile> apply(final Tile t) {
                 if(t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent()){
@@ -347,7 +351,6 @@ public class LevelImpl implements Level {
                     return Optional.empty();
                 }
             }
-
         }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
     }
 

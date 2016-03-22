@@ -1,8 +1,5 @@
 package model.units;
 
-import java.util.Set;
-
-import model.Tile;
 
 /**
  * This class models a Hero.
@@ -17,11 +14,6 @@ public interface Hero extends Entity {
      *          true if he's in movements, false otherwise
      */
     void setMoving(boolean b);
-    
-    /**
-     * Increase hero's attack level.
-     */
-    void increaseAttack();
             
     /**
      * Increase the number of bombs.
@@ -36,14 +28,7 @@ public interface Hero extends Entity {
     /**
      * This method increase the range of a hero's bomb.
      */
-    void increaseRange();
-
-    /**
-     * This method return the attack level.
-     * 
-     * @return the hero's attack level
-     */
-    int getAttack();  
+    void increaseRange();  
     
     /**
      * Plants a bomb.
@@ -58,15 +43,6 @@ public interface Hero extends Entity {
      * @return bomb's delay
      */
     long getBombDelay();
-    
-    /**
-     * Checks collisions with flames.
-     * 
-     * @param afflictedTiles
-     *          set of afflicted tiles
-     * @return true if there's a collision, false otherwise
-     */
-    boolean checkFlameCollision(final Set<Tile> afflictedTiles);
     
     /**
      * 
@@ -100,5 +76,13 @@ public interface Hero extends Entity {
      * @return true if he's got it, false otherwise
      */
     boolean hasKey();   
+    
+    /**
+     * Increase hero's score.
+     * 
+     * @param score
+     *          score to add
+     */
+    void increaseScore(final int enemyScore);
     
 }

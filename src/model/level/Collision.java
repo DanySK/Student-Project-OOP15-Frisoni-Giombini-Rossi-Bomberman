@@ -9,7 +9,6 @@ import model.TileType;
 import model.units.Direction;
 import model.units.Entity;
 import model.units.Hero;
-import model.units.PowerUpType;
 
 /**
  * This class is used to implement collision between
@@ -120,6 +119,17 @@ public class Collision {
         }
         return false;
     }
+    
+    /*public boolean heroCollision(final Entity heroEntity){
+        if(this.entity instanceof classe giulia){
+            if(this.entityRec.intersects(heroEntity.getHitbox())){
+                heroEntity.modifyLife(-this.entity.getAttack());
+                return true;
+            }
+        }  else {
+            return false;
+        }
+    }*/
 
     /**
      * This method is used to check if there's a collision whit a generic element.
