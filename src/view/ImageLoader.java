@@ -55,9 +55,9 @@ public final class ImageLoader {
          */
         SETTINGS(MENU_FOLDER + "settings.png"),
         /**
-         * Credits button image.
+         * Info button image.
          */
-        CREDITS(MENU_FOLDER + "credits.png"),
+        INFO(MENU_FOLDER + "info.png"),
         /**
          * The Bomberman's image displayed the first time.
          */
@@ -113,7 +113,11 @@ public final class ImageLoader {
         /**
          * Confused direction power-up.
          */
-        CONFUSION(TILES_FOLDER + "confusion.png"),
+        CONFUSION_ON(TILES_FOLDER + "confusion_on.png"),
+        /**
+         * Reset direction power-up.
+         */
+        CONFUSION_OFF(TILES_FOLDER + "confusion_off.png"),
         /**
          * Life-down power-up.
          */

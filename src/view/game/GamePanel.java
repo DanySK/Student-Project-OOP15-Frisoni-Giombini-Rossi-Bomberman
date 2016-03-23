@@ -67,8 +67,8 @@ public class GamePanel extends JPanel implements ActionListener {
          */
         final int nTiles = this.controller.getLevelSize();
         this.tileSize = calculateTileSize(SCALE, nTiles);
-        this.setPreferredSize(new Dimension(nTiles * this.tileSize, nTiles * this.tileSize)); 
-
+        this.setPreferredSize(new Dimension(nTiles * this.tileSize, nTiles * this.tileSize));
+        
         /*
          * EnumMap for associating the tiles' types with images.
          * At the inclusion, it scales the images (one time).
@@ -91,7 +91,10 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpImages.put(PowerUpType.BOMB, ImageLoader.getLoader().createImageOfSize(GameImage.BOMBS_UP, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.RANGE, ImageLoader.getLoader().createImageOfSize(GameImage.RANGE_UP, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.HURT, ImageLoader.getLoader().createImageOfSize(GameImage.LIFE_DOWN, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.CONFUSION_ON, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_ON, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.CONFUSION_OFF, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_OFF, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
         this.gameOverImage = new GameOverImage(this);
         this.gameOverImage.run();
