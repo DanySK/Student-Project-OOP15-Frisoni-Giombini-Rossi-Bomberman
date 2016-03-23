@@ -66,7 +66,12 @@ public class HeroImpl extends AbstractEntity implements Hero {
      */
     @Override
     public void setConfusion(final boolean b) {
-        System.out.println("confusion");
+        if(b){
+            System.out.println("confusion_on"); 
+        } else {
+            System.out.println("confusion_off");
+        }
+        
         this.isConfused = b;
     }
 
@@ -108,10 +113,9 @@ public class HeroImpl extends AbstractEntity implements Hero {
      */
     @Override
     public Bomb plantBomb(final int nTiles) {
-        return this.detonator.plantBomb(new Point(MapPoint.getPos(this.getX(), nTiles, this.getHitbox().width),
-                MapPoint.getPos(this.getY(), nTiles, this.getHitbox().width)));
-        /*return this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width),
-                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));*/
+        return this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+        
     }
 
     /**

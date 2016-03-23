@@ -63,13 +63,15 @@ public final class MapPoint {
     }
 
     public static int getCorrectPos(final int coordinate, final int nTiles, final int tileDimension){
-        if((MapPoint.getPos(coordinate, nTiles, tileDimension) + tileDimension) - coordinate < 
-        (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) + tileDimension) - coordinate + tileDimension){
-            return MapPoint.getPos(coordinate, nTiles, tileDimension);
-        } else if ((MapPoint.getPos(coordinate, nTiles, tileDimension) + tileDimension) - coordinate > 
-        (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) + tileDimension) - coordinate + tileDimension){
+        if(coordinate - MapPoint.getPos(coordinate, nTiles, tileDimension) < 
+                coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
             return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
-        } else return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
+        } else if(coordinate - MapPoint.getPos(coordinate, nTiles, tileDimension) > 
+                coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
+            return MapPoint.getPos(coordinate, nTiles, tileDimension);
+        } else {
+            return MapPoint.getPos(coordinate, nTiles, tileDimension);
+        }
     }
 
     /**

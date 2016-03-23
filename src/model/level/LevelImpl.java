@@ -82,7 +82,7 @@ public class LevelImpl implements Level {
             /*for (int i = 0; i < this.nTiles; i++) {
                 for (int j = 0; j < this.nTiles; j++) {
                     if(this.map[i][j].getPowerup().isPresent()){
-                        System.out.println("ROW " + i + " COL " + j + " POWERUP " +this.map[i][j].getPowerup().get()); 
+                        System.out.println("TYPE " + this.map[i][j].getType() + " ROW " + i + " COL " + j + " POWERUP " +this.map[i][j].getPowerup().get()); 
                     }
                     
                 }
