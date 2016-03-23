@@ -15,7 +15,7 @@ public enum PowerUpType {
      */
     ATTACK(){
         public void doApply(final Hero hero){
-            hero.increaseAttack();
+            hero.increaseAttack(INC);
         }
     },
     
@@ -24,7 +24,7 @@ public enum PowerUpType {
      */
     LIFE(){
         public void doApply(final Hero hero){
-            hero.modifyLife(INC_LIFE);
+            hero.modifyLife(INC);
         }
     },
     
@@ -74,7 +74,7 @@ public enum PowerUpType {
     HURT() {
         @Override
         public void doApply(final Hero hero) {
-            hero.modifyLife(DEC_LIFE);
+            hero.modifyLife(DEC);
         }
     },
     
@@ -87,7 +87,7 @@ public enum PowerUpType {
             Random random = new Random();
             PowerUpType powerup = MYSTERY;
             while (powerup == MYSTERY) {
-                powerup = PowerUpType.values()[random.nextInt(PowerUpType.values().length)];
+                powerup = PowerUpType.values()[random.nextInt(PowerUpType.values().length - 1)];
             }
             powerup.doApply(hero);
         }
@@ -103,8 +103,8 @@ public enum PowerUpType {
         }
     };
 
-    private static final int INC_LIFE = 1;
-    private static final int DEC_LIFE = -1;
+    private static final int INC = 1;
+    private static final int DEC = -1;
     
     /**
      * Applies the powerup's power.

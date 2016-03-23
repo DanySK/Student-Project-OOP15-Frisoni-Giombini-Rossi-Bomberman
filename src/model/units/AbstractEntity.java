@@ -147,8 +147,8 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
      * Increase attack level.
      */
     @Override
-    public void increaseAttack() {
-        this.attack++;        
+    public void increaseAttack(final int attackToAdd) {
+        this.attack += attackToAdd;        
     }
     
     /**

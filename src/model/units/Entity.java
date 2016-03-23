@@ -105,7 +105,7 @@ public interface Entity extends LevelElement{
     /**
      * Increase hero's attack level.
      */
-    void increaseAttack();
+    void increaseAttack(final int attackToAdd);
     
     /**
      * Gets the entity's score.

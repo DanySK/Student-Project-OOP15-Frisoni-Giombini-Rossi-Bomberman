@@ -3,7 +3,6 @@ package model.units;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 /**
  * This class represent the hero's bomb set.
@@ -104,6 +103,13 @@ public class Detonator {
      * @return the list of planted bombs
      */
     public LinkedList<Bomb> getPlantedBombs(){
-        return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
+        //return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<Bomb> plantedBombs = new LinkedList<>();
+        for(Bomb b: this.bombList){
+            if(b.isPositioned()){
+                plantedBombs.addLast(b);
+            }
+        }
+        return plantedBombs;
     }
 }
