@@ -2,7 +2,7 @@ package view.menu;
 
 import javax.swing.JPanel;
 
-import view.menu.views.CreditsView;
+import view.menu.views.InformationView;
 import view.menu.views.MenuView;
 import view.menu.views.ScoresView;
 import view.menu.views.SettingsView;
@@ -22,7 +22,7 @@ public interface MenuFrame {
         HOME(new MenuView()),
         SCORES(new ScoresView()),
         SETTINGS(new SettingsView()),
-        CREDITS(new CreditsView()),
+        CREDITS(new InformationView()),
         WELCOME(new WelcomeView());
 
         private final JPanel panel;

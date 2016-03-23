@@ -1,4 +1,4 @@
-package view.menu.views;
+package view.menu.views.panels;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -15,21 +15,14 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import view.GUIFactory;
-import view.LanguageHandler;
-import view.menu.AbstractMenuPanel;
 import view.menu.components.FadingLabel;
 
 /**
- * This class handles the credits scene of the menu.
+ * This class handles the credit panel of the game.
  *
  */
-public class CreditsView extends AbstractMenuPanel {
-
-    /**
-     * Auto-generated UID.
-     */
-    private static final long serialVersionUID = 1713293706664779618L;
-
+public class CreditsPanel {
+    
     /*
      * This map contains the name of the contributors and the list of jobs they perform.
      */
@@ -40,13 +33,10 @@ public class CreditsView extends AbstractMenuPanel {
         CONTRIBUTORS.put("Giacomo Frisoni", Arrays.asList("View"));
         CONTRIBUTORS.put("Giulia Giombini", Arrays.asList("Controller", "Tests", "Enemies"));
     }
-
-    @Override
-    public String getTitle() {
-        return LanguageHandler.getHandler().getLocaleResource().getString("credits");
-    }
-
-    @Override
+    
+    /**
+     * @return a panel with authors' information.
+     */
     public JPanel getPanel() {
         final GUIFactory factory = new GUIFactory.Standard();
         final JPanel panel = new JPanel(new GridBagLayout());
@@ -104,7 +94,7 @@ public class CreditsView extends AbstractMenuPanel {
             }
         });
 
-        panel.setOpaque(false);
+        panel.setBackground(Color.DARK_GRAY);
         return panel;
     }
 }

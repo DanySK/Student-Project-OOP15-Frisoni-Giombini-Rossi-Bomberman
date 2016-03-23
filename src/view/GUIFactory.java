@@ -13,13 +13,18 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.table.TableModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -94,6 +99,11 @@ public interface GUIFactory {
     Font getFullFrameFont();
     
     /**
+     * @return the characteristic color of Bomberman.
+     */
+    Color getBombermanColor();
+    
+    /**
      * Creates a customized {@link JRadioButton}.
      * 
      * @param text
@@ -143,6 +153,28 @@ public interface GUIFactory {
     JTabbedPane createLeftTabbedPane();
     
     /**
+     * Creates a customized {@link JList}.
+     * 
+     * @param <E>
+     *          the type of each entry
+     * @param dataModel
+     *          the data model for the list population
+     * @param cellRenderer
+     *          the cell renderer
+     * @return the specified list
+     */
+    <E> JList<E> createList(ListModel<E> dataModel, ListCellRenderer<? super E> cellRenderer);
+    
+    /**
+     * Creates a customized {@link JTable}.
+     * 
+     * @param model
+     *          the table model
+     * @return the specified table
+     */
+    JTable createTable(TableModel model);
+    
+    /**
      * Creates an horizontal customized panel with the given description and
      * the specified components on the right.
      * 
@@ -189,6 +221,7 @@ public interface GUIFactory {
         
         private static final int LINE_BORDER_THICKNESS = 2;
         private static final Color LINE_BORDER_COLOR = Color.BLACK;
+        private static final int ROW_MARGIN_TABLE = 10;
         private static final Insets TABBED_PANE_AREA_INSETS = new Insets(2, 2, 2, 2);
         private static final Border SMALL_BORDER = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         private static final Border REGULAR_BORDER = BorderFactory.createEmptyBorder(10, 10, 10, 10);
@@ -259,6 +292,11 @@ public interface GUIFactory {
             return BIG_FONT;
         }
         
+        @Override
+        public Color getBombermanColor() {
+            return VIOLET_BOMBERMAN_COLOR;
+        }
+        
         private JLabel createDescriptionLabel(final String text) {
             final JLabel description = new JLabel(text + ": ");
             description.setFont(SMALL_FONT);
@@ -317,6 +355,25 @@ public interface GUIFactory {
             jtb.setBorder(SMALL_BORDER);
             jtb.setOpaque(false);
             return jtb;
+        }
+        
+        @Override
+        public <E> JList<E> createList(final ListModel<E> dataModel, final ListCellRenderer<? super E> cellRenderer) {
+            final JList<E> list = new JList<>(dataModel);
+            list.setCellRenderer(cellRenderer);
+            list.setBackground(Color.DARK_GRAY);
+            list.setForeground(Color.WHITE);
+            list.setOpaque(false);
+            return list;
+        }
+        
+        @Override
+        public JTable createTable(final TableModel model) {
+            final JTable table = new JTable(model);
+            table.setBackground(Color.DARK_GRAY);
+            table.setForeground(Color.WHITE);
+            table.setRowHeight(table.getRowHeight() + ROW_MARGIN_TABLE);
+            return table;
         }
         
         @Override

@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
@@ -69,15 +70,10 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void initView() {
-        // Sets the panels
-        this.gamePanel = new GamePanel(this.observer);
-        this.statisticPanel = new StatisticPanel(this.observer);
-
         // Sets the frame
         this.frame = new JFrame();
         this.frame.setTitle(FRAME_NAME);
         this.frame.setIconImage(ImageLoader.getLoader().createImage(GameImage.ICON));
-        this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -97,6 +93,11 @@ public class GameFrameImpl implements GameFrame {
                 renderMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"));
             }
         });
+        this.frame.setResizable(false);
+
+        // Sets the panels
+        this.gamePanel = new GamePanel(this.observer);
+        this.statisticPanel = new StatisticPanel(this.observer);
 
         // Sets the layout
         final JPanel mainPanel = new JPanel(new BorderLayout());
@@ -116,9 +117,8 @@ public class GameFrameImpl implements GameFrame {
 
         this.frame.add(mainPanel);
         this.frame.setLocationByPlatform(true);
-        this.frame.pack();
-        this.overlayPanel.setPreferredSize(this.frame.getSize());
         this.frame.setFocusable(true);
+        this.frame.pack();
     }
 
     /**
@@ -151,6 +151,7 @@ public class GameFrameImpl implements GameFrame {
     public void showView() {
         this.gamePanel.initGamePanel();
         update();
+        this.overlayPanel.setPreferredSize(this.frame.getSize());
         this.frame.setVisible(true);
     }
 
@@ -183,6 +184,7 @@ public class GameFrameImpl implements GameFrame {
         final BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 
         final Graphics2D g = image.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(new Color(0.0f, 0.0f, 0.0f, OPACITY_MESSAGE));
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.WHITE);
@@ -212,7 +214,7 @@ public class GameFrameImpl implements GameFrame {
             });
         }
     }
-    
+
     private void clearMessage() {
         this.overlayPanel.repaint();
         this.overlayPanel.setVisible(false);

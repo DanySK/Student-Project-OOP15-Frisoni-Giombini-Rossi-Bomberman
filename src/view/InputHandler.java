@@ -63,4 +63,11 @@ public final class InputHandler extends KeyAdapter {
     public Boolean isInputActive(final InputAction input) {
         return this.inputs.get(input);
     }
+    
+    /**
+     * @return a map containing all the associated keys to input actions.
+     */
+    public static Map<Integer, InputAction> getCommandsMap() {
+        return new HashMap<Integer, InputAction>(InputHandler.MAP);
+    }
 }
