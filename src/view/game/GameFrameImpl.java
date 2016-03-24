@@ -26,6 +26,7 @@ import controller.GameLoop;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.LanguageHandler;
+import view.SoundEffect;
 
 /**
  * A view for the rendering of the main game screen.
@@ -55,6 +56,9 @@ public class GameFrameImpl implements GameFrame {
      */
     public GameFrameImpl(final boolean darkMode) {
         this.darkMode = darkMode;
+        if (SoundEffect.isMusicOn()) {
+            SoundEffect.GAME_THEME.playLoop();
+        }
     }
 
     @Override
@@ -116,6 +120,7 @@ public class GameFrameImpl implements GameFrame {
         // model.setHighScores();
         // highScoreProperties.saveProperties();
         this.gameLoop.stopLoop();
+        SoundEffect.GAME_THEME.stop();
         this.frame.dispose();
         // System.exit(0);
     }

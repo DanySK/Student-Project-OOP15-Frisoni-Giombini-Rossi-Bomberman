@@ -28,6 +28,10 @@ public enum SoundEffect {
      */
     THEME("/sounds/bombermanTheme.wav", 0.2),
     /**
+     * 8-bit game's theme.
+     */
+    GAME_THEME("/sounds/backInBlack.wav", 0.1),
+    /**
      * Button focus sound.
      */
     FOCUS("/sounds/focus.wav", 0.1),

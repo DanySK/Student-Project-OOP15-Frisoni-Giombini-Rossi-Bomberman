@@ -94,4 +94,10 @@ public final class MenuFrameImpl implements MenuFrame {
         final CardLayout cl = (CardLayout) (this.frame.getContentPane().getLayout());
         cl.show(this.frame.getContentPane(), card.name());
     }
+
+    @Override
+    public void closeView() {
+        this.frame.dispose();
+        SoundEffect.THEME.stop();
+    }
 }

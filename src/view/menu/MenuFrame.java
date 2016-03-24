@@ -52,10 +52,15 @@ public interface MenuFrame {
     void initView();
     
     /**
-     * Change the {@link MenuCard} shown in the main frame with another provided.
+     * Changes the {@link MenuCard} shown in the main frame with another provided.
      * 
      * @param card
      *          the new card
      */
     void replaceCard(MenuCard card);
+    
+    /**
+     * Closes the menu frame.
+     */
+    void closeView();
 }

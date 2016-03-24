@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -73,7 +74,7 @@ public class GamePanel extends JPanel implements ActionListener {
          * Effectively, it is inefficient to load an image and scale it every time the component is asked to render itself.
          * So this is the best way to proceed. 
          */
-        tilesImages = new EnumMap<>(TileType.class);
+        tilesImages = new HashMap<>();
         tilesImages.put(TileType.WALKABLE, ImageLoader.getLoader().createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.RUBBLE, ImageLoader.getLoader().createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.CONCRETE, ImageLoader.getLoader().createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
