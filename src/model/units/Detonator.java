@@ -28,8 +28,6 @@ public class Detonator {
         this.dim = dim;
         this.newRange = INITIAL_RANGE;
         this.addBomb();
-        this.addBomb();
-        this.addBomb();
     }
 
     /**

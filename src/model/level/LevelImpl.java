@@ -30,7 +30,7 @@ public class LevelImpl implements Level {
     private static final Point START_HERO_POS = new Point(1, 1);
     private static final double BLOCK_DENSITY = 0.5;
     private static final double POWERUP_DENSITY = 0.75;
-    private static final int MIN_TILES = 9;
+    private static final int MIN_TILES = 11;
     private static final int MAX_TILES = 19;
 
     private Tile[][] map;
@@ -78,14 +78,6 @@ public class LevelImpl implements Level {
             }
             this.getDoor(factory);
             this.setKey(factory);
-            /*for (int i = 0; i < this.nTiles; i++) {
-                for (int j = 0; j < this.nTiles; j++) {
-                    if(this.map[i][j].getPowerup().isPresent()){
-                        System.out.println("TYPE " + this.map[i][j].getType() + " ROW " + i + " COL " + j + " POWERUP " +this.map[i][j].getPowerup().get()); 
-                    }
-                    
-                }
-            }*/
         }
     }
 
@@ -290,10 +282,6 @@ public class LevelImpl implements Level {
                 }
             }
         }
-        /*for(Tile t: afflictedTiles){
-            System.out.println("Tile " + t.getRow() + " " + t.getCol());
-        }
-        System.out.println("stop");*/
         return afflictedTiles;
     }
 
@@ -307,8 +295,7 @@ public class LevelImpl implements Level {
         return this.getGenericSet(new Function<Tile, Optional<Rectangle>>(){
             @Override
             public Optional<Rectangle> apply(final Tile t) {
-                if (!t.getType().equals(TileType.WALKABLE) && !t.getType().equals(TileType.DOOR_CLOSED) &&
-                        !t.getType().equals(TileType.POWERUP_STATUS)){
+                if (t.getType().equals(TileType.RUBBLE) && t.getType().equals(TileType.CONCRETE)){
                     return Optional.of(t.getBoundBox());
                 } else {
                     return Optional.empty();
