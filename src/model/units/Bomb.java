@@ -7,8 +7,11 @@ public interface Bomb extends LevelElement{
     
     /**
      * Increases the range of the bomb.
+     * 
+     * @param range
+     *          the new range
      */
-    void increaseRange();
+    void setRange(final int range);
     
     /**
      * Set the bomb to be planted or not.

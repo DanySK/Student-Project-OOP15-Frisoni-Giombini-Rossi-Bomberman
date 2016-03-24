@@ -48,7 +48,7 @@ public final class MapPoint {
      *          the width of the tile
      * @return the coordinate in the map
      */
-    public static int getPos(final int coordinate, final int nTiles, final int tileDimension){
+    private static int getPos(final int coordinate, final int nTiles, final int tileDimension){
         int index = 0;
         boolean stop = false;
         for(int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 && !stop; i += tileDimension){
@@ -62,12 +62,23 @@ public final class MapPoint {
         return index * tileDimension;
     }
 
+    /**
+     * Calculates the correct position where to place a bomb.
+     * 
+     * @param coordinate
+     *          the coordinate
+     * @param nTiles
+     *          the number of tiles in the map
+     * @param tileDimension
+     *          the dimension of a tile          
+     * @return the correct coordinate
+     */
     public static int getCorrectPos(final int coordinate, final int nTiles, final int tileDimension){
-        if(coordinate - MapPoint.getPos(coordinate, nTiles, tileDimension) < 
+        if(MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate <
                 coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
             return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
-        } else if(coordinate - MapPoint.getPos(coordinate, nTiles, tileDimension) > 
-                coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
+        } else if(MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate >
+        coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
             return MapPoint.getPos(coordinate, nTiles, tileDimension);
         } else {
             return MapPoint.getPos(coordinate, nTiles, tileDimension);

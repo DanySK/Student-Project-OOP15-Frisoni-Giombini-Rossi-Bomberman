@@ -31,8 +31,8 @@ public class BombImpl extends LevelElementImpl implements Bomb{
      * It increases the range of a bomb.
      */
     @Override
-    public void increaseRange() {
-        this.range++;        
+    public void setRange(final int range) {
+        this.range = range;        
     }
 
     /**

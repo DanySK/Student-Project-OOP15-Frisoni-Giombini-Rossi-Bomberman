@@ -3,16 +3,19 @@ package model.units;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * This class represent the hero's bomb set.
  */
 public class Detonator {
 
+    private static final int INITIAL_RANGE = 1;
     private static final Point INITIAL_POS = new Point(0, 0);
-    private static final long BOMB_DELAY = 4000L;
+    private static final long BOMB_DELAY = 3000L;
 
     private final Dimension dim;
+    private int newRange;
     private LinkedList<Bomb> bombList = new LinkedList<>();
 
     /**
@@ -23,9 +26,12 @@ public class Detonator {
      */
     public Detonator(final Dimension dim){
         this.dim = dim;
+        this.newRange = INITIAL_RANGE;
+        this.addBomb();
+        this.addBomb();
         this.addBomb();
     }
-    
+
     /**
      * It adds a bomb to the List.
      */
@@ -41,13 +47,13 @@ public class Detonator {
     private Bomb getBombToPlant(){
         return this.bombList.stream().filter(b -> !b.isPositioned()).findFirst().get();
     }
-    
+
     /**
      * It returns the bomb to reactivate.
      * 
      * @return a bomb that has to be reactivated
      */
-    private Bomb getBombToReactivate(){
+    public Bomb getBombToReactivate(){
         return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
     }
 
@@ -55,9 +61,21 @@ public class Detonator {
      * It increases the range of a bomb.
      */
     public void increaseRange(){//vedere quale per bene
-        this.bombList.getFirst().increaseRange();
+        this.newRange++;
     }
 
+    /**
+     * Checks if the bomb range is updated.
+     * 
+     * @param b
+     *          the bomb
+     */
+    private void checkRange(final Bomb b){
+        if(b.getRange() < this.newRange){
+            b.setRange(this.newRange);
+        }
+    }
+    
     /**
      * This method returns the bomb to be planted.
      * 
@@ -67,11 +85,12 @@ public class Detonator {
      */
     public Bomb plantBomb(final Point p){
         final Bomb b = this.getBombToPlant();
+        this.checkRange(b);
         b.updatePosition(p);
         b.setPlanted(true);
         return b;
     }
-    
+
     /**
      * Reactivates a bomb that has already exploded.
      */
@@ -87,7 +106,7 @@ public class Detonator {
     public long getBombDelay(){
         return BOMB_DELAY;
     }
-    
+
     /**
      * Checks if there are bombs to plant.
      *  
@@ -96,20 +115,22 @@ public class Detonator {
     public boolean hasBombs(){
         return this.bombList.stream().anyMatch(b -> !b.isPositioned());
     }
-    
+
     /**
      * Gets the list of planted bombs.
      * 
      * @return the list of planted bombs
      */
     public LinkedList<Bomb> getPlantedBombs(){
-        //return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Bomb> plantedBombs = new LinkedList<>();
-        for(Bomb b: this.bombList){
-            if(b.isPositioned()){
-                plantedBombs.addLast(b);
-            }
-        }
-        return plantedBombs;
+        return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
+    }
+    
+    /**
+     * Gets bomb's range.
+     * 
+     * @return bomb's range
+     */
+    public int getActualRange(){
+        return this.newRange;
     }
 }

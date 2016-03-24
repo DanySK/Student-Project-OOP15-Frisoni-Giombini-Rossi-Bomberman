@@ -4,11 +4,9 @@ import java.awt.Point;
 import java.util.Set;
 
 import model.Tile;
-import model.TileType;
 import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
-import model.utilities.PowerUp;
 
 /**
  * This interface handles a level of the game.
@@ -36,14 +34,14 @@ public interface Level {
      * Plants a bomb.
      */
     void plantBomb();
-    
+
     /**
      * Detonates a bomb.
      * 
      * @return the set of afflicted tiles
      */
     Set<Tile> detonateBomb();
-    
+
     /**
      * Verifies if there's already a bomb in that tile.
      * 
@@ -52,18 +50,16 @@ public interface Level {
     boolean canPlantBomb();
 
     /**
-     * This method return a TileType map, the background of the game.
      * 
-     * @return the map the map that represents tiles' types.
+     * @return
      */
-    TileType[][] getMap();
-
+    Set<Tile> getTiles();
+    
     /**
-     * Gets all the powerup: their coordinates and their type.
      * 
-     * @return a map where are contained informations of all powerups
+     * @return
      */
-    Set<PowerUp> getPowerupInLevel();
+    Set<Tile> getPowerUp();
 
     /**
      * Gets all panted bombs.
@@ -107,7 +103,7 @@ public interface Level {
      * @return true if the game is over, otherwise false
      */
     boolean isGameOver();
-    
+
     /**
      * Set the tile type of the door to door_opened.
      */

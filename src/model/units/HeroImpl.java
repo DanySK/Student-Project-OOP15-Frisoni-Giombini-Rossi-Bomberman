@@ -33,7 +33,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
         this.isConfused = false;
         this.key = false;
     }
-    
+
     /**
      * Checks if hero's got any collision.
      * 
@@ -71,7 +71,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
         } else {
             System.out.println("confusion_off");
         }
-        
+
         this.isConfused = b;
     }
 
@@ -90,9 +90,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public void increaseRange() {
         System.out.println("increase range");
-        if(this.detonator.hasBombs()){
-            this.detonator.increaseRange(); 
-        }
+        this.detonator.increaseRange(); 
     } 
 
     /**
@@ -115,7 +113,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public Bomb plantBomb(final int nTiles) {
         return this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
                 MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
-        
     }
 
     /**
@@ -174,5 +171,15 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public void increaseScore(int enemyScore) {
         super.score += enemyScore; 
     }
-    
+
+    /**
+     * Gets the bomb's range.
+     * 
+     * @return bomb's range
+     */
+    @Override
+    public int getBombRange() {
+        return this.detonator.getActualRange();
+    }
+
 }

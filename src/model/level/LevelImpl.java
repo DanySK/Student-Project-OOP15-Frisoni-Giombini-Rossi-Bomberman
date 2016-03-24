@@ -19,7 +19,6 @@ import model.units.Hero;
 import model.units.HeroImpl;
 import model.units.LevelElement;
 import model.utilities.MapPoint;
-import model.utilities.PowerUp;
 
 /**
  * This class represent the Model, as it contains
@@ -158,7 +157,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> detonateBomb() {
-        final Bomb b = this.hero.getDetonator().getPlantedBombs().getFirst();
+        final Bomb b = this.hero.getDetonator().getBombToReactivate();
         //controlla nemici e in caso aggiungi punteggio all'hero
         if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
             this.hero.modifyLife(-1);
@@ -175,10 +174,8 @@ public class LevelImpl implements Level {
      * Verifies if a bomb can be planted.
      */
     public boolean canPlantBomb(){
-        /*final Point point = new Point(MapPoint.getInvCoordinate(this.hero.getX(), this.tileDimension), 
-                MapPoint.getInvCoordinate(this.hero.getY(), this.tileDimension));*/
-        final Point point = new Point(MapPoint.getPos(this.hero.getX(), this.nTiles, this.tileDimension) / this.tileDimension,
-                MapPoint.getPos(this.hero.getY(), this.nTiles, this.tileDimension) / this.tileDimension);
+        final Point point = new Point(MapPoint.getCorrectPos(this.hero.getX(), nTiles, this.tileDimension) / tileDimension, 
+                MapPoint.getCorrectPos(this.hero.getY(), nTiles, this.tileDimension) / tileDimension);
         for(final Bomb b: this.getPlantedBombs()){
             if(new Point(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
                     MapPoint.getInvCoordinate(b.getY(), this.tileDimension)).equals(point)){
@@ -189,36 +186,20 @@ public class LevelImpl implements Level {
     }
 
     /**
-     * This methods return a map that represents
-     * tiles' types in the background.
+     * 
      */
     @Override
-    public TileType[][] getMap() {
-        TileType[][] mapType = new TileType[this.nTiles][this.nTiles];
-        for (int i = 0; i < this.nTiles; i++) {
-            for (int j = 0; j < this.nTiles; j++) {
-                mapType[i][j] = this.map[i][j].getType();
-            }
-        }
-        return mapType;
-    }
-
-    /**
-     * This method return a set that represents 
-     * powerups in the map.
-     */
-    @Override
-    public Set<PowerUp> getPowerupInLevel() {
-        return this.getGenericSet(new Function<Tile, Optional<PowerUp>>(){
+    public Set<Tile> getTiles(){
+        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
             @Override
-            public Optional<PowerUp> apply(Tile t) {
-                if(t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent()){
-                    return Optional.of(new PowerUp(t.getRow(), t.getCol(), t.getPowerup().get()));
+            public Optional<Tile> apply(Tile t) {
+                if(!t.getType().equals(TileType.POWERUP_STATUS)){
+                    return Optional.of(t);
                 } else {
                     return Optional.empty();
                 }
             }
-        }).stream().filter(p -> p.isPresent()).map(p -> p.get()).collect(Collectors.toSet());
+        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
     }
 
     /**
@@ -340,8 +321,9 @@ public class LevelImpl implements Level {
      * This method build a Set of all Tiles that have a PowerUp.
      * 
      * @return the PowerUp sets
-     */    
-    private Set<Tile> getPowerUp(){
+     */
+    @Override
+    public Set<Tile> getPowerUp(){
         return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
             @Override
             public Optional<Tile> apply(final Tile t) {

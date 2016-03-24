@@ -17,7 +17,6 @@ import controller.GameController;
 import model.TileType;
 import model.units.Bomb;
 import model.units.PowerUpType;
-import model.utilities.PowerUp;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.animations.BombView;

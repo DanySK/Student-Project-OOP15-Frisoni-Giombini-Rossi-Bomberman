@@ -85,4 +85,6 @@ public interface Hero extends Entity {
      */
     void increaseScore(final int enemyScore);
     
+    int getBombRange();
+    
 }
