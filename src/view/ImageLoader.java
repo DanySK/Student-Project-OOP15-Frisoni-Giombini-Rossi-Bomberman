@@ -59,6 +59,10 @@ public final class ImageLoader {
          */
         INFO(MENU_FOLDER + "info.png"),
         /**
+         * Game Over image.
+         */
+        GAME_OVER(MENU_FOLDER + "game_over.gif"),
+        /**
          * The Bomberman's image displayed the first time.
          */
         WELCOME(MENU_FOLDER + "welcome.png"),

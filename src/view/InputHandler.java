@@ -65,7 +65,7 @@ public final class InputHandler extends KeyAdapter {
     }
     
     /**
-     * @return a map containing all the associated keys to input actions.
+     * @return a security copy of a map containing all the associated keys to input actions.
      */
     public static Map<Integer, InputAction> getCommandsMap() {
         return new HashMap<Integer, InputAction>(InputHandler.MAP);

@@ -3,38 +3,29 @@ package view.game;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RadialGradientPaint;
-import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayer;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.plaf.LayerUI;
 
 import controller.GameController;
 import controller.GameLoop;
-import view.GUIFactory;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.LanguageHandler;
-import view.SoundEffect;
 
 /**
  * A view for the rendering of the main game screen.
@@ -43,10 +34,8 @@ import view.SoundEffect;
 public class GameFrameImpl implements GameFrame {
 
     private static final String FRAME_NAME = "Game";
-    private static final float OPACITY_MESSAGE = 0.7f;
 
-    private JFrame frame;
-    private JPanel overlayPanel;
+    private DrawableFrameImpl frame;
 
     private GameController observer;
     private GameLoop gameLoop;
@@ -71,7 +60,7 @@ public class GameFrameImpl implements GameFrame {
     @Override
     public void initView() {
         // Sets the frame
-        this.frame = new JFrame();
+        this.frame = new DrawableFrameImpl();
         this.frame.setTitle(FRAME_NAME);
         this.frame.setIconImage(ImageLoader.getLoader().createImage(GameImage.ICON));
         this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -85,12 +74,12 @@ public class GameFrameImpl implements GameFrame {
             @Override
             public void focusGained(final FocusEvent e) {
                 GameFrameImpl.this.gameLoop.unPause();
-                GameFrameImpl.this.overlayPanel.repaint();
+                GameFrameImpl.this.frame.clearMessage();
             }
             @Override
             public void focusLost(final FocusEvent e) {
                 GameFrameImpl.this.gameLoop.pause();
-                renderMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"));
+                GameFrameImpl.this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"));
             }
         });
         this.frame.setResizable(false);
@@ -109,11 +98,6 @@ public class GameFrameImpl implements GameFrame {
         } else {
             mainPanel.add(this.gamePanel, BorderLayout.CENTER);
         }
-
-        // Sets the glass pane
-        this.overlayPanel = new JPanel();
-        this.overlayPanel.setOpaque(false);
-        this.frame.setGlassPane(overlayPanel);
 
         this.frame.add(mainPanel);
         this.frame.setLocationByPlatform(true);
@@ -151,7 +135,7 @@ public class GameFrameImpl implements GameFrame {
     public void showView() {
         this.gamePanel.initGamePanel();
         update();
-        this.overlayPanel.setPreferredSize(this.frame.getSize());
+        this.frame.initDrawable();
         this.frame.setVisible(true);
     }
 
@@ -170,54 +154,20 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void showPauseMessage() {
-        renderMessage(LanguageHandler.getHandler().getLocaleResource().getString("pause"));
+        this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("pause"));
     }
 
     @Override
     public void removePauseMessage() {
-        clearMessage();
+        this.frame.clearMessage();
     }
 
-    private void renderMessage(final String msg) {
-        this.overlayPanel.setVisible(true);
-        final Dimension d = this.overlayPanel.getPreferredSize();
-        final BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
-
-        final Graphics2D g = image.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(new Color(0.0f, 0.0f, 0.0f, OPACITY_MESSAGE));
-        g.fillRect(0, 0, d.width, d.height);
-        g.setColor(Color.WHITE);
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-
-        final Font font = new GUIFactory.Standard().getFullFrameFont();
-        final FontRenderContext frc = new FontRenderContext(null, true, true);
-        final Rectangle2D r = font.getStringBounds(msg, frc);
-
-        final int rWidth = (int) Math.round(r.getWidth());
-        final int rHeight = (int) Math.round(r.getHeight());
-        final int rX = (int) Math.round(r.getX());
-        final int rY = (int) Math.round(r.getY());
-        final int x = d.width / 2 - rWidth / 2 - rX;
-        final int y = d.height / 2 - rHeight / 2 - rY;
-
-        g.setFont(font);
-        g.drawString(msg, x, y);
-        g.dispose();
-        if (this.overlayPanel.getGraphics() != null) {
-            this.overlayPanel.repaint();
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    GameFrameImpl.this.overlayPanel.getGraphics().drawImage(image, 0, 0, null);
-                    SoundEffect.ADVICE.playOnce();
-                }
-            });
-        }
-    }
-
-    private void clearMessage() {
-        this.overlayPanel.repaint();
-        this.overlayPanel.setVisible(false);
+    @Override
+    public void showGameOverPanel() {
+        this.frame.getContentPane().removeAll();
+        this.frame.getContentPane().invalidate();
+        this.frame.getContentPane().add(new GameOverPanel());
+        this.frame.getContentPane().revalidate();
     }
 
     /**

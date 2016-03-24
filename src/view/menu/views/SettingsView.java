@@ -91,11 +91,11 @@ public class SettingsView extends AbstractMenuPanel {
         final JRadioButton radDarkModeOn = factory.createRadioButton(on);
         final JRadioButton radDarkModeOff = factory.createRadioButton(off, true);
         radDarkModeOn.addActionListener(e -> {
-            observer.setDarkMode(true);
+            this.observer.setDarkMode(true);
             SoundEffect.BOO_LAUGH.playOnce();
         });
         radDarkModeOff.addActionListener(e -> {
-            observer.setDarkMode(false);
+            this.observer.setDarkMode(false);
         });
         groupDarkMode.add(radDarkModeOn);
         groupDarkMode.add(radDarkModeOff);

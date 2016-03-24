@@ -18,6 +18,7 @@ public final class FontLoader {
 
     /**
      * Registers a font.
+     * 
      * @param name
      *          the font name
      */
@@ -26,9 +27,9 @@ public final class FontLoader {
         try {
             final Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-        } catch (FontFormatException e) {
+        } catch (final FontFormatException e) {
             System.err.println("The font format is not valid: " + e.getMessage());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("I/O error during the font loading: " + e.getMessage());
         }
     }

@@ -44,8 +44,6 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private final GameController controller;
 
-    private final GameOverImage gameOverImage;
-
     private final int tileSize;
     private final Map<TileType, Image> tilesImages;
     private final Map<PowerUpType, Image> powerUpImages;
@@ -95,9 +93,6 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpImages.put(PowerUpType.CONFUSION_OFF, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_OFF, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
-
-        this.gameOverImage = new GameOverImage(this);
-        this.gameOverImage.run();
     }
 
     /**
@@ -132,10 +127,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         // Draw the hero
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
-        // Draw the GameOver screen
-        if (this.controller.isGameOver()) {
-            g.drawImage(this.gameOverImage.getImage(), 0, 0, null);
-        }
+        // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
     }
 

@@ -66,4 +66,9 @@ public interface GameFrame {
      * Removes the pause message.
      */
     void removePauseMessage();
+    
+    /**
+     * Shows a panel associated to the end of the game.
+     */
+    void showGameOverPanel();
 }
