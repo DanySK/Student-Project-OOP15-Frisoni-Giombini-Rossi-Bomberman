@@ -73,13 +73,17 @@ public class GameFrameImpl implements GameFrame {
         this.frame.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(final FocusEvent e) {
-                GameFrameImpl.this.gameLoop.unPause();
-                GameFrameImpl.this.frame.clearMessage();
+                if (GameFrameImpl.this.gameLoop.isRunning()) {
+                    GameFrameImpl.this.gameLoop.unPause();
+                    GameFrameImpl.this.frame.clearMessage();
+                }
             }
             @Override
             public void focusLost(final FocusEvent e) {
-                GameFrameImpl.this.gameLoop.pause();
-                GameFrameImpl.this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"));
+                if (GameFrameImpl.this.gameLoop.isRunning()) {
+                    GameFrameImpl.this.gameLoop.pause();
+                    GameFrameImpl.this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"));
+                }
             }
         });
         this.frame.setResizable(false);

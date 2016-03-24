@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import controller.GameController;
+import model.Tile;
 import model.TileType;
 import model.units.Bomb;
 import model.units.PowerUpType;
@@ -109,17 +110,13 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(final Graphics g) {
         // Draw the power-ups
-        /*
-        for (final PowerUp p : this.controller.getPowerUpInLevel()) {
-            g.drawImage(this.powerUpImages.get(p.getType()), p.getX() * this.tileSize, p.getY() * this.tileSize, this);
+        for (final Tile p : this.controller.getPowerUp()) {
+            g.drawImage(this.powerUpImages.get(p.getPowerup().get()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
         }
         // Draw the map
-        final TileType[][] map = this.controller.getMap();
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[0].length; y++) {
-                g.drawImage(this.tilesImages.get(map[x][y]), x * this.tileSize, y * this.tileSize, this);
-            }
-        }*/
+        for (final Tile p : this.controller.getTiles()) {
+            g.drawImage(this.tilesImages.get(p.getType()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
+        }
         // Draw the bombs
         for (final Bomb b : this.controller.getPlantedBombs()) {
             final BombView bv = new BombViewImpl(b, this.tileSize);
