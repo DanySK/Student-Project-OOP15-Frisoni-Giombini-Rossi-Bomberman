@@ -2,10 +2,8 @@ package controller;
 
 import java.util.Set;
 
-import model.TileType;
 import model.units.Bomb;
 import model.units.Hero;
-import model.utilities.PowerUp;
 
 public interface GameController {
     
@@ -18,13 +16,13 @@ public interface GameController {
     /**
      * @return a map where are contained informations of all powerups.
      */
-    Set<PowerUp> getPowerUpInLevel();
+    //Set<PowerUp> getPowerUpInLevel();*/
     
     /**
      * This method return the map.
      * @return the map that represents tiles' types.
      */
-    TileType[][] getMap();
+    //TileType[][] getMap();
     
     /**
      * @return true if the game is over, otherwise false.

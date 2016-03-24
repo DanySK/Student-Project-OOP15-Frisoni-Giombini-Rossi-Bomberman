@@ -1,12 +1,10 @@
 package controller;
 
 import java.util.Set;
-import model.TileType;
 import model.level.Level;
 import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
-import model.utilities.PowerUp;
 import view.InputAction;
 import view.InputHandler;
 import view.game.GameFrame;
@@ -92,9 +90,9 @@ public class GameControllerImpl implements GameController {
                 if (!inputListener.isInputActive(InputAction.PLANT_BOMB)) {
                     isPlanted = false;
                 }
-                /*if (level.getHero().hasKey()) {
-                    //level.setOpenDoor();
-                }*/
+                if (level.getHero().hasKey()) {
+                    level.setOpenDoor();
+                }
             }
 
             @Override
@@ -119,6 +117,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
+                    view.showGameOverPanel();
                 }
             }
         };   
@@ -132,7 +131,8 @@ public class GameControllerImpl implements GameController {
     public Hero getHero() {
         return level.getHero();
     }
-
+    
+    /*
     @Override
     public Set<PowerUp> getPowerUpInLevel() {
         return level.getPowerupInLevel();
@@ -141,7 +141,7 @@ public class GameControllerImpl implements GameController {
     @Override
     public TileType[][] getMap() {
         return level.getMap();
-    }
+    }*/
 
     @Override
     public boolean isGameOver() {

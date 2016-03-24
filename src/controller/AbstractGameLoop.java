@@ -117,7 +117,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
 
         @Override
         public void run() {
-            while (!this.stop) {
+            while (!this.stop && running) {
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
