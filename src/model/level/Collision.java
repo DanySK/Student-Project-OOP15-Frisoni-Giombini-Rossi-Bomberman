@@ -65,6 +65,7 @@ public class Collision {
                         t.getPowerup().get().apply((Hero) entity);
                         t.removePowerUp();
                         t.setType(TileType.WALKABLE);
+                        
                     }
                     return false;
                 }

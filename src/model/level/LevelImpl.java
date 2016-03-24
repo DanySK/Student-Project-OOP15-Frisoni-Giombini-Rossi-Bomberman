@@ -37,14 +37,12 @@ public class LevelImpl implements Level {
     private Hero hero;
     private int tileDimension;
     private int nTiles;
-    private boolean gameOver;
 
     /**
      * The constructor is used to set the size of the map,
      * because it's the first thing to do to start the game.
      */
     public LevelImpl() {
-        this.gameOver = false;
         this.setNumberTiles();
     }
 
@@ -153,10 +151,6 @@ public class LevelImpl implements Level {
         //controlla nemici e in caso aggiungi punteggio all'hero
         if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
             this.hero.modifyLife(-1);
-            if(this.hero.isDead()){
-                this.gameOver = true;
-                System.out.println("Hero is dead!");
-            }
         }
         this.hero.getDetonator().reactivateBomb();
         return this.getAllAfflictedTiles(b);
@@ -377,7 +371,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public boolean isGameOver() {
-        return this.gameOver;
+        return this.hero.isDead();
     }
 
     /**
