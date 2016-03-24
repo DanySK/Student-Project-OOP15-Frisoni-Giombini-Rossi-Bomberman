@@ -110,6 +110,7 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(final Graphics g) {
         // Draw the power-ups
+        /*
         for (final PowerUp p : this.controller.getPowerUpInLevel()) {
             g.drawImage(this.powerUpImages.get(p.getType()), p.getX() * this.tileSize, p.getY() * this.tileSize, this);
         }
@@ -119,7 +120,7 @@ public class GamePanel extends JPanel implements ActionListener {
             for (int y = 0; y < map[0].length; y++) {
                 g.drawImage(this.tilesImages.get(map[x][y]), x * this.tileSize, y * this.tileSize, this);
             }
-        }
+        }*/
         // Draw the bombs
         for (final Bomb b : this.controller.getPlantedBombs()) {
             final BombView bv = new BombViewImpl(b, this.tileSize);
