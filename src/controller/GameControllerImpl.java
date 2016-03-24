@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.Set;
+
+import model.Tile;
 import model.level.Level;
 import model.units.Bomb;
 import model.units.Direction;
@@ -131,17 +133,6 @@ public class GameControllerImpl implements GameController {
     public Hero getHero() {
         return level.getHero();
     }
-    
-    /*
-    @Override
-    public Set<PowerUp> getPowerUpInLevel() {
-        return level.getPowerupInLevel();
-    }
-
-    @Override
-    public TileType[][] getMap() {
-        return level.getMap();
-    }*/
 
     @Override
     public boolean isGameOver() {
@@ -156,5 +147,15 @@ public class GameControllerImpl implements GameController {
     @Override
     public Set<Bomb> getPlantedBombs() {
         return level.getPlantedBombs();
+    }
+
+    @Override
+    public Set<Tile> getPowerUp() {
+        return level.getPowerUp();
+    }
+
+    @Override
+    public Set<Tile> getTiles() {
+        return level.getTiles();
     }
 }
