@@ -295,7 +295,7 @@ public class LevelImpl implements Level {
         return this.getGenericSet(new Function<Tile, Optional<Rectangle>>(){
             @Override
             public Optional<Rectangle> apply(final Tile t) {
-                if (t.getType().equals(TileType.RUBBLE) && t.getType().equals(TileType.CONCRETE)){
+                if (t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE)){
                     return Optional.of(t.getBoundBox());
                 } else {
                     return Optional.empty();
