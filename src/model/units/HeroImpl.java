@@ -6,6 +6,9 @@ import java.awt.Rectangle;
 import java.util.Set;
 
 import model.Tile;
+import model.level.Collision;
+import model.level.HeroCollision;
+import model.level.HeroCollisionImpl;
 import model.utilities.MapPoint;
 
 /**
@@ -14,6 +17,7 @@ import model.utilities.MapPoint;
 public class HeroImpl extends AbstractEntity implements Hero {
 
     private final Detonator detonator;
+    private final HeroCollision heroCollision;
     private boolean isConfused;
     private boolean key;
 
@@ -30,26 +34,18 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public HeroImpl(final Point pos, final Direction dir, final Dimension dim) {
         super(pos, dir, dim);
         this.detonator = new Detonator(dim);
+        this.heroCollision = new HeroCollisionImpl(this);
         this.isConfused = false;
         this.key = false;
     }
-
-    /**
-     * Checks if hero's got any collision.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
-    @Override
-    public boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet,
-            final Set<Tile> powerUpSet) {
-        super.getCollision().updateEntityRec(dir);
-        if(super.getCollision().blockCollision(blockSet) && super.getCollision().bombCollision(bombSet, this.getHitbox()) &&
-                super.getCollision().powerUpCollision(powerUpSet)){
+    
+    public void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet,
+            final Set<Tile> powerUpSet){
+        this.heroCollision.updateEntityRec(dir);
+        if(this.heroCollision.blockCollision(blockSet) && this.heroCollision.bombCollision(bombSet, this.getHitbox()) &&
+                this.heroCollision.powerUpCollision(powerUpSet)){
             this.setMoving(true);
-            return true;
-        }
-        else{
-            return false;
+            super.move(dir);
         }
     }
 
@@ -182,4 +178,8 @@ public class HeroImpl extends AbstractEntity implements Hero {
         return this.detonator.getActualRange();
     }
 
+    @Override
+    public Collision getCollision() {
+        return this.heroCollision;
+    }
 }

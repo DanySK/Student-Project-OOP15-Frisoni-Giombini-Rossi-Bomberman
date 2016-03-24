@@ -1,22 +1,12 @@
 package model.units;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Set;
 
 import model.Tile;
 import model.level.Collision;
 
 public interface Entity extends LevelElement{
-    
-    /**
-     * This methods check if the entity collide
-     * with other game elements.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
-    boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet, 
-            final Set<Tile> powerUpSet);
     
     /**
      * Checks collisions with flames.
@@ -33,7 +23,7 @@ public interface Entity extends LevelElement{
      * @param dir
      *          the direction where to move
      */
-    void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet, final Set<Tile> powerUpSet);
+    void move(final Direction dir);
     
     /**
      * Method that modify the current value of lives.
@@ -66,13 +56,6 @@ public interface Entity extends LevelElement{
      * @return the entity's direction
      */
     Direction getDirection();
-    
-    /**
-     * Gets entity's collision.
-     * 
-     * @return entity's collision
-     */
-    Collision getCollision();
     
     /**
      * Gets remaining lives.
@@ -113,4 +96,6 @@ public interface Entity extends LevelElement{
      * @return entity's score
      */
     int getScore();
+    
+    Collision getCollision();
 }

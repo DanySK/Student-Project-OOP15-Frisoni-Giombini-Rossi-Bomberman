@@ -1,11 +1,18 @@
 package model.units;
 
+import java.awt.Rectangle;
+import java.util.Set;
+
+import model.Tile;
 
 /**
  * This class models a Hero.
  *
  */
 public interface Hero extends Entity {
+    
+    void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet,
+            final Set<Tile> powerUpSet);
 
     /**
      * This method set the hero in movement or not. 
