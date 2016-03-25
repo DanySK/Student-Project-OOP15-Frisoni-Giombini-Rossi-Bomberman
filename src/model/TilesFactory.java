@@ -51,9 +51,6 @@ public class TilesFactory {
     public Tile createForCoordinates(final int row, final int column) {
         final TileType type = getTypeForCoordinates(row, column);
         final Optional<PowerUpType> powerup = this.getPowerup(type);
-        /*if(powerup.isPresent()){
-            System.out.println("TYPE " + type + " ROW " + row + " COL " + column + " POWERUP " + powerup.get()) ;
-        }*/
         return new Tile(type, powerup, row, column, this.tileDimension);
     }
 

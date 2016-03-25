@@ -390,7 +390,7 @@ public class LevelImpl implements Level {
     public void setOpenDoor(){
         for(int i = 0; i < this.nTiles; i++){
             for(int j = 0; j < this.nTiles; j++){
-                if(this.map[i][j].equals(TileType.DOOR_CLOSED)){
+                if(this.map[i][j].getType().equals(TileType.DOOR_CLOSED)){
                     this.map[i][j].setType(TileType.DOOR_OPENED);
                 }
             }

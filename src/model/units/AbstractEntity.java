@@ -133,6 +133,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
      */
     @Override
     public void increaseAttack(final int attackToAdd) {
+        System.out.println("attack");
         this.attack += attackToAdd;        
     }
 

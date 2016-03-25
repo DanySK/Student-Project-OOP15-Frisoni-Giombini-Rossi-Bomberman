@@ -93,7 +93,8 @@ public class Detonator {
      * Reactivates a bomb that has already exploded.
      */
     public void reactivateBomb(){
-        this.getBombToReactivate().setPlanted(false);
+        this.bombList.removeFirst();
+        this.addBomb();
     }
 
     /**

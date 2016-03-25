@@ -77,9 +77,6 @@ public final class MapPoint {
         if(MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate <
                 coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
             return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
-        } else if(MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate >
-        coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)){
-            return MapPoint.getPos(coordinate, nTiles, tileDimension);
         } else {
             return MapPoint.getPos(coordinate, nTiles, tileDimension);
         }
