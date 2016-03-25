@@ -10,6 +10,9 @@ import model.units.Hero;
 import view.InputAction;
 import view.InputHandler;
 import view.game.GameFrame;
+import view.game.GameOverPanel;
+import view.menu.MenuFrameImpl;
+import view.menu.MenuFrame.MenuCard;
 
 /**
  * Implementation of {@link GameController}.
@@ -120,6 +123,18 @@ public class GameControllerImpl implements GameController {
                 if (level.isGameOver()) {
                     super.stopLoop();
                     view.showGameOverPanel();
+                    final GameOverPanel gameOver = new GameOverPanel();
+                    gameOver.setObserver(new GameOverPanel.GameOverObserver(){
+                        @Override
+                        public void replay() {
+                            
+                        }
+                        @Override
+                        public void exit() {
+                            MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
+                            MenuFrameImpl.getMenuFrame().initView();
+                        }
+                    });
                 }
             }
         };   
@@ -157,5 +172,10 @@ public class GameControllerImpl implements GameController {
     @Override
     public Set<Tile> getTiles() {
         return level.getTiles();
+    }
+
+    @Override
+    public int getFPS() {
+        return FPS;
     }
 }

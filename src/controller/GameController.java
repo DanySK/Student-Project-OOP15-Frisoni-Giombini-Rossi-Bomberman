@@ -41,4 +41,6 @@ public interface GameController {
      */
     Set<Bomb> getPlantedBombs();
     
+    int getFPS();
+    
 }
