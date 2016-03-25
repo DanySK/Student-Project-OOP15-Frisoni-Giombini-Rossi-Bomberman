@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Set;
 
 import model.units.PowerUpType;
+import model.utilities.MapPoint;
 
 /**
  * This class allows to establish which type of tile
@@ -66,7 +67,7 @@ public class TilesFactory {
     private TileType getTypeForCoordinates(final int row, final int column) {
         if (this.tileIsConcrete(row, column)) {
             return TileType.CONCRETE;
-        } else if (Math.random() < this.blockDensity && !this.isEntryPoint(row, column)) {
+        } else if (Math.random() < this.blockDensity && !MapPoint.isEntryPoint(row, column)) {
             return TileType.RUBBLE;
         }else {
             return TileType.WALKABLE;
@@ -111,9 +112,9 @@ public class TilesFactory {
      *          the tile's column
      * @return true if the tile is an entry point, false otherwise
      */
-    private boolean isEntryPoint(final int row, final int column) {
+    /*public boolean isEntryPoint(final int row, final int column) {
         return row <= 2 && column <= 2;
-    }
+    }*/
 
     /**
      * Gets a correct type of powerup for the specified block.

@@ -94,5 +94,18 @@ public final class MapPoint {
     public static int getInvCoordinate(final int coordinate, final int tileDimension){
         return coordinate / tileDimension;
     }
-
+    
+    /**
+     * Check if the tile refers to a spawn point of the hero.
+     * 
+     * @param row
+     *          the tile's row
+     * @param column
+     *          the tile's column
+     * @return true if the tile is an entry point, false otherwise
+     */
+    public static boolean isEntryPoint(final int row, final int column) {
+        return row <= 2 && column <= 2;
+    }
+    
 }

@@ -63,20 +63,16 @@ public class LevelImpl implements Level {
      * with the specified size and block density.
      */
     private void createLevel() {
-        if(this.map != null){
-            throw new UnsupportedOperationException();
-        } else {
-            final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY,
-                    POWERUP_DENSITY, this.tileDimension);
-            this.map = new Tile[this.nTiles][this.nTiles];
-            for (int i = 0; i < this.nTiles; i++) {
-                for (int j = 0; j < this.nTiles; j++) {
-                    this.map[i][j] = factory.createForCoordinates(i, j);
-                }
+        final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY,
+                POWERUP_DENSITY, this.tileDimension);
+        this.map = new Tile[this.nTiles][this.nTiles];
+        for (int i = 0; i < this.nTiles; i++) {
+            for (int j = 0; j < this.nTiles; j++) {
+                this.map[i][j] = factory.createForCoordinates(i, j);
             }
-            this.getDoor(factory);
-            this.setKey(factory);
         }
+        this.getDoor(factory);
+        this.setKey(factory);
     }
 
     /**
@@ -395,6 +391,25 @@ public class LevelImpl implements Level {
                 }
             }
         }
+    }
+
+    private Set<Tile> getFreeTiles(){
+        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+            @Override
+            public Optional<Tile> apply(Tile t) {
+                if(t.getType().equals(TileType.WALKABLE) && !MapPoint.isEntryPoint(t.getRow(), t.getRow())){
+                    return Optional.of(t);
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void nextLevel() {
+        this.createLevel();
+        this.hero.clearOptions();
     }
 
 }

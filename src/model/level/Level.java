@@ -108,5 +108,7 @@ public interface Level {
      * Set the tile type of the door to door_opened.
      */
     void setOpenDoor();  
+    
+    void nextLevel();
 
 }

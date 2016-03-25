@@ -124,12 +124,14 @@ public class Detonator {
         return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
     }
     
-    /**
-     * Gets bomb's range.
-     * 
-     * @return bomb's range
-     */
     public int getActualRange(){
         return this.newRange;
+    }
+    
+    /**
+     * Reset bomb's range.
+     */
+    public void resetRange(){
+        this.newRange = INITIAL_RANGE;
     }
 }

@@ -60,4 +60,9 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
         });
     }
 
+    @Override
+    public boolean openDoorCollision(final Rectangle doorOpened) {
+        return entityRec.intersects(doorOpened);
+    }
+
 }

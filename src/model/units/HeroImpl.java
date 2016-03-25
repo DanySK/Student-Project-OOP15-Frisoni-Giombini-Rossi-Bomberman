@@ -182,4 +182,11 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public Collision getCollision() {
         return this.heroCollision;
     }
+
+    @Override
+    public void clearOptions() {
+        this.key = false;
+        this.isConfused = false;
+        this.detonator.resetRange();
+    }
 }

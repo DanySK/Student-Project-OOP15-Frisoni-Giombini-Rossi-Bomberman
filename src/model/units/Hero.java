@@ -94,4 +94,6 @@ public interface Hero extends Entity {
     
     int getBombRange();
     
+    void clearOptions();
+    
 }

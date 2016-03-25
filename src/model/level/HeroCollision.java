@@ -10,5 +10,7 @@ public interface HeroCollision extends Collision{
     boolean powerUpCollision(final Set<Tile> powerUpSet);
     
     boolean bombCollision(final Set<Rectangle> bombSet, final Rectangle recEntity);
+    
+    boolean openDoorCollision(final Rectangle doorOpened);
 
 }
