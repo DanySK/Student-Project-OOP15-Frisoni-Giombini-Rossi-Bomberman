@@ -21,6 +21,11 @@ public interface Level {
      *          the tile's size
      */
     void initLevel(final int tileDimension);
+    
+    /**
+     * Creates a new game level.
+     */
+    void nextLevel();
 
     /**
      * Moves the Hero in the specified direction.
@@ -30,6 +35,13 @@ public interface Level {
      */
     void moveHero(Direction dir);
 
+    /**
+     * Verifies if there's already a bomb in that tile.
+     * 
+     * @return true if the bomb can be planted, false otherwise
+     */
+    boolean canPlantBomb();
+    
     /**
      * Plants a bomb.
      */
@@ -43,21 +55,23 @@ public interface Level {
     Set<Tile> detonateBomb();
 
     /**
-     * Verifies if there's already a bomb in that tile.
+     * This method allow to know the size of the map.
      * 
-     * @return true if the bomb can be planted, false otherwise
+     * @return the side's size of the map.
      */
-    boolean canPlantBomb();
-
+    int getSize();
+    
     /**
+     * Gets all the tiles where there isn't a powerup status.
      * 
-     * @return
+     * @return the set of tiles
      */
     Set<Tile> getTiles();
     
     /**
+     * Gets all the powerups that appears in the game.
      * 
-     * @return
+     * @return the set of powerups
      */
     Set<Tile> getPowerUp();
 
@@ -67,6 +81,13 @@ public interface Level {
      * @return the set of bombs in the map
      */
     Set<Bomb> getPlantedBombs();
+
+    /**
+     * Gets the door.
+     * 
+     * @return the tile where the door is positioned
+     */
+    Tile getDoor();
 
     /**
      * This method return the hero position-
@@ -83,13 +104,6 @@ public interface Level {
     Hero getHero();
 
     /**
-     * This method allow to know the size of the map.
-     * 
-     * @return the side's size of the map.
-     */
-    int getSize();
-
-    /**
      * Sets the dimension (weight/height) of a tile.
      * 
      * @param dim
@@ -98,17 +112,16 @@ public interface Level {
     void setTileDimension(final int dim);
 
     /**
+     * Set the tile type of the door to door_opened.
+     */
+    void setOpenDoor();
+
+    /**
      * This method is used to know whether the game is over or not. 
      * 
      * @return true if the game is over, otherwise false
      */
     boolean isGameOver();
-
-    /**
-     * Set the tile type of the door to door_opened.
-     */
-    void setOpenDoor();  
-    
-    void nextLevel();
+  
 
 }

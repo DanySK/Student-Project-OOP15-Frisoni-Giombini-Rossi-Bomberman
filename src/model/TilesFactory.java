@@ -73,20 +73,6 @@ public class TilesFactory {
             return TileType.WALKABLE;
         }
     }
-
-    /**
-     * Set a random tile'type equals to the closed door.
-     * 
-     * @param walkableTiles
-     *          the set of walkable tiles
-     */
-    public void setDoor(final Set<Tile> walkableTiles){
-        walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
-    }
-
-    public void setKey(final Set<Tile> rubbleTiles) {
-        rubbleTiles.stream().findAny().get().setKeyPowerUp();
-    }
     
     /**
      * Checks if the tile at the specified coordinates refers
@@ -102,19 +88,6 @@ public class TilesFactory {
         return row == 0 || column == 0 || row == this.rows - 1 || column == this.columns - 1
                 || row % 2 == 0 && column % 2 == 0;
     }
-
-    /**
-     * Check if the tile refers to a spawn point of the hero.
-     * 
-     * @param row
-     *          the tile's row
-     * @param column
-     *          the tile's column
-     * @return true if the tile is an entry point, false otherwise
-     */
-    /*public boolean isEntryPoint(final int row, final int column) {
-        return row <= 2 && column <= 2;
-    }*/
 
     /**
      * Gets a correct type of powerup for the specified block.
@@ -144,5 +117,25 @@ public class TilesFactory {
      */
     public int getPowerUpType(){
         return new Random().nextInt(PowerUpType.values().length - 1);
+    }
+    
+    /**
+     * Set a random tile's type equals to the closed door.
+     * 
+     * @param walkableTiles
+     *          the set of walkable tiles
+     */
+    public void setDoor(final Set<Tile> walkableTiles){
+        walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
+    }
+
+    /**
+     * Set the powerup of a random tile equals to the key.
+     * 
+     * @param rubbleTiles
+     *          the set of rubbles tiles
+     */
+    public void setKey(final Set<Tile> rubbleTiles) {
+        rubbleTiles.stream().findAny().get().setKeyPowerUp();
     }
 }

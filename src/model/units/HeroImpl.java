@@ -39,16 +39,127 @@ public class HeroImpl extends AbstractEntity implements Hero {
         this.key = false;
     }
     
+    /**
+     * Hero's movement.
+     */
     public void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet,
             final Set<Tile> powerUpSet){
         this.heroCollision.updateEntityRec(dir);
-        if(this.heroCollision.blockCollision(blockSet) && this.heroCollision.bombCollision(bombSet, this.getHitbox()) &&
+        if(this.heroCollision.blockCollision(blockSet) && this.heroCollision.bombCollision(bombSet) &&
                 this.heroCollision.powerUpCollision(powerUpSet)){
             this.setMoving(true);
             super.move(dir);
         }
     }
+    
+    /**
+     * Gets the bomb to plant.
+     * 
+     * @return the bomb to plant
+     */
+    @Override
+    public Bomb plantBomb(final int nTiles) {
+        return this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+    }
+    
+    /**
+     * Reconfigurates hero.
+     */
+    @Override
+    public void clearOptions() {
+        this.key = false;
+        this.isConfused = false;
+        this.detonator.resetRange();
+    }
+    
+    /**
+     * Adds a bomb to his detonator.
+     */
+    @Override
+    public void increaseBomb() {
+        System.out.println("increase bomb");
+        this.detonator.addBomb();       
+    }
 
+    /**
+     * Increases the range of a bomb.
+     */
+    @Override
+    public void increaseRange() {
+        System.out.println("increase range");
+        this.detonator.increaseRange(); 
+    } 
+    
+    /**
+     * Increases hero's score.
+     */
+    @Override
+    public void increaseScore(int enemyScore) {
+        super.score += enemyScore; 
+    }
+
+    /**
+     * Checks the collision with the open door.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
+    @Override
+    public boolean checkOpenDoorCollision(final Tile openDoor) {
+        return this.heroCollision.openDoorCollision(openDoor.getBoundBox());
+    }
+    
+    /**
+     * Gets bomb delay.
+     * 
+     * @return bomb delay
+     */
+    @Override
+    public long getBombDelay() {
+        return this.detonator.getBombDelay();        
+    }
+    
+    /**
+     * Gets the correct direction depending on the boolean confusion.
+     * 
+     * @param dir
+     *          the direction where he would move
+     * @return the direction where he will move
+     */
+    public Direction getCorrectDirection(final Direction dir) {
+        return this.isConfused ? dir.getOppositeDirection() : dir;
+    }
+    
+    /**
+     * Gets hero's detonator.
+     * 
+     * @return hero's detonator
+     */
+    @Override
+    public Detonator getDetonator() {
+        return this.detonator;
+    }
+    
+    /**
+     * Gets the bomb's range.
+     * 
+     * @return bomb's range
+     */
+    @Override
+    public int getBombRange() {
+        return this.detonator.getActualRange();
+    }
+    
+    /**
+     * Gets hero's collision.
+     * 
+     * @return hero's collision
+     */
+    @Override
+    public Collision getCollision() {
+        return this.heroCollision;
+    }
+    
     /**
      * Set the hero to be in movement or not.
      */
@@ -72,56 +183,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     }
 
     /**
-     * Adds a bomb to his detonator.
-     */
-    @Override
-    public void increaseBomb() {
-        System.out.println("increase bomb");
-        this.detonator.addBomb();       
-    }
-
-    /**
-     * Increases the range of a bomb.
-     */
-    @Override
-    public void increaseRange() {
-        System.out.println("increase range");
-        this.detonator.increaseRange(); 
-    } 
-
-    /**
-     * Gets the correct direction depending on the boolean confusion.
-     * 
-     * @param dir
-     *          the direction where he would move
-     * @return the direction where he will move
-     */
-    public Direction getCorrectDirection(final Direction dir) {
-        return this.isConfused ? dir.getOppositeDirection() : dir;
-    }
-
-    /**
-     * Gets the bomb to plant.
-     * 
-     * @return the bomb to plant
-     */
-    @Override
-    public Bomb plantBomb(final int nTiles) {
-        return this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
-                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
-    }
-
-    /**
-     * Gets bomb delay.
-     * 
-     * @return bomb delay
-     */
-    @Override
-    public long getBombDelay() {
-        return this.detonator.getBombDelay();        
-    }
-
-    /**
      * Set the hero to own the key.
      */
     @Override
@@ -129,27 +190,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
         System.out.println("key");
         this.key = true;
     }
-
-    /**
-     * Checks if he has bomb to plant.
-     * 
-     * @return true if there's a bomb, false otherwise
-     */
-    @Override
-    public boolean hasBomb() {
-        return this.detonator.hasBombs();
-    }
-
-    /**
-     * Gets hero's detonator.
-     * 
-     * @return hero's detonator
-     */
-    @Override
-    public Detonator getDetonator() {
-        return this.detonator;
-    }
-
+    
     /**
      * Cheks if hero's got the key.
      * 
@@ -161,32 +202,13 @@ public class HeroImpl extends AbstractEntity implements Hero {
     }
 
     /**
-     * Increases hero's score.
-     */
-    @Override
-    public void increaseScore(int enemyScore) {
-        super.score += enemyScore; 
-    }
-
-    /**
-     * Gets the bomb's range.
+     * Checks if he has bomb to plant.
      * 
-     * @return bomb's range
+     * @return true if there's a bomb, false otherwise
      */
     @Override
-    public int getBombRange() {
-        return this.detonator.getActualRange();
+    public boolean hasBomb() {
+        return this.detonator.hasBombs();
     }
-
-    @Override
-    public Collision getCollision() {
-        return this.heroCollision;
-    }
-
-    @Override
-    public void clearOptions() {
-        this.key = false;
-        this.isConfused = false;
-        this.detonator.resetRange();
-    }
+    
 }

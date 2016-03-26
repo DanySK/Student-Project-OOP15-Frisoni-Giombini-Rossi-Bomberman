@@ -5,12 +5,37 @@ import java.util.Set;
 
 import model.Tile;
 
+/**
+ * This class models all the hero's collision
+ * with other game elements.
+ */
 public interface HeroCollision extends Collision{
     
+    /**
+     * Checks if there's a collision with a powerup.
+     * 
+     * @param powerUpSet
+     *          the set of powerups
+     * @return false
+     */
     boolean powerUpCollision(final Set<Tile> powerUpSet);
     
-    boolean bombCollision(final Set<Rectangle> bombSet, final Rectangle recEntity);
+    /**
+     * Cheks if there's a collision with a bomb.
+     * 
+     * @param bombSet
+     *          the set of planted bombs
+     * @return true if there's a collision, false otherwise
+     */
+    boolean bombCollision(final Set<Rectangle> bombSet);
     
+    /**
+     * Cheks the collision with the open door.
+     * 
+     *@param doorOpened
+     *          the open door
+     * @return true if there's a collision, false otherwise
+     */
     boolean openDoorCollision(final Rectangle doorOpened);
 
 }

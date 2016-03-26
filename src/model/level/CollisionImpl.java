@@ -9,8 +9,7 @@ import model.units.Direction;
 import model.units.Entity;
 
 /**
- * This class is used to implement collision between
- * entities and game's element.
+ * Implementation of {@link Collision} 
  */
 public class CollisionImpl implements Collision{
 
@@ -52,13 +51,11 @@ public class CollisionImpl implements Collision{
      * 
      * @param afflictedTiles
      *          the set of afflicted tiles
-     * @param recEntity 
-     *          hero's hitbox in that specific moment
      * @return true if there's a collision, false otherwise
      */
-    public boolean fireCollision(final Set<Tile> afflictedTiles, final Rectangle recEntity){ 
+    public boolean fireCollision(final Set<Tile> afflictedTiles){ 
         for(final Tile tile: afflictedTiles){                                          
-            if(this.explosionIntersection(tile.getBoundBox(), recEntity)){
+            if(this.explosionIntersection(tile.getBoundBox())){
                 return true;
             }
         }
@@ -90,18 +87,17 @@ public class CollisionImpl implements Collision{
      * 
      * @param rec       
      *          the element hitbox
-     * @param eRec
-     *          the entity hitbox
      * @return true if there's a collision, false otherwise
      */
-    public boolean explosionIntersection(final Rectangle rec, final Rectangle eRec){       
-        return eRec.intersects(rec);
+    public boolean explosionIntersection(final Rectangle rec){       
+        return this.entity.getHitbox().intersects(rec);
     }
 
     /**
-     * This method construct the new Rectangle that the entity would have.
+     * This method updates the new Rectangle that the entity would have.
      * 
-     * @return the Rectangle related to the new possible position
+     * @param dir 
+     *          the direction where the entity would move
      */
     public void updateEntityRec(final Direction dir){
         this.entityRec.setBounds(new Rectangle(this.entity.getPossiblePos(dir.getPoint()).x, 

@@ -47,6 +47,16 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
         this.updateDirection(d);
 
     }
+    
+    /**
+     * Checks flame collisions.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
+    @Override
+    public boolean checkFlameCollision(final Set<Tile> afflictedTiles){
+        return this.getCollision().fireCollision(afflictedTiles);
+    }
 
     /**
      * Increases or decreases life.
@@ -55,6 +65,23 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     public void modifyLife(final int change) {
         System.out.println("life");
         this.lives += change;        
+    }
+    
+    /**
+     * Updates the direction.
+     */
+    @Override
+    public void updateDirection(final Direction dir) {
+        this.curDir = dir;
+    }
+    
+    /**
+     * Increase attack level.
+     */
+    @Override
+    public void increaseAttack(final int attackToAdd) {
+        System.out.println("attack");
+        this.attack += attackToAdd;        
     }
 
     /**
@@ -67,20 +94,40 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     }
 
     /**
-     * Updates the direction.
-     */
-    @Override
-    public void updateDirection(final Direction dir) {
-        this.curDir = dir;
-    }
-
-    /**
      * Return the current direction.
      */
     @Override
     public Direction getDirection() {
         return this.curDir;
     }
+    
+    /**
+     * Gets entiry's attack.
+     * 
+     * @return entity's attack
+     */
+    @Override
+    public int getAttack() {
+        return this.attack;
+    }
+
+    /**
+     * Gets entity's score.
+     * 
+     * @return entity's score
+     */
+    @Override
+    public int getScore(){
+        return this.score;
+    }
+
+    /**
+     * Gets entity's collision.
+     * 
+     * @return entity's collision
+     */
+    @Override
+    public abstract Collision getCollision();
 
     /**
      * Gets remaining lives.
@@ -107,45 +154,5 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
     public boolean isMoving() {
         return this.inMovement;
     }
-
-    /**
-     * Checks flame collisions.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
-    @Override
-    public boolean checkFlameCollision(final Set<Tile> afflictedTiles){
-        return this.getCollision().fireCollision(afflictedTiles, this.hitBox);
-    }
-
-    /**
-     * Gets entiry's attack.
-     * 
-     * @return entity's attack
-     */
-    @Override
-    public int getAttack() {
-        return this.attack;
-    }
-
-    /**
-     * Increase attack level.
-     */
-    @Override
-    public void increaseAttack(final int attackToAdd) {
-        System.out.println("attack");
-        this.attack += attackToAdd;        
-    }
-
-    /**
-     * Gets entity's score.
-     * 
-     * @return entity's score
-     */
-    public int getScore(){
-        return this.score;
-    }
-
-    public abstract Collision getCollision();
 
 }

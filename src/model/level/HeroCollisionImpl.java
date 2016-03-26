@@ -9,8 +9,18 @@ import model.TileType;
 import model.units.Entity;
 import model.units.Hero;
 
+/**
+ * Implementation of {@link HeroCollision}
+ */
+
 public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
 
+    /**
+     * Constructs a new HeroCollision object.
+     * 
+     * @param entity
+     *          the hero
+     */
     public HeroCollisionImpl(Entity entity) {
         super(entity);
     }
@@ -42,15 +52,13 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
      * 
      * @param bombSet
      *          the set of planted bombs
-     * @param recEntity
-     *          the hero's hitbox in that specific moment
      * @return true if there's a collision, false otherwise
      */
-    public boolean bombCollision(final Set<Rectangle> bombSet, final Rectangle recEntity){
+    public boolean bombCollision(final Set<Rectangle> bombSet){
         return super.elementCollision(bombSet, new Predicate<Rectangle>(){
             @Override
             public boolean test(final Rectangle rec) {
-                if(explosionIntersection(rec, recEntity)){
+                if(explosionIntersection(rec)){
                     return false;
                 }
                 else{
@@ -60,6 +68,11 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
         });
     }
 
+    /**
+     * This method checks if there's a collision with the open door.
+     * 
+     * @return true if there's a collision, false otherwise
+     */
     @Override
     public boolean openDoorCollision(final Rectangle doorOpened) {
         return entityRec.intersects(doorOpened);

@@ -36,6 +36,48 @@ public class Detonator {
     public void addBomb(){
         this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim));
     }
+    
+    /**
+     * It increases the range of a bomb.
+     */
+    public void increaseRange(){//vedere quale per bene
+        this.newRange++;
+    }
+    
+    /**
+     * This method returns the bomb to be planted.
+     * 
+     * @param p
+     *          the new bomb's position
+     * @return the bomb with the position updated
+     */
+    public Bomb plantBomb(final Point p){
+        final Bomb b = this.getBombToPlant();
+        this.checkRange(b);
+        b.updatePosition(p);
+        b.setPlanted();
+        return b;
+    }
+    
+    /**
+     * Checks if the bomb range is updated.
+     * 
+     * @param b
+     *          the bomb
+     */
+    private void checkRange(final Bomb b){
+        if(b.getRange() < this.newRange){
+            b.setRange(this.newRange);
+        }
+    }
+
+    /**
+     * Reactivates a bomb that has already exploded.
+     */
+    public void reactivateBomb(){
+        this.bombList.removeFirst();
+        this.addBomb();
+    }
 
     /**
      * It returns a bomb to plant.
@@ -53,48 +95,6 @@ public class Detonator {
      */
     public Bomb getBombToReactivate(){
         return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
-    }
-
-    /**
-     * It increases the range of a bomb.
-     */
-    public void increaseRange(){//vedere quale per bene
-        this.newRange++;
-    }
-
-    /**
-     * Checks if the bomb range is updated.
-     * 
-     * @param b
-     *          the bomb
-     */
-    private void checkRange(final Bomb b){
-        if(b.getRange() < this.newRange){
-            b.setRange(this.newRange);
-        }
-    }
-    
-    /**
-     * This method returns the bomb to be planted.
-     * 
-     * @param p
-     *          the new bomb's position
-     * @return the bomb with the position updated
-     */
-    public Bomb plantBomb(final Point p){
-        final Bomb b = this.getBombToPlant();
-        this.checkRange(b);
-        b.updatePosition(p);
-        b.setPlanted(true);
-        return b;
-    }
-
-    /**
-     * Reactivates a bomb that has already exploded.
-     */
-    public void reactivateBomb(){
-        this.bombList.removeFirst();
-        this.addBomb();
     }
 
     /**
@@ -124,6 +124,11 @@ public class Detonator {
         return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
     }
     
+    /**
+     * Gets the actual range of a bomb.
+     * 
+     * @return the actual range of a bomb
+     */
     public int getActualRange(){
         return this.newRange;
     }

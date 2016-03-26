@@ -9,6 +9,14 @@ import model.level.Collision;
 public interface Entity extends LevelElement{
     
     /**
+     * This method allow the entity to move.
+     * 
+     * @param dir
+     *          the direction where to move
+     */
+    void move(final Direction dir);
+    
+    /**
      * Checks collisions with flames.
      * 
      * @param afflictedTiles
@@ -16,14 +24,6 @@ public interface Entity extends LevelElement{
      * @return true if there's a collision, false otherwise
      */
     boolean checkFlameCollision(final Set<Tile> afflictedTiles);
-    
-    /**
-     * This method allow the entity to move.
-     * 
-     * @param dir
-     *          the direction where to move
-     */
-    void move(final Direction dir);
     
     /**
      * Method that modify the current value of lives.
@@ -42,6 +42,11 @@ public interface Entity extends LevelElement{
     void updateDirection(Direction dir);
     
     /**
+     * Increase hero's attack level.
+     */
+    void increaseAttack(final int attackToAdd);
+    
+    /**
      * This method returns the position where the hero would be if there's no collision.
      * 
      * @param p
@@ -56,6 +61,27 @@ public interface Entity extends LevelElement{
      * @return the entity's direction
      */
     Direction getDirection();
+    
+    /**
+     * This method return the attack level.
+     * 
+     * @return the hero's attack level
+     */
+    int getAttack();
+    
+    /**
+     * Gets the entity's score.
+     * 
+     * @return entity's score
+     */
+    int getScore();
+    
+    /**
+     * Gets entity's collision.
+     * 
+     * @return entity's collision
+     */
+    Collision getCollision();
     
     /**
      * Gets remaining lives.
@@ -78,24 +104,4 @@ public interface Entity extends LevelElement{
      */
     boolean isMoving();
     
-    /**
-     * This method return the attack level.
-     * 
-     * @return the hero's attack level
-     */
-    int getAttack();
-    
-    /**
-     * Increase hero's attack level.
-     */
-    void increaseAttack(final int attackToAdd);
-    
-    /**
-     * Gets the entity's score.
-     * 
-     * @return entity's score
-     */
-    int getScore();
-    
-    Collision getCollision();
 }

@@ -28,6 +28,14 @@ public class BombImpl extends LevelElementImpl implements Bomb{
     }
 
     /**
+     * It gets bomb's range.
+     */
+    @Override
+    public int getRange() {
+        return this.range;
+    }
+    
+    /**
      * It increases the range of a bomb.
      */
     @Override
@@ -42,16 +50,8 @@ public class BombImpl extends LevelElementImpl implements Bomb{
      *          true if it has to be planted, false otherwise
      */
     @Override
-    public void setPlanted(final boolean b) {
-        this.isPlanted = b;
-    }
-
-    /**
-     * It gets bomb's range.
-     */
-    @Override
-    public int getRange() {
-        return this.range;
+    public void setPlanted() {
+        this.isPlanted = true;
     }
 
     /**

@@ -2,6 +2,8 @@ package model.utilities;
 
 import java.awt.Point;
 
+import model.units.LevelElement;
+
 /**
  * This class is used to calculate the position
  * of an element in the map.
@@ -94,7 +96,7 @@ public final class MapPoint {
     public static int getInvCoordinate(final int coordinate, final int tileDimension){
         return coordinate / tileDimension;
     }
-    
+
     /**
      * Check if the tile refers to a spawn point of the hero.
      * 
@@ -107,5 +109,26 @@ public final class MapPoint {
     public static boolean isEntryPoint(final int row, final int column) {
         return row <= 2 && column <= 2;
     }
-    
+
+    /**
+     * Check if an element identified by two coordinates is situated
+     * on the left of a LevelElement object.
+     * 
+     * @param firstCoord
+     *          the element's first coordinate
+     * @param secondCoord
+     *          the element's second coordinate
+     * @param b
+     *          the LevelElement object
+     * @param tileDimension
+     *          the dimension of a tile
+     * @return true if it is on the left, false otherwise 
+     */
+    public static boolean checkPosition(final int firstCoord,final int secondCoord, final LevelElement b, final int tileDimension ){
+        return firstCoord < MapPoint.getInvCoordinate(b.getX(),tileDimension) &&
+                secondCoord == MapPoint.getInvCoordinate(b.getY(), tileDimension) || 
+                firstCoord == MapPoint.getInvCoordinate(b.getX(), tileDimension) &&
+                secondCoord < MapPoint.getInvCoordinate(b.getY(), tileDimension);
+    }
+
 }
