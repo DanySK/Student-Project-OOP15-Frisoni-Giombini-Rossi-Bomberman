@@ -43,4 +43,5 @@ public interface GameController {
     
     int getFPS();
     
+    long getBombDelay();
 }

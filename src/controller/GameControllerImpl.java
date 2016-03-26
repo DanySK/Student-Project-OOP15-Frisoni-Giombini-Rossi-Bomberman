@@ -122,7 +122,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    view.showGameOverPanel();
+                    //view.showGameOverPanel();
                     final GameOverPanel gameOver = new GameOverPanel();
                     gameOver.setObserver(new GameOverPanel.GameOverObserver(){
                         @Override
@@ -177,5 +177,10 @@ public class GameControllerImpl implements GameController {
     @Override
     public int getFPS() {
         return FPS;
+    }
+
+    @Override
+    public long getBombDelay() {
+        return level.getHero().getBombDelay();
     }
 }
