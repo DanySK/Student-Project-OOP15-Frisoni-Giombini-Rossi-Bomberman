@@ -76,18 +76,14 @@ public class GameControllerImpl implements GameController {
                         this.doOperationAfterDelay(level.getHero().getBombDelay(), new Runnable() {
                             @Override
                             public void run() {
-                                level.detonateBomb();
-                                //view. inizia a disegnare
-                                /*doOperationAfterDelay(view dammi il tempo, new Runnable() {
-
+                                view.renderExplosions(level.detonateBomb());
+                                doOperationAfterDelay(view.getExplosionDuration(), new Runnable() {
                                     @Override
                                     public void run() {
-                                        //view. puoi smettere di disegnare
+                                        view.removeExplosion();
                                     }
-
-                                });*/
+                                });
                             }
-
                         });
                     }
                     isPlanted = true;
@@ -122,12 +118,10 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    //view.showGameOverPanel();
-                    final GameOverPanel gameOver = new GameOverPanel();
-                    gameOver.setObserver(new GameOverPanel.GameOverObserver(){
+                    view.showGameOverPanel(new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
-
+                            
                         }
                         @Override
                         public void exit() {
