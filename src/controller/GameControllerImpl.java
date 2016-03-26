@@ -127,6 +127,7 @@ public class GameControllerImpl implements GameController {
                         public void exit() {
                             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
                             MenuFrameImpl.getMenuFrame().initView();
+                            view.closeView();
                         }
                     });
                 }

@@ -41,7 +41,16 @@ public interface GameController {
      */
     Set<Bomb> getPlantedBombs();
     
+    /**
+     * Get's FPS.
+     * @return FPS
+     */
     int getFPS();
     
+    /**
+     * Gets bomb's delay.
+     * 
+     * @return bomb's delay
+     */
     long getBombDelay();
 }
