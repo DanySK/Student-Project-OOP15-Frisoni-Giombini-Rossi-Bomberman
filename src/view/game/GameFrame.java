@@ -1,9 +1,12 @@
 package view.game;
 
 import java.awt.event.KeyListener;
+import java.util.Set;
 
 import controller.GameController;
 import controller.GameLoop;
+import model.Tile;
+import view.game.GameOverPanel.GameOverObserver;
 
 /**
  * This interface models the visual representation of the game.
@@ -48,6 +51,11 @@ public interface GameFrame {
     int getTileSize();
     
     /**
+     * @return the duration of an explosion's animation.
+     */
+    long getExplosionDuration();
+    
+    /**
      * Shows the user interface on the screen.
      */
     void showView();
@@ -56,6 +64,19 @@ public interface GameFrame {
      * Updates the view and repaints the game panel.
      */
     void update();
+    
+    /**
+     * Renders an explosion on the screen.
+     * 
+     * @param tiles
+     *          the tiles involved in the explosion
+     */
+    void renderExplosions(Set<Tile> tiles);
+    
+    /**
+     * Stops the oldest explosion rendering.
+     */
+    void removeExplosion();
     
     /**
      * Shows a message associated to the pause-state of the game.
@@ -68,7 +89,15 @@ public interface GameFrame {
     void removePauseMessage();
     
     /**
-     * Shows a panel associated to the end of the game.
+     * Shows a message before the next level rendering.
      */
-    void showGameOverPanel();
+    void showNextLevelMessage();
+    
+    /**
+     * Shows a panel associated to the end of the game.
+     * 
+     * @param observer
+     *          the observer of the GameOver panel
+     */
+    void showGameOverPanel(GameOverObserver observer);
 }

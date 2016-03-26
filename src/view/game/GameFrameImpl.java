@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -23,10 +24,12 @@ import javax.swing.plaf.LayerUI;
 
 import controller.GameController;
 import controller.GameLoop;
+import model.Tile;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.LanguageHandler;
 import view.SoundEffect;
+import view.game.GameOverPanel.GameOverObserver;
 
 /**
  * A view for the rendering of the main game screen.
@@ -35,6 +38,8 @@ import view.SoundEffect;
 public class GameFrameImpl implements GameFrame {
 
     private static final String FRAME_NAME = "Game";
+    private static final float MESSAGE_OPACITY = 0.7f;
+    private static final float NEXT_LEVEL_OPACITY = 1f;
 
     private DrawableFrameImpl frame;
 
@@ -86,11 +91,12 @@ public class GameFrameImpl implements GameFrame {
             public void focusLost(final FocusEvent e) {
                 if (GameFrameImpl.this.gameLoop.isRunning()) {
                     GameFrameImpl.this.gameLoop.pause();
-                    GameFrameImpl.this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"));
+                    GameFrameImpl.this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"),
+                            MESSAGE_OPACITY);
                 }
             }
         });
-        this.frame.setResizable(false);
+        //this.frame.setResizable(false);
 
         // Sets the panels
         this.gamePanel = new GamePanel(this.observer);
@@ -154,28 +160,54 @@ public class GameFrameImpl implements GameFrame {
     }
 
     @Override
+    public long getExplosionDuration() {
+        return this.gamePanel.getExplosionDuration();
+    }
+    
+    @Override
     public void update() {
         this.gamePanel.repaint();
         if (this.darkMode) {
             this.layerUI.moveLight(this.gamePanel.getHeroViewCenterPoint(), this.jlayer);
         }
     }
+    
+    @Override
+    public void renderExplosions(Set<Tile> tiles) {
+        SoundEffect.EXPLOSION.playOnce();
+        this.gamePanel.addExplosions(tiles);
+    }
+
+    @Override
+    public void removeExplosion() {
+        this.gamePanel.removeExpolosions();
+    }
 
     @Override
     public void showPauseMessage() {
-        this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("pause"));
+        this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("pause"),
+                MESSAGE_OPACITY);
     }
 
+    //TODO: change to removeMessage() in future
     @Override
     public void removePauseMessage() {
         this.frame.clearMessage();
     }
 
     @Override
-    public void showGameOverPanel() {
+    public void showNextLevelMessage() {
+        this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("pause"),
+                NEXT_LEVEL_OPACITY);
+    }
+
+    @Override
+    public void showGameOverPanel(final GameOverObserver observer) {
+        final GameOverPanel panel = new GameOverPanel();
+        panel.setObserver(Objects.requireNonNull(observer));
         this.frame.getContentPane().removeAll();
         this.frame.getContentPane().invalidate();
-        this.frame.getContentPane().add(new GameOverPanel());
+        this.frame.getContentPane().add(panel);
         this.frame.getContentPane().revalidate();
     }
 

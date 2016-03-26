@@ -1,4 +1,4 @@
-package view.animations;
+package view.animations.unit;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;

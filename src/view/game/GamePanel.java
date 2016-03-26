@@ -5,24 +5,25 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import controller.GameController;
 import model.Tile;
 import model.TileType;
-import model.units.Bomb;
 import model.units.PowerUpType;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.animations.BombView;
 import view.animations.BombViewImpl;
+import view.animations.ExplosionView;
 import view.animations.HeroView;
 import view.animations.HeroViewImpl;
 
@@ -31,7 +32,7 @@ import view.animations.HeroViewImpl;
  * It draws the BoardMap and all the entities of the game.
  *
  */
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel {
 
     /**
      * Auto-generated UID.
@@ -39,10 +40,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = -6689261673710076779L;
 
     private static final double SCALE = 0.6;
-
-    // The delay used for updating animations
-    private static final int DELAY = 10;
-
+    private static final long EXPLOSION_DURATION = 300L;
+    
     private final GameController controller;
 
     private final int tileSize;
@@ -50,6 +49,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private final Map<PowerUpType, Image> powerUpImages;
     private HeroView hero;
 
+    private final Set<BombView> bombs;
+    private final LinkedList<Set<ExplosionView>> explosions;
+    
     /**
      * Creates a new GamePanel.
      * 
@@ -94,15 +96,16 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUpImages.put(PowerUpType.CONFUSION_OFF, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_OFF, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
+        
+        this.bombs = new HashSet<>();
+        this.explosions = new LinkedList<>();
     }
 
     /**
      * Initializes the game panel.
      */
     public void initGamePanel() {
-        this.hero = new HeroViewImpl(this.controller.getHero(), this.tileSize);
-        final Timer timer = new Timer(DELAY, this);
-        timer.start();
+        this.hero = new HeroViewImpl(this.controller.getHero(), this.tileSize, this.controller.getFPS());
     }
 
     /**
@@ -110,20 +113,29 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     @Override
     public void paintComponent(final Graphics g) {
-        // Draw the power-ups
+        // Updates sprites
+        updateSprite();
+        // Draws the power-ups
         for (final Tile p : this.controller.getPowerUp()) {
             g.drawImage(this.powerUpImages.get(p.getPowerup().get()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
         }
-        // Draw the map
+        // Draws the map
         for (final Tile p : this.controller.getTiles()) {
             g.drawImage(this.tilesImages.get(p.getType()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
         }
-        // Draw the bombs
-        for (final Bomb b : this.controller.getPlantedBombs()) {
-            final BombView bv = new BombViewImpl(b, this.tileSize);
-            g.drawImage(bv.getImage(), bv.getX(), bv.getY(), null);
+        // Draws explosions
+        if (!this.explosions.isEmpty()) {
+            this.explosions.stream().forEach(s -> s.stream().forEach(e -> {
+              g.drawImage(e.getImage(), e.getX(), e.getY(), null);
+            }));
         }
-        // Draw the hero
+        // Draws the bombs
+        this.controller.getPlantedBombs().stream().filter(b -> !this.bombs.contains(b)).forEach(b -> {
+            this.bombs.add(new BombViewImpl(b, this.tileSize, this.controller.getFPS(), this.controller.getBombDelay()));
+        });
+        this.bombs.removeIf(b -> !this.controller.getPlantedBombs().contains(b.getBomb()));
+        this.bombs.stream().forEach(b -> g.drawImage(b.getImage(), b.getX(), b.getY(), null));
+        // Draws the hero
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
         // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
@@ -142,6 +154,34 @@ public class GamePanel extends JPanel implements ActionListener {
     public int getTileSize() {
         return this.tileSize;
     }
+    
+    /**
+     * @return the duration of an explosion's animation.
+     */
+    public long getExplosionDuration() {
+        return EXPLOSION_DURATION;
+    }
+    
+    /**
+     * Adds a set of exploded tiles.
+     * 
+     * @param tiles
+     *          the tiles involved in a bomb's explosion
+     */
+    public void addExplosions(final Set<Tile> tiles) {
+        this.explosions.addLast(tiles.stream()
+                                     .map(t -> new ExplosionView(t, this.tileSize, this.controller.getFPS(), EXPLOSION_DURATION))
+                                     .collect(Collectors.toSet()));
+    }
+    
+    /**
+     * Removes the oldest set of exploded tiles.
+     */
+    public void removeExpolosions() {
+        if (!this.explosions.isEmpty()) {
+            this.explosions.removeFirst();
+        }
+    }
 
     /**
      * Calculates the perfect size of a tile by desktop resolution.
@@ -158,12 +198,9 @@ public class GamePanel extends JPanel implements ActionListener {
         return Math.toIntExact(Math.round((height * scale) / nTiles));
     }
 
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-        updateSprite();
-    }
-
     private void updateSprite() {
         this.hero.updateFrame();
+        this.bombs.stream().forEach(b -> b.updateFrame());
+        this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
     }
 }

@@ -7,6 +7,8 @@ import java.util.List;
 
 import model.units.Direction;
 import model.units.Hero;
+import view.animations.unit.AbstractEntityView;
+import view.animations.unit.Sprite;
 
 /**
  * An implementation of {@link HeroView}.
@@ -36,9 +38,11 @@ public class HeroViewImpl extends AbstractEntityView implements HeroView {
      *          the hero to represent
      * @param size
      *          the size of a tile
+     * @param fps
+     *          the number of frame-per-second
      */
-    public HeroViewImpl(final Hero hero, final int size) {
-        super(hero, size);
+    public HeroViewImpl(final Hero hero, final int size, final int fps) {
+        super(hero, size, fps);
     }
     
     @Override

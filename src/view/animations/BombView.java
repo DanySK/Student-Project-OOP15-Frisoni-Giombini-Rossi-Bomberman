@@ -1,17 +1,13 @@
 package view.animations;
 
 import model.units.Bomb;
+import view.animations.unit.SingleAnimationView;
 
 /**
  * This interface manages the visual representation of a {@link Bomb}.
  *
  */
-public interface BombView extends EntityView {
-    
-    /**
-     * @return the number of frames that realize the animation.
-     */
-    int getNumberFrameAnimation();
+public interface BombView extends SingleAnimationView {
     
     /**
      * @return the bomb represented.

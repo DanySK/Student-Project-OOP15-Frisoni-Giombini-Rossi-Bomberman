@@ -7,6 +7,8 @@ import java.util.List;
 
 import model.units.Direction;
 import model.units.Entity;
+import view.animations.unit.AbstractEntityView;
+import view.animations.unit.Sprite;
 
 /**
  * An implementation of {@link AbstractEntityView}.
@@ -35,9 +37,11 @@ public class HelicopterView extends AbstractEntityView {
      *          the entity to represent
      * @param size
      *          the size of a tile
+     * @param fps
+     *          the number of frame-per-second
      */
-    public HelicopterView(final Entity entity, final int size) {
-        super(entity, size);
+    public HelicopterView(final Entity entity, final int size, final int fps) {
+        super(entity, size, fps);
     }
     
     @Override

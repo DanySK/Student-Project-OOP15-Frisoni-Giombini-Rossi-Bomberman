@@ -84,10 +84,10 @@ public class GameControllerImpl implements GameController {
                                     public void run() {
                                         //view. puoi smettere di disegnare
                                     }
-                                    
+
                                 });*/
                             }
-                            
+
                         });
                     }
                     isPlanted = true;
@@ -127,7 +127,7 @@ public class GameControllerImpl implements GameController {
                     gameOver.setObserver(new GameOverPanel.GameOverObserver(){
                         @Override
                         public void replay() {
-                            
+
                         }
                         @Override
                         public void exit() {
@@ -178,7 +178,7 @@ public class GameControllerImpl implements GameController {
     public int getFPS() {
         return FPS;
     }
-
+    
     @Override
     public long getBombDelay() {
         return level.getHero().getBombDelay();

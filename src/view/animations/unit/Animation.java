@@ -1,4 +1,4 @@
-package view.animations;
+package view.animations.unit;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ public class Animation {
     private final int totalFrames;
 
     private boolean stopped;
+    private boolean repeated;
 
     private final List<BufferedImage> frames = new ArrayList<>();
 
@@ -39,6 +40,22 @@ public class Animation {
         this.currentFrame = 0;
         this.totalFrames = this.frames.size();
         this.stopped = true;
+        this.repeated = true;
+    }
+    
+    /**
+     * Creates an animation.
+     * 
+     * @param frames
+     *          the frames to loop in the animation
+     * @param frameDelay
+     *          the delay between each frame
+     * @param repeated
+     *          true if the animation restarts each time, false otherwise.      
+     */
+    public Animation(final List<BufferedImage> frames, final int frameDelay, final boolean repeated) {
+        this(frames, frameDelay);
+        this.repeated = repeated;
     }
 
     /**
@@ -93,7 +110,12 @@ public class Animation {
                 this.frameCount = 0;
                 this.currentFrame++;
                 if (this.currentFrame > this.totalFrames - 1) {
-                    this.currentFrame = 0;
+                    if (!this.repeated) {
+                        this.stopped = true;
+                        this.currentFrame--;
+                    } else {
+                        this.currentFrame = 0;
+                    }
                 }
             }
         }

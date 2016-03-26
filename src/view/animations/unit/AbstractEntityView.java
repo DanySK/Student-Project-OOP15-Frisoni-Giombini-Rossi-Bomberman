@@ -1,4 +1,4 @@
-package view.animations;
+package view.animations.unit;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -11,14 +11,15 @@ import model.units.Direction;
 import model.units.Entity;
 
 /**
- * An implementation of {@link EntityView}.
+ * An implementation of {@link EntityAnimationView}.
  * It manages the animations of an entity that can move in the game.
  * It calculates the frame to display based on the entity's status.
  *
  */
-public abstract class AbstractEntityView implements EntityView {
+public abstract class AbstractEntityView implements EntityAnimationView {
 
-    private static final int ANIMATION_DELAY = 10;
+    // The delay in seconds between each frame update of the animations
+    private static final double UPDATE_FRAME_DELAY = 0.1;
 
     // Animation states
     private final EnumMap<Direction, Animation> movementAnimations = new EnumMap<>(Direction.class);
@@ -35,24 +36,21 @@ public abstract class AbstractEntityView implements EntityView {
      *          the entity to represent
      * @param size
      *          the size of the sprite
+     * @param fps
+     *          the number of frame-per-second         
      */
-    public AbstractEntityView(final Entity entity, final int size) {
+    public AbstractEntityView(final Entity entity, final int size, final int fps) {
         this.entity = Objects.requireNonNull(entity);
         this.size = size;
         this.currAnimation = Optional.empty();
-        loadAnimations(ANIMATION_DELAY);
+        loadAnimations((int)(fps * UPDATE_FRAME_DELAY));
         updateAnimation();
     }
 
-    /**
-     * @return the frames of the animations associated to the movement of the entity.
-     */
+    @Override
     public abstract EnumMap<Direction, List<BufferedImage>> movementFrames();
 
-    /**
-     * 
-     * @return the frames of the animations associated to the standing-position of the entity.
-     */
+    @Override
     public abstract EnumMap<Direction, List<BufferedImage>> standingFrames();
 
     /**
