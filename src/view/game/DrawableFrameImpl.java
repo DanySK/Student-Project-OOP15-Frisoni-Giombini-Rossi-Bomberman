@@ -30,8 +30,6 @@ public class DrawableFrameImpl extends JFrame implements DrawableFrame {
      */
     private static final long serialVersionUID = -4905480110288926483L;
     
-    private static final float OPACITY_MESSAGE = 0.7f;
-    
     private final JPanel overlayPanel;
     
     /**
@@ -49,14 +47,14 @@ public class DrawableFrameImpl extends JFrame implements DrawableFrame {
     }
     
     @Override
-    public void drawMessage(final String msg) {
+    public void drawMessage(final String msg, final float opacity) {
         this.overlayPanel.setVisible(true);
         final Dimension d = this.overlayPanel.getPreferredSize();
         final BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 
         final Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(new Color(0.0f, 0.0f, 0.0f, OPACITY_MESSAGE));
+        g.setColor(new Color(0.0f, 0.0f, 0.0f, opacity));
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.WHITE);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));

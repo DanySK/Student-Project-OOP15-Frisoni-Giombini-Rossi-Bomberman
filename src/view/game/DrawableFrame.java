@@ -18,7 +18,7 @@ public interface DrawableFrame {
      * @param msg
      *          the message to display
      */
-    void drawMessage(String msg);
+    void drawMessage(String msg, float opacity);
     
     /**
      * Clears the message.
