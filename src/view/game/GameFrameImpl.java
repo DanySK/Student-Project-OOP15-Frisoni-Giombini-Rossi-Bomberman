@@ -210,6 +210,11 @@ public class GameFrameImpl implements GameFrame {
         this.frame.getContentPane().add(panel);
         this.frame.getContentPane().revalidate();
     }
+    
+    @Override
+    public void closeView() {
+        exitProcedure();
+    }
 
     /**
      * This class overlays a radial gradient (for a spotlight effect) to a panel.

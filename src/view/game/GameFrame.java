@@ -100,4 +100,9 @@ public interface GameFrame {
      *          the observer of the GameOver panel
      */
     void showGameOverPanel(GameOverObserver observer);
+    
+    /**
+     * Closes the game frame.
+     */
+    void closeView();
 }
