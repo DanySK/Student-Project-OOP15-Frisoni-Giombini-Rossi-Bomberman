@@ -43,7 +43,7 @@ public abstract class AbstractEntityView implements EntityAnimationView {
         this.entity = Objects.requireNonNull(entity);
         this.size = size;
         this.currAnimation = Optional.empty();
-        loadAnimations((int)(fps * UPDATE_FRAME_DELAY));
+        loadAnimations((int) (fps * UPDATE_FRAME_DELAY));
         updateAnimation();
     }
 
@@ -83,8 +83,8 @@ public abstract class AbstractEntityView implements EntityAnimationView {
     }
 
     private void loadAnimations(final int delay) {
-        movementFrames().entrySet().stream().forEach(e -> movementAnimations.put(e.getKey(), new Animation(e.getValue(), delay)));
-        standingFrames().entrySet().stream().forEach(e -> standingAnimations.put(e.getKey(), new Animation(e.getValue(), delay)));
+        movementFrames().entrySet().stream().forEach(e -> movementAnimations.put(e.getKey(), new Animation(e.getValue(), delay, true)));
+        standingFrames().entrySet().stream().forEach(e -> standingAnimations.put(e.getKey(), new Animation(e.getValue(), delay, true)));
     }
 
     private void updateAnimation() {

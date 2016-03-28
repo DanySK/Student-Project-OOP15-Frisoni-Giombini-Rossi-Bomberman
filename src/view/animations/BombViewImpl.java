@@ -65,7 +65,7 @@ public class BombViewImpl extends AbstractSingleAnimationView implements BombVie
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof BombViewImpl && this.bomb.equals(((BombViewImpl) obj).bomb);
     }
 }

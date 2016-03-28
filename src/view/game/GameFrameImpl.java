@@ -61,9 +61,6 @@ public class GameFrameImpl implements GameFrame {
      */
     public GameFrameImpl(final boolean darkMode) {
         this.darkMode = darkMode;
-        if (SoundEffect.isMusicOn()) {
-            SoundEffect.GAME_THEME.playLoop();
-        }
     }
 
     @Override
@@ -123,12 +120,9 @@ public class GameFrameImpl implements GameFrame {
      * Custom exit procedure to save the score before closing.
      */
     private void exitProcedure() {
-        // model.setHighScores();
-        // highScoreProperties.saveProperties();
         this.gameLoop.stopLoop();
         SoundEffect.GAME_THEME.stop();
         this.frame.dispose();
-        // System.exit(0);
     }
 
     @Override
@@ -152,6 +146,9 @@ public class GameFrameImpl implements GameFrame {
         update();
         this.frame.initDrawable();
         this.frame.setVisible(true);
+        if (SoundEffect.isMusicOn()) {
+            SoundEffect.GAME_THEME.playLoop();
+        }
     }
 
     @Override
@@ -173,9 +170,9 @@ public class GameFrameImpl implements GameFrame {
     }
     
     @Override
-    public void renderExplosions(Set<Tile> tiles) {
-        SoundEffect.EXPLOSION.playOnce();
+    public void renderExplosions(final Set<Tile> tiles) {
         this.gamePanel.addExplosions(tiles);
+        SoundEffect.EXPLOSION.playOnce();
     }
 
     @Override

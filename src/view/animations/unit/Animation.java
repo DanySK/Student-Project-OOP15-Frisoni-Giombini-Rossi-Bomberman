@@ -17,31 +17,9 @@ public class Animation {
     private final int totalFrames;
 
     private boolean stopped;
-    private boolean repeated;
+    private final boolean repeated;
 
     private final List<BufferedImage> frames = new ArrayList<>();
-
-    /**
-     * Creates an animation.
-     * 
-     * @param frames
-     *          the frames to loop in the animation
-     * @param frameDelay
-     *          the delay between each frame
-     */
-    public Animation(final List<BufferedImage> frames, final int frameDelay) {
-        Objects.requireNonNull(frames);
-        if (frameDelay <= 0) {
-            throw new IllegalArgumentException("Invalid duration: " + frameDelay);
-        }
-        this.frames.addAll(frames);
-        this.frameCount = 0;
-        this.frameDelay = frameDelay;
-        this.currentFrame = 0;
-        this.totalFrames = this.frames.size();
-        this.stopped = true;
-        this.repeated = true;
-    }
     
     /**
      * Creates an animation.
@@ -54,7 +32,16 @@ public class Animation {
      *          true if the animation restarts each time, false otherwise.      
      */
     public Animation(final List<BufferedImage> frames, final int frameDelay, final boolean repeated) {
-        this(frames, frameDelay);
+        Objects.requireNonNull(frames);
+        if (frameDelay <= 0) {
+            throw new IllegalArgumentException("Invalid duration: " + frameDelay);
+        }
+        this.frames.addAll(frames);
+        this.frameCount = 0;
+        this.frameDelay = frameDelay;
+        this.currentFrame = 0;
+        this.totalFrames = this.frames.size();
+        this.stopped = true;
         this.repeated = repeated;
     }
 
@@ -110,11 +97,11 @@ public class Animation {
                 this.frameCount = 0;
                 this.currentFrame++;
                 if (this.currentFrame > this.totalFrames - 1) {
-                    if (!this.repeated) {
+                    if (this.repeated) {
+                        this.currentFrame = 0;
+                    } else {
                         this.stopped = true;
                         this.currentFrame--;
-                    } else {
-                        this.currentFrame = 0;
                     }
                 }
             }

@@ -33,7 +33,6 @@ public final class MenuFrameImpl implements MenuFrame {
     private MenuFrameImpl() {
         this.frame = new JFrame();
         initialize();
-        SoundEffect.THEME.playLoop();
     }
 
     /**
@@ -86,6 +85,9 @@ public final class MenuFrameImpl implements MenuFrame {
     @Override
     public void initView() {
         this.frame.setVisible(true);
+        if (SoundEffect.isMusicOn()) {
+            SoundEffect.THEME.playLoop();
+        }
     }
 
     @Override

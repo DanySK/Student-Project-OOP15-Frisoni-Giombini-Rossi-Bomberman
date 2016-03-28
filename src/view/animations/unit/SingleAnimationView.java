@@ -12,5 +12,5 @@ public interface SingleAnimationView extends AnimationView {
     /**
      * @return the frames of the single animation.
      */
-    public List<BufferedImage> animationFrames();
+    List<BufferedImage> animationFrames();
 }

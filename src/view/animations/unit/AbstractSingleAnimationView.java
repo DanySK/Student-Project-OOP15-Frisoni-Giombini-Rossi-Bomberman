@@ -17,6 +17,17 @@ public abstract class AbstractSingleAnimationView implements SingleAnimationView
     private final Animation animation;
     private final int size;
 
+    /**
+     * Constructs a new representation with a single animation.
+     * 
+     * @param size
+     *          the size of the sprite
+     * @param fps
+     *          the number of frame-per-second
+     * @param duration
+     *          the duration of the animation (in milliseconds).
+     *          It is used to define the delay between each frame.
+     */
     public AbstractSingleAnimationView(final int size, final int fps, final long duration) {
         this.size = size;
         this.animation = new Animation(animationFrames(), (int) ((fps / animationFrames().size() * duration) / TIME_FACTOR), false);

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.util.Deque;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class GamePanel extends JPanel {
 
     private static final double SCALE = 0.6;
     private static final long EXPLOSION_DURATION = 300L;
-    
+
     private final GameController controller;
 
     private final int tileSize;
@@ -50,8 +51,8 @@ public class GamePanel extends JPanel {
     private HeroView hero;
 
     private final Set<BombView> bombs;
-    private final LinkedList<Set<ExplosionView>> explosions;
-    
+    private final Deque<Set<ExplosionView>> explosions;
+
     /**
      * Creates a new GamePanel.
      * 
@@ -69,12 +70,12 @@ public class GamePanel extends JPanel {
         final int nTiles = this.controller.getLevelSize();
         this.tileSize = calculateTileSize(SCALE, nTiles);
         this.setPreferredSize(new Dimension(nTiles * this.tileSize, nTiles * this.tileSize));
-        
+
         /*
          * EnumMap for associating the tiles' types with images.
          * At the inclusion, it scales the images (one time).
          * Effectively, it is inefficient to load an image and scale it every time the component is asked to render itself.
-         * So this is the best way to proceed. 
+         * So this is the best way to proceed.
          */
         tilesImages = new HashMap<>();
         tilesImages.put(TileType.WALKABLE, ImageLoader.getLoader().createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
@@ -85,6 +86,7 @@ public class GamePanel extends JPanel {
 
         /*
          * EnumMap for associating the power-ups' types with images.
+         * It uses the same logic adopted for tiles' types rendering.
          */
         powerUpImages = new EnumMap<>(PowerUpType.class);
         powerUpImages.put(PowerUpType.ATTACK, ImageLoader.getLoader().createImageOfSize(GameImage.ATTACK_UP, this.tileSize, this.tileSize));
@@ -96,7 +98,7 @@ public class GamePanel extends JPanel {
         powerUpImages.put(PowerUpType.CONFUSION_OFF, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_OFF, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
-        
+
         this.bombs = new HashSet<>();
         this.explosions = new LinkedList<>();
     }
@@ -114,7 +116,7 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(final Graphics g) {
         // Updates sprites
-        updateSprite();
+        updateSprites();
         // Draws the power-ups
         for (final Tile p : this.controller.getPowerUp()) {
             g.drawImage(this.powerUpImages.get(p.getPowerup().get()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
@@ -126,7 +128,7 @@ public class GamePanel extends JPanel {
         // Draws explosions
         if (!this.explosions.isEmpty()) {
             this.explosions.stream().forEach(s -> s.stream().forEach(e -> {
-              g.drawImage(e.getImage(), e.getX(), e.getY(), null);
+                g.drawImage(e.getImage(), e.getX(), e.getY(), null);
             }));
         }
         // Draws the bombs
@@ -139,6 +141,12 @@ public class GamePanel extends JPanel {
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
         // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
+    }
+    
+    private void updateSprites() {
+        this.hero.updateFrame();
+        this.bombs.stream().forEach(b -> b.updateFrame());
+        this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
     }
 
     /**
@@ -154,14 +162,14 @@ public class GamePanel extends JPanel {
     public int getTileSize() {
         return this.tileSize;
     }
-    
+
     /**
      * @return the duration of an explosion's animation.
      */
     public long getExplosionDuration() {
         return EXPLOSION_DURATION;
     }
-    
+
     /**
      * Adds a set of exploded tiles.
      * 
@@ -170,10 +178,10 @@ public class GamePanel extends JPanel {
      */
     public void addExplosions(final Set<Tile> tiles) {
         this.explosions.addLast(tiles.stream()
-                                     .map(t -> new ExplosionView(t, this.tileSize, this.controller.getFPS(), EXPLOSION_DURATION))
-                                     .collect(Collectors.toSet()));
+                .map(t -> new ExplosionView(t, this.tileSize, this.controller.getFPS(), EXPLOSION_DURATION))
+                .collect(Collectors.toSet()));
     }
-    
+
     /**
      * Removes the oldest set of exploded tiles.
      */
@@ -196,11 +204,5 @@ public class GamePanel extends JPanel {
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int height = (int) screen.getHeight();
         return Math.toIntExact(Math.round((height * scale) / nTiles));
-    }
-
-    private void updateSprite() {
-        this.hero.updateFrame();
-        this.bombs.stream().forEach(b -> b.updateFrame());
-        this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
     }
 }
