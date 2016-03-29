@@ -121,7 +121,8 @@ public class GameControllerImpl implements GameController {
                     view.showGameOverPanel(new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
-                            
+                            view.closeView();
+                            startGame();
                         }
                         @Override
                         public void exit() {

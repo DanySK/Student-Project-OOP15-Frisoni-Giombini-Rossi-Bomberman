@@ -124,7 +124,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                         public void run() {
                             if (!paused) {
                                 try {
-                                    Thread.sleep(MILLI);
+                                    Agent.sleep(MILLI);
                                 } catch (InterruptedException e) {
                                     System.out.println(e);
                                 }
