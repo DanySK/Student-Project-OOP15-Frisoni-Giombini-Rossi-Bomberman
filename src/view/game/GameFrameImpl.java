@@ -171,13 +171,13 @@ public class GameFrameImpl implements GameFrame {
     
     @Override
     public void renderExplosions(final Set<Tile> tiles) {
-        this.gamePanel.addExplosions(tiles);
+        //this.gamePanel.addExplosions(tiles);
         SoundEffect.EXPLOSION.playOnce();
     }
 
     @Override
     public void removeExplosion() {
-        this.gamePanel.removeExpolosions();
+        //this.gamePanel.removeExpolosions();
     }
 
     @Override

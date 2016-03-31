@@ -5,26 +5,21 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.util.Deque;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 
 import controller.GameController;
-import model.Tile;
 import model.TileType;
 import model.units.PowerUpType;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.animations.BombView;
 import view.animations.BombViewImpl;
-import view.animations.ExplosionView;
 import view.animations.HeroView;
 import view.animations.HeroViewImpl;
 
@@ -51,7 +46,7 @@ public class GamePanel extends JPanel {
     private HeroView hero;
 
     private final Set<BombView> bombs;
-    private final Deque<Set<ExplosionView>> explosions;
+    //private final Deque<Set<ExplosionView>> explosions;
 
     /**
      * Creates a new GamePanel.
@@ -100,7 +95,7 @@ public class GamePanel extends JPanel {
         powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
         this.bombs = new HashSet<>();
-        this.explosions = new LinkedList<>();
+        //this.explosions = new LinkedList<>();
     }
 
     /**
@@ -118,19 +113,22 @@ public class GamePanel extends JPanel {
         // Updates sprites
         updateSprites();
         // Draws the power-ups
+        /*
         for (final Tile p : this.controller.getPowerUp()) {
             g.drawImage(this.powerUpImages.get(p.getPowerup().get()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
-        }
+        }*/
         // Draws the map
+        /*
         for (final Tile p : this.controller.getTiles()) {
             g.drawImage(this.tilesImages.get(p.getType()), p.getRow() * this.tileSize, p.getCol() * this.tileSize, this);
-        }
+        }*/
         // Draws explosions
+        /*
         if (!this.explosions.isEmpty()) {
             this.explosions.stream().forEach(s -> s.stream().forEach(e -> {
                 g.drawImage(e.getImage(), e.getX(), e.getY(), null);
             }));
-        }
+        }*/
         // Draws the bombs
         this.controller.getPlantedBombs().stream().filter(b -> !this.bombs.contains(b)).forEach(b -> {
             this.bombs.add(new BombViewImpl(b, this.tileSize, this.controller.getFPS(), this.controller.getBombDelay()));
@@ -146,7 +144,7 @@ public class GamePanel extends JPanel {
     private void updateSprites() {
         this.hero.updateFrame();
         this.bombs.stream().forEach(b -> b.updateFrame());
-        this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
+        //this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
     }
 
     /**
@@ -175,21 +173,21 @@ public class GamePanel extends JPanel {
      * 
      * @param tiles
      *          the tiles involved in a bomb's explosion
-     */
+     *//*
     public void addExplosions(final Set<Tile> tiles) {
         this.explosions.addLast(tiles.stream()
-                .map(t -> new ExplosionView(t, this.tileSize, this.controller.getFPS(), EXPLOSION_DURATION))
-                .collect(Collectors.toSet()));
-    }
+                                     .map(t -> new ExplosionView(t, this.tileSize, this.controller.getFPS(), EXPLOSION_DURATION))
+                                     .collect(Collectors.toSet()));
+    }*/
 
     /**
      * Removes the oldest set of exploded tiles.
-     */
+     *//*
     public void removeExpolosions() {
         if (!this.explosions.isEmpty()) {
             this.explosions.removeFirst();
         }
-    }
+    }*/
 
     /**
      * Calculates the perfect size of a tile by desktop resolution.
