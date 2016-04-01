@@ -13,7 +13,6 @@ public class Detonator {
 
     private static final int INITIAL_RANGE = 1;
     private static final int INITIAL_BOMBS = 1;
-    //private static final Point INITIAL_POS = new Point(0, 0);
     private static final long BOMB_DELAY = 3000L;
 
     private final Dimension dim;

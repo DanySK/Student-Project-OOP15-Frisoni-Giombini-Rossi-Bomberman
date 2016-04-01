@@ -167,12 +167,13 @@ public class LevelImpl implements Level {
     @Override
     public Set<Tile> detonateBomb() {
         final Bomb b = this.hero.getDetonator().getBombToReactivate();
+        final Set<Tile> tiles = this.getAllAfflictedTiles(b);
         //controlla nemici e in caso aggiungi punteggio all'hero
-        if(this.hero.checkFlameCollision(this.getAllAfflictedTiles(b))){
+        if(this.hero.checkFlameCollision(tiles)){
             this.hero.modifyLife(-1);
         }
         this.hero.getDetonator().reactivateBomb();
-        return this.getAllAfflictedTiles(b);
+        return tiles;
     }
     
     /**
@@ -182,7 +183,7 @@ public class LevelImpl implements Level {
      */
     private Set<Tile> getAllAfflictedTiles(final Bomb b) {
         final Set<Tile> afflictedTiles = new HashSet<>();
-        afflictedTiles.addAll(this.getAfflictedTiles(b, 
+        /*afflictedTiles.addAll(this.getAfflictedTiles(b, 
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension),
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), +b.getRange()),
@@ -190,8 +191,8 @@ public class LevelImpl implements Level {
         afflictedTiles.addAll(this.getAfflictedTiles(b, MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));
-        /*afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.UP, b, 
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));*/
+        afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.UP, b, 
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange())));
         afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.RIGHT, b,
@@ -202,7 +203,7 @@ public class LevelImpl implements Level {
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));
         afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.LEFT, b,
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), -b.getRange()), 
-                MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));*/
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
         return afflictedTiles;
     }
     
@@ -222,7 +223,7 @@ public class LevelImpl implements Level {
      *          the maximum y
      * @return a set of afflicted tiles
      */
-    private Set<Tile> getAfflictedTiles(final Bomb b, final int x, final int y, final int maxX, final int maxY){
+    /*private Set<Tile> getAfflictedTiles(final Bomb b, final int x, final int y, final int maxX, final int maxY){
         final Set<Tile> afflictedTiles = new HashSet<>();
         for(int i = x; i <= maxX; i++){
             for(int j = y; j <= maxY; j++){
@@ -247,26 +248,42 @@ public class LevelImpl implements Level {
             }
         }
         return afflictedTiles;
-    }
+    }*/
     
+    /**
+     * This method return all the afflicted tiles
+     * in a specified direction.
+     * 
+     * @param dir
+     *         the direction 
+     * @param b
+     *         the bomb 
+     * @param maxX
+     *          the max x coordinate
+     * @param maxY
+     *          the max y coordinate
+     * @return the set of afflicted tiles
+     */
     private Set<Tile> getAfflictedTilesXX(final Direction dir, final Bomb b, final int maxX, final int maxY){
         final Set<Tile> afflictedTiles = new HashSet<>();
-        for(int i = MapPoint.getInvCoordinate(b.getX(), this.tileDimension); this.stop(i, maxX, dir); this.increment(dir, i) ){
-            for(int j = MapPoint.getInvCoordinate(b.getY(), this.tileDimension); this.stop(j, maxY, dir); this.increment(dir, j) ){
+        boolean stop = false;
+        for(int i = MapPoint.getInvCoordinate(b.getX(), this.tileDimension); this.stop(i, maxX, dir) && !stop; i += this.increment(dir) ){
+            for(int j = MapPoint.getInvCoordinate(b.getY(), this.tileDimension); this.stop(j, maxY, dir) && !stop; j += this.increment(dir) ){
                 if(this.map[i][j].getType().equals(TileType.CONCRETE)){
-                    break;
+                    stop = true;
                 }
                 else {
+                    afflictedTiles.add(this.map[i][j]);
                     if(this.map[i][j].getType().equals(TileType.RUBBLE)){
                         if(this.map[i][j].getPowerup().isPresent()){
                             this.map[i][j].setType(TileType.POWERUP_STATUS);
                         } else {
                             this.map[i][j].setType(TileType.WALKABLE);
                         }
-                        afflictedTiles.add(this.map[i][j]);
-                        break;
+                        System.out.println("stop rubble i " +i + " j " + j + "  " +stop);
+                        stop = true;
+                        System.out.println(stop);
                     }
-                    afflictedTiles.add(this.map[i][j]);
                 }
             }
         }
@@ -292,6 +309,17 @@ public class LevelImpl implements Level {
         }
     }
     
+    /**
+     * Checks if the cycle must be stopped or not.
+     * 
+     * @param coordinate
+     *          the coordinate
+     * @param max
+     *          the max coordinate
+     * @param dir
+     *          the direction
+     * @return true if the cycle can continue, false otherwise
+     */
     private boolean stop(final int coordinate, final int max, final Direction dir){
         if(dir.equals(Direction.UP) || dir.equals(Direction.LEFT)){
             return coordinate >= max;
@@ -300,11 +328,18 @@ public class LevelImpl implements Level {
         }
     }
     
-    private int increment(final Direction dir, int coordinate){
+    /**
+     * Return the next value the coordinate has to add.
+     * 
+     * @param dir
+     *          the direction
+     * @return the integer to add to the coordinate
+     *////CAMBIA NOME!!! NUMERI MAGICII!
+    private int increment(final Direction dir){
         if(dir.equals(Direction.UP) || dir.equals(Direction.LEFT)){
-            return coordinate--;
+            return -1;
         } else {
-            return coordinate++;
+            return 1;
         }
     }
 
