@@ -12,7 +12,7 @@ import model.level.Collision;
  * the foundation of every entity in the game.
  *
  */
-public abstract class AbstractEntity extends LevelElementImpl implements Entity {
+public abstract class AbstractEntity extends DynamicLevelElement implements Entity {
 
     private static final int INITIAL_LIVES = 1;
     private static final int INITIAL_ATTACK = 1;
@@ -43,7 +43,7 @@ public abstract class AbstractEntity extends LevelElementImpl implements Entity 
      */
     @Override
     public void move(final Direction d){
-        this.updatePosition(this.getPossiblePos(d.getPoint()));
+        this.update(this.getPossiblePos(d.getPoint()));
         this.updateDirection(d);
 
     }

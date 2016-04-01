@@ -31,7 +31,7 @@ public interface Hero extends Entity {
      * 
      * @return the bomb to plant
      */
-    Bomb plantBomb(final int nTiles);
+    Bomb plantBomb();
     
     /**
      * Reconfigurates hero.
@@ -125,6 +125,6 @@ public interface Hero extends Entity {
      * 
      * @return true if there's at least a bomb, false otherwise
      */
-    boolean hasBomb();
+    boolean hasBomb(final int nTiles);
     
 }

@@ -2,6 +2,7 @@ package model.units;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
@@ -11,12 +12,14 @@ import java.util.stream.Collectors;
 public class Detonator {
 
     private static final int INITIAL_RANGE = 1;
-    private static final Point INITIAL_POS = new Point(0, 0);
+    private static final int INITIAL_BOMBS = 1;
+    //private static final Point INITIAL_POS = new Point(0, 0);
     private static final long BOMB_DELAY = 3000L;
 
     private final Dimension dim;
     private int newRange;
-    private LinkedList<Bomb> bombList = new LinkedList<>();
+    private int maxBombs;
+    private Deque<Bomb> bombList = new LinkedList<>();
 
     /**
      * It creates a detonator.
@@ -27,14 +30,14 @@ public class Detonator {
     public Detonator(final Dimension dim){
         this.dim = dim;
         this.newRange = INITIAL_RANGE;
-        this.addBomb();
+        this.maxBombs = INITIAL_BOMBS;
     }
 
     /**
      * It adds a bomb to the List.
      */
-    public void addBomb(){
-        this.bombList.addLast(new BombImpl(INITIAL_POS, this.dim));
+    public void addBomb(final Point p){
+        this.bombList.addLast(new BombImpl(p, this.dim));
     }
     
     /**
@@ -44,6 +47,10 @@ public class Detonator {
         this.newRange++;
     }
     
+    public void increaseBombs(){
+        this.maxBombs++;
+    }
+    
     /**
      * This method returns the bomb to be planted.
      * 
@@ -51,10 +58,9 @@ public class Detonator {
      *          the new bomb's position
      * @return the bomb with the position updated
      */
-    public Bomb plantBomb(final Point p){
+    public Bomb plantBomb(){
         final Bomb b = this.getBombToPlant();
         this.checkRange(b);
-        b.updatePosition(p);
         b.setPlanted();
         return b;
     }
@@ -76,7 +82,6 @@ public class Detonator {
      */
     public void reactivateBomb(){
         this.bombList.removeFirst();
-        this.addBomb();
     }
 
     /**
@@ -111,8 +116,13 @@ public class Detonator {
      *  
      * @return true if there's at least a bomb to plant.
      */
-    public boolean hasBombs(){
-        return this.bombList.stream().anyMatch(b -> !b.isPositioned());
+    public boolean hasBombs(final Point p){
+        if(this.bombList.size() < this.maxBombs){
+            this.addBomb(p);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -136,7 +146,9 @@ public class Detonator {
     /**
      * Reset bomb's range.
      */
-    public void resetRange(){
+    public void resetDetonator(){
         this.newRange = INITIAL_RANGE;
+        this.bombList.clear();
+        this.maxBombs = INITIAL_BOMBS;
     }
 }

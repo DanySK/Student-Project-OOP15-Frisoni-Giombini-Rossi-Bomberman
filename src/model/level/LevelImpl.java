@@ -63,6 +63,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void nextLevel() {
+        this.setNumberTiles();
         this.createLevel();
         this.hero.clearOptions();
     }
@@ -73,11 +74,11 @@ public class LevelImpl implements Level {
      */
     private void createLevel() {
         final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY,
-                POWERUP_DENSITY, this.tileDimension);
+                POWERUP_DENSITY);
         this.map = new Tile[this.nTiles][this.nTiles];
         for (int i = 0; i < this.nTiles; i++) {
             for (int j = 0; j < this.nTiles; j++) {
-                this.map[i][j] = factory.createForCoordinates(i, j);
+                this.map[i][j] = factory.createForCoordinates(i, j, this.tileDimension);
             }
         }
         this.setDoor(factory);
@@ -155,7 +156,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void plantBomb() {
-        this.hero.plantBomb(this.nTiles);
+        this.hero.plantBomb();
     }
 
     /**
@@ -190,6 +191,18 @@ public class LevelImpl implements Level {
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange()),
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
                 this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));
+        /*afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.UP, b, 
+                MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange())));
+        afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.RIGHT, b,
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), +b.getRange()), 
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
+        afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.DOWN, b, 
+                MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));
+        afflictedTiles.addAll(this.getAfflictedTilesXX(Direction.LEFT, b,
+                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), -b.getRange()), 
+                MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));*/
         return afflictedTiles;
     }
     
@@ -236,6 +249,30 @@ public class LevelImpl implements Level {
         return afflictedTiles;
     }
     
+    private Set<Tile> getAfflictedTilesXX(final Direction dir, final Bomb b, final int maxX, final int maxY){
+        final Set<Tile> afflictedTiles = new HashSet<>();
+        for(int i = MapPoint.getInvCoordinate(b.getX(), this.tileDimension); this.stop(i, maxX, dir); this.increment(dir, i) ){
+            for(int j = MapPoint.getInvCoordinate(b.getY(), this.tileDimension); this.stop(j, maxY, dir); this.increment(dir, j) ){
+                if(this.map[i][j].getType().equals(TileType.CONCRETE)){
+                    break;
+                }
+                else {
+                    if(this.map[i][j].getType().equals(TileType.RUBBLE)){
+                        if(this.map[i][j].getPowerup().isPresent()){
+                            this.map[i][j].setType(TileType.POWERUP_STATUS);
+                        } else {
+                            this.map[i][j].setType(TileType.WALKABLE);
+                        }
+                        afflictedTiles.add(this.map[i][j]);
+                        break;
+                    }
+                    afflictedTiles.add(this.map[i][j]);
+                }
+            }
+        }
+        return afflictedTiles;
+    }
+    
     /**
      * Checks boundaries.
      * 
@@ -252,6 +289,22 @@ public class LevelImpl implements Level {
             return 0;
         } else {
             return coordinate + range;
+        }
+    }
+    
+    private boolean stop(final int coordinate, final int max, final Direction dir){
+        if(dir.equals(Direction.UP) || dir.equals(Direction.LEFT)){
+            return coordinate >= max;
+        } else {
+            return coordinate <= max; 
+        }
+    }
+    
+    private int increment(final Direction dir, int coordinate){
+        if(dir.equals(Direction.UP) || dir.equals(Direction.LEFT)){
+            return coordinate--;
+        } else {
+            return coordinate++;
         }
     }
 
@@ -341,7 +394,7 @@ public class LevelImpl implements Level {
             @Override
             public Optional<Rectangle> apply(final Tile t) {
                 if (t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE)){
-                    return Optional.of(t.getBoundBox());
+                    return Optional.of(t.getHitbox());
                 } else {
                     return Optional.empty();
                 }
@@ -359,7 +412,7 @@ public class LevelImpl implements Level {
         return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
             @Override
             public Optional<Tile> apply(Tile t) {
-                if(t.getType().equals(TileType.WALKABLE) && !MapPoint.isEntryPoint(t.getRow(), t.getRow())){
+                if(t.getType().equals(TileType.WALKABLE) && !MapPoint.isEntryPoint(t.getX(), t.getY())){
                     return Optional.of(t);
                 } else {
                     return Optional.empty();

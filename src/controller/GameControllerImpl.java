@@ -71,7 +71,7 @@ public class GameControllerImpl implements GameController {
                     level.getHero().setMoving(false);
                 }
                 if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
-                    if (level.getHero().hasBomb(/*level.getSize()*/) && level.canPlantBomb()) {
+                    if (level.getHero().hasBomb(level.getSize()) && level.canPlantBomb()) {
                         level.plantBomb();
                         this.doOperationAfterDelay(level.getHero().getBombDelay(), new Runnable() {
                             @Override

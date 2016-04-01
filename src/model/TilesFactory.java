@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -17,7 +19,6 @@ public class TilesFactory {
     private final int columns;
     private final double blockDensity;
     private final double powerupDensity;
-    private final int tileDimension;
 
     /**
      * Construct a TileFactory.
@@ -32,12 +33,11 @@ public class TilesFactory {
      *          the dimension of a tile
      */
     public TilesFactory(final int rows, final int columns, final double blockDensity, 
-            final double powerupDensity, final int tileDimension) {
+            final double powerupDensity) {
         this.rows = rows;
         this.columns = columns;
         this.blockDensity = blockDensity;
         this.powerupDensity = powerupDensity;
-        this.tileDimension = tileDimension;
     }
 
     /**
@@ -49,10 +49,13 @@ public class TilesFactory {
      *          the column in the map
      * @return the new tile
      */
-    public Tile createForCoordinates(final int row, final int column) {
+    public Tile createForCoordinates(final int row, final int column, final int tileDimension) {
         final TileType type = getTypeForCoordinates(row, column);
         final Optional<PowerUpType> powerup = this.getPowerup(type);
-        return new Tile(type, powerup, row, column, this.tileDimension);
+        return new Tile(new Point(MapPoint.getCoordinate(row, tileDimension),
+                MapPoint.getCoordinate(column, tileDimension)), 
+                new Dimension(tileDimension, tileDimension),
+                type, powerup);
     }
 
     /**
@@ -73,7 +76,7 @@ public class TilesFactory {
             return TileType.WALKABLE;
         }
     }
-    
+
     /**
      * Checks if the tile at the specified coordinates refers
      * to a concrete block.
@@ -98,7 +101,7 @@ public class TilesFactory {
      */
     private Optional<PowerUpType> getPowerup(final TileType type){
         if(!type.equals(TileType.RUBBLE)){
-                return Optional.empty();
+            return Optional.empty();
         }
         else{
             if(Math.random() < this.powerupDensity){
@@ -118,7 +121,7 @@ public class TilesFactory {
     public int getPowerUpType(){
         return new Random().nextInt(PowerUpType.values().length - 1);
     }
-    
+
     /**
      * Set a random tile's type equals to the closed door.
      * 

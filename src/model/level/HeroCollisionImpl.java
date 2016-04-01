@@ -36,7 +36,7 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
         return super.elementCollision(powerUpSet, new Predicate<Tile>(){
             @Override
             public boolean test(final Tile t) {
-                if(entityRec.intersects(t.getBoundBox())){
+                if(entityRec.intersects(t.getHitbox())){
                     t.getPowerup().get().apply((Hero) entity);
                     t.removePowerUp();
                     t.setType(TileType.WALKABLE);

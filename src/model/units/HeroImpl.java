@@ -58,9 +58,8 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * @return the bomb to plant
      */
     @Override
-    public Bomb plantBomb(final int nTiles) {
-        return this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
-                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+    public Bomb plantBomb() {
+        return this.detonator.plantBomb();
     }
     
     /**
@@ -70,7 +69,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public void clearOptions() {
         this.key = false;
         this.isConfused = false;
-        this.detonator.resetRange();
+        this.detonator.resetDetonator();
     }
     
     /**
@@ -79,7 +78,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public void increaseBomb() {
         System.out.println("increase bomb");
-        this.detonator.addBomb();       
+        this.detonator.increaseBombs();       
     }
 
     /**
@@ -106,7 +105,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
      */
     @Override
     public boolean checkOpenDoorCollision(final Tile openDoor) {
-        return this.heroCollision.openDoorCollision(openDoor.getBoundBox());
+        return this.heroCollision.openDoorCollision(openDoor.getHitbox());
     }
     
     /**
@@ -207,8 +206,9 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * @return true if there's a bomb, false otherwise
      */
     @Override
-    public boolean hasBomb() {
-        return this.detonator.hasBombs();
+    public boolean hasBomb(final int nTiles) {
+        return this.detonator.hasBombs(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
     }
     
 }

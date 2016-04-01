@@ -30,19 +30,19 @@ public class LevelElementImpl implements LevelElement{
     /**
      * Updates the position.
      */
-    @Override
-    public void updatePosition(final Point p) {
+    //@Override
+    /*public void updatePosition(final Point p) {
         this.curPos = new Point(p);
         this.updateHitbox();
-    }
+    }*/
     
     /**
      * Updates the hitbox.
      */
-    @Override
-    public void updateHitbox() {
+    //@Override
+    /*public void updateHitbox() {
         this.hitBox.setLocation(this.curPos);
-    }
+    }*/
     
     /**
      * Gets the position.

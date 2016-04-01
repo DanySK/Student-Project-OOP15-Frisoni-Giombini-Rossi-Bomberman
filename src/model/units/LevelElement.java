@@ -14,12 +14,12 @@ public interface LevelElement {
      * @param p
      *          the point whose coordinates are to be added
      */
-    void updatePosition(Point p);
+    //void updatePosition(Point p);
     
     /**
      * This method update the parameters in the hitBox.
      */
-    void updateHitbox();
+    //void updateHitbox();
     
     /**
      * This method is used to know the element's position.

@@ -55,7 +55,7 @@ public class CollisionImpl implements Collision{
      */
     public boolean fireCollision(final Set<Tile> afflictedTiles){ 
         for(final Tile tile: afflictedTiles){                                          
-            if(this.explosionIntersection(tile.getBoundBox())){
+            if(this.explosionIntersection(tile.getHitbox())){
                 return true;
             }
         }

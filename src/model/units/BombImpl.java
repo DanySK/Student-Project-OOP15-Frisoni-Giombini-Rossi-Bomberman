@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * Implementation of {@link Bomb}
  */
-public class BombImpl extends LevelElementImpl implements Bomb{
+public class BombImpl extends DynamicLevelElement implements Bomb{
 
     private static final int INITIAL_RANGE = 1;
     
