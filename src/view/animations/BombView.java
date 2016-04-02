@@ -1,7 +1,6 @@
 package view.animations;
 
 import model.units.Bomb;
-import model.units.LevelElement;
 import view.animations.unit.SingleAnimationView;
 
 /**
@@ -13,5 +12,5 @@ public interface BombView extends SingleAnimationView {
     /**
      * @return the bomb represented.
      */
-    LevelElement getBomb();
+    Bomb getBomb();
 }

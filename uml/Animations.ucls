@@ -73,8 +73,8 @@
       <operations public="true" package="true" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="view.animations.HelicopterView" project="Bomberman" 
-    file="/Bomberman/src/view/animations/HelicopterView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="9" language="java" name="view.animations.BallomView" project="Bomberman" 
+    file="/Bomberman/src/view/animations/BallomView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="572" y="604"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      

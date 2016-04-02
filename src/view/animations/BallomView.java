@@ -12,10 +12,10 @@ import view.animations.unit.Sprite;
 
 /**
  * An implementation of {@link AbstractEntityView}.
- * It represents an helicopter enemy.
+ * It represents a ballom enemy.
  *
  */
-public class HelicopterView extends AbstractEntityView {
+public class BallomView extends AbstractEntityView {
     
     private static final EnumMap<Direction, List<BufferedImage>> MOVEMENT_MAP = new EnumMap<>(Direction.class);
     private static final EnumMap<Direction, List<BufferedImage>> STANDING_MAP = new EnumMap<>(Direction.class);
@@ -31,14 +31,14 @@ public class HelicopterView extends AbstractEntityView {
     }
     
     /**
-     * Constructs a new view for the helicopter.
+     * Constructs a new view for the ballom.
      * 
      * @param entity
      *          the entity to represent
      * @param fps
      *          the number of frame-per-second
      */
-    public HelicopterView(final Entity entity, final int fps) {
+    public BallomView(final Entity entity, final int fps) {
         super(entity, fps);
     }
     

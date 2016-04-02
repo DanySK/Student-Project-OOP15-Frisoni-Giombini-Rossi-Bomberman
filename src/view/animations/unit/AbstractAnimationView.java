@@ -26,12 +26,12 @@ public abstract class AbstractAnimationView implements AnimationView {
     }
     
     /**
-     * @return the current animation to manage
+     * @return the current animation to manage.
      */
     public abstract Animation getAnimation();
     
     /**
-     * @return the represented element
+     * @return the represented element.
      */
     protected LevelElement getLevelElement() {
         return this.element;

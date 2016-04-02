@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import model.units.Bomb;
-import model.units.LevelElement;
 import view.animations.unit.AbstractSingleAnimationView;
 import view.animations.unit.Sprite;
 
@@ -40,7 +39,7 @@ public class BombViewImpl extends AbstractSingleAnimationView implements BombVie
     }
 
     @Override
-    public LevelElement getBomb() {
+    public Bomb getBomb() {
         return this.bomb;
     }
     

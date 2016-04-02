@@ -22,6 +22,7 @@ import model.TileType;
 import model.units.PowerUpType;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.animations.BallomView;
 import view.animations.BombView;
 import view.animations.BombViewImpl;
 import view.animations.ExplosionView;
@@ -49,6 +50,7 @@ public class GamePanel extends JPanel {
     private final Map<TileType, Image> tilesImages;
     private final Map<PowerUpType, Image> powerUpImages;
     private HeroView hero;
+    private BallomView ballom;
 
     private final Set<BombView> bombs;
     private final Deque<Set<ExplosionView>> explosions;
@@ -108,6 +110,7 @@ public class GamePanel extends JPanel {
      */
     public void initGamePanel() {
         this.hero = new HeroViewImpl(this.controller.getHero(), this.controller.getFPS());
+        this.ballom = new BallomView(this.controller.getBallom(), this.controller.getFPS());
     }
 
     /**
@@ -139,6 +142,8 @@ public class GamePanel extends JPanel {
         this.bombs.stream().forEach(b -> g.drawImage(b.getImage(), b.getX(), b.getY(), null));
         // Draws the hero
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
+        // Draws the enemies
+        g.drawImage(this.ballom.getImage(), this.ballom.getX(), this.ballom.getY(), null);
         // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
     }
@@ -147,6 +152,7 @@ public class GamePanel extends JPanel {
         this.hero.updateFrame();
         this.bombs.stream().forEach(b -> b.updateFrame());
         this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
+        this.ballom.updateFrame();
     }
 
     /**
