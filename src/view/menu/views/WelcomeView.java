@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import view.GUIFactory;
 import view.ImageLoader;
@@ -42,7 +44,9 @@ public class WelcomeView extends JPanel {
     private static final int INPUT_TEXT_SIZE = 32;
 
     private WelcomeObserver observer;
-    
+    private JTextField nameField;
+    private JButton save;
+
     /**
      * Creates a WelcomeView.
      */
@@ -58,6 +62,7 @@ public class WelcomeView extends JPanel {
 
         // Sets the panel layout dynamically
         final JPanel panel = factory.createGradientPanel();
+        panel.setBackground(Color.BLACK);
         final GridBagLayout gblPanel = new GridBagLayout();
         gblPanel.columnWeights = new double[]{4.0, 1.0};
         gblPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE, Double.MIN_VALUE};
@@ -90,7 +95,7 @@ public class WelcomeView extends JPanel {
         textPanel.setOpaque(false);
         textPanel.add(factory.createTitleLabel(
                 LanguageHandler.getHandler().getLocaleResource().getString("welcome")), BorderLayout.CENTER);
-        
+
         // Sets description text
         final JPanel descriptionPanel = new JPanel(new FlowLayout());
         descriptionPanel.setOpaque(false);
@@ -105,18 +110,37 @@ public class WelcomeView extends JPanel {
         panel.add(textPanel, cnst);
         cnst.gridy++;
 
-        // Sets input field
+        // Sets text input field
         cnst.gridwidth = 1;
         cnst.insets = TEXT_FIELD_INSETS;
-        final JTextField nameField = factory.createTextField(true, INPUT_TEXT_SIZE);
+        this.nameField = factory.createTextField(true, INPUT_TEXT_SIZE);
+        nameField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkButtonEnabling();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkButtonEnabling();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkButtonEnabling();
+            }
+        });
         panel.add(nameField, cnst);
+
+        // Sets confirm button
         cnst.gridx++;
-        final JButton save = factory.createButton(LanguageHandler.getHandler().getLocaleResource().getString("play"));
-        save.addActionListener(e -> this.observer.setName(nameField.getText()));
+        this.save = factory.createButton(LanguageHandler.getHandler().getLocaleResource().getString("play"));
+        save.addActionListener(e -> {
+            this.observer.setName(nameField.getText());
+        });
+        checkButtonEnabling();
         panel.add(save, cnst);
         this.setLayout(new BorderLayout());
         this.add(panel);
-        
+
         // Starts the fading animations
         new Thread(new Runnable() {
             @Override
@@ -127,7 +151,11 @@ public class WelcomeView extends JPanel {
             }
         }).start();
     }
-    
+
+    private void checkButtonEnabling() {
+        save.setEnabled(!this.nameField.getText().isEmpty());
+    }
+
     /**
      * Set the observer of the WelcomeView.
      * 
@@ -137,7 +165,7 @@ public class WelcomeView extends JPanel {
     public void setObserver(final WelcomeObserver observer) {
         this.observer = observer;
     }
-    
+
     /**
      * This interface indicates the operations that an observer
      * of a WelcomeView can do.
