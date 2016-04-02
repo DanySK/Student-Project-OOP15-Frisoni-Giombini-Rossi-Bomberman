@@ -64,9 +64,13 @@ public class HeroImpl extends AbstractEntity implements Hero {
     
     /**
      * Reconfigurates hero.
+     * 
+     * @param p
+     *          the initial potision
      */
     @Override
-    public void clearOptions() {
+    public void clearOptions(final Point p) {
+        this.update(p);
         this.key = false;
         this.isConfused = false;
         this.detonator.resetDetonator();

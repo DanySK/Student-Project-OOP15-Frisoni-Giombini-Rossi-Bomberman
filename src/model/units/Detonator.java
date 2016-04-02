@@ -16,7 +16,7 @@ public class Detonator {
     private static final long BOMB_DELAY = 3000L;
 
     private final Dimension dim;
-    private int newRange;
+    private int range;
     private int maxBombs;
     private Deque<Bomb> bombList = new LinkedList<>();
 
@@ -28,7 +28,7 @@ public class Detonator {
      */
     public Detonator(final Dimension dim){
         this.dim = dim;
-        this.newRange = INITIAL_RANGE;
+        this.range = INITIAL_RANGE;
         this.maxBombs = INITIAL_BOMBS;
     }
 
@@ -36,16 +36,19 @@ public class Detonator {
      * It adds a bomb to the List.
      */
     public void addBomb(final Point p){
-        this.bombList.addLast(new BombImpl(p, this.dim));
+        this.bombList.addLast(new BombImpl(p, this.dim, this.range));
     }
     
     /**
      * It increases the range of a bomb.
      */
     public void increaseRange(){//vedere quale per bene
-        this.newRange++;
+        this.range++;
     }
     
+    /**
+     * It increases the number of bombs that can be planted.
+     */
     public void increaseBombs(){
         this.maxBombs++;
     }
@@ -59,21 +62,8 @@ public class Detonator {
      */
     public Bomb plantBomb(){
         final Bomb b = this.getBombToPlant();
-        this.checkRange(b);
         b.setPlanted();
         return b;
-    }
-    
-    /**
-     * Checks if the bomb range is updated.
-     * 
-     * @param b
-     *          the bomb
-     */
-    private void checkRange(final Bomb b){
-        if(b.getRange() < this.newRange){
-            b.setRange(this.newRange);
-        }
     }
 
     /**
@@ -139,14 +129,14 @@ public class Detonator {
      * @return the actual range of a bomb
      */
     public int getActualRange(){
-        return this.newRange;
+        return this.range;
     }
     
     /**
      * Reset bomb's range.
      */
     public void resetDetonator(){
-        this.newRange = INITIAL_RANGE;
+        this.range = INITIAL_RANGE;
         this.bombList.clear();
         this.maxBombs = INITIAL_BOMBS;
     }

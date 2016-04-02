@@ -1,5 +1,6 @@
 package model.units;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
@@ -35,8 +36,11 @@ public interface Hero extends Entity {
     
     /**
      * Reconfigurates hero.
+     * 
+     * @param p
+     *          the intial position
      */
-    void clearOptions();
+    void clearOptions(final Point p);
     
     /**
      * Increase the number of bombs.
