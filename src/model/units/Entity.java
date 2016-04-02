@@ -104,4 +104,11 @@ public interface Entity extends LevelElement{
      */
     boolean isMoving();
     
+    /**
+     * This method set the current direction.
+     * @param dir
+     *          the movement direction 
+     */
+    void setDirection(Direction dir);
+    
 }

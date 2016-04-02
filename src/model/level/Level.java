@@ -7,6 +7,7 @@ import model.Tile;
 import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
+import model.units.enemies.Ballom;
 
 /**
  * This interface handles a level of the game.
@@ -123,5 +124,22 @@ public interface Level {
      */
     boolean isGameOver();
   
-
+    /**
+     * Moves the Enemies in the specified direction.
+     * 
+     * @param dir
+     *          the movement direction
+     */
+    void moveEnemies(final Direction dir);
+    
+    Ballom getBallom();
+    
+    /**
+     * Set the enemies' direction. 
+     * 
+     * @param dir
+     *          the movement direction
+     */
+    void setDirectionEnemies(final Direction dir);
+    
 }

@@ -18,7 +18,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     private static final int INITIAL_ATTACK = 1;
     private static final int INITIAL_SCORE = 0;
 
-    private Direction curDir;
+    protected Direction curDir;
     protected boolean inMovement;
     private int lives;
     private int attack;
@@ -155,4 +155,8 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
         return this.inMovement;
     }
 
+    @Override
+    public void setDirection(Direction dir) {
+        this.curDir = dir;
+    }
 }

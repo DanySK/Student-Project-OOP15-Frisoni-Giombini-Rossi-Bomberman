@@ -18,6 +18,7 @@ import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
 import model.units.LevelElement;
+import model.units.enemies.Ballom;
 import model.utilities.MapPoint;
 
 /**
@@ -37,6 +38,7 @@ public class LevelImpl implements Level {
     private Hero hero;
     private int tileDimension;
     private int nTiles;
+    private Ballom ballomEnemies;
 
     /**
      * The constructor is used to set the size of the map,
@@ -56,8 +58,20 @@ public class LevelImpl implements Level {
         this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension), 
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
+        this.createEnemies();
     }
-    
+
+    /**
+     * Creates the enemies.
+     */
+    private void createEnemies() {
+        final Set<Tile> set = this.getFreeTiles();
+        final Tile t = set.stream().findAny().get();
+        set.remove(t);
+        this.ballomEnemies = new Ballom(t.getPosition(), Direction.DOWN, 
+                new Dimension(this.tileDimension, this.tileDimension));
+    }
+
     /**
      * Creates a new game level.
      */
@@ -133,7 +147,27 @@ public class LevelImpl implements Level {
     public void moveHero(final Direction dir) {
         this.hero.move(this.hero.getCorrectDirection(dir), this.getBlocks(), this.getRectangles(this.getPlantedBombs()), this.getPowerUp());
     }
-    
+
+    @Override
+    public void moveEnemies(Direction dir) {
+        this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir);
+    }
+
+    @Override
+    public void setDirectionEnemies(Direction dir) {
+        //this.ballomEnemies.setDirection(dir);
+    }
+
+    /**
+     * This method checks if the enemy collides with fire and if it reduces his life.
+     * @param tiles involved
+     */
+    private void checkCollisionWithExplosionBomb(final Set<Tile> tiles) {
+        if (this.ballomEnemies.checkFlameCollision(tiles)) {
+            this.ballomEnemies.modifyLife(-this.hero.getAttack());
+        }
+    }
+
     /**
      * Verifies if a bomb can be planted.
      * 
@@ -171,10 +205,11 @@ public class LevelImpl implements Level {
         if(this.hero.checkFlameCollision(tiles)){
             this.hero.modifyLife(-1);
         }
+        this.checkCollisionWithExplosionBomb(tiles);
         this.hero.getDetonator().reactivateBomb();
         return tiles;
     }
-    
+
     /**
      * This method returns a set of all afflicted tiles.
      * 
@@ -196,7 +231,7 @@ public class LevelImpl implements Level {
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
         return afflictedTiles;
     }
-    
+
     /**
      * This method return all the afflicted tiles
      * in a specified direction.
@@ -234,7 +269,7 @@ public class LevelImpl implements Level {
         }
         return afflictedTiles;
     }
-    
+
     /**
      * Checks boundaries.
      * 
@@ -253,7 +288,7 @@ public class LevelImpl implements Level {
             return coordinate + range;
         }
     }
-    
+
     /**
      * Checks if the cycle must be stopped or not.
      * 
@@ -272,7 +307,7 @@ public class LevelImpl implements Level {
             return coordinate <= max; 
         }
     }
-    
+
     /**
      * Return the next value the coordinate has to add.
      * 
@@ -343,7 +378,7 @@ public class LevelImpl implements Level {
     public Set<Bomb> getPlantedBombs() {
         return this.hero.getDetonator().getPlantedBombs().stream().collect(Collectors.toSet());
     }
-    
+
     /**
      * Gets the tile that represents the door.
      * 
@@ -381,7 +416,7 @@ public class LevelImpl implements Level {
             }
         }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
     }
-    
+
     /**
      * Gets the entire set of tiles that are available
      * to positionate enemies.
@@ -418,7 +453,7 @@ public class LevelImpl implements Level {
         }
         return set;
     }
-    
+
     /**
      * This method return a set of LevelElement's boundbox.
      * 
@@ -444,7 +479,7 @@ public class LevelImpl implements Level {
     public Hero getHero() {
         return this.hero;
     }
-    
+
     /**
      * This method generates a random value to set
      * as the size of the map.
@@ -464,7 +499,7 @@ public class LevelImpl implements Level {
     public void setTileDimension(final int dim) {
         this.tileDimension = dim;
     }
-    
+
     /**
      * Set the open door.
      */
@@ -482,5 +517,10 @@ public class LevelImpl implements Level {
     public boolean isGameOver() {
         return this.hero.isDead();
     }
-    
+
+    @Override
+    public Ballom getBallom() {
+        return this.ballomEnemies;
+    }
+
 }
