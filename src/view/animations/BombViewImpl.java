@@ -3,9 +3,9 @@ package view.animations;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Objects;
 
 import model.units.Bomb;
+import model.units.LevelElement;
 import view.animations.unit.AbstractSingleAnimationView;
 import view.animations.unit.Sprite;
 
@@ -24,26 +24,14 @@ public class BombViewImpl extends AbstractSingleAnimationView implements BombVie
      * 
      * @param bomb
      *          the bomb to represent
-     * @param size
-     *          the size of a tile
      * @param fps
      *          the number of frame-per-second
      * @param duration
      *          the duration (in milliseconds) of the animation
      */
-    public BombViewImpl(final Bomb bomb, final int size, final int fps, final long duration) {
-        super(size, fps, duration);
-        this.bomb = Objects.requireNonNull(bomb);
-    }
-    
-    @Override
-    public int getX() {
-        return this.bomb.getX();
-    }
-
-    @Override
-    public int getY() {
-        return this.bomb.getY() - getSize() * Sprite.getSpriteHeight() / Sprite.getSpriteWidth() + getSize();
+    public BombViewImpl(final Bomb bomb, final int fps, final long duration) {
+        super(bomb, fps, duration);
+        this.bomb = bomb;
     }
     
     @Override
@@ -52,7 +40,7 @@ public class BombViewImpl extends AbstractSingleAnimationView implements BombVie
     }
 
     @Override
-    public Bomb getBomb() {
+    public LevelElement getBomb() {
         return this.bomb;
     }
     

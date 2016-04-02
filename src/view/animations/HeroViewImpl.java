@@ -36,19 +36,17 @@ public class HeroViewImpl extends AbstractEntityView implements HeroView {
      * 
      * @param hero
      *          the hero to represent
-     * @param size
-     *          the size of a tile
      * @param fps
      *          the number of frame-per-second
      */
-    public HeroViewImpl(final Hero hero, final int size, final int fps) {
-        super(hero, size, fps);
+    public HeroViewImpl(final Hero hero, final int fps) {
+        super(hero, fps);
     }
     
     @Override
     public Point getCenterPoint() {
-        return new Point(getX() + getSize() / 2,
-                getY() + (getSize() * Sprite.getSpriteHeight()) / (Sprite.getSpriteWidth() * 2));
+        return new Point((int) getLevelElement().getHitbox().getCenterX(),
+                getY() + ((int)getLevelElement().getHitbox().getHeight() * Sprite.getSpriteHeight()) / (Sprite.getSpriteWidth() * 2));
     }
 
     @Override

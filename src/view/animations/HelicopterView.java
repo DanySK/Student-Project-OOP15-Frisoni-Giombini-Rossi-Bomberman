@@ -35,13 +35,11 @@ public class HelicopterView extends AbstractEntityView {
      * 
      * @param entity
      *          the entity to represent
-     * @param size
-     *          the size of a tile
      * @param fps
      *          the number of frame-per-second
      */
-    public HelicopterView(final Entity entity, final int size, final int fps) {
-        super(entity, size, fps);
+    public HelicopterView(final Entity entity, final int fps) {
+        super(entity, fps);
     }
     
     @Override

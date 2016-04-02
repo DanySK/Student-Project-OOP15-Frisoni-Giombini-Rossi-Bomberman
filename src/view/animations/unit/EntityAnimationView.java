@@ -7,8 +7,8 @@ import java.util.List;
 import model.units.Direction;
 
 /**
- * This interface manage the visual representation of an entity that can moves
- * on the screen.
+ * This interface manages the visual representation of an entity that can moves on the screen.
+ * It requires two types of animations associated to the entity's direction.
  *
  */
 public interface EntityAnimationView extends AnimationView {
