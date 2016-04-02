@@ -119,6 +119,11 @@ public class TestGameLoop {
             
         }
 
+        @Override
+        public void updateEnemies() {
+            
+        }
+
     }
     
 }

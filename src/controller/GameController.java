@@ -5,6 +5,7 @@ import java.util.Set;
 import model.Tile;
 import model.units.Bomb;
 import model.units.Hero;
+import model.units.enemies.Ballom;
 
 public interface GameController {
     
@@ -15,12 +16,16 @@ public interface GameController {
     Hero getHero();
     
     /**
-     * @return 
+     * Gets all the powerups.
+     * 
+     * @return the set of powerups
      */
     Set<Tile> getPowerUp();
     
     /**
-     * @return 
+     * Gets all the tiles where there isn't a powerup status.
+     * 
+     * @return the set of tiles
      */
     Set<Tile> getTiles();
     
@@ -53,4 +58,6 @@ public interface GameController {
      * @return bomb's delay
      */
     long getBombDelay();
+    
+    Ballom getBallom();
 }

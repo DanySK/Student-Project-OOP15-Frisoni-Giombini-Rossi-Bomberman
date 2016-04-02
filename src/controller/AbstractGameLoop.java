@@ -34,6 +34,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     @Override
     public void run() {
         double nextTime = System.nanoTime();
+        double lastSecondTime = (int) (nextTime / TIME_FACTOR);
         this.running = true;
         while (this.running) {
             if (!this.paused) {
@@ -52,6 +53,12 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                         }
                     }
                 } 
+                final int thisSecond = (int) (nextTime / TIME_FACTOR);
+                if (thisSecond > lastSecondTime) {
+                    //System.out.println(lastSecondTime);
+                    lastSecondTime = thisSecond;
+                    this.updateEnemies();
+                }
             }
             this.updateGameState();
         }
@@ -157,4 +164,6 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      * This method is used to update the state of game.
      */
     public abstract void updateGameState();
+    
+    public abstract void updateEnemies();
 }
