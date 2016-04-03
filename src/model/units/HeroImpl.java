@@ -16,7 +16,7 @@ import model.utilities.MapPoint;
  */
 public class HeroImpl extends AbstractEntity implements Hero {
 
-    private final Detonator detonator;
+    private Detonator detonator;
     private final HeroCollision heroCollision;
     private boolean isConfused;
     private boolean key;
@@ -61,21 +61,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public Bomb plantBomb() {
         return this.detonator.plantBomb();
     }
-    
-    /**
-     * Reconfigurates hero.
-     * 
-     * @param p
-     *          the initial potision
-     */
-    @Override
-    public void clearOptions(final Point p) {
-        this.update(p);
-        this.key = false;
-        this.isConfused = false;
-        this.detonator.resetDetonator();
-    }
-    
+       
     /**
      * Adds a bomb to his detonator.
      */
@@ -110,6 +96,23 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public boolean checkOpenDoorCollision(final Tile openDoor) {
         return this.heroCollision.openDoorCollision(openDoor.getHitbox());
+    }
+    
+    /**
+     * Sets correctly hero for next game level.
+     * 
+     * @param lives
+     *          the lives
+     * @param attack
+     *          the attack
+     * @param score
+     *          the score
+     */
+    @Override
+    public void nextLevel(int lives, int attack, int score) {
+        this.modifyLife(lives - 1);
+        this.increaseAttack(attack - 1);
+        this.increaseScore(score); 
     }
     
     /**
@@ -213,6 +216,18 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public boolean hasBomb(final int nTiles) {
         return this.detonator.hasBombs(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
                 MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+    }
+    
+    /**
+     * Hero's toString.
+     * 
+     * @return hero's description
+     */
+    @Override
+    public String toString(){
+        return new StringBuilder().append("HERO -  ")
+                .append(super.toString())
+                .toString();
     }
     
 }

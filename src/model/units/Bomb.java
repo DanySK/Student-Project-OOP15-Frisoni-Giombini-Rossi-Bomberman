@@ -32,4 +32,11 @@ public interface Bomb extends LevelElement{
      */
     boolean isPositioned();
     
+    /**
+     * Bomb's toString.
+     * 
+     * @return the string describing the bomb
+     */
+    String toString();
+    
 }

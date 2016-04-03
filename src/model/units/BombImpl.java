@@ -60,4 +60,19 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
         return this.isPlanted;
     }
     
+    /**
+     * Bomb's toString.
+     * 
+     * @return bomb's description
+     */
+    @Override
+    public String toString(){
+        return new StringBuilder().append("BOMB -  ")
+                .append("Range is: ")
+                .append(this.getRange())
+                .append(";\n")
+                .append(super.toString())
+                .toString();
+    }
+    
 }

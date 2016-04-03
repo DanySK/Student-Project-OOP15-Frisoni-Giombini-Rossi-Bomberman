@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -54,10 +55,32 @@ public class LevelImpl implements Level {
     public void initLevel(final int tileDimension) {
         this.setTileDimension(tileDimension);
         this.createLevel();
+        this.initHero();
+        this.createEnemies();
+    }
+    /**
+     * This method initialize correctly the hero.
+     */
+    private void initHero(){
+        try {
+            Objects.requireNonNull(this.hero);
+            final int lives = this.hero.getRemainingLives();
+            final int attack = this.hero.getAttack();
+            final int score = this.hero.getScore();
+            this.createHero();
+            this.hero.nextLevel(lives, attack, score);            
+        } catch (NullPointerException e){
+            this.createHero();
+        }
+    }
+    
+    /**
+     * This method creates the hero.
+     */
+    private void createHero(){
         this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension), 
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
-        this.createEnemies();
     }
 
     /**
@@ -69,16 +92,6 @@ public class LevelImpl implements Level {
         set.remove(t);
         this.ballomEnemies = new Ballom(t.getPosition(), Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
-    }
-
-    /**
-     * Creates a new game level.
-     */
-    @Override
-    public void nextLevel() {
-        this.setNumberTiles();
-        this.createLevel();
-        this.hero.clearOptions(MapPoint.getPos(START_HERO_POS, this.tileDimension));
     }
 
     /**
@@ -455,7 +468,8 @@ public class LevelImpl implements Level {
      * This method generates a random value to set
      * as the size of the map.
      */
-    private void setNumberTiles() {
+    @Override
+    public void setNumberTiles() {
         int tiles = 0;
         while (tiles % 2 == 0) {
             tiles = new Random().nextInt(MAX_TILES - MIN_TILES) + MIN_TILES;

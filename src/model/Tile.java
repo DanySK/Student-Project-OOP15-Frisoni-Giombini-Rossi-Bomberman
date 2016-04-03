@@ -75,4 +75,21 @@ public class Tile extends LevelElementImpl{
     public void removePowerUp(){
         this.powerup = Optional.empty();
     }
+    
+    /**
+     * Tile's toString.
+     * 
+     * @return tile's description
+     */
+    public String toString(){
+        return new StringBuilder().append("TILE -  ")
+                .append("Type is: ")
+                .append(this.getType())
+                .append(";\n")
+                .append("\tPowerUp is: ")
+                .append(this.getPowerup())
+                .append(";\n")
+                .append(super.toString())
+                .toString();
+    }
 }
