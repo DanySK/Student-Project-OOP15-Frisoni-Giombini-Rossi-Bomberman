@@ -1,6 +1,5 @@
 package model.units;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
@@ -35,14 +34,6 @@ public interface Hero extends Entity {
     Bomb plantBomb();
     
     /**
-     * Reconfigurates hero.
-     * 
-     * @param p
-     *          the intial position
-     */
-    void clearOptions(final Point p);
-    
-    /**
      * Increase the number of bombs.
      */
     void increaseBomb();
@@ -68,6 +59,19 @@ public interface Hero extends Entity {
      * @return true if there's a collision, false otherwise
      */
     boolean checkOpenDoorCollision(final Tile openDoor);
+    
+    /**
+     * This method sets correctly hero
+     * for the next level.
+     * 
+     * @param lives
+     *          the lives
+     * @param attack
+     *          the attack
+     * @param score
+     *          the score
+     */
+    void nextLevel(final int lives, final int attack, final int score);
     
     /**
      * Gets bomb's delay.
@@ -130,5 +134,12 @@ public interface Hero extends Entity {
      * @return true if there's at least a bomb, false otherwise
      */
     boolean hasBomb(final int nTiles);
+    
+    /**
+     * Hero's toString.
+     * 
+     * @return the string describing the hero
+     */
+    String toString();
     
 }

@@ -111,4 +111,11 @@ public interface Entity extends LevelElement{
      */
     void setDirection(Direction dir);
     
+    /**
+     * Entity's toString.
+     * 
+     * @return the string describing the entity
+     */
+    String toString();
+    
 }

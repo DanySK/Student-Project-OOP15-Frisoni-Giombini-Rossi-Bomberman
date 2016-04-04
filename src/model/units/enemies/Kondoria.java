@@ -12,7 +12,7 @@ public class Kondoria extends EnemiesImpl {
     private static final int ATTACK = 2;
 
     public Kondoria(final Point pos, final Direction dir, final Dimension dim) {
-        super(pos, dir, dim, LIVES, SCORE, ATTACK);
+        super(pos, dir, dim, LIVES, SCORE, ATTACK, EnemiesType.KONDORIA);
     }
 
 }

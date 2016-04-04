@@ -28,23 +28,6 @@ public class LevelElementImpl implements LevelElement{
     }
     
     /**
-     * Updates the position.
-     */
-    //@Override
-    /*public void updatePosition(final Point p) {
-        this.curPos = new Point(p);
-        this.updateHitbox();
-    }*/
-    
-    /**
-     * Updates the hitbox.
-     */
-    //@Override
-    /*public void updateHitbox() {
-        this.hitBox.setLocation(this.curPos);
-    }*/
-    
-    /**
      * Gets the position.
      * 
      * @return the game element's position
@@ -82,5 +65,20 @@ public class LevelElementImpl implements LevelElement{
     @Override
     public int getY() {
         return this.curPos.y;
+    }
+    
+    /**
+     * LevelElement's toString.
+     * 
+     * @return level element's description
+     */
+    @Override
+    public String toString(){
+        return new StringBuilder().append("\tPosition: (")
+                .append(this.getX())
+                .append(", ")
+                .append(this.getY())
+                .append(").")
+                .toString();
     }
 }

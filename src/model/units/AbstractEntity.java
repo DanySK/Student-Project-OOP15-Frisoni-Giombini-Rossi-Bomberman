@@ -159,4 +159,24 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     public void setDirection(Direction dir) {
         this.curDir = dir;
     }
+    
+    /**
+     * Entity's toString.
+     * 
+     * @return entity's description
+     */
+    @Override
+    public String toString(){
+        return new StringBuilder().append("Direction is: ")
+                .append(this.getDirection())
+                .append(";\n")
+                .append("\tLife/lives is/are: ")
+                .append(this.getRemainingLives())
+                .append(";\n")
+                .append("\tAttack is: ")
+                .append(this.getAttack())
+                .append(";\n")
+                .append(super.toString())
+                .toString();
+    }
 }

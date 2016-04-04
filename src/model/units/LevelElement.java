@@ -7,19 +7,6 @@ import java.awt.Rectangle;
  * This interface models a game element.
  */
 public interface LevelElement {
-
-    /**
-     * This method update the entity's position.
-     * 
-     * @param p
-     *          the point whose coordinates are to be added
-     */
-    //void updatePosition(Point p);
-    
-    /**
-     * This method update the parameters in the hitBox.
-     */
-    //void updateHitbox();
     
     /**
      * This method is used to know the element's position.
@@ -48,4 +35,11 @@ public interface LevelElement {
      * @return the y coordinate
      */
     int getY();
+    
+    /**
+     * Returns the string describing the object.
+     *  
+     * @return the string describing the object
+     */
+    String toString();
 }

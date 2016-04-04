@@ -45,6 +45,27 @@ public class CollisionImpl implements Collision{
             }
         });
     }
+    
+    /**
+     * This method checks if there's a collision with planted bombs.
+     * 
+     * @param bombSet
+     *          the set of planted bombs
+     * @return true if there's a collision, false otherwise
+     */
+    public boolean bombCollision(final Set<Rectangle> bombSet){
+        return this.elementCollision(bombSet, new Predicate<Rectangle>(){
+            @Override
+            public boolean test(final Rectangle rec) {
+                if(explosionIntersection(rec)){
+                    return false;
+                }
+                else{
+                    return entityRec.intersects(rec);
+                }
+            }
+        });
+    }
 
     /**
      * This method checks if there's a collision with all afflicted tiles.

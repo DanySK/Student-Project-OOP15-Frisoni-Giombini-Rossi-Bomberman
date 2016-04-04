@@ -58,6 +58,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                     //System.out.println(lastSecondTime);
                     lastSecondTime = thisSecond;
                     this.updateEnemies();
+                    
                 }
             }
             this.updateGameState();

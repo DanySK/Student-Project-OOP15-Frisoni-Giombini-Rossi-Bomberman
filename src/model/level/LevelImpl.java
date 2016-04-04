@@ -4,10 +4,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import model.Tile;
@@ -55,10 +55,32 @@ public class LevelImpl implements Level {
     public void initLevel(final int tileDimension) {
         this.setTileDimension(tileDimension);
         this.createLevel();
+        this.initHero();
+        this.createEnemies();
+    }
+    /**
+     * This method initialize correctly the hero.
+     */
+    private void initHero(){
+        try {
+            Objects.requireNonNull(this.hero);
+            final int lives = this.hero.getRemainingLives();
+            final int attack = this.hero.getAttack();
+            final int score = this.hero.getScore();
+            this.createHero();
+            this.hero.nextLevel(lives, attack, score);            
+        } catch (NullPointerException e){
+            this.createHero();
+        }
+    }
+    
+    /**
+     * This method creates the hero.
+     */
+    private void createHero(){
         this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension), 
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
-        this.createEnemies();
     }
 
     /**
@@ -70,16 +92,6 @@ public class LevelImpl implements Level {
         set.remove(t);
         this.ballomEnemies = new Ballom(t.getPosition(), Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
-    }
-
-    /**
-     * Creates a new game level.
-     */
-    @Override
-    public void nextLevel() {
-        this.setNumberTiles();
-        this.createLevel();
-        this.hero.clearOptions(MapPoint.getPos(START_HERO_POS, this.tileDimension));
     }
 
     /**
@@ -106,16 +118,12 @@ public class LevelImpl implements Level {
      *          the TilesFactory object
      */
     private void setDoor(final TilesFactory factory){
-        factory.setDoor(this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+        factory.setDoor(this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Tile> apply(final Tile t) {
-                if(t.getType().equals(TileType.WALKABLE)){
-                    return Optional.of(t);
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet()));
+            public boolean test(Tile t) {
+                return t.getType().equals(TileType.WALKABLE);
+            } 
+        }));
     }
 
     /**
@@ -125,18 +133,12 @@ public class LevelImpl implements Level {
      *          the TilesFactory object
      */
     private void setKey(final TilesFactory factory){
-        factory.setKey(this.getGenericSet(new Function<Tile, Optional<Tile>>(){
-
+        factory.setKey(this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Tile> apply(Tile t) {
-                if(t.getType().equals(TileType.RUBBLE)){
-                    return Optional.of(t);
-                } else {
-                    return Optional.empty();
-                }
-            }
-
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet()));
+            public boolean test(Tile t) {
+                return t.getType().equals(TileType.RUBBLE);
+            }        
+        }));
     }
 
     /**
@@ -150,7 +152,7 @@ public class LevelImpl implements Level {
 
     @Override
     public void moveEnemies(Direction dir) {
-        this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir);
+        this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
     }
 
     @Override
@@ -201,7 +203,6 @@ public class LevelImpl implements Level {
     public Set<Tile> detonateBomb() {
         final Bomb b = this.hero.getDetonator().getBombToReactivate();
         final Set<Tile> tiles = this.getAllAfflictedTiles(b);
-        //controlla nemici e in caso aggiungi punteggio all'hero
         if(this.hero.checkFlameCollision(tiles)){
             this.hero.modifyLife(-1);
         }
@@ -340,16 +341,12 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> getTiles(){
-        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+        return this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Tile> apply(Tile t) {
-                if(!t.getType().equals(TileType.POWERUP_STATUS)){
-                    return Optional.of(t);
-                } else {
-                    return Optional.empty();
-                }
+            public boolean test(Tile t) {
+                return !t.getType().equals(TileType.POWERUP_STATUS);
             }
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
+        });
     }
 
     /**
@@ -359,16 +356,12 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> getPowerUp(){
-        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+        return this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Tile> apply(final Tile t) {
-                if(t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent()){
-                    return Optional.of(t);
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
+            public boolean test(Tile t) {
+                return t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent();
+            }  
+        });
     }
 
     /**
@@ -386,16 +379,12 @@ public class LevelImpl implements Level {
      */
     @Override
     public Tile getDoor(){
-        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+        return this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Tile> apply(Tile t) {
-                if(t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED)){
-                    return Optional.of(t);
-                } else {
-                    return Optional.empty();
-                }
-            } 
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).findFirst().get();
+            public boolean test(Tile t) {
+                return t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED);
+            }
+        }).stream().findFirst().get();
     }
 
     /**
@@ -405,16 +394,12 @@ public class LevelImpl implements Level {
      * @return the set of blocks
      */
     private Set<Rectangle> getBlocks(){
-        return this.getGenericSet(new Function<Tile, Optional<Rectangle>>(){
+        return this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Rectangle> apply(final Tile t) {
-                if (t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE)){
-                    return Optional.of(t.getHitbox());
-                } else {
-                    return Optional.empty();
-                }
+            public boolean test(Tile t) {
+                return t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE);
             }
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
+        }).stream().map(t -> t.getHitbox()).collect(Collectors.toSet());
     }
 
     /**
@@ -424,17 +409,14 @@ public class LevelImpl implements Level {
      * @return the set of free tiles
      */
     private Set<Tile> getFreeTiles(){
-        return this.getGenericSet(new Function<Tile, Optional<Tile>>(){
+        return this.getGenericSet(new Predicate<Tile>(){
             @Override
-            public Optional<Tile> apply(Tile t) {
-                if(t.getType().equals(TileType.WALKABLE) && !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
-                        MapPoint.getInvCoordinate(t.getY(), tileDimension))){
-                    return Optional.of(t);
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }).stream().filter(t -> t.isPresent()).map(t -> t.get()).collect(Collectors.toSet());
+            public boolean test(Tile t) {
+                return t.getType().equals(TileType.WALKABLE) && 
+                        !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
+                        MapPoint.getInvCoordinate(t.getY(), tileDimension));
+            }            
+        });
     }
 
     /**
@@ -444,11 +426,13 @@ public class LevelImpl implements Level {
      *          the function
      * @return a set of elements
      */
-    private <X> Set<X> getGenericSet(final Function<Tile, X> func){
-        final Set<X> set = new HashSet<>();
+    private Set<Tile> getGenericSet(final Predicate<Tile> pred){
+        final Set<Tile> set = new HashSet<>();
         for(int i = 0; i < this.map.length; i++){
             for(int j = 0; j < this.map.length; j++){
-                set.add(func.apply(this.map[i][j]));
+                if(pred.test(this.map[i][j])){
+                    set.add(this.map[i][j]);
+                }
             }
         }
         return set;
@@ -484,7 +468,8 @@ public class LevelImpl implements Level {
      * This method generates a random value to set
      * as the size of the map.
      */
-    private void setNumberTiles() {
+    @Override
+    public void setNumberTiles() {
         int tiles = 0;
         while (tiles % 2 == 0) {
             tiles = new Random().nextInt(MAX_TILES - MIN_TILES) + MIN_TILES;

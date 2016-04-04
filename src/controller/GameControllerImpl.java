@@ -107,11 +107,13 @@ public class GameControllerImpl implements GameController {
             public void updateGameState() {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
                     if (!this.isPaused()) {
+                        //level.getBallom().setMoving(false);
                         this.pause();
                         view.showPauseMessage();
                     } else {
                         this.unPause();
                         view.removePauseMessage();
+                        //level.getBallom().setMoving(true);
                     }
                     inPaused = true;
                 }

@@ -22,11 +22,6 @@ public interface Level {
      *          the tile's size
      */
     void initLevel(final int tileDimension);
-    
-    /**
-     * Creates a new game level.
-     */
-    void nextLevel();
 
     /**
      * Moves the Hero in the specified direction.
@@ -103,6 +98,12 @@ public interface Level {
      * @return the Hero.
      */
     Hero getHero();
+    
+    /**
+     * This method generates a random value to set
+     * as the size of the map.
+     */
+    void setNumberTiles();
 
     /**
      * Sets the dimension (weight/height) of a tile.

@@ -24,6 +24,15 @@ public interface Collision {
     boolean blockCollision(final Set<Rectangle> blockSet);
     
     /**
+    * Cheks if there's a collision with a bomb.
+    * 
+    * @param bombSet
+    *          the set of planted bombs
+    * @return true if there's a collision, false otherwise
+    */
+    boolean bombCollision(final Set<Rectangle> bombSet);
+    
+    /**
      * Checks if there's a collision with fire.
      * 
      * @param afflictedTiles
