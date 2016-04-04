@@ -144,7 +144,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      */
     @Override
     public boolean isDead() {
-        return this.lives == 0;
+        return this.lives <= 0;
     }
 
     /**

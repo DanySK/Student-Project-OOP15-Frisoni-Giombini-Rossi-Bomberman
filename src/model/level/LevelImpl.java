@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -65,14 +64,13 @@ public class LevelImpl implements Level {
      * This method initialize correctly the hero.
      */
     private void initHero(){
-        try {
-            Objects.requireNonNull(this.hero);
+        if(this.hero != null && !this.hero.isDead()){
             final int lives = this.hero.getRemainingLives();
             final int attack = this.hero.getAttack();
             final int score = this.hero.getScore();
             this.createHero();
             this.hero.nextLevel(lives, attack, score);            
-        } catch (NullPointerException e){
+        } else {
             this.createHero();
         }
     }
