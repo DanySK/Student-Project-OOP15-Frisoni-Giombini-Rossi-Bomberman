@@ -12,7 +12,7 @@ public class Pass extends EnemiesImpl {
     private static final int ATTACK = 3;
 
     public Pass(final Point pos, final Direction dir, final Dimension dim) {
-        super(pos, dir, dim, LIVES, SCORE, ATTACK);
+        super(pos, dir, dim, LIVES, SCORE, ATTACK, EnemiesType.PASS);
     }
 
 }

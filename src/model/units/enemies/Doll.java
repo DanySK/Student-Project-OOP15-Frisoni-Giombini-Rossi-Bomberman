@@ -12,6 +12,6 @@ public class Doll extends EnemiesImpl {
     private static final int ATTACK = 1;
 
     public Doll(final Point pos, final Direction dir, final Dimension dim) {
-        super(pos, dir, dim, LIVES, SCORE, ATTACK);
+        super(pos, dir, dim, LIVES, SCORE, ATTACK, EnemiesType.DOLL);
     }
 }

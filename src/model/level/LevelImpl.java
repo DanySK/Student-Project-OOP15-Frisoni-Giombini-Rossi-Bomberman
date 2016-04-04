@@ -152,7 +152,7 @@ public class LevelImpl implements Level {
 
     @Override
     public void moveEnemies(Direction dir) {
-        this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir);
+        this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
     }
 
     @Override

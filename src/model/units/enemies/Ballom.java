@@ -12,6 +12,6 @@ public class Ballom extends EnemiesImpl {
     private static final int ATTACK = 1;
 
     public Ballom(final Point pos, final Direction dir, final Dimension dim) {
-        super(pos, dir, dim, LIVES, SCORE, ATTACK);
+        super(pos, dir, dim, LIVES, SCORE, ATTACK, EnemiesType.BALLOM);
     }    
 }

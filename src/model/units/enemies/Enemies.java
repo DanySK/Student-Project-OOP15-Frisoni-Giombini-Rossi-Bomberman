@@ -17,7 +17,7 @@ public interface Enemies {
      * @param hero
      *          the Hero entity
      */
-    void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero);
+    void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet);
     
     /**
      * This method chooses a random direction.
@@ -33,7 +33,15 @@ public interface Enemies {
      *          the Hero entity
      * @param dir
      *          the direction where to go to the enemy 
+     * @param bombSet
+     *          the set of bomb planted
      */
-    void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir);
+    void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet);
     
+    /**
+     * Set the hero to be in movement or not.
+     */
+    //void setMoving(final boolean b);
+    
+    EnemiesType getEnemiesType();
 }
