@@ -18,7 +18,9 @@ import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
 import model.units.LevelElement;
-import model.units.enemies.Ballom;
+import model.units.enemy.Enemy;
+import model.units.enemy.EnemyImpl;
+import model.units.enemy.EnemyType;
 import model.utilities.MapPoint;
 
 /**
@@ -38,7 +40,8 @@ public class LevelImpl implements Level {
     private Hero hero;
     private int tileDimension;
     private int nTiles;
-    private Ballom ballomEnemies;
+    //private Ballom ballomEnemies;
+    private Set<Enemy> enemies;
 
     /**
      * The constructor is used to set the size of the map,
@@ -88,10 +91,19 @@ public class LevelImpl implements Level {
      */
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
-        final Tile t = set.stream().findAny().get();
-        set.remove(t);
-        this.ballomEnemies = new Ballom(t.getPosition(), Direction.DOWN, 
-                new Dimension(this.tileDimension, this.tileDimension));
+        /*final Tile t = set.stream().findAny().get();
+        set.remove(t);*/
+        /*this.ballomEnemies = new Ballom(t.getPosition(), Direction.DOWN, 
+                new Dimension(this.tileDimension, this.tileDimension));*/
+        this.enemies = new HashSet<>();
+        //final EnemyType[] vet = EnemyType.values();
+        for(int i = 0; i < this.getFreeTiles().size()/3; i++) {
+            final Tile t = set.stream().findAny().get();
+            set.remove(t);
+            this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN, 
+                new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM));
+        }
+        //vet[new Random().nextInt(vet.length)];
     }
 
     /**
@@ -152,7 +164,10 @@ public class LevelImpl implements Level {
 
     @Override
     public void moveEnemies(Direction dir) {
-        this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
+        //this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
+        for (Enemy e : this.enemies) {
+            e.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
+        }
     }
 
     @Override
@@ -165,8 +180,16 @@ public class LevelImpl implements Level {
      * @param tiles involved
      */
     private void checkCollisionWithExplosionBomb(final Set<Tile> tiles) {
-        if (this.ballomEnemies.checkFlameCollision(tiles)) {
+        /*if (this.ballomEnemies.checkFlameCollision(tiles)) {
             this.ballomEnemies.modifyLife(-this.hero.getAttack());
+        }*/
+        for (Enemy e : this.enemies) {
+            if (e.checkFlameCollision(tiles)) {
+                e.modifyLife(-this.hero.getAttack());
+            }
+            if (e.getRemainingLives() <= 0) {
+                this.enemies.remove(e);
+            }
         }
     }
 
@@ -504,8 +527,13 @@ public class LevelImpl implements Level {
     }
 
     @Override
+    public Set<Enemy> getEnemies() {
+        return this.enemies;
+    }
+
+    /*@Override
     public Ballom getBallom() {
         return this.ballomEnemies;
-    }
+    }*/
 
 }

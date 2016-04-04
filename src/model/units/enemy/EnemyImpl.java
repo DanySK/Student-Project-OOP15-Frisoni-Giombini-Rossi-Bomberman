@@ -1,4 +1,4 @@
-package model.units.enemies;
+package model.units.enemy;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -13,19 +13,18 @@ import model.units.AbstractEntity;
 import model.units.Direction;
 import model.units.Hero;
 
-public class EnemiesImpl extends AbstractEntity implements Enemies {
+public class EnemyImpl extends AbstractEntity implements Enemy {
     
     private final EnemiesCollision enemyCollision;
-    private final EnemiesType enemyType;
+    private final EnemyType enemyType;
     
-    public EnemiesImpl(final Point pos, final Direction dir, final Dimension dim, final int lives, final int score, final int attack, final EnemiesType enemyType) {
+    public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, final EnemyType enemyType) {
         super(pos, dir, dim);
         this.enemyCollision = new EnemiesCollisionImpl(this);
-        super.modifyLife(lives - 1);
-        super.score = score;
-        super.increaseAttack(attack - 1);
-        //this.setMoving(true);
         this.enemyType = enemyType;
+        super.modifyLife(this.enemyType.getEnemyLives() - 1);
+        super.score = this.enemyType.getEnemyScore();
+        super.increaseAttack(this.enemyType.getEnemyAttack() - 1);
     }
 
     @Override
@@ -82,13 +81,8 @@ public class EnemiesImpl extends AbstractEntity implements Enemies {
     }
 
     @Override
-    public EnemiesType getEnemiesType() {
+    public EnemyType getEnemyType() {
         return this.enemyType;
     }
-    
-    /*@Override
-    public void setMoving(final boolean b) {
-        super.inMovement = b;
-    }*/
 
 }

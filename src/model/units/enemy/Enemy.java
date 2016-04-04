@@ -1,12 +1,13 @@
-package model.units.enemies;
+package model.units.enemy;
 
 import java.awt.Rectangle;
 import java.util.Set;
 
 import model.units.Direction;
+import model.units.Entity;
 import model.units.Hero;
 
-public interface Enemies {
+public interface Enemy extends Entity{
     
     /**
      * Enemies' movement.
@@ -38,10 +39,5 @@ public interface Enemies {
      */
     void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet);
     
-    /**
-     * Set the hero to be in movement or not.
-     */
-    //void setMoving(final boolean b);
-    
-    EnemiesType getEnemiesType();
+    EnemyType getEnemyType();
 }
