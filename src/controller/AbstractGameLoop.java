@@ -18,6 +18,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     private final int gameSpeed;
     private volatile boolean running;
     private volatile boolean paused;
+    private volatile boolean wasPaused;
 
     /**
      * Constructor for AbstractGameLoop.
@@ -26,6 +27,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         this.gameSpeed = gameSpeed;
         this.running = false;
         this.paused = false;
+        this.wasPaused = false;
     }
 
     /**
@@ -38,6 +40,10 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         this.running = true;
         while (this.running) {
             if (!this.paused) {
+                if (this.wasPaused) {
+                    nextTime = System.nanoTime();
+                    this.wasPaused = false;
+                }
                 final double currTime = System.nanoTime();
                 if (currTime >= nextTime) {
                     nextTime += TIME_FACTOR / this.gameSpeed;
@@ -52,14 +58,15 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                             // do nothing
                         }
                     }
-                } 
+                }
                 final int thisSecond = (int) (nextTime / TIME_FACTOR);
                 if (thisSecond > lastSecondTime) {
                     //System.out.println(lastSecondTime);
                     lastSecondTime = thisSecond;
                     this.updateEnemies();
-                    
                 }
+            } else {
+                this.wasPaused = true;
             }
             this.updateGameState();
         }
@@ -95,7 +102,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
             this.paused = true;
         }
     }
-    
+
     /**
      * This method took a long time and an action type runnable,
      * creates a new thread to control the time.
@@ -160,11 +167,11 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      * This method is used to update the graphics of game.
      */
     public abstract void updateView();
-    
+
     /**
      * This method is used to update the state of game.
      */
     public abstract void updateGameState();
-    
+
     public abstract void updateEnemies();
 }

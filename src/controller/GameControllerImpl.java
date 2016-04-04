@@ -7,7 +7,7 @@ import model.level.Level;
 import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
-import model.units.enemies.Ballom;
+import model.units.enemy.Enemy;
 import view.InputAction;
 import view.InputHandler;
 import view.game.GameFrame;
@@ -53,7 +53,10 @@ public class GameControllerImpl implements GameController {
         final AbstractGameLoop game = new AbstractGameLoop(FPS) {
             @Override
             public void updateModel() {
-                level.moveEnemies(getBallom().getRandomDirection());
+                //level.moveEnemies(getBallom().getRandomDirection());
+                for (Enemy e : getEnemies()) {
+                    level.moveEnemies(e.getRandomDirection());
+                }
                 if (inputListener.isInputActive(InputAction.MOVE_DOWN)) {
                     level.moveHero(Direction.DOWN);
                 }
@@ -107,13 +110,11 @@ public class GameControllerImpl implements GameController {
             public void updateGameState() {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
                     if (!this.isPaused()) {
-                        //level.getBallom().setMoving(false);
                         this.pause();
                         view.showPauseMessage();
                     } else {
                         this.unPause();
                         view.removePauseMessage();
-                        //level.getBallom().setMoving(true);
                     }
                     inPaused = true;
                 }
@@ -141,7 +142,10 @@ public class GameControllerImpl implements GameController {
 
             @Override
             public void updateEnemies() {
-                level.setDirectionEnemies(getBallom().getRandomDirection());
+                //level.setDirectionEnemies(getBallom().getRandomDirection());
+                for (Enemy e : getEnemies()) {
+                    level.setDirectionEnemies(e.getRandomDirection());
+                }
             }
         };   
 
@@ -190,8 +194,13 @@ public class GameControllerImpl implements GameController {
         return level.getHero().getBombDelay();
     }
 
-    @Override
+    /*@Override
     public Ballom getBallom() {
         return level.getBallom();
+    }*/
+
+    @Override
+    public Set<Enemy> getEnemies() {
+        return level.getEnemies();
     }
 }

@@ -5,7 +5,7 @@ import java.util.Set;
 import model.Tile;
 import model.units.Bomb;
 import model.units.Hero;
-import model.units.enemies.Ballom;
+import model.units.enemy.Enemy;
 
 public interface GameController {
     
@@ -59,5 +59,7 @@ public interface GameController {
      */
     long getBombDelay();
     
-    Ballom getBallom();
+    //Ballom getBallom();
+    
+    Set<Enemy> getEnemies();
 }
