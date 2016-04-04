@@ -3,6 +3,7 @@ package view.animations.unit;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,8 @@ public final class Sprite {
      * @return a list with all the sprites in the specified positions
      */
     public static List<BufferedImage> getSprites(final Point... pointGrids) {
-        return Arrays.stream(pointGrids).map(p -> getSprite(p)).collect(Collectors.toList());
+        return Arrays.stream(pointGrids).map(p -> getSprite(p))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     /**

@@ -23,7 +23,7 @@ public abstract class AbstractEntityView extends AbstractAnimationView implement
 
     // Animation states
     private final EnumMap<Direction, Animation> movementAnimations = new EnumMap<>(Direction.class);
-    private final EnumMap<Direction, Animation> standingAnimations = new EnumMap<>(Direction.class);;
+    private final EnumMap<Direction, Animation> standingAnimations = new EnumMap<>(Direction.class);
 
     private final Entity entity;
     private Optional<Animation> currAnimation;
