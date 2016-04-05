@@ -59,7 +59,5 @@ public interface GameController {
      */
     long getBombDelay();
     
-    //Ballom getBallom();
-    
     Set<Enemy> getEnemies();
 }

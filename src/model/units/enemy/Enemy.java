@@ -40,4 +40,6 @@ public interface Enemy extends Entity{
     void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet);
     
     EnemyType getEnemyType();
+    
+    void potentiateEnemy();
 }

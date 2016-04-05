@@ -53,10 +53,7 @@ public class GameControllerImpl implements GameController {
         final AbstractGameLoop game = new AbstractGameLoop(FPS) {
             @Override
             public void updateModel() {
-                //level.moveEnemies(getBallom().getRandomDirection());
-                for (Enemy e : getEnemies()) {
-                    level.moveEnemies(e.getRandomDirection());
-                }
+                level.moveEnemies();
                 if (inputListener.isInputActive(InputAction.MOVE_DOWN)) {
                     level.moveHero(Direction.DOWN);
                 }
@@ -129,7 +126,7 @@ public class GameControllerImpl implements GameController {
                             view.closeView();
                             startGame();
                         }
-                        
+
                         @Override
                         public void exit() {
                             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
@@ -142,10 +139,7 @@ public class GameControllerImpl implements GameController {
 
             @Override
             public void updateEnemies() {
-                //level.setDirectionEnemies(getBallom().getRandomDirection());
-                for (Enemy e : getEnemies()) {
-                    level.setDirectionEnemies(e.getRandomDirection());
-                }
+                level.setDirectionEnemies();
             }
         };   
 
@@ -188,17 +182,11 @@ public class GameControllerImpl implements GameController {
     public int getFPS() {
         return FPS;
     }
-    
+
     @Override
     public long getBombDelay() {
         return level.getHero().getBombDelay();
     }
-
-    /*@Override
-    public Ballom getBallom() {
-        return level.getBallom();
-    }*/
-
     @Override
     public Set<Enemy> getEnemies() {
         return level.getEnemies();

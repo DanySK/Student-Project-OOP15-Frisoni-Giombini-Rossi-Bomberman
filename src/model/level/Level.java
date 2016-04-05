@@ -127,11 +127,8 @@ public interface Level {
   
     /**
      * Moves the Enemies in the specified direction.
-     * 
-     * @param dir
-     *          the movement direction
      */
-    void moveEnemies(final Direction dir);
+    void moveEnemies();
     
     //Ballom getBallom();
     
@@ -143,6 +140,6 @@ public interface Level {
      * @param dir
      *          the movement direction
      */
-    void setDirectionEnemies(final Direction dir);
+    void setDirectionEnemies();
     
 }

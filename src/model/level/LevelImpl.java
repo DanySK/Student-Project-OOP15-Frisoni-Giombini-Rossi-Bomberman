@@ -58,7 +58,7 @@ public class LevelImpl implements Level {
         this.setTileDimension(tileDimension);
         this.createLevel();
         this.initHero();
-        this.createEnemies();
+        this.initEnemies();
     }
     /**
      * This method initialize correctly the hero.
@@ -83,16 +83,21 @@ public class LevelImpl implements Level {
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
     }
+    
+    private void initEnemies() {
+        this.createEnemies();
+        if (!this.hero.isDead()) {
+            for (Enemy e : this.enemies) {
+                e.potentiateEnemy();
+            }
+        }
+    }
 
     /**
      * Creates the enemies.
      */
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
-        /*final Tile t = set.stream().findAny().get();
-        set.remove(t);*/
-        /*this.ballomEnemies = new Ballom(t.getPosition(), Direction.DOWN, 
-                new Dimension(this.tileDimension, this.tileDimension));*/
         this.enemies = new HashSet<>();
         //final EnemyType[] vet = EnemyType.values();
         for(int i = 0; i < this.getFreeTiles().size()/3; i++) {
@@ -161,15 +166,14 @@ public class LevelImpl implements Level {
     }
 
     @Override
-    public void moveEnemies(Direction dir) {
-        //this.ballomEnemies.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
+    public void moveEnemies() {
         for (Enemy e : this.enemies) {
-            e.updateMove(this.getBlocks(), this.hero, dir, this.getRectangles(this.getPlantedBombs()));
+            e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs()));
         }
     }
 
     @Override
-    public void setDirectionEnemies(Direction dir) {
+    public void setDirectionEnemies() {
         //this.ballomEnemies.setDirection(dir);
     }
 
@@ -178,9 +182,6 @@ public class LevelImpl implements Level {
      * @param tiles involved
      */
     private void checkCollisionWithExplosionBomb(final Set<Tile> tiles) {
-        /*if (this.ballomEnemies.checkFlameCollision(tiles)) {
-            this.ballomEnemies.modifyLife(-this.hero.getAttack());
-        }*/
         for (Enemy e : this.enemies) {
             if (e.checkFlameCollision(tiles)) {
                 e.modifyLife(-this.hero.getAttack());
@@ -528,10 +529,5 @@ public class LevelImpl implements Level {
     public Set<Enemy> getEnemies() {
         return this.enemies;
     }
-
-    /*@Override
-    public Ballom getBallom() {
-        return this.ballomEnemies;
-    }*/
 
 }
