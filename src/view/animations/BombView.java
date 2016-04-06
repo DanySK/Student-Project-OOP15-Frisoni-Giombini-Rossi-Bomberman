@@ -1,16 +1,37 @@
 package view.animations;
 
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
 import model.units.Bomb;
-import view.animations.unit.SingleAnimationView;
+import view.animations.unit.AbstractSingleAnimationView;
+import view.animations.unit.Sprite;
 
 /**
- * This interface manages the visual representation of a {@link Bomb}.
+ * An implementation of {@link BombView}.
  *
  */
-public interface BombView extends SingleAnimationView {
-    
+public class BombView extends AbstractSingleAnimationView {
+
+    private static final List<BufferedImage> BOMB_TRIGGER = Sprite.getSprites(new Point(10, 0), new Point(11, 0), new Point(12, 0));
+
     /**
-     * @return the bomb represented.
+     * Constructs a new view for the bomb.
+     * 
+     * @param bomb
+     *          the bomb to represent
+     * @param fps
+     *          the number of frame-per-second
+     * @param duration
+     *          the duration (in milliseconds) of the animation
      */
-    Bomb getBomb();
+    public BombView(final Bomb bomb, final int fps, final long duration) {
+        super(bomb, fps, duration);
+    }
+    
+    @Override
+    public List<BufferedImage> animationFrames() {
+        return BOMB_TRIGGER;
+    }
 }

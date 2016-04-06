@@ -33,7 +33,7 @@ public class TextParticle {
      * Creates a new text particle.
      * 
      * @param msg
-     *              the text to show
+     *              the message to show
      * @param x
      *              the coordinate on the x-axis
      * @param y

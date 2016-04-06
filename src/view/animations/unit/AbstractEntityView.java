@@ -34,7 +34,7 @@ public abstract class AbstractEntityView extends AbstractAnimationView implement
      * @param entity
      *          the entity to represent
      * @param fps
-     *          the number of frame-per-second         
+     *          the number of frame-per-second
      */
     public AbstractEntityView(final Entity entity, final int fps) {
         super(entity);

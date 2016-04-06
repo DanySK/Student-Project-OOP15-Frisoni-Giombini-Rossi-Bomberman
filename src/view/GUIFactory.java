@@ -99,6 +99,11 @@ public interface GUIFactory {
     Font getFullFrameFont();
     
     /**
+     * @return a {@link Font} for the rendering of the remaining enemy's life. 
+     */
+    Font getLifeDetailFont();
+    
+    /**
      * @return the characteristic color of Bomberman.
      */
     Color getBombermanColor();
@@ -212,6 +217,7 @@ public interface GUIFactory {
         private static final Font SMALL_FONT = new Font(FONT_FAMILY, Font.PLAIN, 32);
         private static final Font MEDIUM_FONT = new Font(FONT_FAMILY, Font.PLAIN, 56);
         private static final Font BIG_FONT = new Font(FONT_FAMILY, Font.PLAIN, 72);
+        private static final Font LIFE_DETAIL_FONT = new Font("Serif", Font.PLAIN, 12);
         
         private static final Color COLOR_BUTTON = new Color(50, 50, 50);
         private static final Color PRIMARY_COLOR = new Color(60, 60, 60);
@@ -290,6 +296,11 @@ public interface GUIFactory {
         @Override
         public Font getFullFrameFont() {
             return BIG_FONT;
+        }
+        
+        @Override
+        public Font getLifeDetailFont() {
+            return LIFE_DETAIL_FONT;
         }
         
         @Override

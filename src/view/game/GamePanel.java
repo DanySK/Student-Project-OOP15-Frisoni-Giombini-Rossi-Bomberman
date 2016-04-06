@@ -9,6 +9,7 @@ import java.util.Deque;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -20,13 +21,17 @@ import controller.GameController;
 import model.Tile;
 import model.TileType;
 import model.units.PowerUpType;
+import model.units.enemy.Enemy;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.SoundEffect;
+import view.TextParticle;
 import view.animations.BombView;
-import view.animations.BombViewImpl;
+import view.animations.EnemyViewFactory;
 import view.animations.ExplosionView;
 import view.animations.HeroView;
 import view.animations.HeroViewImpl;
+import view.animations.unit.EntityAnimationView;
 
 /**
  * A {@link JPanel} for the principal game's rendering.
@@ -49,10 +54,11 @@ public class GamePanel extends JPanel {
     private final Map<TileType, Image> tilesImages;
     private final Map<PowerUpType, Image> powerUpImages;
     private HeroView hero;
-    //private BallomView ballom;
 
     private final Set<BombView> bombs;
     private final Deque<Set<ExplosionView>> explosions;
+    private final Set<EntityAnimationView> enemies;
+    private final Set<TextParticle> scores;
 
     /**
      * Creates a new GamePanel.
@@ -102,6 +108,8 @@ public class GamePanel extends JPanel {
 
         this.bombs = new HashSet<>();
         this.explosions = new LinkedList<>();
+        this.enemies = new HashSet<>();
+        this.scores = new HashSet<>();
     }
 
     /**
@@ -109,7 +117,6 @@ public class GamePanel extends JPanel {
      */
     public void initGamePanel() {
         this.hero = new HeroViewImpl(this.controller.getHero(), this.controller.getFPS());
-        //this.ballom = new BallomView(this.controller.getBallom(), this.controller.getFPS());
     }
 
     /**
@@ -135,14 +142,31 @@ public class GamePanel extends JPanel {
         }
         // Draws the bombs
         this.controller.getPlantedBombs().stream().filter(b -> !this.bombs.contains(b)).forEach(b -> {
-            this.bombs.add(new BombViewImpl(b, this.controller.getFPS(), this.controller.getBombDelay()));
+            this.bombs.add(new BombView(b, this.controller.getFPS(), this.controller.getBombDelay()));
         });
-        this.bombs.removeIf(b -> !this.controller.getPlantedBombs().contains(b.getBomb()));
+        this.bombs.removeIf(b -> !this.controller.getPlantedBombs().contains(b.getLevelElement()));
         this.bombs.stream().forEach(b -> g.drawImage(b.getImage(), b.getX(), b.getY(), null));
+        // Draws scores
+        this.scores.stream().forEach(s -> {
+            s.tick();
+            s.render(g);
+        });
+        // Draws the enemies
+        this.controller.getEnemies().stream().filter(e -> !this.enemies.contains(e)).forEach(e -> {
+            this.enemies.add(EnemyViewFactory.getEnemyView(e));
+        });
+        final Iterator<EntityAnimationView> iterator = this.enemies.iterator();
+        while (iterator.hasNext()) {
+            final EntityAnimationView enemy = iterator.next();
+            if (!this.controller.getEnemies().contains(enemy.getLevelElement())) {
+                this.scores.add(new TextParticle(String.valueOf(((Enemy) enemy.getLevelElement()).getScore()), enemy.getX(), enemy.getY()));
+                SoundEffect.POWERUP.playOnce();
+                iterator.remove();
+            }
+        }
+        this.enemies.stream().forEach(e -> g.drawImage(e.getImage(), e.getX(), e.getY(), null));
         // Draws the hero
         g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
-        // Draws the enemies
-        //g.drawImage(this.ballom.getImage(), this.ballom.getX(), this.ballom.getY(), null);
         // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
     }
@@ -151,7 +175,7 @@ public class GamePanel extends JPanel {
         this.hero.updateFrame();
         this.bombs.stream().forEach(b -> b.updateFrame());
         this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
-        //this.ballom.updateFrame();
+        this.enemies.stream().forEach(e -> e.updateFrame());
     }
 
     /**

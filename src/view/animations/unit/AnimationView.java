@@ -2,6 +2,8 @@ package view.animations.unit;
 
 import java.awt.Image;
 
+import model.units.LevelElement;
+
 /**
  * This interface manages the visual representation of a frame-based animation.
  * These methods are needed for each type of animation.
@@ -30,4 +32,9 @@ public interface AnimationView {
      * Updates the frame for the current animation.
      */
     void updateFrame();
+    
+    /**
+     * @return the represented element.
+     */
+    LevelElement getLevelElement();
 }
