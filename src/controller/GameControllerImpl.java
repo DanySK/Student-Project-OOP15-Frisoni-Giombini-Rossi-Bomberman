@@ -96,6 +96,12 @@ public class GameControllerImpl implements GameController {
                 if (level.getHero().hasKey()) {
                     level.setOpenDoor();
                 }
+                if (level.getHero().checkOpenDoorCollision(level.getDoor())) {
+                    System.out.println("VINTO");
+                    /*super.stopLoop();
+                    view.closeView();
+                    startGame();*/
+                }
             }
 
             @Override

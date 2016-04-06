@@ -39,7 +39,6 @@ public class LevelImpl implements Level {
     private Hero hero;
     private int tileDimension;
     private int nTiles;
-    //private Ballom ballomEnemies;
     private Set<Enemy> enemies;
 
     /**
@@ -104,9 +103,8 @@ public class LevelImpl implements Level {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN, 
-                new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM));
+                new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM/*vet[new Random().nextInt(vet.length)]*/));
         }
-        //vet[new Random().nextInt(vet.length)];
     }
 
     /**
@@ -174,7 +172,11 @@ public class LevelImpl implements Level {
 
     @Override
     public void setDirectionEnemies() {
-        //this.ballomEnemies.setDirection(dir);
+        for (Enemy e : this.enemies) {
+            if (e.getEnemyType().equals(EnemyType.KONDORIA) || e.getEnemyType().equals(EnemyType.MINVO) || e.getEnemyType().equals(EnemyType.PASS)) {
+                e.setDirection(e.getRandomDirection());
+            }
+        }
     }
 
     /**
