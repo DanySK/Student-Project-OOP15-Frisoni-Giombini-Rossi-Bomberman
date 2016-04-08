@@ -63,6 +63,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                 if (thisSecond > lastSecondTime) {
                     //System.out.println(lastSecondTime);
                     lastSecondTime = thisSecond;
+                    this.updateTime();
                     this.updateEnemies();
                 }
             } else {
@@ -173,5 +174,13 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      */
     public abstract void updateGameState();
 
+    /**
+     * This method is used to update the enemies.
+     */
     public abstract void updateEnemies();
+    
+    /**
+     * This method is used to update the time of game.
+     */
+    public abstract void updateTime();
 }

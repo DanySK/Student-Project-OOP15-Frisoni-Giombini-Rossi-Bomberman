@@ -2,9 +2,9 @@ package model.level;
 
 import model.units.Entity;
 
-public class EnemiesCollisionImpl extends CollisionImpl implements EnemiesCollision {
+public class EnemyCollisionImpl extends CollisionImpl implements EnemyCollision {
 
-    public EnemiesCollisionImpl(Entity entity) {
+    public EnemyCollisionImpl(Entity entity) {
         super(entity);
     }
 

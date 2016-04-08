@@ -26,7 +26,10 @@ public class GameControllerImpl implements GameController {
     private final GameFrame view;
     private volatile boolean isPlanted;
     private volatile boolean inPaused;
-
+    private int time;
+    private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman/Scores.properties";
+    private final ScoresManagement scores;
+    
     /**
      * Constructor for GameControllerImpl.
      * @param model the model object.
@@ -38,6 +41,8 @@ public class GameControllerImpl implements GameController {
         this.startGame();
         this.isPlanted = false;
         this.inPaused = false;
+        this.time = 0;
+        this.scores = new ScoresManagementImpl(fileName);
     }
 
     /**
@@ -97,10 +102,9 @@ public class GameControllerImpl implements GameController {
                     level.setOpenDoor();
                 }
                 if (level.getHero().checkOpenDoorCollision(level.getDoor())) {
-                    System.out.println("VINTO");
-                    /*super.stopLoop();
                     view.closeView();
-                    startGame();*/
+                    startGame();
+                    super.stopLoop();
                 }
             }
 
@@ -126,6 +130,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
+                    scores.saveScore(level.getHero().getScore(), time);
                     view.showGameOverPanel(new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
@@ -146,6 +151,11 @@ public class GameControllerImpl implements GameController {
             @Override
             public void updateEnemies() {
                 level.setDirectionEnemies();
+            }
+
+            @Override
+            public void updateTime() {
+                time++;
             }
         };   
 
@@ -196,5 +206,10 @@ public class GameControllerImpl implements GameController {
     @Override
     public Set<Enemy> getEnemies() {
         return level.getEnemies();
+    }
+    
+    @Override
+    public int getTime() {
+        return this.time;
     }
 }

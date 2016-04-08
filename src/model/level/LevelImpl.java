@@ -98,12 +98,12 @@ public class LevelImpl implements Level {
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
         this.enemies = new HashSet<>();
-        final EnemyType[] vet = EnemyType.values();
+        //final EnemyType[] vet = EnemyType.values();
         for(int i = 0; i < this.getFreeTiles().size()/6; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN, 
-                new Dimension(this.tileDimension, this.tileDimension), /*EnemyType.BALLOM*/vet[new Random().nextInt(vet.length)]));
+                new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM/*vet[new Random().nextInt(vet.length)]*/));
         }
     }
 

@@ -3,10 +3,10 @@ package model.units.enemy;
 public enum EnemyType {
     
     BALLOM(1, 100, 1),
-    DOLL(4, 400, 1),
-    KONDORIA(8, 1000, 2),
-    MINVO(6, 800, 2),
-    PASS(10, 4000, 3);
+    DOLL(2, 400, 1),
+    KONDORIA(3, 1000, 2),
+    MINVO(4, 800, 2),
+    PASS(5, 4000, 3);
     
     private final int lives;
     private final int score;

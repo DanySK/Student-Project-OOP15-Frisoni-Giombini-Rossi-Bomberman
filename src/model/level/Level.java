@@ -130,8 +130,10 @@ public interface Level {
      */
     void moveEnemies();
     
-    //Ballom getBallom();
-    
+    /**
+     * This method returns a set of enemy entities in the map.
+     * @return the set of enemies.
+     */
     Set<Enemy> getEnemies();
     
     /**

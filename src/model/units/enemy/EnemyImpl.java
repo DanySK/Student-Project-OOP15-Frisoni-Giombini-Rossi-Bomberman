@@ -7,20 +7,20 @@ import java.util.Random;
 import java.util.Set;
 
 import model.level.Collision;
-import model.level.EnemiesCollision;
-import model.level.EnemiesCollisionImpl;
+import model.level.EnemyCollision;
+import model.level.EnemyCollisionImpl;
 import model.units.AbstractEntity;
 import model.units.Direction;
 import model.units.Hero;
 
 public class EnemyImpl extends AbstractEntity implements Enemy {
     
-    private final EnemiesCollision enemyCollision;
+    private final EnemyCollision enemyCollision;
     private final EnemyType enemyType;
     
     public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, final EnemyType enemyType) {
         super(pos, dir, dim);
-        this.enemyCollision = new EnemiesCollisionImpl(this);
+        this.enemyCollision = new EnemyCollisionImpl(this);
         this.enemyType = enemyType;
         super.modifyLife(this.enemyType.getEnemyLives() - 1);
         super.score = this.enemyType.getEnemyScore();
@@ -36,12 +36,16 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
     
     /**
-     * This method check if enemy 
+     * This method checks if the enemy collides with blocks or with the hero or with planted bombs.
      * @param dir
+     *          the direction where the enemy wants to go
      * @param blockSet
+     *          the set of blocks that are in the map
      * @param hero
+     *          the hero's entity
      * @param bombSet
-     * @return
+     *          the set of planted bombs
+     * @return false if it collides, true otherwise
      */
     private boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet) {
         if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.heroCollision(hero) && this.enemyCollision.bombCollision(bombSet)) {
@@ -57,11 +61,14 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
     
     /**
-     * 
+     * This method returns a different direction from the current direction if it collides.
      * @param blockSet
+     *          the set of blocks that are in the map
      * @param hero
+     *          the hero's entity
      * @param dir
-     * @return
+     *          the direction where the enemy wants to go
+     * @return the direction where the enemy must go
      */
     private Direction getNewDirection(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet) {
         if (this.checkCollision(super.getDirection(), blockSet, hero, bombSet)) {

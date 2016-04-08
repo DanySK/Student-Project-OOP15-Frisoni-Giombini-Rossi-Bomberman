@@ -39,6 +39,10 @@ public interface Enemy extends Entity{
      */
     void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet);
     
+    /**
+     * This method return the type of enemy.
+     * @return enemy's type
+     */
     EnemyType getEnemyType();
     
     void potentiateEnemy();

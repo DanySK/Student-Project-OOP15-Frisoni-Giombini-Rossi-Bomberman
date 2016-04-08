@@ -2,7 +2,7 @@ package model.level;
 
 import model.units.Entity;
 
-public interface EnemiesCollision extends Collision {
+public interface EnemyCollision extends Collision {
     
     /**
      * Checks if there's a collision between enemy and Hero.

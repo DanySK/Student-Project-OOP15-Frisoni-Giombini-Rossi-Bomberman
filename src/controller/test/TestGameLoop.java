@@ -124,6 +124,11 @@ public class TestGameLoop {
             
         }
 
+        @Override
+        public void updateTime() {
+            
+        }
+
     }
     
 }

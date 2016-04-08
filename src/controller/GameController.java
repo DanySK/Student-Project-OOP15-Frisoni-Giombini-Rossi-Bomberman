@@ -59,5 +59,15 @@ public interface GameController {
      */
     long getBombDelay();
     
+    /**
+     * This method returns a set of enemy entities in the map.
+     * @return the set of enemies.
+     */
     Set<Enemy> getEnemies();
+    
+    /**
+     * This method return the time elapsed since the start of the game.
+     * @return the time of game
+     */
+    int getTime();
 }
