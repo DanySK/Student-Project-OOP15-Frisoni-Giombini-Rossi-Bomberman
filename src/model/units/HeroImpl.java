@@ -94,8 +94,8 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * @return true if there's a collision, false otherwise
      */
     @Override
-    public boolean checkOpenDoorCollision(final Tile door) {
-        return this.heroCollision.openDoorCollision(door);
+    public boolean checkOpenDoorCollision(final Tile doorOpened) {
+        return this.heroCollision.openDoorCollision(doorOpened.getHitbox());
     }
     
     /**

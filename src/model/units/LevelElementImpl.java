@@ -66,7 +66,7 @@ public class LevelElementImpl implements LevelElement{
     public int getY() {
         return this.curPos.y;
     }
-    
+        
     /**
      * LevelElement's toString.
      * 

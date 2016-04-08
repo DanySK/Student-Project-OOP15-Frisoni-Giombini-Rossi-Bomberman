@@ -34,11 +34,13 @@ public class LevelImpl implements Level {
     private static final double POWERUP_DENSITY = 0.75;
     private static final int MIN_TILES = 11;
     private static final int MAX_TILES = 19;
+    private static final int FIRST_STAGE = 1; 
 
     private Tile[][] map;
     private Hero hero;
     private int tileDimension;
     private int nTiles;
+    private int stage;
     private Set<Enemy> enemies;
 
     /**
@@ -47,6 +49,7 @@ public class LevelImpl implements Level {
      */
     public LevelImpl() {
         this.setNumberTiles();
+        this.setFirstStage();
     }
 
     /**
@@ -63,7 +66,7 @@ public class LevelImpl implements Level {
      * This method initialize correctly the hero.
      */
     private void initHero(){
-        if(this.hero != null && !this.hero.isDead()){
+        if(!this.isFirstStage()){
             final int lives = this.hero.getRemainingLives();
             final int attack = this.hero.getAttack();
             final int score = this.hero.getScore();
@@ -73,7 +76,7 @@ public class LevelImpl implements Level {
             this.createHero();
         }
     }
-    
+
     /**
      * This method creates the hero.
      */
@@ -82,7 +85,7 @@ public class LevelImpl implements Level {
                 Direction.DOWN, 
                 new Dimension(this.tileDimension, this.tileDimension));
     }
-    
+
     private void initEnemies() {
         this.createEnemies();
         if (this.hero != null && !this.hero.isDead()) {
@@ -98,12 +101,12 @@ public class LevelImpl implements Level {
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
         this.enemies = new HashSet<>();
-        //final EnemyType[] vet = EnemyType.values();
+        final EnemyType[] vet = EnemyType.values();
         for(int i = 0; i < this.getFreeTiles().size()/6; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
-            this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN, 
-                new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM/*vet[new Random().nextInt(vet.length)]*/));
+            this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN,
+                new Dimension(this.tileDimension, this.tileDimension), /*EnemyType.BALLOM*/vet[new Random().nextInt(vet.length)]));
         }
     }
 
@@ -438,7 +441,7 @@ public class LevelImpl implements Level {
             public boolean test(Tile t) {
                 return t.getType().equals(TileType.WALKABLE) && 
                         !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
-                        MapPoint.getInvCoordinate(t.getY(), tileDimension));
+                                MapPoint.getInvCoordinate(t.getY(), tileDimension));
             }            
         });
     }
@@ -515,6 +518,31 @@ public class LevelImpl implements Level {
     @Override
     public void setOpenDoor(){
         this.getDoor().setType(TileType.DOOR_OPENED);
+    }
+
+    /**
+     * Sets first stage.
+     */
+    @Override
+    public void setFirstStage(){
+        this.stage = FIRST_STAGE;
+    }
+
+    /**
+     * Sets next stage.
+     */
+    @Override
+    public void setNextStage(){
+        this.stage++;
+    }
+    
+    /**
+     * Checks if its the first stage.
+     * 
+     * @return true if it's the first stage, false otherwise
+     */
+    private boolean isFirstStage(){
+        return this.stage == FIRST_STAGE;
     }
 
     /**

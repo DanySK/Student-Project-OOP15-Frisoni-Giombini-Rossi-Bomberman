@@ -1,5 +1,6 @@
 package model.level;
 
+import java.awt.Rectangle;
 import java.util.Set;
 
 import model.Tile;
@@ -22,10 +23,10 @@ public interface HeroCollision extends Collision{
     /**
      * Cheks the collision with the open door.
      * 
-     *@param door
+     *@param doorOpened
      *          the open door
      * @return true if there's a collision, false otherwise
      */
-    boolean openDoorCollision(final Tile door);
+    boolean openDoorCollision(final Rectangle doorOpened);
 
 }

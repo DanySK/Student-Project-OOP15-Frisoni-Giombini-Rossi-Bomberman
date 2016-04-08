@@ -1,5 +1,6 @@
 package model.level;
 
+import java.awt.Rectangle;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -51,12 +52,8 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
      * @return true if there's a collision, false otherwise
      */
     @Override
-    public boolean openDoorCollision(final Tile door) {
-        if(door.getType().equals(TileType.DOOR_OPENED)){
-            return entityRec.intersects(door.getHitbox());
-        } else {
-            return false;
-        }
+    public boolean openDoorCollision(final Rectangle doorOpened) {
+            return entityRec.intersects(doorOpened);
     }
 
 }

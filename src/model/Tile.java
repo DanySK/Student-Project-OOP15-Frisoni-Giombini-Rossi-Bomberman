@@ -42,7 +42,7 @@ public class Tile extends LevelElementImpl{
     public TileType getType() {
         return type;
     }
-    
+
     /**
      * Returns the Powerup.
      * 
@@ -51,7 +51,7 @@ public class Tile extends LevelElementImpl{
     public Optional<PowerUpType> getPowerup(){
         return this.powerup;
     }
-    
+
     /**
      * Sets a new TileType for the tile.
      * 
@@ -61,21 +61,21 @@ public class Tile extends LevelElementImpl{
     public void setType(final TileType newType){
         this.type = newType;
     }
-    
+
     /**
      * Sets the key.
      */
     public void setKeyPowerUp(){
         this.powerup = Optional.of(PowerUpType.KEY);
     }
-    
+
     /**
      * Remove the powerup.
      */
     public void removePowerUp(){
         this.powerup = Optional.empty();
     }
-    
+
     /**
      * Tile's toString.
      * 

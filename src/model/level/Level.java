@@ -117,6 +117,16 @@ public interface Level {
      * Set the tile type of the door to door_opened.
      */
     void setOpenDoor();
+    
+    /**
+     * Sets first stage.
+     */
+    void setFirstStage();
+    
+    /**
+     * Sets the next stage;
+     */
+    void setNextStage();
 
     /**
      * This method is used to know whether the game is over or not. 
