@@ -94,8 +94,8 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
 
     @Override
     public void potentiateEnemy() {
-        this.modifyLife(this.enemyType.getEnemyLives() + 1);
-        this.increaseAttack(this.enemyType.getEnemyAttack() + 1);
+        this.modifyLife(+1);
+        this.increaseAttack(+1);
     }
 
 }

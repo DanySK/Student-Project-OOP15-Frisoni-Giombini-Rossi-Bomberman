@@ -43,6 +43,7 @@ public class GameControllerImpl implements GameController {
         this.inPaused = false;
         this.time = 0;
         this.scores = new ScoresManagementImpl(fileName);
+        this.level.setFirstStage();
     }
 
     /**
@@ -101,8 +102,9 @@ public class GameControllerImpl implements GameController {
                 if (level.getHero().hasKey()) {
                     level.setOpenDoor();
                 }
-                if (level.getHero().checkOpenDoorCollision(level.getDoor())) {
+                if (level.getHero().hasKey() && level.getHero().checkOpenDoorCollision(level.getDoor())) {
                     view.closeView();
+                    level.setNextStage();
                     startGame();
                     super.stopLoop();
                 }
