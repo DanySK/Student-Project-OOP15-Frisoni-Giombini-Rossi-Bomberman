@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +30,7 @@ public class Detonator {
         this.dim = dim;
         this.bombRange = INITIAL_RANGE;
         this.maxBombs = INITIAL_BOMBS;
-        this.bombList = new ConcurrentLinkedDeque<>();
+        this.bombList = new LinkedList<>();
     }
 
     /**
@@ -40,21 +39,21 @@ public class Detonator {
     public void addBomb(final Point p){
         this.bombList.addLast(new BombImpl(p, this.dim, this.bombRange));
     }
-    
+
     /**
      * It increases the range of a bomb.
      */
     public void increaseRange(){
         this.bombRange++;
     }
-    
+
     /**
      * It increases the number of bombs that can be planted.
      */
     public void increaseBombs(){
         this.maxBombs++;
     }
-    
+
     /**
      * This method returns the bomb to be planted.
      * 
@@ -70,7 +69,9 @@ public class Detonator {
      * Reactivates a bomb that has already exploded.
      */
     public void reactivateBomb(){
-        this.bombList.removeFirst();
+        synchronized (this.bombList) {
+            this.bombList.removeFirst();
+        }
     }
 
     /**
@@ -120,9 +121,11 @@ public class Detonator {
      * @return the list of planted bombs
      */
     public LinkedList<Bomb> getPlantedBombs(){
-        return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
+        synchronized (this.bombList){
+            return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
+        }
     }
-    
+
     /**
      * Gets the actual range of a bomb.
      * 
