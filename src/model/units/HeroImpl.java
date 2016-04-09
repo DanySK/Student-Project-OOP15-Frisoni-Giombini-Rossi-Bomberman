@@ -54,12 +54,10 @@ public class HeroImpl extends AbstractEntity implements Hero {
     
     /**
      * Gets the bomb to plant.
-     * 
-     * @return the bomb to plant
      */
     @Override
-    public Bomb plantBomb() {
-        return this.detonator.plantBomb();
+    public void plantBomb() {
+        this.detonator.plantBomb();
     }
        
     /**

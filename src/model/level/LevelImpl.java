@@ -66,7 +66,7 @@ public class LevelImpl implements Level {
      * This method initialize correctly the hero.
      */
     private void initHero(){
-        if(!this.isFirstStage()){
+        if(!this.isFirstStage() && !this.hero.isDead()){
             final int lives = this.hero.getRemainingLives();
             final int attack = this.hero.getAttack();
             final int score = this.hero.getScore();
@@ -228,8 +228,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> detonateBomb() {
-        final Bomb b = this.hero.getDetonator().getBombToReactivate();
-        final Set<Tile> tiles = this.getAllAfflictedTiles(b);
+        final Set<Tile> tiles = this.getAllAfflictedTiles(this.hero.getDetonator().getBombToReactivate());
         if(this.hero.checkFlameCollision(tiles)){
             this.hero.modifyLife(-1);
         }

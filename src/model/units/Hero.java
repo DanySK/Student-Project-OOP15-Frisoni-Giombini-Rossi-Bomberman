@@ -31,7 +31,7 @@ public interface Hero extends Entity {
      * 
      * @return the bomb to plant
      */
-    Bomb plantBomb();
+    void plantBomb();
     
     /**
      * Increase the number of bombs.

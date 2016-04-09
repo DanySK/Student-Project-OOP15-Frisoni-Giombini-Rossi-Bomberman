@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +31,7 @@ public class Detonator {
         this.dim = dim;
         this.bombRange = INITIAL_RANGE;
         this.maxBombs = INITIAL_BOMBS;
-        this.bombList = new LinkedList<>();
+        this.bombList = new ConcurrentLinkedDeque<>();
     }
 
     /**
@@ -43,7 +44,7 @@ public class Detonator {
     /**
      * It increases the range of a bomb.
      */
-    public void increaseRange(){//vedere quale per bene
+    public void increaseRange(){
         this.bombRange++;
     }
     
@@ -61,10 +62,8 @@ public class Detonator {
      *          the new bomb's position
      * @return the bomb with the position updated
      */
-    public Bomb plantBomb(){
-        final Bomb b = this.getBombToPlant();
-        b.setPlanted();
-        return b;
+    public void plantBomb(){
+        this.getBombToPlant().setPlanted();
     }
 
     /**
