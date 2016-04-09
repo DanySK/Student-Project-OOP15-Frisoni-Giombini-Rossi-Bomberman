@@ -31,7 +31,7 @@ public interface Hero extends Entity {
      * 
      * @return the bomb to plant
      */
-    void plantBomb();
+    void plantBomb(final int nTiles);
     
     /**
      * Increase the number of bombs.
@@ -120,6 +120,8 @@ public interface Hero extends Entity {
      * Set the key.
      */
     void setKey();
+    
+    boolean isConfused();
 
     /**
      * Checks if the hero's got the key.
@@ -133,7 +135,10 @@ public interface Hero extends Entity {
      * 
      * @return true if there's at least a bomb, false otherwise
      */
-    boolean hasBomb(final int nTiles);
+    boolean hasBomb();
+    
+    void copy(final boolean inMovement, final int lives, final int attack,
+            final int score, final boolean isConfused, final boolean key);
     
     /**
      * Hero's toString.

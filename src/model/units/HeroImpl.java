@@ -56,8 +56,9 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * Gets the bomb to plant.
      */
     @Override
-    public void plantBomb() {
-        this.detonator.plantBomb();
+    public void plantBomb(final int nTiles) {
+        this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
     }
        
     /**
@@ -211,9 +212,21 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * @return true if there's a bomb, false otherwise
      */
     @Override
-    public boolean hasBomb(final int nTiles) {
-        return this.detonator.hasBombs(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
-                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+    public boolean hasBomb() {
+        return this.detonator.hasBombs();
+    }
+    
+    @Override
+    public boolean isConfused(){
+        return this.isConfused;
+    }
+    
+    @Override
+    public void copy(final boolean inMovement, final int lives, final int attack,
+            final int score, final boolean isConfused, final boolean key){
+        super.copy(inMovement, lives, attack, score);
+        this.isConfused = isConfused;
+        this.key = key;
     }
     
     /**

@@ -61,8 +61,9 @@ public class Detonator {
      *          the new bomb's position
      * @return the bomb with the position updated
      */
-    public void plantBomb(){
-        this.getBombToPlant().setPlanted();
+    public void plantBomb(final Point p){
+        this.addBomb(p);
+        this.getBombToPlant().setPlanted(true);
     }
 
     /**
@@ -106,13 +107,8 @@ public class Detonator {
      *  
      * @return true if there's at least a bomb to plant.
      */
-    public boolean hasBombs(final Point p){
-        if(this.bombList.size() < this.maxBombs){
-            this.addBomb(p);
-            return true;
-        } else {
-            return false;
-        }
+    public boolean hasBombs(){
+        return this.bombList.size() < this.maxBombs;
     }
 
     /**
@@ -121,9 +117,15 @@ public class Detonator {
      * @return the list of planted bombs
      */
     public LinkedList<Bomb> getPlantedBombs(){
+        /*synchronized (this.bombList){
+            return this.bombList.stream().filter(b -> b.isPositioned())
+                    .map(b -> CopyFactory.getCopy(b))
+                    .collect(Collectors.toCollection(LinkedList::new));
+        }*/
         synchronized (this.bombList){
             return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
         }
+        
     }
 
     /**
@@ -133,5 +135,26 @@ public class Detonator {
      */
     public int getActualRange(){
         return this.bombRange;
+    }
+    
+    /**
+     * Gets the actual number of bombs.
+     * 
+     * @return the actual number of bombs
+     */
+    public int getActualBombs(){
+        return this.maxBombs;
+    }
+    
+    public Deque<Bomb> getActualList(){
+        Deque<Bomb> copyList = new LinkedList<>();
+        copyList.addAll(this.bombList);
+        return copyList;
+    }
+    
+    public void copy(final int range, final int bombs, final Deque<Bomb> bombsList){
+        this.bombRange = range;
+        this.maxBombs = bombs;
+        this.bombList.addAll(bombsList);
     }
 }

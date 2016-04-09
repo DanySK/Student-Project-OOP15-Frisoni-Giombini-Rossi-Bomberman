@@ -20,6 +20,7 @@ import model.units.LevelElement;
 import model.units.enemy.Enemy;
 import model.units.enemy.EnemyImpl;
 import model.units.enemy.EnemyType;
+import model.utilities.CopyFactory;
 import model.utilities.MapPoint;
 
 /**
@@ -218,7 +219,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void plantBomb() {
-        this.hero.plantBomb();
+        this.hero.plantBomb(this.nTiles);
     }
 
     /**
@@ -228,7 +229,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> detonateBomb() {
-        final Set<Tile> tiles = this.getAllAfflictedTiles(this.hero.getDetonator().getBombToReactivate());
+        final Set<Tile> tiles = this.getAllAfflictedTiles(CopyFactory.getCopy(this.hero.getDetonator().getBombToReactivate()));
         if(this.hero.checkFlameCollision(tiles)){
             this.hero.modifyLife(-1);
         }
@@ -282,7 +283,7 @@ public class LevelImpl implements Level {
                     stop = true;
                 }
                 else {
-                    afflictedTiles.add(this.map[i][j]);
+                    afflictedTiles.add(CopyFactory.getCopy(this.map[i][j]));
                     if(this.map[i][j].getType().equals(TileType.RUBBLE)){
                         if(this.map[i][j].getPowerup().isPresent()){
                             this.map[i][j].setType(TileType.POWERUP_STATUS);
@@ -457,7 +458,7 @@ public class LevelImpl implements Level {
         for(int i = 0; i < this.map.length; i++){
             for(int j = 0; j < this.map.length; j++){
                 if(pred.test(this.map[i][j])){
-                    set.add(this.map[i][j]);
+                    set.add(CopyFactory.getCopy(this.map[i][j]));
                 }
             }
         }
@@ -487,6 +488,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public Hero getHero() {
+        //return CopyFactory.getCopy(this.hero);
         return this.hero;
     }
 

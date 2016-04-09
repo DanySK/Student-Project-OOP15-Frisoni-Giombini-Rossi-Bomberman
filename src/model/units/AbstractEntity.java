@@ -160,6 +160,14 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
         this.curDir = dir;
     }
     
+    @Override
+    public void copy(final boolean inMovement, final int lives, final int attack, final int score){
+        this.inMovement = inMovement;
+        this.lives = lives;
+        this.attack = attack;
+        this.score = score;
+    }
+    
     /**
      * Entity's toString.
      * 

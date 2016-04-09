@@ -22,8 +22,11 @@ public interface Bomb extends LevelElement{
     
     /**
      * Set the bomb to be planted or not.
+     * 
+     * @param b
+     *          the boolean describing if it is planted or not
      */
-    void setPlanted();
+    void setPlanted(final boolean b);
 
     /**
      * Verifies if the bomb is planted.

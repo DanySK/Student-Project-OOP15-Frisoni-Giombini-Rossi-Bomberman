@@ -48,8 +48,8 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
      *          true if it has to be planted, false otherwise
      */
     @Override
-    public void setPlanted() {
-        this.isPlanted = true;
+    public void setPlanted(final boolean b) {
+        this.isPlanted = b;
     }
 
     /**
@@ -70,6 +70,9 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
         return new StringBuilder().append("BOMB -  ")
                 .append("Range is: ")
                 .append(this.getRange())
+                .append(";\n")
+                .append("isPositioned is: ")
+                .append(this.isPlanted)
                 .append(";\n")
                 .append(super.toString())
                 .toString();
