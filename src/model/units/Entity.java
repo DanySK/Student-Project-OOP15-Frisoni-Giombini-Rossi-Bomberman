@@ -113,6 +113,8 @@ public interface Entity extends LevelElement{
     
     void copy(final boolean inMovement, final int lives, final int attack, final int score);
     
+    void copy(final int lives, final int attack, final int score, final Direction dir);
+    
     /**
      * Entity's toString.
      * 

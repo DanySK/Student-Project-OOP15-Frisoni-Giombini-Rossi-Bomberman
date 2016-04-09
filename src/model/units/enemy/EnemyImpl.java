@@ -30,7 +30,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     @Override
     public void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet) {
         this.enemyCollision.updateEntityRec(dir);
-        if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.heroCollision(hero) && this.enemyCollision.bombCollision(bombSet) /*&& this.inMovement*/) {
+        if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.bombCollision(bombSet) && this.enemyCollision.heroCollision(hero)) {
             super.move(dir);
         }
     }
@@ -48,7 +48,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      * @return false if it collides, true otherwise
      */
     private boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet) {
-        if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.heroCollision(hero) && this.enemyCollision.bombCollision(bombSet)) {
+        if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.bombCollision(bombSet) && this.enemyCollision.heroCollision(hero)) {
             return false;
         }
         return true;
@@ -96,6 +96,11 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     public void potentiateEnemy() {
         this.modifyLife(+1);
         this.increaseAttack(+1);
+    }
+
+    @Override
+    public void copy(final int lives, final int attack, final int score, final Direction dir) {
+        super.copy(lives, attack, score, dir);
     }
 
 }

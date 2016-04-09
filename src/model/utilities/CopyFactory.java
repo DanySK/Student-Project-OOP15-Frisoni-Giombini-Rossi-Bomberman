@@ -8,6 +8,8 @@ import model.units.Bomb;
 import model.units.BombImpl;
 import model.units.Hero;
 import model.units.HeroImpl;
+import model.units.enemy.Enemy;
+import model.units.enemy.EnemyImpl;
 
 public final class CopyFactory {
 
@@ -36,5 +38,11 @@ public final class CopyFactory {
         heroCopy.copy(h.isMoving(), h.getRemainingLives(), h.getAttack(), h.getScore(), h.isConfused(), h.hasKey());
         return heroCopy;
         
+    }
+    
+    public static Enemy getCopy(final Enemy e) {
+        Enemy enemyCopy = new EnemyImpl(new Point(e.getPosition()), e.getDirection(), new Dimension(e.getHitbox().width, e.getHitbox().height), e.getEnemyType());
+        enemyCopy.copy(e.getRemainingLives(), e.getAttack(), e.getScore(), e.getDirection());
+        return enemyCopy;
     }
 }

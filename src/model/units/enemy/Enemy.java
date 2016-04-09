@@ -46,4 +46,6 @@ public interface Enemy extends Entity{
     EnemyType getEnemyType();
     
     void potentiateEnemy();
+    
+    void copy(final int lives, final int attack, final int score, final Direction dir);
 }

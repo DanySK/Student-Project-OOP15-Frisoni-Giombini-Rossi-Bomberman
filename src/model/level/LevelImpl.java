@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -93,6 +94,7 @@ public class LevelImpl implements Level {
             for (Enemy e : this.enemies) {
                 e.potentiateEnemy();
             }
+            //this.enemies.stream().forEach(e -> e.potentiateEnemy());
         }
     }
 
@@ -101,13 +103,14 @@ public class LevelImpl implements Level {
      */
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
+        //this.enemies = Collections.synchronizedSet(new HashSet<>());
         this.enemies = new HashSet<>();
         //final EnemyType[] vet = EnemyType.values();
         for(int i = 0; i < this.getFreeTiles().size()/6; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN,
-                new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM/*vet[new Random().nextInt(vet.length)]*/));
+                    new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM/*vet[new Random().nextInt(vet.length)]*/));
         }
     }
 
@@ -172,6 +175,7 @@ public class LevelImpl implements Level {
         for (Enemy e : this.enemies) {
             e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs()));
         }
+        //this.enemies.stream().forEach(e -> e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs())));
     }
 
     @Override
@@ -181,6 +185,7 @@ public class LevelImpl implements Level {
                 e.setDirection(e.getRandomDirection());
             }
         }
+        //this.enemies.stream().filter(e -> equals(EnemyType.KONDORIA) || e.getEnemyType().equals(EnemyType.MINVO) || e.getEnemyType().equals(EnemyType.PASS)).forEach(e -> e.setDirection(e.getRandomDirection()));
     }
 
     /**
@@ -188,12 +193,14 @@ public class LevelImpl implements Level {
      * @param tiles involved
      */
     private void checkCollisionWithExplosionBomb(final Set<Tile> tiles) {
-        for (Enemy e : this.enemies) {
+        final Iterator<Enemy> it = this.enemies.iterator();
+        while (it.hasNext()) {
+            final Enemy e = it.next();
             if (e.checkFlameCollision(tiles)) {
                 e.modifyLife(-this.hero.getAttack());
             }
             if (e.getRemainingLives() <= 0) {
-                this.enemies.remove(e);
+                it.remove();
             }
         }
     }
@@ -458,7 +465,7 @@ public class LevelImpl implements Level {
         for(int i = 0; i < this.map.length; i++){
             for(int j = 0; j < this.map.length; j++){
                 if(pred.test(this.map[i][j])){
-                    set.add(CopyFactory.getCopy(this.map[i][j]));
+                    set.add(/*CopyFactory.getCopy(*/this.map[i][j]);
                 }
             }
         }
@@ -536,7 +543,7 @@ public class LevelImpl implements Level {
     public void setNextStage(){
         this.stage++;
     }
-    
+
     /**
      * Checks if its the first stage.
      * 
@@ -558,6 +565,12 @@ public class LevelImpl implements Level {
 
     @Override
     public Set<Enemy> getEnemies() {
+        /*Set<Enemy> copy = new HashSet<>();
+        for (Enemy e : this.enemies) {
+            copy.add(CopyFactory.getCopy(e));
+        }
+        //this.enemies.stream().forEach(e -> copy.add(CopyFactory.getCopy(e)));
+        return copy;*/
         return this.enemies;
     }
 
