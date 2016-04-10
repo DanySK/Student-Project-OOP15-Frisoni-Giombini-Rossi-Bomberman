@@ -16,7 +16,7 @@ import model.units.Hero;
 public class EnemyImpl extends AbstractEntity implements Enemy {
     
     private final EnemyCollision enemyCollision;
-    private final EnemyType enemyType;
+    private EnemyType enemyType;
     
     public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, final EnemyType enemyType) {
         super(pos, dir, dim);
@@ -99,8 +99,9 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
 
     @Override
-    public void copy(final int lives, final int attack, final int score, final Direction dir) {
+    public void copy(final int lives, final int attack, final int score, final Direction dir, final EnemyType type) {
         super.copy(lives, attack, score, dir);
+        this.enemyType = type;
     }
 
 }

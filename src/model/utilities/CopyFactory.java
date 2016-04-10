@@ -42,7 +42,7 @@ public final class CopyFactory {
     
     public static Enemy getCopy(final Enemy e) {
         Enemy enemyCopy = new EnemyImpl(new Point(e.getPosition()), e.getDirection(), new Dimension(e.getHitbox().width, e.getHitbox().height), e.getEnemyType());
-        enemyCopy.copy(e.getRemainingLives(), e.getAttack(), e.getScore(), e.getDirection());
+        enemyCopy.copy(e.getRemainingLives(), e.getAttack(), e.getScore(), e.getDirection(), e.getEnemyType());
         return enemyCopy;
     }
 }
