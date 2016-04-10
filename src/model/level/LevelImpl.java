@@ -90,7 +90,7 @@ public class LevelImpl implements Level {
 
     private void initEnemies() {
         this.createEnemies();
-        if (!this.isFirstStage()) {
+        if (!this.isFirstStage() && !this.hero.isDead()) {
             for (Enemy e : this.enemies) {
                 e.potentiateEnemy();
             }
@@ -103,14 +103,13 @@ public class LevelImpl implements Level {
      */
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
-        //this.enemies = Collections.synchronizedSet(new HashSet<>());
         this.enemies = new HashSet<>();
-        //final EnemyType[] vet = EnemyType.values();
-        for(int i = 0; i < this.getFreeTiles().size()/6; i++) {
+        final EnemyType[] vet = EnemyType.values();
+        for(int i = 0; i < this.getFreeTiles().size()/8; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN,
-                    new Dimension(this.tileDimension, this.tileDimension), EnemyType.BALLOM/*vet[new Random().nextInt(vet.length)]*/));
+                    new Dimension(this.tileDimension, this.tileDimension), vet[new Random().nextInt(vet.length)]));
         }
     }
 
@@ -171,11 +170,12 @@ public class LevelImpl implements Level {
     @Override
     public void setDirectionEnemies() {
         for (Enemy e : this.enemies) {
-            if (e.getEnemyType().equals(EnemyType.KONDORIA) || e.getEnemyType().equals(EnemyType.MINVO) || e.getEnemyType().equals(EnemyType.PASS)) {
+            if (e.getEnemyType().equals(EnemyType.MINVO)
+) {
                 e.setDirection(e.getRandomDirection());
             }
         }
-        //this.enemies.stream().filter(e -> equals(EnemyType.KONDORIA) || e.getEnemyType().equals(EnemyType.MINVO) || e.getEnemyType().equals(EnemyType.PASS)).forEach(e -> e.setDirection(e.getRandomDirection()));
+        //this.enemies.stream().filter(e -> e.getEnemyType().equals(EnemyType.MINVO)).forEach(e -> e.setDirection(e.getRandomDirection()));
     }
 
     /**
@@ -190,6 +190,7 @@ public class LevelImpl implements Level {
                 e.modifyLife(-this.hero.getAttack());
             }
             if (e.getRemainingLives() <= 0) {
+                this.getHero().increaseScore(e.getScore());
                 it.remove();
             }
         }
