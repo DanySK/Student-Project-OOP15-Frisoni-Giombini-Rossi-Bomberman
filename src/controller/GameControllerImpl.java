@@ -29,13 +29,14 @@ public class GameControllerImpl implements GameController {
     private int time;
     private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman/Scores.properties";
     private final ScoresManagement scores;
+    private final boolean darkMode;
     
     /**
      * Constructor for GameControllerImpl.
      * @param model the model object.
      * @param view the view object.
      */
-    public GameControllerImpl(final Level model, final GameFrame view) {
+    public GameControllerImpl(final Level model, final GameFrame view, final boolean darkMode) {
         this.level = model;
         this.view = view;
         this.startGame();
@@ -44,6 +45,7 @@ public class GameControllerImpl implements GameController {
         this.time = 0;
         this.scores = new ScoresManagementImpl(fileName);
         this.level.setFirstStage();
+        this.darkMode = darkMode;
     }
 
     /**
@@ -132,7 +134,11 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    scores.saveScore(level.getHero().getScore(), time);
+                    if (darkMode) {
+                        scores.saveScore(level.getHero().getScore()*2, time);
+                    } else {
+                        scores.saveScore(level.getHero().getScore(), time);
+                    }
                     view.showGameOverPanel(new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
@@ -157,7 +163,7 @@ public class GameControllerImpl implements GameController {
 
             @Override
             public void updateTime() {
-                time++;
+                view.updateTime(time++);
             }
         };   
 

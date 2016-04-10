@@ -48,4 +48,6 @@ public interface Enemy extends Entity{
     void potentiateEnemy();
     
     void copy(final int lives, final int attack, final int score, final Direction dir, final EnemyType type);
+    
+    String toString();
 }

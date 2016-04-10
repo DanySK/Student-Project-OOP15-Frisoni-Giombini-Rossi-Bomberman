@@ -94,7 +94,7 @@ public class LevelImpl implements Level {
             for (Enemy e : this.enemies) {
                 e.potentiateEnemy();
             }
-            //this.enemies.stream().forEach(e -> e.potentiateEnemy());
+            //this.enemies.forEach(e -> e.potentiateEnemy());
         }
     }
 
@@ -161,21 +161,20 @@ public class LevelImpl implements Level {
 
     @Override
     public void moveEnemies() {
-        for (Enemy e : this.enemies) {
+        /*for (Enemy e : this.enemies) {
             e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs()));
-        }
-        //this.enemies.stream().forEach(e -> e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs())));
+        }*/
+       this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs())));
     }
 
     @Override
     public void setDirectionEnemies() {
-        for (Enemy e : this.enemies) {
-            if (e.getEnemyType().equals(EnemyType.MINVO)
-) {
+        /*for (Enemy e : this.enemies) {
+            if (e.getEnemyType().equals(EnemyType.MINVO)) {
                 e.setDirection(e.getRandomDirection());
             }
-        }
-        //this.enemies.stream().filter(e -> e.getEnemyType().equals(EnemyType.MINVO)).forEach(e -> e.setDirection(e.getRandomDirection()));
+        }*/
+        this.enemies.stream().filter(e -> e.getEnemyType().equals(EnemyType.MINVO)).forEach(e -> e.setDirection(e.getRandomDirection()));
     }
 
     /**
@@ -194,6 +193,8 @@ public class LevelImpl implements Level {
                 it.remove();
             }
         }
+        /*this.enemies.stream().filter(e -> e.checkFlameCollision(tiles)).forEach(e -> e.modifyLife(-this.hero.getAttack()));
+        this.enemies.stream().filter(e -> e.getRemainingLives() <= 0).forEach(e -> this.getHero().increaseScore(e.getScore()));*/
     }
 
     /**

@@ -104,4 +104,26 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
         this.enemyType = type;
     }
 
+    /*@Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((enemyCollision == null) ? 0 : enemyCollision.hashCode());
+        result = prime * result + ((enemyType == null) ? 0 : enemyType.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof EnemyImpl && this.enemyType == ((EnemyImpl) obj).getEnemyType();
+    }*/
+
+    @Override
+    public String toString() {
+        return new StringBuilder().append("ENEMY -  EnemyType is: ")
+                .append(this.enemyType)
+                .append(super.toString())
+                .toString();
+    }
+
 }
