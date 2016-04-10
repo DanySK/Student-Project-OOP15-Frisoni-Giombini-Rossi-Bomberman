@@ -19,6 +19,8 @@ import view.GUIFactory;
  */
 public abstract class AbstractEnemyView extends AbstractEntityView {
 
+    private final Enemy enemy;
+    
     /**
      * Constructs a new enemy view.
      * 
@@ -29,6 +31,7 @@ public abstract class AbstractEnemyView extends AbstractEntityView {
      */
     public AbstractEnemyView(final Enemy enemy, int fps) {
         super(enemy, fps);
+        this.enemy = enemy;
     }
 
     @Override
@@ -43,5 +46,18 @@ public abstract class AbstractEnemyView extends AbstractEntityView {
         g.setFont(font);
         g.drawString(String.valueOf(((Entity) getLevelElement()).getRemainingLives()), 0, super.getImage().getHeight(null));
         return b;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((enemy == null) ? 0 : enemy.hashCode());
+        return result;
+    }
+    
+    @Override
+    public boolean equals(final Object obj) {
+        return obj instanceof AbstractEnemyView && this.enemy.equals(((AbstractEnemyView) obj).enemy);
     }
 }

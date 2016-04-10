@@ -16,7 +16,7 @@ import view.animations.unit.Sprite;
  * It represents a kondoria enemy.
  *
  */
-public class KondoriaView extends AbstractEnemyView {
+public class PassView extends AbstractEnemyView {
     
     private static final EnumMap<Direction, List<BufferedImage>> MOVEMENT_MAP = new EnumMap<>(Direction.class);
     private static final EnumMap<Direction, List<BufferedImage>> STANDING_MAP = new EnumMap<>(Direction.class);
@@ -39,7 +39,7 @@ public class KondoriaView extends AbstractEnemyView {
      * @param fps
      *          the number of frame-per-second
      */
-    public KondoriaView(final Enemy enemy, final int fps) {
+    public PassView(final Enemy enemy, final int fps) {
         super(enemy, fps);
     }
     

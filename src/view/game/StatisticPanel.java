@@ -2,24 +2,51 @@ package view.game;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
-import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import controller.GameController;
+import view.GUIFactory;
+import view.ImageLoader;
+import view.ImageLoader.GameImage;
 
 /**
- * A class for making a JPanel with statistic information of the hero to display to the user.
+ * A custom {@link JPanel} for the rendering of:
+ * - the elapsed time
+ * - the current score
+ * - the statistics of the hero.
  * 
  */
-public class StatisticPanel {
-    
+public class StatisticPanel extends JPanel {
+
+    /**
+     * Auto-generated UID.
+     */
+    private static final long serialVersionUID = 867883566833239595L;
+
+    private static final int PANEL_HEIGHT = 50;
+    private static final int NUM_STATS = 4;
+    private static final String TIME_TEXT = "TIME ";
+    private static final String SCORE_TEXT = "SCORE ";
+    private static final String SEPARATOR = "x";
     private static final Color BG_COLOR = new Color(60, 60, 60);
-    
-    // private final Level model;
-    
-    private JPanel panel;
-    
+
+    private final GameController controller;
+
+    private JLabel time = new JLabel();
+    private JLabel score = new JLabel();
+
+    private JLabel life;
+    private JLabel attack;
+    private JLabel bombs;
+    private JLabel range;
+
     /**
      * Creates a new StatisticPanel.
      * 
@@ -27,28 +54,92 @@ public class StatisticPanel {
      *          the controller of the game
      */
     public StatisticPanel(final GameController controller) {
-        // this.model = model;
+        this.controller = Objects.requireNonNull(controller);
         createControl();
-        updateControl();
     }
-    
+
     private void createControl() {
-        this.panel = new JPanel();
-        this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.X_AXIS));
-        this.panel.setBackground(BG_COLOR);
-        this.panel.setPreferredSize(new Dimension(0, 50));
+        final GUIFactory factory = new GUIFactory.Standard();
+
+        this.setLayout(new GridLayout(0, 2));
+        this.setBackground(BG_COLOR);
+        
+        // Sets the panel containing the time and the score
+        final JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout(0, 2));
+        infoPanel.setOpaque(false);
+        this.time = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
+        this.time.setHorizontalAlignment(SwingConstants.CENTER);
+        updateTime(0L);
+        infoPanel.add(this.time);
+        this.score = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
+        infoPanel.add(this.score);
+        this.add(infoPanel);
+
+        // Sets the panel containing the statistics of the hero
+        final JPanel statsPanel = new JPanel();
+        statsPanel.setLayout(new GridLayout(0, NUM_STATS));
+        statsPanel.setOpaque(false);
+        this.life = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
+        this.attack = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
+        this.bombs = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
+        this.range = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.LIFE_INFO), this.life));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.ATTACK_INFO), this.attack));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.BOMBS_INFO), this.bombs));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.RANGE_INFO), this.range));
+        this.add(statsPanel);
     }
-    
+
     /**
-     * Updates statics.
+     * Updates the rendering of the elapsed time.
+     * 
+     * @param seconds
+     *          the number of seconds since the game's start
      */
-    public final void updateControl() {
+    public final void updateTime(final long seconds) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                StatisticPanel.this.time.setText(TIME_TEXT + String.format("%02d:%02d",
+                        TimeUnit.SECONDS.toMinutes(seconds),
+                        TimeUnit.SECONDS.toSeconds(seconds) % TimeUnit.MINUTES.toSeconds(1L)));
+            }
+        });
     }
-    
+
     /**
-     * @return the logger panel.
+     * Updates the rendering of the score.
+     * 
+     * @param score
+     *          the current score game
      */
-    public JPanel getPanel() {
-        return this.panel;
+    public final void updateScore(final long score) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                StatisticPanel.this.score.setText(SCORE_TEXT + String.valueOf(score));
+            }
+        });
+    }
+
+    /**
+     * Updates the rendering of the Hero's statistics.
+     */
+    public final void updateStats() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                StatisticPanel.this.life.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getRemainingLives()));
+                StatisticPanel.this.attack.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getAttack()));
+                StatisticPanel.this.bombs.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getDetonator().getActualBombs()));
+                StatisticPanel.this.range.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getDetonator().getActualRange()));
+            }
+        });
+    }
+
+    @Override
+    public final Dimension getPreferredSize() {
+        return new Dimension(0, PANEL_HEIGHT);
     }
 }

@@ -131,6 +131,22 @@ public final class ImageLoader {
          */
         MYSTERY(TILES_FOLDER + "mystery.png"),
         /**
+         * Life's hero info.
+         */
+        LIFE_INFO(TILES_FOLDER + "life_info.png"),
+        /**
+         * Attack's hero info.
+         */
+        ATTACK_INFO(TILES_FOLDER + "attack_info.png"),
+        /**
+         * Bombs' hero info.
+         */
+        BOMBS_INFO(TILES_FOLDER + "bombs_info.png"),
+        /**
+         * Range's hero info.
+         */
+        RANGE_INFO(TILES_FOLDER + "range_info.png"),
+        /**
          * Sprite sheet.
          */
         SPRITE_SHEET(SPRITES_FOLDER + "sprite_sheet.png");

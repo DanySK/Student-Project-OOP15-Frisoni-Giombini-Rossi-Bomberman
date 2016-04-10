@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
@@ -35,6 +39,7 @@ import org.jfree.data.category.CategoryDataset;
 
 import view.menu.components.FadingLabel;
 import view.menu.components.GradientPanel;
+import view.menu.components.StretchIcon;
 
 /**
  * This interface uses an Abstract Factory pattern to define
@@ -67,6 +72,30 @@ public interface GUIFactory {
      * @return the specified button
      */
     JButton createMenuButton(String text, ImageIcon image);
+    
+    /**
+     * Creates a customized {@link JLabel}.
+     * 
+     * @param text
+     *          the text to display
+     * @param font
+     *          the font of the label
+     * @param color
+     *          the foreground color
+     * @return the specified label
+     */
+    JLabel createLabel(String text, Font font, Color color);
+    
+    /**
+     * Creates a customized {@link JLabel}.
+     * 
+     * @param font
+     *          the font of the label
+     * @param color
+     *          the foreground color
+     * @return the specified label
+     */
+    JLabel createLabel(Font font, Color color);
     
     /**
      * Creates a customized {@link JLabel} with an horizontal alignment.
@@ -192,6 +221,11 @@ public interface GUIFactory {
     JPanel createHorizontalComponentPanel(String text, JComponent... components);
     
     /**
+     * @return a customized horizontal panel with an image and a label on the right.
+     */
+    JPanel createImageWithLabelPanel(Image image, JLabel text);
+    
+    /**
      * Creates a customized bar chart with a dark theme.
      * 
      * @param title
@@ -269,12 +303,25 @@ public interface GUIFactory {
         }
 
         @Override
+        public JLabel createLabel(final Font font, final Color color) {
+            final JLabel label = new JLabel();
+            label.setFont(font);
+            label.setForeground(color);
+            return label;
+        }
+        
+        @Override
+        public JLabel createLabel(final String text, final Font font, final Color color) {
+            final JLabel label = createLabel(font, color);
+            label.setText(text);
+            return label;
+        }
+        
+        @Override
         public JComponent createTitleLabel(final String text) {
-            final JLabel title = new JLabel(text);
-            title.setFont(MEDIUM_FONT);
+            final JLabel title = createLabel(text, MEDIUM_FONT, Color.WHITE);
             title.setHorizontalAlignment(SwingConstants.CENTER);
             title.setAlignmentX(Component.CENTER_ALIGNMENT);
-            title.setForeground(Color.WHITE);
             title.setBorder(REGULAR_BORDER);
             return title;
         }
@@ -306,13 +353,6 @@ public interface GUIFactory {
         @Override
         public Color getBombermanColor() {
             return VIOLET_BOMBERMAN_COLOR;
-        }
-        
-        private JLabel createDescriptionLabel(final String text) {
-            final JLabel description = new JLabel(text + ": ");
-            description.setFont(SMALL_FONT);
-            description.setForeground(Color.LIGHT_GRAY);
-            return description;
         }
         
         @Override
@@ -390,10 +430,35 @@ public interface GUIFactory {
         @Override
         public JPanel createHorizontalComponentPanel(final String text, final JComponent... components) {
             final JPanel panel = new JPanel(new FlowLayout());
-            panel.add(createDescriptionLabel(text));
+            panel.add(createLabel(text + ":", SMALL_FONT, Color.LIGHT_GRAY));
             for (final JComponent radio : components) {
                 panel.add(radio);
             }
+            panel.setOpaque(false);
+            return panel;
+        }
+        
+        @Override
+        public JPanel createImageWithLabelPanel(final Image image, final JLabel label) {
+            final JPanel panel = new JPanel();
+            final GridBagLayout gblPanel = new GridBagLayout();
+            gblPanel.columnWeights = new double[]{2.0, 1.0};
+            gblPanel.rowWeights = new double[]{1.0};
+            panel.setLayout(new GridLayout(0, 2));
+            
+            final GridBagConstraints cnst = new GridBagConstraints();
+            cnst.gridx = 0;
+            cnst.gridy = 0;
+            cnst.weightx = 1;
+            cnst.weighty = 1;
+            cnst.fill = GridBagConstraints.BOTH;
+            
+            final JLabel lblImage = new JLabel();
+            lblImage.setIcon(new StretchIcon(image));
+            panel.add(lblImage, cnst);
+            cnst.gridx++;
+            
+            panel.add(label, cnst);
             panel.setOpaque(false);
             return panel;
         }

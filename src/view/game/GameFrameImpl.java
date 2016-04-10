@@ -93,7 +93,7 @@ public class GameFrameImpl implements GameFrame {
                 }
             }
         });
-        //this.frame.setResizable(false);
+        this.frame.setResizable(false);
 
         // Sets the panels
         this.gamePanel = new GamePanel(this.observer);
@@ -101,7 +101,7 @@ public class GameFrameImpl implements GameFrame {
 
         // Sets the layout
         final JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(this.statisticPanel.getPanel(), BorderLayout.NORTH);
+        mainPanel.add(this.statisticPanel, BorderLayout.NORTH);
         if (this.darkMode) {
             this.layerUI = new SpotlightLayerUI(this.gamePanel.getTileSize());
             this.jlayer = new JLayer<JPanel>(this.gamePanel, layerUI);
@@ -142,7 +142,6 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void showView() {
-        this.gamePanel.initGamePanel();
         update();
         this.frame.initDrawable();
         this.frame.setVisible(true);
@@ -164,9 +163,16 @@ public class GameFrameImpl implements GameFrame {
     @Override
     public void update() {
         this.gamePanel.repaint();
+        this.statisticPanel.updateStats();
+        this.statisticPanel.updateScore(this.observer.getHero().getScore());
         if (this.darkMode) {
             this.layerUI.moveLight(this.gamePanel.getHeroViewCenterPoint(), this.jlayer);
         }
+    }
+    
+    @Override
+    public void updateTime(final long seconds) {
+        this.statisticPanel.updateTime(seconds);
     }
     
     @Override

@@ -66,6 +66,14 @@ public interface GameFrame {
     void update();
     
     /**
+     * Updates the rendering of the elapsed time.
+     * 
+     * @param seconds
+     *          the number of seconds since the game's start
+     */
+    void updateTime(long seconds);
+    
+    /**
      * Renders an explosion on the screen.
      * 
      * @param tiles

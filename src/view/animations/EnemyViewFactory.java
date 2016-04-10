@@ -20,15 +20,11 @@ public class EnemyViewFactory {
     public static EntityAnimationView getEnemyView(final Enemy enemy) {
         switch(enemy.getEnemyType()) {
         case BALLOM:
-            return new MinvoView(enemy, 60);
-        case DOLL:
             return new BallomView(enemy, 60);
-        case KONDORIA:
-            return new KondoriaView(enemy, 60);
         case MINVO:
             return new MinvoView(enemy, 60);
         case PASS:
-            return new BallomView(enemy, 60);
+            return new PassView(enemy, 60);
         default:
             throw new IllegalArgumentException();
         }

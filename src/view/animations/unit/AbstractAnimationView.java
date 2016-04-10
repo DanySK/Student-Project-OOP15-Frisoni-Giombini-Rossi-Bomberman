@@ -56,20 +56,4 @@ public abstract class AbstractAnimationView implements AnimationView {
     public LevelElement getLevelElement() {
         return this.element;
     }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((element == null) ? 0 : element.hashCode());
-        return result;
-    }
-
-    /**
-     * Two animations are equals if represent the same element.
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return obj instanceof AbstractAnimationView && this.element.equals(((AbstractAnimationView) obj).element);
-    }
 }
