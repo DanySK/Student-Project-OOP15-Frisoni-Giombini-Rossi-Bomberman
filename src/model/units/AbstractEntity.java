@@ -195,4 +195,23 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
                 .append(super.toString())
                 .toString();
     }
+    /*
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + attack;
+        result = prime * result + ((curDir == null) ? 0 : curDir.hashCode());
+        result = prime * result + (inMovement ? 1231 : 1237);
+        result = prime * result + lives;
+        result = prime * result + score;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof AbstractEntity && this.attack == ((AbstractEntity) obj).attack
+                && this.curDir.equals(((AbstractEntity) obj).curDir) && this.inMovement == ((AbstractEntity) obj).inMovement
+                && this.lives == ((AbstractEntity) obj).lives && this.score == ((AbstractEntity) obj).score;
+    }*/
 }

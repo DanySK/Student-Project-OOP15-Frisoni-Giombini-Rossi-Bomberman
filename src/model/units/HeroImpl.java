@@ -144,17 +144,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public Detonator getDetonator() {
         return this.detonator;
     }
-    
-    /**
-     * Gets the bomb's range.
-     * 
-     * @return bomb's range
-     */
-    @Override
-    public int getBombRange() {
-        return this.detonator.getActualRange();
-    }
-    
+        
     /**
      * Gets hero's collision.
      * 
@@ -240,5 +230,20 @@ public class HeroImpl extends AbstractEntity implements Hero {
                 .append(super.toString())
                 .toString();
     }
+    /*
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + (isConfused ? 1231 : 1237);
+        result = prime * result + (key ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof HeroImpl && this.isConfused == ((HeroImpl) obj).isConfused
+                && this.key == ((HeroImpl) obj).key;
+    }*/
     
 }

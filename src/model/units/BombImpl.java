@@ -77,5 +77,20 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
                 .append(super.toString())
                 .toString();
     }
+    /*
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + (isPlanted ? 1231 : 1237);
+        result = prime * result + range;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof BombImpl && this.range == ((BombImpl) obj).range
+                && this.isPlanted == ((BombImpl) obj).isPlanted;
+    }*/
     
 }

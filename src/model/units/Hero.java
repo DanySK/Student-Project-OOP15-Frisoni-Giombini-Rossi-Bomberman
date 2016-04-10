@@ -97,13 +97,6 @@ public interface Hero extends Entity {
     Detonator getDetonator();
     
     /**
-     * Gets bomb's range.
-     * 
-     * @return bomb's range
-     */
-    int getBombRange();
-    
-    /**
      * This method set the hero in movement or not. 
      * 
      * @param b

@@ -138,12 +138,7 @@ public class LevelImpl implements Level {
      *          the TilesFactory object
      */
     private void setDoor(final TilesFactory factory){
-        factory.setDoor(this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return t.getType().equals(TileType.WALKABLE);
-            } 
-        }));
+        factory.setDoor(this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE)));
     }
 
     /**
@@ -153,12 +148,7 @@ public class LevelImpl implements Level {
      *          the TilesFactory object
      */
     private void setKey(final TilesFactory factory){
-        factory.setKey(this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return t.getType().equals(TileType.RUBBLE);
-            }        
-        }));
+        factory.setKey(this.getGenericSet(t -> t.getType().equals(TileType.RUBBLE)));
     }
 
     /**
@@ -375,12 +365,8 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> getTiles(){
-        return this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return !t.getType().equals(TileType.POWERUP_STATUS);
-            }
-        });
+        return this.getGenericSet(t -> !t.getType().equals(TileType.POWERUP_STATUS))
+                .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
 
     /**
@@ -390,12 +376,8 @@ public class LevelImpl implements Level {
      */
     @Override
     public Set<Tile> getPowerUp(){
-        return this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent();
-            }  
-        });
+        return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent())
+                .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
 
     /**
@@ -413,12 +395,8 @@ public class LevelImpl implements Level {
      */
     @Override
     public Tile getDoor(){
-        return this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED);
-            }
-        }).stream().findFirst().get();
+        return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
+                .stream().findFirst().get();
     }
 
     /**
@@ -428,12 +406,8 @@ public class LevelImpl implements Level {
      * @return the set of blocks
      */
     private Set<Rectangle> getBlocks(){
-        return this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE);
-            }
-        }).stream().map(t -> t.getHitbox()).collect(Collectors.toSet());
+        return this.getGenericSet(t -> t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE))
+                .stream().map(t -> CopyFactory.getCopy(t)).map(t -> t.getHitbox()).collect(Collectors.toSet());
     }
 
     /**
@@ -443,14 +417,10 @@ public class LevelImpl implements Level {
      * @return the set of free tiles
      */
     private Set<Tile> getFreeTiles(){
-        return this.getGenericSet(new Predicate<Tile>(){
-            @Override
-            public boolean test(Tile t) {
-                return t.getType().equals(TileType.WALKABLE) && 
-                        !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
-                                MapPoint.getInvCoordinate(t.getY(), tileDimension));
-            }            
-        });
+        return this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE) && 
+                !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
+                        MapPoint.getInvCoordinate(t.getY(), tileDimension)))
+                .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
 
     /**
@@ -465,7 +435,7 @@ public class LevelImpl implements Level {
         for(int i = 0; i < this.map.length; i++){
             for(int j = 0; j < this.map.length; j++){
                 if(pred.test(this.map[i][j])){
-                    set.add(/*CopyFactory.getCopy(*/this.map[i][j]);
+                    set.add(this.map[i][j]);
                 }
             }
         }
@@ -480,14 +450,6 @@ public class LevelImpl implements Level {
      */
     private <X extends LevelElement> Set<Rectangle> getRectangles(final Set<X> set ){
         return set.stream().map(p -> p.getHitbox()).collect(Collectors.toSet());
-    }
-
-    /**
-     * This method return the hero's position.
-     */
-    @Override
-    public Point getHeroPosition() {
-        return this.hero.getPosition();
     }
 
     /**

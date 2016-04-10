@@ -107,20 +107,23 @@ public class TilesFactory {
             if(Math.random() < this.powerupDensity){
                 return Optional.empty();
             } else {
-                int pType = this.getPowerUpType();
-                return Optional.of(PowerUpType.values()[pType]);
+                return Optional.of(this.selectType());
             }
         }
     }
 
     /**
-     * Gets a random powerup type.
+     * Select a random type, except key.
      * 
      * @return a powerup type
      */
-    public int getPowerUpType(){
-        return new Random().nextInt(PowerUpType.values().length - 1);
-    }
+    public PowerUpType selectType(){
+        PowerUpType type = PowerUpType.KEY;
+        while(type.equals(PowerUpType.KEY)){
+            type = PowerUpType.values()[new Random().nextInt(PowerUpType.values().length)];
+        }
+        return type;
+    } 
 
     /**
      * Set a random tile's type equals to the closed door.

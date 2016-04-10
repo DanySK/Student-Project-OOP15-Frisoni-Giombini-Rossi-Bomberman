@@ -1,6 +1,5 @@
 package model.level;
 
-import java.awt.Point;
 import java.util.Set;
 
 import model.Tile;
@@ -84,13 +83,6 @@ public interface Level {
      * @return the tile where the door is positioned
      */
     Tile getDoor();
-
-    /**
-     * This method return the hero position-
-     * 
-     * @return Hero's position.
-     */
-    Point getHeroPosition();
 
     /**
      * This method return the entity Hero.

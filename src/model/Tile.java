@@ -92,4 +92,19 @@ public class Tile extends LevelElementImpl{
                 .append(super.toString())
                 .toString();
     }
+    /*
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((powerup == null) ? 0 : powerup.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Tile && this.type.equals(((Tile) obj).type)
+                && this.powerup.equals(((Tile) obj).powerup);
+    }*/
 }

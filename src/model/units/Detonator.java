@@ -146,6 +146,11 @@ public class Detonator {
         return this.maxBombs;
     }
     
+    /**
+     * Gets the bomb list.
+     * 
+     * @return the bomb list
+     */
     public Deque<Bomb> getActualList(){
         Deque<Bomb> copyList = new LinkedList<>();
         copyList.addAll(this.bombList);
@@ -157,4 +162,21 @@ public class Detonator {
         this.maxBombs = bombs;
         this.bombList.addAll(bombsList);
     }
+    /*
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + bombRange;
+        result = prime * result + ((dim == null) ? 0 : dim.hashCode());
+        result = prime * result + maxBombs;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Detonator && this.dim.equals(((Detonator) obj).dim)
+                && this.bombRange == ((Detonator) obj).bombRange 
+                && this.maxBombs == ((Detonator) obj).maxBombs;
+    }*/
 }
