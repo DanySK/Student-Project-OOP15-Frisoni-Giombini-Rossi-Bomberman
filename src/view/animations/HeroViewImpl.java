@@ -48,8 +48,8 @@ public class HeroViewImpl extends AbstractEntityView implements HeroView {
     
     @Override
     public Point getCenterPoint() {
-        return new Point((int) hero.getHitbox().getCenterX(),
-                getY() + ((int) hero.getHitbox().getHeight() * Sprite.getSpriteHeight()) / (Sprite.getSpriteWidth() * 2));
+        return new Point((int) this.hero.getHitbox().getCenterX(),
+                getY() + ((int) this.hero.getHitbox().getHeight() * Sprite.getSpriteHeight()) / (Sprite.getSpriteWidth() * 2));
     }
 
     @Override

@@ -116,15 +116,15 @@ public class WelcomeView extends JPanel {
         this.nameField = factory.createTextField(true, INPUT_TEXT_SIZE);
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(final DocumentEvent e) {
                 checkButtonEnabling();
             }
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(final DocumentEvent e) {
                 checkButtonEnabling();
             }
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(final DocumentEvent e) {
                 checkButtonEnabling();
             }
         });

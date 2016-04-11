@@ -13,7 +13,7 @@ import view.animations.unit.Sprite;
 
 /**
  * An implementation of {@link AbstractEntityView}.
- * It represents a kondoria enemy.
+ * It represents a pass enemy.
  *
  */
 public class PassView extends AbstractEnemyView {

@@ -8,8 +8,14 @@ import java.util.List;
 import model.units.Direction;
 import model.units.enemy.Enemy;
 import view.animations.unit.AbstractEnemyView;
+import view.animations.unit.AbstractEntityView;
 import view.animations.unit.Sprite;
 
+/**
+ * An implementation of {@link AbstractEntityView}.
+ * It represents a minvo enemy.
+ *
+ */
 public class MinvoView extends AbstractEnemyView {
 
     private static final EnumMap<Direction, List<BufferedImage>> MOVEMENT_MAP = new EnumMap<>(Direction.class);

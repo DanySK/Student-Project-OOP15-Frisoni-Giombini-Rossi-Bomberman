@@ -29,7 +29,7 @@ public abstract class AbstractEnemyView extends AbstractEntityView {
      * @param fps
      *          the number of frame-per-second
      */
-    public AbstractEnemyView(final Enemy enemy, int fps) {
+    public AbstractEnemyView(final Enemy enemy, final int fps) {
         super(enemy, fps);
         this.enemy = enemy;
     }

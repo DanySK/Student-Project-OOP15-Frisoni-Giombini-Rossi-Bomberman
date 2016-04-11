@@ -33,7 +33,7 @@ public class TextParticle {
     private int x, y;
     private double xa, ya, za;
     private double xx, yy, zz;
-    private int n_tick;
+    private int nTicks;
 
     /**
      * Creates a new text particle.
@@ -44,13 +44,15 @@ public class TextParticle {
      *              the coordinate on the x-axis
      * @param y
      *              the coordinate on the y-axis
+     * @param fps
+     *              the number of frame per second
      */
-    public TextParticle(final String msg, final int x, final int y, int fps) {
+    public TextParticle(final String msg, final int x, final int y, final int fps) {
         this.seed = new Random();
         this.msg = msg;
         this.x = x;
         this.y = y;
-        this.n_tick = fps * DURATION;
+        this.nTicks = fps * DURATION;
 
         // Initializes the text position
         this.xx = x;
@@ -67,7 +69,7 @@ public class TextParticle {
      * Updates the coordinates for the representation of the message.
      */
     public void tick() {
-        if (n_tick > 0) {
+        if (nTicks > 0) {
             this.xx += this.xa;
             this.yy += this.ya;
             this.zz += this.za;
@@ -80,7 +82,7 @@ public class TextParticle {
             this.za -= FALL_FACTOR;
             this.x = (int) this.xx;
             this.y = (int) this.yy;
-            this.n_tick--;
+            this.nTicks--;
         }
     }
     
@@ -88,7 +90,7 @@ public class TextParticle {
      * @return true if the text animation is completed, false otherwise.
      */
     public boolean isTerminated() {
-        return n_tick <= 0;
+        return nTicks <= 0;
     }
 
     /**

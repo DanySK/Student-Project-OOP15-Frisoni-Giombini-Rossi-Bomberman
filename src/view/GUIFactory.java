@@ -221,7 +221,13 @@ public interface GUIFactory {
     JPanel createHorizontalComponentPanel(String text, JComponent... components);
     
     /**
-     * @return a customized horizontal panel with an image and a label on the right.
+     * Creates a customized horizontal panel with an image and a label on the right.
+     * 
+     * @param image
+     *          the image to show
+     * @param text
+     *          the text associated to the image
+     * @return the specified panel
      */
     JPanel createImageWithLabelPanel(Image image, JLabel text);
     

@@ -9,13 +9,17 @@ import view.animations.unit.EntityAnimationView;
  * It uses the Simple Factory pattern.
  *
  */
-public class EnemyViewFactory {
+public final class EnemyViewFactory {
+    
+    private EnemyViewFactory() { }
     
     /**
      * Selects the view for the specified enemy.
      * 
      * @param enemy
      *          the enemy to represent
+     * @param fps
+     *          the number of frame per second
      * @return the view associated to the enemy's type
      */
     public static AbstractEnemyView getEnemyView(final Enemy enemy, final int fps) {

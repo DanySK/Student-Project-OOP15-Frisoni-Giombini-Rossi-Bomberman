@@ -118,7 +118,7 @@ public class StatisticPanel extends JPanel {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                StatisticPanel.this.score.setText(SCORE_TEXT + String.valueOf(score));
+                StatisticPanel.this.score.setText(SCORE_TEXT + score);
             }
         });
     }
