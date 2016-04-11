@@ -156,7 +156,8 @@ public class LevelImpl implements Level {
      */
     @Override
     public void moveHero(final Direction dir) {
-        this.hero.move(this.hero.getCorrectDirection(dir), this.getBlocks(), this.getRectangles(this.getPlantedBombs()), this.getPowerUp());
+        this.hero.move(this.hero.getCorrectDirection(dir), this.getBlocks(), 
+                this.getRectangles(this.getPlantedBombs()), this.getPowerUpForMovement());
     }
 
     @Override
@@ -381,6 +382,10 @@ public class LevelImpl implements Level {
         return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent())
                 .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
+    
+    private Set<Tile> getPowerUpForMovement(){
+        return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent());
+    }
 
     /**
      * This method returns the set of planted bombs.
@@ -397,6 +402,11 @@ public class LevelImpl implements Level {
      */
     @Override
     public Tile getDoor(){
+        return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
+                .stream().map(t -> CopyFactory.getCopy(t)).findFirst().get();
+    }
+    
+    private Tile getDoorToOpen(){
         return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
                 .stream().findFirst().get();
     }
@@ -489,7 +499,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void setOpenDoor(){
-        this.getDoor().setType(TileType.DOOR_OPENED);
+        this.getDoorToOpen().setType(TileType.DOOR_OPENED);
     }
 
     /**

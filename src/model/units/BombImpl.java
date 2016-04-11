@@ -77,7 +77,7 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
                 .append(super.toString())
                 .toString();
     }
-    /*
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -91,6 +91,6 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
     public boolean equals(Object obj) {
         return obj instanceof BombImpl && this.range == ((BombImpl) obj).range
                 && this.isPlanted == ((BombImpl) obj).isPlanted;
-    }*/
+    }
     
 }

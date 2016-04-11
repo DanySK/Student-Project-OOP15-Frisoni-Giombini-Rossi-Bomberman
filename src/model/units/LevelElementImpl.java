@@ -82,7 +82,7 @@ public class LevelElementImpl implements LevelElement{
                 .append(").")
                 .toString();
     }
-    /*
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -96,6 +96,6 @@ public class LevelElementImpl implements LevelElement{
     public boolean equals(Object obj) {
         return obj instanceof LevelElementImpl && this.curPos.equals(((LevelElementImpl) obj).curPos)
                 && this.hitBox.equals(((LevelElementImpl) obj).hitBox);
-    }*/
+    }
        
 }

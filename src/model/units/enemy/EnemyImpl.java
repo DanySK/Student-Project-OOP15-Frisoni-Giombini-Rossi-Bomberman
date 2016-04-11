@@ -104,7 +104,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
         this.enemyType = type;
     }
 
-    /*@Override
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -116,7 +116,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof EnemyImpl && this.enemyType == ((EnemyImpl) obj).getEnemyType();
-    }*/
+    }
 
     @Override
     public String toString() {

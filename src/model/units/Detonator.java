@@ -6,6 +6,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+import model.utilities.CopyFactory;
+
 /**
  * This class represent the hero's bomb set.
  */
@@ -117,14 +119,14 @@ public class Detonator {
      * @return the list of planted bombs
      */
     public LinkedList<Bomb> getPlantedBombs(){
-        /*synchronized (this.bombList){
+        synchronized (this.bombList){
             return this.bombList.stream().filter(b -> b.isPositioned())
                     .map(b -> CopyFactory.getCopy(b))
                     .collect(Collectors.toCollection(LinkedList::new));
-        }*/
-        synchronized (this.bombList){
-            return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
         }
+        /*synchronized (this.bombList){
+            return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
+        }*/
         
     }
 
