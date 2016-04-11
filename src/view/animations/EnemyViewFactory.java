@@ -1,6 +1,7 @@
 package view.animations;
 
 import model.units.enemy.Enemy;
+import view.animations.unit.AbstractEnemyView;
 import view.animations.unit.EntityAnimationView;
 
 /**
@@ -17,14 +18,14 @@ public class EnemyViewFactory {
      *          the enemy to represent
      * @return the view associated to the enemy's type
      */
-    public static EntityAnimationView getEnemyView(final Enemy enemy) {
+    public static AbstractEnemyView getEnemyView(final Enemy enemy, final int fps) {
         switch(enemy.getEnemyType()) {
         case BALLOM:
-            return new BallomView(enemy, 60);
+            return new BallomView(enemy, fps);
         case MINVO:
-            return new MinvoView(enemy, 60);
+            return new MinvoView(enemy, fps);
         case PASS:
-            return new PassView(enemy, 60);
+            return new PassView(enemy, fps);
         default:
             throw new IllegalArgumentException();
         }

@@ -60,4 +60,9 @@ public abstract class AbstractEnemyView extends AbstractEntityView {
     public boolean equals(final Object obj) {
         return obj instanceof AbstractEnemyView && this.enemy.equals(((AbstractEnemyView) obj).enemy);
     }
+    
+    @Override
+    public Enemy getLevelElement() {
+        return this.enemy;
+    }
 }

@@ -17,6 +17,8 @@ public class ExplosionView extends AbstractSingleAnimationView {
     private static final List<BufferedImage> EXPLOSION = Sprite.getSprites(new Point(10, 1), new Point(11, 1), new Point(12, 1),
             new Point(13, 1), new Point(14, 1), new Point(15, 1), new Point(16, 1), new Point(17, 1));
 
+    private final Tile tile;
+    
     /**
      * Constructs a new view for the exploded tile.
      * 
@@ -29,10 +31,16 @@ public class ExplosionView extends AbstractSingleAnimationView {
      */
     public ExplosionView(final Tile tile, final int fps, final long duration) {
         super(tile, fps, duration);
+        this.tile = tile;
     }
 
     @Override
     public List<BufferedImage> animationFrames() {
         return EXPLOSION;
+    }
+    
+    @Override
+    public Tile getLevelElement() {
+        return this.tile;
     }
 }

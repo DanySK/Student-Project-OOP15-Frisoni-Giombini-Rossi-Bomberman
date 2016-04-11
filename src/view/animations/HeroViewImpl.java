@@ -31,6 +31,8 @@ public class HeroViewImpl extends AbstractEntityView implements HeroView {
         STANDING_MAP.put(Direction.LEFT, Sprite.getSprites(new Point(6, 3), new Point(7, 3), new Point(8, 3)));
     }
     
+    private final Hero hero;
+    
     /**
      * Constructs a new view for the hero.
      * 
@@ -41,12 +43,13 @@ public class HeroViewImpl extends AbstractEntityView implements HeroView {
      */
     public HeroViewImpl(final Hero hero, final int fps) {
         super(hero, fps);
+        this.hero = hero;
     }
     
     @Override
     public Point getCenterPoint() {
-        return new Point((int) getLevelElement().getHitbox().getCenterX(),
-                getY() + ((int) getLevelElement().getHitbox().getHeight() * Sprite.getSpriteHeight()) / (Sprite.getSpriteWidth() * 2));
+        return new Point((int) hero.getHitbox().getCenterX(),
+                getY() + ((int) hero.getHitbox().getHeight() * Sprite.getSpriteHeight()) / (Sprite.getSpriteWidth() * 2));
     }
 
     @Override
@@ -57,5 +60,10 @@ public class HeroViewImpl extends AbstractEntityView implements HeroView {
     @Override
     public EnumMap<Direction, List<BufferedImage>> standingFrames() {
         return STANDING_MAP;
+    }
+    
+    @Override
+    public Hero getLevelElement() {
+        return this.hero;
     }
 }

@@ -51,9 +51,4 @@ public abstract class AbstractAnimationView implements AnimationView {
     public void updateFrame() {
         getAnimation().update();
     }
-    
-    @Override
-    public LevelElement getLevelElement() {
-        return this.element;
-    }
 }

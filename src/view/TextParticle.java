@@ -21,6 +21,11 @@ public class TextParticle {
     private static final double MOVEMENT_FACTOR = 0.3;
     private static final double FALL_FACTOR = 0.1;
 
+    /*
+     * The duration in seconds of the text animation.
+     */
+    private static final int DURATION = 3;
+    
     private static final int RGB = 256;
 
     private final Random seed;
@@ -28,6 +33,7 @@ public class TextParticle {
     private int x, y;
     private double xa, ya, za;
     private double xx, yy, zz;
+    private int n_tick;
 
     /**
      * Creates a new text particle.
@@ -39,11 +45,12 @@ public class TextParticle {
      * @param y
      *              the coordinate on the y-axis
      */
-    public TextParticle(final String msg, final int x, final int y) {
+    public TextParticle(final String msg, final int x, final int y, int fps) {
         this.seed = new Random();
         this.msg = msg;
         this.x = x;
         this.y = y;
+        this.n_tick = fps * DURATION;
 
         // Initializes the text position
         this.xx = x;
@@ -60,18 +67,28 @@ public class TextParticle {
      * Updates the coordinates for the representation of the message.
      */
     public void tick() {
-        this.xx += this.xa;
-        this.yy += this.ya;
-        this.zz += this.za;
-        if (this.zz < 0) {
-            this.zz = 0;
-            this.za *= -MOVEMENT_FACTOR;
-            this.xa *= MOVEMENT_FACTOR;
-            this.ya *= MOVEMENT_FACTOR;
+        if (n_tick > 0) {
+            this.xx += this.xa;
+            this.yy += this.ya;
+            this.zz += this.za;
+            if (this.zz < 0) {
+                this.zz = 0;
+                this.za *= -MOVEMENT_FACTOR;
+                this.xa *= MOVEMENT_FACTOR;
+                this.ya *= MOVEMENT_FACTOR;
+            }
+            this.za -= FALL_FACTOR;
+            this.x = (int) this.xx;
+            this.y = (int) this.yy;
+            this.n_tick--;
         }
-        this.za -= FALL_FACTOR;
-        this.x = (int) this.xx;
-        this.y = (int) this.yy;
+    }
+    
+    /**
+     * @return true if the text animation is completed, false otherwise.
+     */
+    public boolean isTerminated() {
+        return n_tick <= 0;
     }
 
     /**
