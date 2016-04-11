@@ -231,7 +231,7 @@ public class LevelImpl implements Level {
     public Set<Tile> detonateBomb() {
         final Set<Tile> tiles = this.getAllAfflictedTiles(CopyFactory.getCopy(this.hero.getDetonator().getBombToReactivate()));
         if(this.hero.checkFlameCollision(tiles)){
-            this.hero.modifyLife(-1);
+            this.hero.modifyLife(-this.hero.getAttack());
         }
         this.checkCollisionWithExplosionBomb(tiles);
         this.hero.getDetonator().reactivateBomb();

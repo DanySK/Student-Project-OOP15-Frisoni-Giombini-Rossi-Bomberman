@@ -123,11 +123,7 @@ public class Detonator {
             return this.bombList.stream().filter(b -> b.isPositioned())
                     .map(b -> CopyFactory.getCopy(b))
                     .collect(Collectors.toCollection(LinkedList::new));
-        }
-        /*synchronized (this.bombList){
-            return this.bombList.stream().filter(b -> b.isPositioned()).collect(Collectors.toCollection(LinkedList::new));
-        }*/
-        
+        }        
     }
 
     /**
@@ -164,7 +160,7 @@ public class Detonator {
         this.maxBombs = bombs;
         this.bombList.addAll(bombsList);
     }
-    /*
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -180,5 +176,5 @@ public class Detonator {
         return obj instanceof Detonator && this.dim.equals(((Detonator) obj).dim)
                 && this.bombRange == ((Detonator) obj).bombRange 
                 && this.maxBombs == ((Detonator) obj).maxBombs;
-    }*/
+    }
 }
