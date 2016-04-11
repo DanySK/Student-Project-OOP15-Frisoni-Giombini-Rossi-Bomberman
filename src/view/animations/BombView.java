@@ -50,4 +50,9 @@ public class BombView extends AbstractSingleAnimationView {
     public boolean equals(final Object obj) {
         return obj instanceof BombView && this.bomb.equals(((BombView) obj).bomb);
     }
+    
+    @Override
+    public Bomb getLevelElement() {
+        return this.bomb;
+    }
 }

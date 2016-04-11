@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,6 @@ import controller.GameController;
 import model.Tile;
 import model.TileType;
 import model.units.PowerUpType;
-import model.units.enemy.Enemy;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.SoundEffect;
@@ -32,7 +30,7 @@ import view.animations.EnemyViewFactory;
 import view.animations.ExplosionView;
 import view.animations.HeroView;
 import view.animations.HeroViewImpl;
-import view.animations.unit.EntityAnimationView;
+import view.animations.unit.AbstractEnemyView;
 
 /**
  * A {@link JPanel} for the principal game's rendering.
@@ -54,11 +52,11 @@ public class GamePanel extends JPanel {
     private final int tileSize;
     private final Map<TileType, Image> tilesImages;
     private final Map<PowerUpType, Image> powerUpImages;
-    
-    private Optional<HeroView> hero;
+
+    private HeroView hero;
     private final Set<BombView> bombs;
     private final Deque<Set<ExplosionView>> explosions;
-    private final Set<EntityAnimationView> enemies;
+    private final Set<AbstractEnemyView> enemies;
     private final Set<TextParticle> scores;
 
     /**
@@ -105,11 +103,17 @@ public class GamePanel extends JPanel {
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
-        this.hero = Optional.empty();
         this.bombs = new HashSet<>();
         this.explosions = new LinkedList<>();
         this.enemies = new HashSet<>();
         this.scores = new HashSet<>();
+    }
+
+    /**
+     * Initializes the game panel.
+     */
+    public void initGamePanel() {
+        this.hero = new HeroViewImpl(this.controller.getHero(), this.controller.getFPS());
     }
 
     /**
@@ -140,35 +144,34 @@ public class GamePanel extends JPanel {
         this.bombs.removeIf(b -> !this.controller.getPlantedBombs().contains(b.getLevelElement()));
         this.bombs.stream().forEach(b -> g.drawImage(b.getImage(), b.getX(), b.getY(), null));
         // Draws scores
+        this.scores.removeIf(s -> s.isTerminated());
         this.scores.stream().forEach(s -> {
             s.tick();
             s.render(g);
         });
         // Draws the enemies
         this.controller.getEnemies().stream().filter(e -> !this.enemies.contains(e)).forEach(e -> {
-            this.enemies.add(EnemyViewFactory.getEnemyView(e));
+            this.enemies.add(EnemyViewFactory.getEnemyView(e, this.controller.getFPS()));
         });
-        final Iterator<EntityAnimationView> iterator = this.enemies.iterator();
+        final Iterator<AbstractEnemyView> iterator = this.enemies.iterator();
         while (iterator.hasNext()) {
-            final EntityAnimationView enemy = iterator.next();
+            final AbstractEnemyView enemy = iterator.next();
             if (!this.controller.getEnemies().contains(enemy.getLevelElement())) {
-                this.scores.add(new TextParticle(String.valueOf(((Enemy) enemy.getLevelElement()).getScore()), enemy.getX(), enemy.getY()));
+                this.scores.add(new TextParticle(String.valueOf(enemy.getLevelElement().getScore()),
+                        enemy.getX(), enemy.getY(), this.controller.getFPS()));
                 SoundEffect.POWERUP.playOnce();
                 iterator.remove();
             }
         }
         this.enemies.stream().forEach(e -> g.drawImage(e.getImage(), e.getX(), e.getY(), null));
         // Draws the hero
-        if (!this.hero.isPresent()) {
-            this.hero = Optional.of(new HeroViewImpl(this.controller.getHero(), this.controller.getFPS()));
-        }
-        g.drawImage(this.hero.get().getImage(), this.hero.get().getX(), this.hero.get().getY(), null);
+        g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
         // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
     }
-    
+
     private void updateSprites() {
-        this.hero.ifPresent(e -> e.updateFrame());
+        this.hero.updateFrame();
         this.bombs.stream().forEach(b -> b.updateFrame());
         this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
         this.enemies.stream().forEach(e -> e.updateFrame());
@@ -178,7 +181,7 @@ public class GamePanel extends JPanel {
      * @return the center point of the sprite associated to the hero.
      */
     public Point getHeroViewCenterPoint() {
-        return this.hero.get().getCenterPoint();
+        return this.hero.getCenterPoint();
     }
 
     /**
@@ -203,8 +206,8 @@ public class GamePanel extends JPanel {
      */
     public void addExplosions(final Set<Tile> tiles) {
         this.explosions.addLast(tiles.stream()
-                                     .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
-                                     .collect(Collectors.toSet()));
+                .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
+                .collect(Collectors.toSet()));
     }
 
     /**
@@ -215,7 +218,7 @@ public class GamePanel extends JPanel {
             this.explosions.removeFirst();
         }
     }
-    
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(this.controller.getLevelSize() * this.tileSize, this.controller.getLevelSize() * this.tileSize);

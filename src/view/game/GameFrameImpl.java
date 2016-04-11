@@ -93,7 +93,7 @@ public class GameFrameImpl implements GameFrame {
                 }
             }
         });
-        this.frame.setResizable(false);
+        //this.frame.setResizable(false);
 
         // Sets the panels
         this.gamePanel = new GamePanel(this.observer);
@@ -142,6 +142,7 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void showView() {
+        this.gamePanel.initGamePanel();
         update();
         this.frame.initDrawable();
         this.frame.setVisible(true);
