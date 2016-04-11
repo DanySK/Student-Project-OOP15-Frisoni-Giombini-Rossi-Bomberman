@@ -469,7 +469,6 @@ public class LevelImpl implements Level {
      */
     @Override
     public Hero getHero() {
-        //return CopyFactory.getCopy(this.hero);
         return this.hero;
     }
 
@@ -539,13 +538,13 @@ public class LevelImpl implements Level {
 
     @Override
     public Set<Enemy> getEnemies() {
-        /*Set<Enemy> copy = new HashSet<>();
+        Set<Enemy> copy = new HashSet<>();
         for (Enemy e : this.enemies) {
             copy.add(CopyFactory.getCopy(e));
         }
         //this.enemies.stream().forEach(e -> copy.add(CopyFactory.getCopy(e)));
-        return copy;*/
-        return this.enemies;
+        return copy;
+        //return this.enemies;
     }
 
 }

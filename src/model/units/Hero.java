@@ -130,9 +130,6 @@ public interface Hero extends Entity {
      */
     boolean hasBomb();
     
-    void copy(final boolean inMovement, final int lives, final int attack,
-            final int score, final boolean isConfused, final boolean key);
-    
     /**
      * Hero's toString.
      * 

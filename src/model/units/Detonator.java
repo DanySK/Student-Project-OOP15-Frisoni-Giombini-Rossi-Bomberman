@@ -144,23 +144,6 @@ public class Detonator {
         return this.maxBombs;
     }
     
-    /**
-     * Gets the bomb list.
-     * 
-     * @return the bomb list
-     */
-    public Deque<Bomb> getActualList(){
-        Deque<Bomb> copyList = new LinkedList<>();
-        copyList.addAll(this.bombList);
-        return copyList;
-    }
-    
-    public void copy(final int range, final int bombs, final Deque<Bomb> bombsList){
-        this.bombRange = range;
-        this.maxBombs = bombs;
-        this.bombList.addAll(bombsList);
-    }
-    
     @Override
     public int hashCode() {
         final int prime = 31;

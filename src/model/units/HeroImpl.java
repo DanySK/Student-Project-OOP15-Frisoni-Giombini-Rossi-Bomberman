@@ -211,14 +211,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
         return this.isConfused;
     }
     
-    @Override
-    public void copy(final boolean inMovement, final int lives, final int attack,
-            final int score, final boolean isConfused, final boolean key){
-        super.copy(inMovement, lives, attack, score);
-        this.isConfused = isConfused;
-        this.key = key;
-    }
-    
     /**
      * Hero's toString.
      * 
@@ -230,7 +222,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
                 .append(super.toString())
                 .toString();
     }
-    /*
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -244,6 +236,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public boolean equals(Object obj) {
         return obj instanceof HeroImpl && this.isConfused == ((HeroImpl) obj).isConfused
                 && this.key == ((HeroImpl) obj).key;
-    }*/
+    }
     
 }
