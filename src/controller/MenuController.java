@@ -28,8 +28,10 @@ public class MenuController implements MenuObserver {
      *   
      */
     public MenuController() {
-        final String nameDirectory = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman";
-        final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman/Scores.properties";
+        final String nameDirectory = System.getProperty("user.home") 
+                + System.getProperty("file.separator") + "Bomberman";
+        final String fileName = System.getProperty("user.home") 
+                + System.getProperty("file.separator") + "Bomberman/Scores.properties";
         final File directory = new File(nameDirectory);
         if (!directory.exists()) {
             directory.mkdir();

@@ -27,7 +27,7 @@ public class GameControllerImpl implements GameController {
     private volatile boolean isPlanted;
     private volatile boolean inPaused;
     private int time;
-    private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman/Scores.properties";
+    private final String fileName;
     private final ScoresManagement scores;
     private final boolean darkMode;
     
@@ -43,6 +43,8 @@ public class GameControllerImpl implements GameController {
         this.isPlanted = false;
         this.inPaused = false;
         this.time = 0;
+        this.fileName = System.getProperty("user.home") 
+                + System.getProperty("file.separator") + "Bomberman/Scores.properties";
         this.scores = new ScoresManagementImpl(fileName);
         this.level.setFirstStage();
         this.darkMode = darkMode;
@@ -135,7 +137,7 @@ public class GameControllerImpl implements GameController {
                 if (level.isGameOver()) {
                     super.stopLoop();
                     if (darkMode) {
-                        scores.saveScore(level.getHero().getScore()*2, time);
+                        scores.saveScore(level.getHero().getScore() * 2, time);
                     } else {
                         scores.saveScore(level.getHero().getScore(), time);
                     }
@@ -143,6 +145,8 @@ public class GameControllerImpl implements GameController {
                         @Override
                         public void replay() {
                             view.closeView();
+                            level.setFirstStage();
+                            time = 0;
                             startGame();
                         }
 

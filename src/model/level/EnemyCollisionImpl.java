@@ -4,7 +4,7 @@ import model.units.Entity;
 
 public class EnemyCollisionImpl extends CollisionImpl implements EnemyCollision {
 
-    public EnemyCollisionImpl(Entity entity) {
+    public EnemyCollisionImpl(final Entity entity) {
         super(entity);
     }
 

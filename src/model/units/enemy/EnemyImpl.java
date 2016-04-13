@@ -16,9 +16,21 @@ import model.units.Hero;
 public class EnemyImpl extends AbstractEntity implements Enemy {
     
     private final EnemyCollision enemyCollision;
-    private EnemyType enemyType;
+    private final EnemyType enemyType;
     
-    public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, final EnemyType enemyType) {
+    /**
+     * Constructor of EnemyImpl.
+     * @param pos
+     *          the initial position
+     * @param dir
+     *          the initial direction
+     * @param dim
+     *          the dimension of the hitBox
+     * @param enemyType
+     *          the type of enemy
+     */
+    public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, 
+            final EnemyType enemyType) {
         super(pos, dir, dim);
         this.enemyCollision = new EnemyCollisionImpl(this);
         this.enemyType = enemyType;
@@ -28,9 +40,12 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
 
     @Override
-    public void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet) {
+    public void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, 
+            final Set<Rectangle> bombSet) {
         this.enemyCollision.updateEntityRec(dir);
-        if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.bombCollision(bombSet) && this.enemyCollision.heroCollision(hero)) {
+        if (this.enemyCollision.blockCollision(blockSet) 
+                && this.enemyCollision.bombCollision(bombSet) 
+                && this.enemyCollision.heroCollision(hero)) {
             super.move(dir);
         }
     }
@@ -47,11 +62,11 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      *          the set of planted bombs
      * @return false if it collides, true otherwise
      */
-    private boolean checkCollision(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet) {
-        if (this.enemyCollision.blockCollision(blockSet) && this.enemyCollision.bombCollision(bombSet) && this.enemyCollision.heroCollision(hero)) {
-            return false;
-        }
-        return true;
+    private boolean checkCollision(final Set<Rectangle> blockSet, final Hero hero, 
+            final Set<Rectangle> bombSet) {
+        return !this.enemyCollision.blockCollision(blockSet) 
+                && this.enemyCollision.bombCollision(bombSet) 
+                && this.enemyCollision.heroCollision(hero);
     }
     
     @Override
@@ -68,10 +83,12 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      *          the hero's entity
      * @param dir
      *          the direction where the enemy wants to go
-     * @return the direction where the enemy must go
+     * @return the direction where the enemy 
+     *          must go
      */
-    private Direction getNewDirection(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet) {
-        if (this.checkCollision(super.getDirection(), blockSet, hero, bombSet)) {
+    private Direction getNewDirection(final Set<Rectangle> blockSet, final Hero hero, 
+            final Direction dir, final Set<Rectangle> bombSet) {
+        if (this.checkCollision(blockSet, hero, bombSet)) {
             return dir;
         }
         return super.getDirection();
@@ -83,7 +100,8 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
    
     @Override
-    public void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet) {
+    public void updateMove(final Set<Rectangle> blockSet, final Hero hero, 
+            final Direction dir, final Set<Rectangle> bombSet) {
         this.move(this.getNewDirection(blockSet, hero, dir, bombSet), blockSet, hero, bombSet);
     }
 
@@ -99,12 +117,6 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
 
     @Override
-    public void copy(final int lives, final int attack, final int score, final Direction dir, final EnemyType type) {
-        super.copy(lives, attack, score, dir);
-        this.enemyType = type;
-    }
-
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -115,7 +127,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof EnemyImpl && this.enemyType == ((EnemyImpl) obj).getEnemyType();
+        return obj instanceof EnemyImpl && this.enemyType.equals(((EnemyImpl) obj).getEnemyType());
     }
 
     @Override

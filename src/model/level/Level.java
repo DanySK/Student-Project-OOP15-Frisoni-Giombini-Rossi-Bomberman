@@ -140,9 +140,6 @@ public interface Level {
     
     /**
      * Set the enemies' direction. 
-     * 
-     * @param dir
-     *          the movement direction
      */
     void setDirectionEnemies();
     

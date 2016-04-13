@@ -17,8 +17,11 @@ public interface Enemy extends Entity{
      *          the set of tiles
      * @param hero
      *          the Hero entity
+     * @param bombSet
+     *          the set of bomb planted
      */
-    void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, final Set<Rectangle> bombSet);
+    void move(final Direction dir, final Set<Rectangle> blockSet, final Hero hero, 
+            final Set<Rectangle> bombSet);
     
     /**
      * This method chooses a random direction.
@@ -37,7 +40,8 @@ public interface Enemy extends Entity{
      * @param bombSet
      *          the set of bomb planted
      */
-    void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, final Set<Rectangle> bombSet);
+    void updateMove(final Set<Rectangle> blockSet, final Hero hero, final Direction dir, 
+            final Set<Rectangle> bombSet);
     
     /**
      * This method return the type of enemy.
@@ -45,9 +49,15 @@ public interface Enemy extends Entity{
      */
     EnemyType getEnemyType();
     
+    /**
+     * This method serves to increase the life and the attack of the enemy at the passage of 
+     * a new level.
+     */
     void potentiateEnemy();
     
-    void copy(final int lives, final int attack, final int score, final Direction dir, final EnemyType type);
-    
+    /**
+     * toString of enemy.
+     * @return the string describing enemy
+     */
     String toString();
 }

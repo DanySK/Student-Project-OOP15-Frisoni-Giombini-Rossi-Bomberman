@@ -70,8 +70,7 @@ public class ScoresManagementImpl implements ScoresManagement {
                 ) {
             this.prop.load(input);
             for (int i = 1; i <= Integer.valueOf(this.prop.getProperty("N_SCORES:")); i++) {
-                this.scores.get().add(new Pair<>(Integer.valueOf(this.prop.getProperty(i + " SCORE:")), 
-                        Integer.valueOf(this.prop.getProperty(i + " TIME:"))));
+                this.scores.get().add(new Pair<>(Integer.valueOf(this.prop.getProperty(i + " SCORE:")), Integer.valueOf(this.prop.getProperty(i + " TIME:"))));
             }
         } catch (final IOException e) {
             System.out.println(e);
@@ -79,7 +78,7 @@ public class ScoresManagementImpl implements ScoresManagement {
     }
 
     @Override
-    public void saveScore(int score, int time) {
+    public void saveScore(final int score, final int time) {
         if (score < 0 || time < 0) {
             throw new IllegalArgumentException();
         }

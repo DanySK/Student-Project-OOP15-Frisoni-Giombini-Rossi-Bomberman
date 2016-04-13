@@ -27,5 +27,4 @@ public enum EnemyType {
     public int getEnemyAttack() {
         return this.attack;
     }
-    
 }

@@ -3,6 +3,7 @@ package model.level;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
@@ -88,13 +89,13 @@ public class LevelImpl implements Level {
                 new Dimension(this.tileDimension, this.tileDimension));
     }
 
+    /**
+     * This method initialized enemies.
+     */
     private void initEnemies() {
         this.createEnemies();
         if (!this.isFirstStage() && !this.hero.isDead()) {
-            for (Enemy e : this.enemies) {
-                e.potentiateEnemy();
-            }
-            //this.enemies.forEach(e -> e.potentiateEnemy());
+            this.enemies.forEach(e -> e.potentiateEnemy());
         }
     }
 
@@ -103,13 +104,14 @@ public class LevelImpl implements Level {
      */
     private void createEnemies() {
         final Set<Tile> set = this.getFreeTiles();
-        this.enemies = new HashSet<>();
+        this.enemies = Collections.synchronizedSet(new HashSet<>());
         final EnemyType[] vet = EnemyType.values();
-        for(int i = 0; i < this.getFreeTiles().size()/8; i++) {
+        for (int i = 0; i < this.getFreeTiles().size() / 8; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN,
-                    new Dimension(this.tileDimension, this.tileDimension), vet[new Random().nextInt(vet.length)]));
+                    new Dimension(this.tileDimension, this.tileDimension), 
+                    vet[new Random().nextInt(vet.length)]));
         }
     }
 
@@ -162,20 +164,18 @@ public class LevelImpl implements Level {
 
     @Override
     public void moveEnemies() {
-        /*for (Enemy e : this.enemies) {
-            e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs()));
-        }*/
-       this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(), this.getRectangles(this.getPlantedBombs())));
+        synchronized (this.enemies) {
+            this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, 
+                    e.getRandomDirection(), this.getRectangles(this.getPlantedBombs())));
+        }
     }
 
     @Override
     public void setDirectionEnemies() {
-        /*for (Enemy e : this.enemies) {
-            if (e.getEnemyType().equals(EnemyType.MINVO)) {
-                e.setDirection(e.getRandomDirection());
-            }
-        }*/
-        this.enemies.stream().filter(e -> e.getEnemyType().equals(EnemyType.MINVO)).forEach(e -> e.setDirection(e.getRandomDirection()));
+        synchronized (this.enemies) {
+            this.enemies.stream().filter(e -> e.getEnemyType().equals(EnemyType.MINVO))
+            .forEach(e -> e.setDirection(e.getRandomDirection()));
+        }
     }
 
     /**
@@ -183,19 +183,19 @@ public class LevelImpl implements Level {
      * @param tiles involved
      */
     private void checkCollisionWithExplosionBomb(final Set<Tile> tiles) {
-        final Iterator<Enemy> it = this.enemies.iterator();
-        while (it.hasNext()) {
-            final Enemy e = it.next();
-            if (e.checkFlameCollision(tiles)) {
-                e.modifyLife(-this.hero.getAttack());
-            }
-            if (e.getRemainingLives() <= 0) {
-                this.getHero().increaseScore(e.getScore());
-                it.remove();
+        synchronized (this.enemies) {
+            final Iterator<Enemy> it = this.enemies.iterator();
+            while (it.hasNext()) {
+                final Enemy e = it.next();
+                if (e.checkFlameCollision(tiles)) {
+                    e.modifyLife(-this.hero.getAttack());
+                }
+                if (e.getRemainingLives() <= 0) {
+                    this.getHero().increaseScore(e.getScore());
+                    it.remove();
+                }
             }
         }
-        /*this.enemies.stream().filter(e -> e.checkFlameCollision(tiles)).forEach(e -> e.modifyLife(-this.hero.getAttack()));
-        this.enemies.stream().filter(e -> e.getRemainingLives() <= 0).forEach(e -> this.getHero().increaseScore(e.getScore()));*/
     }
 
     /**
@@ -382,7 +382,7 @@ public class LevelImpl implements Level {
         return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent())
                 .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
-    
+
     private Set<Tile> getPowerUpForMovement(){
         return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent());
     }
@@ -405,7 +405,7 @@ public class LevelImpl implements Level {
         return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
                 .stream().map(t -> CopyFactory.getCopy(t)).findFirst().get();
     }
-    
+
     private Tile getDoorToOpen(){
         return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
                 .stream().findFirst().get();
@@ -538,13 +538,7 @@ public class LevelImpl implements Level {
 
     @Override
     public Set<Enemy> getEnemies() {
-        Set<Enemy> copy = new HashSet<>();
-        for (Enemy e : this.enemies) {
-            copy.add(CopyFactory.getCopy(e));
-        }
-        //this.enemies.stream().forEach(e -> copy.add(CopyFactory.getCopy(e)));
-        return copy;
-        //return this.enemies;
+        return Collections.unmodifiableSet(this.enemies);
     }
 
 }

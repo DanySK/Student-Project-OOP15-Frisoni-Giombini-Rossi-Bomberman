@@ -6,8 +6,6 @@ import java.awt.Point;
 import model.Tile;
 import model.units.Bomb;
 import model.units.BombImpl;
-import model.units.enemy.Enemy;
-import model.units.enemy.EnemyImpl;
 
 public final class CopyFactory {
 
@@ -25,11 +23,5 @@ public final class CopyFactory {
                 b.getRange());
         bombCopy.setPlanted(b.isPositioned());
         return bombCopy;
-    }
-    
-    public static Enemy getCopy(final Enemy e) {
-        Enemy enemyCopy = new EnemyImpl(new Point(e.getPosition()), e.getDirection(), new Dimension(e.getHitbox().width, e.getHitbox().height), e.getEnemyType());
-        enemyCopy.copy(e.getRemainingLives(), e.getAttack(), e.getScore(), e.getDirection(), e.getEnemyType());
-        return enemyCopy;
     }
 }

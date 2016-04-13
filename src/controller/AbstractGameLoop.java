@@ -61,7 +61,6 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                 }
                 final int thisSecond = (int) (nextTime / TIME_FACTOR);
                 if (thisSecond > lastSecondTime) {
-                    //System.out.println(lastSecondTime);
                     lastSecondTime = thisSecond;
                     this.updateTime();
                     this.updateEnemies();
