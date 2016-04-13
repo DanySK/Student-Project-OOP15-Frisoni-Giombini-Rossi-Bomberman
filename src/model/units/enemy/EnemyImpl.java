@@ -64,9 +64,9 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      */
     private boolean checkCollision(final Set<Rectangle> blockSet, final Hero hero, 
             final Set<Rectangle> bombSet) {
-        return !this.enemyCollision.blockCollision(blockSet) 
+        return this.enemyCollision.blockCollision(blockSet) 
                 && this.enemyCollision.bombCollision(bombSet) 
-                && this.enemyCollision.heroCollision(hero);
+                && this.enemyCollision.heroCollision(hero) ? false : true;
     }
     
     @Override
