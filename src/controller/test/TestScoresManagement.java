@@ -2,54 +2,54 @@ package controller.test;
 
 import static org.junit.Assert.fail;
 
-import java.io.File;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import controller.ScoresManagement;
-import controller.ScoresManagementImpl;
+import controller.ScoreHandler;
 import controller.utilities.Pair;
 
 public class TestScoresManagement {
+
+    //private static final String FILE_NAME = System.getProperty("user.home") 
+      //      + System.getProperty("file.separator") + "Bomberman/Scores.dat";
 
     /**
      * Test to verify the correct rescue and correct ranking.
      */
     @Test
     public void test1() {
-        this.checkDirectory();
-        final String fileName = this.getFileName();
-        final File file = new File(fileName);
-        final ScoresManagement fileProva = new ScoresManagementImpl(fileName);
-        if (file.exists()) {
-            file.delete();
-            fileProva.getScores().clear();
-        }
-        Assert.assertFalse(file.exists());
-        fileProva.createFile();
-        fileProva.saveName("Giulia");
-        Assert.assertEquals(fileProva.getScores().size(), 0);
-        fileProva.saveScore(1000, 100);
-        fileProva.saveScore(5000, 500);
-        fileProva.saveScore(6000, 600);
-        fileProva.saveScore(2000, 200);
-        Assert.assertEquals(fileProva.getScores().size(), 4);
-        fileProva.saveScore(3000, 300);
-        fileProva.saveScore(9000, 900);
-        fileProva.saveScore(4000, 400);
-        fileProva.saveScore(7000, 700);
-        fileProva.saveScore(8000, 800);
-        fileProva.saveScore(10000, 1000);
-        Assert.assertEquals(fileProva.getScores().size(), 10);
-        Assert.assertEquals(fileProva.getMinScore(), 1000);
-        fileProva.saveScore(30000000, 600);
-        Assert.assertEquals(fileProva.getScores().size(), 10);
-        Assert.assertFalse(fileProva.getScores().contains(new Pair<>(1000,100)));
-        Assert.assertEquals(fileProva.getMinScore(), 2000);
-        fileProva.saveScore(2500, 300);
-        Assert.assertFalse(fileProva.getScores().contains(new Pair<>(2000,200)));
-        Assert.assertEquals(fileProva.getMinScore(), 2500);
+        ScoreHandler.getHandler().init("Test.dat");
+        ScoreHandler.getHandler().isFilePresent();
+        ScoreHandler.getHandler().saveName("Giulia");
+        ScoreHandler.getHandler().saveScore(1000, 100);
+        ScoreHandler.getHandler().saveScore(5000, 500);
+        ScoreHandler.getHandler().saveScore(6000, 600);
+        ScoreHandler.getHandler().saveScore(2000, 200);
+        Assert.assertEquals(ScoreHandler.getHandler().getLastScores().size(), 4);
+        Assert.assertEquals(ScoreHandler.getHandler().getRecord(), new Pair<>(6000, 600));
+        System.out.println(ScoreHandler.getHandler().getLastScores());
+        System.out.println(ScoreHandler.getHandler().getRecord());
+        ScoreHandler.getHandler().saveScore(3000, 300);
+        ScoreHandler.getHandler().saveScore(9000, 900);
+        ScoreHandler.getHandler().saveScore(4000, 400);
+        ScoreHandler.getHandler().saveScore(7000, 700);
+        ScoreHandler.getHandler().saveScore(8000, 800);
+        ScoreHandler.getHandler().saveScore(10000, 1000);
+        Assert.assertEquals(ScoreHandler.getHandler().getLastScores().size(), 10);
+        Assert.assertEquals(ScoreHandler.getHandler().getRecord(), new Pair<>(10000, 1000));
+        System.out.println(ScoreHandler.getHandler().getLastScores());
+        System.out.println(ScoreHandler.getHandler().getRecord());
+        ScoreHandler.getHandler().saveScore(30000000, 600);
+        Assert.assertEquals(ScoreHandler.getHandler().getLastScores().size(), 10);
+        Assert.assertFalse(ScoreHandler.getHandler().getLastScores().contains(new Pair<>(1000,100)));
+        Assert.assertEquals(ScoreHandler.getHandler().getRecord(), new Pair<>(30000000, 600));
+        System.out.println(ScoreHandler.getHandler().getLastScores());
+        System.out.println(ScoreHandler.getHandler().getRecord());
+        ScoreHandler.getHandler().saveScore(2500, 300);
+        Assert.assertFalse(ScoreHandler.getHandler().getLastScores().contains(new Pair<>(5000, 500)));
+        Assert.assertEquals(ScoreHandler.getHandler().getRecord(), new Pair<>(30000000, 600));
+        System.out.println(ScoreHandler.getHandler().getLastScores());
+        System.out.println(ScoreHandler.getHandler().getRecord());
     }
 
     /**
@@ -57,75 +57,41 @@ public class TestScoresManagement {
      */
     @Test
     public void test2() {
+        ScoreHandler.getHandler().init("Test.dat");
         try {
-            new ScoresManagementImpl("");
-            fail("The file's name can't empty");
+            ScoreHandler.getHandler().saveName("");
+            fail("The player's name can't empty");
         } catch (final IllegalArgumentException e) {
         } catch (Exception e) {
             fail("Wrong exception thrown");
         }
         try {
-            new ScoresManagementImpl(null);
-            fail("The file's name can't null");
-        } catch (IllegalArgumentException e) {
-        } catch (Exception e) {
-            fail("Wrong exception thrown");
-        }
-        this.checkDirectory();
-        final String fileName = this.getFileName();
-        final File file = new File(fileName);
-        final ScoresManagement fileProva = new ScoresManagementImpl(fileName);
-        if (file.exists()) {
-            file.delete();
-        }
-        fileProva.createFile();
-        try {
-            fileProva.saveName("");
-            fail("The player's name can't empty");
-        } catch (IllegalArgumentException e) {
-        } catch (Exception e) {
-            fail("Wrong exception thrown");
-        }
-        try {
-            fileProva.saveName(null);
+            ScoreHandler.getHandler().saveName(null);
             fail("The player's name can't null");
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
         } catch (Exception e) {
             fail("Wrong exception thrown");
         }
-        fileProva.saveName("Giulia");
         try {
-            fileProva.saveScore(-100, 1000);
+            ScoreHandler.getHandler().saveScore(-100, 1000);
             fail("The score must be positive");
         } catch (IllegalArgumentException e) {
         } catch (Exception e) {
             fail("Wrong exception thrown");
         }
         try {
-            fileProva.saveScore(300, -500);
+            ScoreHandler.getHandler().saveScore(300, -500);
             fail("The time must be positive");
         } catch (IllegalArgumentException e) {
         } catch (Exception e) {
             fail("Wrong exception thrown");
         }
-    }
-    
-    /**
-     * This method return the name of file.
-     * @return fileName
-     */
-    private String getFileName() {
-        return System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman/Prova.properties";
-    }
-    
-    /**
-     * This method checks if the Bomberman folder exists, and if it creates.
-     */
-    private void checkDirectory() {
-        final String nameDirectory = System.getProperty("user.home") + System.getProperty("file.separator") + "Bomberman";
-        final File directory = new File(nameDirectory);
-        if (!directory.exists()) {
-            directory.mkdir();
+        try {
+            ScoreHandler.getHandler().isBestScore(-200);
+            fail("The score must be positive");
+        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
+            fail("Wrong exception thrown");
         }
     }
 }

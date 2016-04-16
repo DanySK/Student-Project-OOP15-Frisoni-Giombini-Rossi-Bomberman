@@ -55,7 +55,7 @@ public class TestGameLoop {
             Assert.assertTrue("Interrupted", false);
         }
         System.out.print("Test2: " + this.countView + " and " + this.countModel + " before pause, ");
-        game1.pause();
+        game1.pauseLoop();
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
@@ -63,7 +63,7 @@ public class TestGameLoop {
         }
         System.out.print(this.countView + " and " + this.countModel + " after pause, ");
         Assert.assertTrue(this.countModel < RANGE);
-        game1.unPause();
+        game1.unPauseLoop();
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {

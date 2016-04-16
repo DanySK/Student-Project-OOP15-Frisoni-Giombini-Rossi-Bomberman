@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.File;
-
 import model.level.Level;
 import model.level.LevelImpl;
 import view.game.GameFrame;
@@ -28,16 +26,7 @@ public class MenuController implements MenuObserver {
      *   
      */
     public MenuController() {
-        final String nameDirectory = System.getProperty("user.home") 
-                + System.getProperty("file.separator") + "Bomberman";
-        final String fileName = System.getProperty("user.home") 
-                + System.getProperty("file.separator") + "Bomberman/Scores.properties";
-        final File directory = new File(nameDirectory);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
-        final File file = new File(fileName);
-        if (file.exists()) {
+        if (ScoreHandler.getHandler().isFilePresent()) {
             final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
             menuView.setObserver(this);
             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
@@ -47,9 +36,7 @@ public class MenuController implements MenuObserver {
             welcome.setObserver(new WelcomeView.WelcomeObserver() {
                 @Override
                 public void setName(final String name) {
-                    final ScoresManagement score = new ScoresManagementImpl(fileName);
-                    score.createFile();
-                    score.saveName(name);
+                    ScoreHandler.getHandler().saveName(name);
                     final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
                     menuView.setObserver(MenuController.this);
                     MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);

@@ -38,6 +38,7 @@ public class LevelImpl implements Level {
     private static final int MIN_TILES = 11;
     private static final int MAX_TILES = 19;
     private static final int FIRST_STAGE = 1; 
+    private static final int ENEMY_FACTOR = 8;
 
     private Tile[][] map;
     private Hero hero;
@@ -106,7 +107,7 @@ public class LevelImpl implements Level {
         final Set<Tile> set = this.getFreeTiles();
         this.enemies = Collections.synchronizedSet(new HashSet<>());
         final EnemyType[] vet = EnemyType.values();
-        for (int i = 0; i < this.getFreeTiles().size() / 8; i++) {
+        for (int i = 0; i < this.getFreeTiles().size() / ENEMY_FACTOR; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN,

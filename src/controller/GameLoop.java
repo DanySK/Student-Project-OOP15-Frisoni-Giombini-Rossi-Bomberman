@@ -5,17 +5,17 @@ public interface GameLoop {
     /**
      * @return true if the game is running, false.
      */
-    boolean isRunning();
+    boolean isRunningLoop();
     
     /**
      * Change the state of game in pause.
      */
-    void pause();
+    void pauseLoop();
     
     /**
      * Change the state of game in stop pause.
      */
-    void unPause();
+    void unPauseLoop();
     
     /**
      * Stops the game.

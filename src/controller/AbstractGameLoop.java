@@ -55,7 +55,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                         try {
                             Thread.sleep(sleepTime);
                         } catch (InterruptedException e) {
-                            // do nothing
+                            System.err.println(e);
                         }
                     }
                 }
@@ -78,7 +78,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     }
 
     @Override
-    public boolean isRunning() {
+    public boolean isRunningLoop() {
         return this.running;
     }
 
@@ -90,15 +90,15 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     }
 
     @Override
-    public void unPause() {
+    public void unPauseLoop() {
         if (this.isPaused()) {
             this.paused = false;
         }
     }
 
     @Override
-    public void pause() {
-        if (this.isRunning()) {
+    public void pauseLoop() {
+        if (this.isRunningLoop()) {
             this.paused = true;
         }
     }
@@ -141,7 +141,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                                 try {
                                     Agent.sleep(MILLI);
                                 } catch (InterruptedException e) {
-                                    System.out.println(e);
+                                    System.err.println(e);
                                 }
                                 count += MILLI;
                                 if (count >= delay) {
@@ -152,7 +152,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                         }
                     });
                 } catch (InvocationTargetException | InterruptedException e1) {
-                    System.out.println(e1);
+                    System.err.println(e1);
                 }
             }
         }

@@ -70,4 +70,5 @@ public interface GameController {
      * @return the time of game
      */
     int getTime();
+    
 }

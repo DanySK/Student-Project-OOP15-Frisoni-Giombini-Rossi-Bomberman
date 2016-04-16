@@ -1,10 +1,16 @@
 package controller.utilities;
 
+import java.io.Serializable;
+
 /**
  * A standard generic Pair<X,Y>, with getters, hashCode, equals, and toString well implemented. 
  */
-public class Pair<X,Y> {
+public class Pair<X,Y> implements Serializable {
 
+    /**
+     * Auto-generated UID.
+     */
+    private static final long serialVersionUID = 568672775975227372L;
     private final X x;
     private final Y y;
 

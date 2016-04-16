@@ -22,13 +22,12 @@ import view.menu.MenuFrame.MenuCard;
 public class GameControllerImpl implements GameController {
 
     private static final int FPS = 60;
+    private static final int MULTIPLY = 2;
     private final Level level;
     private final GameFrame view;
     private volatile boolean isPlanted;
     private volatile boolean inPaused;
     private int time;
-    private final String fileName;
-    private final ScoresManagement scores;
     private final boolean darkMode;
     
     /**
@@ -43,9 +42,6 @@ public class GameControllerImpl implements GameController {
         this.isPlanted = false;
         this.inPaused = false;
         this.time = 0;
-        this.fileName = System.getProperty("user.home") 
-                + System.getProperty("file.separator") + "Bomberman/Scores.properties";
-        this.scores = new ScoresManagementImpl(fileName);
         this.level.setFirstStage();
         this.darkMode = darkMode;
     }
@@ -123,11 +119,11 @@ public class GameControllerImpl implements GameController {
             public void updateGameState() {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
                     if (!this.isPaused()) {
-                        this.pause();
+                        this.pauseLoop();
                         view.showPauseMessage();
                     } else {
-                        this.unPause();
-                        view.removePauseMessage();
+                        this.unPauseLoop();
+                        //view.removePauseMessage();
                     }
                     inPaused = true;
                 }
@@ -137,11 +133,12 @@ public class GameControllerImpl implements GameController {
                 if (level.isGameOver()) {
                     super.stopLoop();
                     if (darkMode) {
-                        scores.saveScore(level.getHero().getScore() * 2, time);
+                        ScoreHandler.getHandler().saveScore(level.getHero().getScore() * MULTIPLY, time);
                     } else {
-                        scores.saveScore(level.getHero().getScore(), time);
+                        ScoreHandler.getHandler().saveScore(level.getHero().getScore(), time);
                     }
-                    view.showGameOverPanel(new GameOverPanel.GameOverObserver() {
+                    view.showGameOverPanel(/*level.getHero().getScore(), time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),*/
+                            new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
                             view.closeView();
