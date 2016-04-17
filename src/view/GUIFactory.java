@@ -30,11 +30,12 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.TableModel;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 
 import view.menu.components.FadingLabel;
@@ -121,6 +122,11 @@ public interface GUIFactory {
      * @return a small {@link Font} for description texts.
      */
     Font getDescriptionFont();
+    
+    /**
+     * @return a small {@link Font} for description texts.
+     */
+    Font getSmallFont();
     
     /**
      * @return a {@link Font} suitable for full frame mode.
@@ -304,7 +310,6 @@ public interface GUIFactory {
         public JButton createMenuButton(final String text, final ImageIcon image) {
             final JButton button = createButton(text);
             button.setIcon(image);
-            button.addActionListener(e -> SoundEffect.FOCUS.playOnce());
             return button;
         }
 
@@ -320,6 +325,7 @@ public interface GUIFactory {
         public JLabel createLabel(final String text, final Font font, final Color color) {
             final JLabel label = createLabel(font, color);
             label.setText(text);
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
             return label;
         }
         
@@ -344,6 +350,11 @@ public interface GUIFactory {
         @Override
         public Font getDescriptionFont() {
             return DESCRIPTION_FONT;
+        }
+        
+        @Override
+        public Font getSmallFont() {
+            return SMALL_FONT;
         }
         
         @Override
@@ -473,20 +484,17 @@ public interface GUIFactory {
         public JFreeChart createDarkBarChart(final String title, final String categoryAxisLabel,
                 final String valueAxisLabel, final CategoryDataset dataset) {
             
-            // Creates the chart
-            final JFreeChart chart = ChartFactory.createBarChart(title,
-                    categoryAxisLabel, valueAxisLabel, dataset);
-            
-            // Customization of the chart
-            chart.setBackgroundPaint(Color.DARK_GRAY);
-            chart.getTitle().setFont(DESCRIPTION_FONT);
-            chart.getTitle().setPaint(Color.WHITE);
+            final CategoryAxis domainAxis = new CategoryAxis(categoryAxisLabel);
+            final NumberAxis rangeAxis = new NumberAxis(valueAxisLabel);
+            final BarRenderer renderer = new BarRenderer();
             
             // Customization of the plot
-            final CategoryPlot plot = chart.getCategoryPlot();
+            final CategoryPlot plot = new CategoryPlot(dataset, domainAxis, rangeAxis, renderer);
             plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
             plot.getDomainAxis().setTickLabelPaint(Color.WHITE);
+            plot.getDomainAxis().setLabelPaint(Color.WHITE);
             plot.getRangeAxis().setTickLabelPaint(Color.WHITE);
+            plot.getRangeAxis().setLabelPaint(Color.WHITE);
             plot.setOutlinePaint(Color.BLACK);
             plot.setOutlineStroke(new BasicStroke(2.0f));
             plot.setBackgroundPaint(Color.DARK_GRAY.brighter());
@@ -494,15 +502,23 @@ public interface GUIFactory {
             plot.setRangeGridlinePaint(Color.BLACK);
             plot.setDomainGridlinesVisible(true);
             plot.setDomainGridlinePaint(Color.BLACK);
-            plot.setDataset(dataset);
+            plot.setDataset(0, dataset);
             
             /*
              * Customization of the bars.
              * Sets a default color only for the first two series.
              */
-            final CategoryItemRenderer renderer = plot.getRenderer();
             renderer.setSeriesPaint(0, PINK_BOMBERMAN_COLOR);
             renderer.setSeriesPaint(1, VIOLET_BOMBERMAN_COLOR);
+            renderer.setShadowVisible(false);
+            
+            // Creates the chart
+            final JFreeChart chart = new JFreeChart(title, plot);
+            
+            // Customization of the chart
+            chart.setBackgroundPaint(Color.DARK_GRAY);
+            chart.getTitle().setFont(DESCRIPTION_FONT);
+            chart.getTitle().setPaint(Color.WHITE);
             
             return chart;
         }

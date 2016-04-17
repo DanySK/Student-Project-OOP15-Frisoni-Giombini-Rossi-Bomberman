@@ -83,8 +83,7 @@ public class SettingsView extends AbstractMenuPanel {
         groupMusic.add(radMusicOn);
         groupMusic.add(radMusicOff);
         settings.add(factory.createHorizontalComponentPanel(
-                LanguageHandler.getHandler().getLocaleResource().getString("music"), radMusicOn, radMusicOff),
-                cnst);
+                LanguageHandler.getHandler().getLocaleResource().getString("music"), radMusicOn, radMusicOff));
 
         // Sets radio buttons for DarkMode
         final ButtonGroup groupDarkMode = new ButtonGroup();
@@ -100,8 +99,7 @@ public class SettingsView extends AbstractMenuPanel {
         groupDarkMode.add(radDarkModeOn);
         groupDarkMode.add(radDarkModeOff);
         settings.add(factory.createHorizontalComponentPanel(
-                LanguageHandler.getHandler().getLocaleResource().getString("darkMode"), radDarkModeOn, radDarkModeOff),
-                cnst);
+                LanguageHandler.getHandler().getLocaleResource().getString("darkMode"), radDarkModeOn, radDarkModeOff));
 
         // Sets comboBox for languages
         final JComboBox<Locale> comboLanguages = factory.createComboBox(LanguageHandler.getHandler().getSupportedLanguages());

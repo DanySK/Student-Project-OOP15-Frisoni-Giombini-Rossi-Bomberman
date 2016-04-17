@@ -1,5 +1,6 @@
 package view.game;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,9 +13,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.GameController;
@@ -47,17 +50,17 @@ public class GamePanel extends JPanel {
     private static final double SCALE = 0.6;
     private static final long EXPLOSION_DURATION = 300L;
 
-    private final GameController controller;
+    private GameController controller;
 
-    private final int tileSize;
-    private final Map<TileType, Image> tilesImages;
-    private final Map<PowerUpType, Image> powerUpImages;
+    private int tileSize;
+    private Map<TileType, Image> tilesImages;
+    private Map<PowerUpType, Image> powerUpImages;
 
-    private HeroView hero;
-    private final Set<BombView> bombs;
-    private final Deque<Set<ExplosionView>> explosions;
-    private final Set<AbstractEnemyView> enemies;
-    private final Set<TextParticle> scores;
+    private Optional<HeroView> hero;
+    private Set<BombView> bombs;
+    private Deque<Set<ExplosionView>> explosions;
+    private Set<AbstractEnemyView> enemies;
+    private Set<TextParticle> scores;
 
     /**
      * Creates a new GamePanel.
@@ -66,9 +69,16 @@ public class GamePanel extends JPanel {
      *          the controller of the game
      */
     public GamePanel(final GameController controller) {
-
         this.controller = controller;
-
+        initialize();
+    }
+    
+    /**
+     * Initializes the game panel.
+     * Loads the resources according to the level's size and clears the collections
+     * for the view-animations.
+     */
+    public void initialize() {
         /*
          * Calculates the tile size according to the screen resolution
          * and the map's side (number of tiles in height/width).
@@ -103,17 +113,21 @@ public class GamePanel extends JPanel {
         powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
+        this.hero = Optional.empty();
         this.bombs = new HashSet<>();
         this.explosions = new LinkedList<>();
         this.enemies = new HashSet<>();
         this.scores = new HashSet<>();
-    }
 
-    /**
-     * Initializes the game panel.
-     */
-    public void initGamePanel() {
-        this.hero = new HeroViewImpl(this.controller.getHero(), this.controller.getFPS());
+        /*
+         * Sets the preferred size of the panel. 
+         */
+        this.setPreferredSize(new Dimension(this.controller.getLevelSize() * this.tileSize, this.controller.getLevelSize() * this.tileSize));
+        final Container c = this.getTopLevelAncestor();
+        if (c instanceof JFrame) {
+            final JFrame f = (JFrame) c;
+            f.pack();
+        }
     }
 
     /**
@@ -159,19 +173,23 @@ public class GamePanel extends JPanel {
             if (!this.controller.getEnemies().contains(enemy.getLevelElement())) {
                 this.scores.add(new TextParticle(String.valueOf(enemy.getLevelElement().getScore()),
                         enemy.getX(), enemy.getY(), this.controller.getFPS()));
-                SoundEffect.POWERUP.playOnce();
+                SoundEffect.HIT.playOnce();
                 iterator.remove();
             }
         }
         this.enemies.stream().forEach(e -> g.drawImage(e.getImage(), e.getX(), e.getY(), null));
         // Draws the hero
-        g.drawImage(this.hero.getImage(), this.hero.getX(), this.hero.getY(), null);
+        if (this.hero.isPresent()) {
+            g.drawImage(this.hero.get().getImage(), this.hero.get().getX(), this.hero.get().getY(), null);
+        } else {
+            this.hero = Optional.of(new HeroViewImpl(this.controller.getHero(), this.controller.getFPS()));
+        }
         // Ensures the synchronization of animations
         Toolkit.getDefaultToolkit().sync();
     }
 
     private void updateSprites() {
-        this.hero.updateFrame();
+        this.hero.ifPresent(h -> h.updateFrame());
         this.bombs.stream().forEach(b -> b.updateFrame());
         this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
         this.enemies.stream().forEach(e -> e.updateFrame());
@@ -181,7 +199,7 @@ public class GamePanel extends JPanel {
      * @return the center point of the sprite associated to the hero.
      */
     public Point getHeroViewCenterPoint() {
-        return this.hero.getCenterPoint();
+        return this.hero.get().getCenterPoint();
     }
 
     /**
@@ -219,10 +237,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(this.controller.getLevelSize() * this.tileSize, this.controller.getLevelSize() * this.tileSize);
-    }
 
     /**
      * Calculates the perfect size of a tile by desktop resolution.

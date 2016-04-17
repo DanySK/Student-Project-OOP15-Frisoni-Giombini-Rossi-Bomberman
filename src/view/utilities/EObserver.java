@@ -7,6 +7,7 @@ package view.utilities;
  *      the type of the event notification
  */
 public interface EObserver<T> {
+    
     /**
      * Update the observer with a message from the source.
      * 

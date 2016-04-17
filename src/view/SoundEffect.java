@@ -32,10 +32,6 @@ public enum SoundEffect {
      */
     GAME_THEME("/sounds/backInBlack.wav", 0.1),
     /**
-     * Button focus sound.
-     */
-    FOCUS("/sounds/focus.wav", 0.1),
-    /**
      * Button selection sound.
      */
     SELECT("/sounds/select.wav", 0.3),
@@ -44,17 +40,13 @@ public enum SoundEffect {
      */
     ADVICE("/sounds/advice.wav", 1.0),
     /**
-     * Hero's footsteps sound.
-     */
-    WALK("/sounds/walk.wav", 0.6),
-    /**
      * Bomb's explosion sound.
      */
     EXPLOSION("/sounds/explosion.wav", 1.0),
     /**
-     * Powerup obtained sound.
+     * Enemy hit sound.
      */
-    POWERUP("/sounds/powerup.wav", 1.0),
+    HIT("/sounds/hit.wav", 1.0),
     /**
      * Key found sound.
      */

@@ -51,6 +51,10 @@ public final class ImageLoader {
          */
         SCORES(MENU_FOLDER + "scores.png"),
         /**
+         * Scores record image.
+         */
+        MEDAL(MENU_FOLDER + "medal.png"),
+        /**
          * Settings button image.
          */
         SETTINGS(MENU_FOLDER + "settings.png"),

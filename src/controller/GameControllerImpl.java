@@ -123,7 +123,7 @@ public class GameControllerImpl implements GameController {
                         view.showPauseMessage();
                     } else {
                         this.unPauseLoop();
-                        //view.removePauseMessage();
+                        view.removeMessage();
                     }
                     inPaused = true;
                 }
@@ -132,7 +132,12 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    view.showGameOverPanel(/*level.getHero().getScore(), time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),*/
+                    if (darkMode) {
+                        ScoreHandler.getHandler().saveScore(level.getHero().getScore() * MULTIPLY, time);
+                    } else {
+                        ScoreHandler.getHandler().saveScore(level.getHero().getScore(), time);
+                    }
+                    view.showGameOverPanel(level.getHero().getScore(), time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),
                             new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {

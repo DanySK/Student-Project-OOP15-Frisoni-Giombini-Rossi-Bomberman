@@ -66,6 +66,11 @@ public interface GameFrame {
     void update();
     
     /**
+     * Updates the view for a new stage.
+     */
+    void updateStage();
+    
+    /**
      * Updates the rendering of the elapsed time.
      * 
      * @param seconds
@@ -94,20 +99,29 @@ public interface GameFrame {
     /**
      * Removes the pause message.
      */
-    void removePauseMessage();
+    void removeMessage();
     
     /**
-     * Shows a message before the next level rendering.
+     * Shows a message before the next level stage rendering.
+     * 
+     * @param stageNumber
+     *          the number of the stage to display
      */
-    void showNextLevelMessage();
+    void showNextStageMessage(int stageNumber);
     
     /**
      * Shows a panel associated to the end of the game.
      * 
+     * @param score
+     *          the score obtained by the player
+     * @param time
+     *          the time reached by the player
+     * @param isRecord
+     *          true if the score represents a new record, false otherwise
      * @param observer
      *          the observer of the GameOver panel
      */
-    void showGameOverPanel(GameOverObserver observer);
+    void showGameOverPanel(int score, int time, boolean isRecord, GameOverObserver observer);
     
     /**
      * Closes the game frame.

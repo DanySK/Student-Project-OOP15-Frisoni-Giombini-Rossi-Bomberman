@@ -31,7 +31,7 @@ public final class EnemyViewFactory {
         case PASS:
             return new PassView(enemy, fps);
         default:
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("There isn't a view animation associated to " + enemy.toString());
         }
     }
 }

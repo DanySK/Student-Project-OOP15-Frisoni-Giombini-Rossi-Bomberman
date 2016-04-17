@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import controller.GameController;
 import view.GUIFactory;
 import view.ImageLoader;
+import view.LanguageHandler;
 import view.ImageLoader.GameImage;
 
 /**
@@ -32,8 +33,7 @@ public class StatisticPanel extends JPanel {
 
     private static final int PANEL_HEIGHT = 50;
     private static final int NUM_STATS = 4;
-    private static final String TIME_TEXT = "TIME ";
-    private static final String SCORE_TEXT = "SCORE ";
+    private static final String VALUE_SEPARATOR = " ";
     private static final String SEPARATOR = "x";
     private static final Color BG_COLOR = new Color(60, 60, 60);
 
@@ -101,7 +101,9 @@ public class StatisticPanel extends JPanel {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                StatisticPanel.this.time.setText(TIME_TEXT + String.format("%02d:%02d",
+                StatisticPanel.this.time.setText(
+                        LanguageHandler.getHandler().getLocaleResource().getString("statsTime") + VALUE_SEPARATOR
+                        + String.format("%02d:%02d",
                         TimeUnit.SECONDS.toMinutes(seconds),
                         TimeUnit.SECONDS.toSeconds(seconds) % TimeUnit.MINUTES.toSeconds(1L)));
             }
@@ -118,7 +120,8 @@ public class StatisticPanel extends JPanel {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                StatisticPanel.this.score.setText(SCORE_TEXT + score);
+                StatisticPanel.this.score.setText(LanguageHandler.getHandler().getLocaleResource().getString("statsScore")
+                        + VALUE_SEPARATOR + score);
             }
         });
     }

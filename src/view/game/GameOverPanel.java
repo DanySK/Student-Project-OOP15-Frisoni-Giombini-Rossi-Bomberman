@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,28 +25,42 @@ import view.menu.components.StretchIcon;
  *
  */
 public class GameOverPanel extends JPanel {
-    
+
     /**
      * Auto-generated UID.
      */
     private static final long serialVersionUID = -8714937523727340290L;
 
+    private static final long ANIMATION_PERIOD = 100L;
+    private static final int RGB = 256;
+    private static final String VALUE_SEPARATOR = ": ";
+    private static final String SEPARATOR = ", ";
+
     private GameOverObserver observer;
-    
+
+    private final Random seed;
+    private final int score;
+    private final int time;
+    private final boolean isRecord;
+
     /**
      * Creates a GameOverPanel.
      */
-    public GameOverPanel() {
+    public GameOverPanel(final int score, final int time, final boolean isRecord) {
+        this.seed = new Random();
+        this.score = score;
+        this.time = time;
+        this.isRecord = isRecord;
         initialize();
     }
-    
+
     /**
      * Initializes the contents of the panel.
      */
     private void initialize() {
         final GUIFactory factory = new GUIFactory.Standard();
 
-        // Sets the panel layout dynamically
+        // Sets the panel layout
         this.setBackground(Color.BLACK);
         final GridBagLayout gblPanel = new GridBagLayout();
         gblPanel.columnWeights = new double[]{1.0, 1.0};
@@ -70,15 +87,21 @@ public class GameOverPanel extends JPanel {
         textPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         textPanel.setOpaque(false);
         textPanel.add(factory.createTitleLabel(LanguageHandler.getHandler().getLocaleResource().getString("gameOver")));
-        final JLabel lblScore = new JLabel("Score: 2250, Time: 300");
-        lblScore.setFont(factory.getDescriptionFont());
-        lblScore.setForeground(Color.WHITE);
-        lblScore.setHorizontalAlignment(SwingConstants.CENTER);
-        lblScore.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final JLabel lblScore = factory.createLabel(
+                LanguageHandler.getHandler().getLocaleResource().getString("score") + VALUE_SEPARATOR + this.score
+                + SEPARATOR
+                + LanguageHandler.getHandler().getLocaleResource().getString("time") + VALUE_SEPARATOR + this.time,
+                factory.getDescriptionFont(), Color.WHITE);
         textPanel.add(lblScore);
+        if (this.isRecord) {
+            final JLabel lblRecord = factory.createLabel(LanguageHandler.getHandler().getLocaleResource().getString("record"),
+                    factory.getSmallFont(), Color.WHITE);
+            animateLabel(lblRecord);
+            textPanel.add(lblRecord);
+        }
         this.add(textPanel, cnst);
         cnst.gridy++;
-        
+
         // Sets buttons
         cnst.gridwidth = 1;
         final JButton btnReplay = factory.createButton(LanguageHandler.getHandler().getLocaleResource().getString("replay"));
@@ -89,7 +112,22 @@ public class GameOverPanel extends JPanel {
         btnExit.addActionListener(e -> this.observer.exit());
         this.add(btnExit, cnst);
     }
-    
+
+    /*
+     * Animates a label.
+     * It periodically changes the foreground with a random color.
+     * It is used principally to render a new record.
+     */
+    private void animateLabel(final JLabel label) {
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                label.setForeground(new Color(seed.nextInt(RGB), seed.nextInt(RGB), seed.nextInt(RGB)));
+            }
+        }, 0L, ANIMATION_PERIOD);
+    }
+
     /**
      * Set the observer of the GameOverPanel.
      * 
@@ -99,7 +137,7 @@ public class GameOverPanel extends JPanel {
     public void setObserver(final GameOverObserver observer) {
         this.observer = observer;
     }
-    
+
     /**
      * This interface indicates the operations that an observer
      * of the GameOverPanel can do.
@@ -111,7 +149,7 @@ public class GameOverPanel extends JPanel {
          * Restarts the game.
          */
         void replay();
-        
+
         /**
          * Close the game.
          */
