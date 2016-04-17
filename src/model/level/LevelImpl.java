@@ -95,7 +95,7 @@ public class LevelImpl implements Level {
      */
     private void initEnemies() {
         this.createEnemies();
-        if (!this.isFirstStage() && !this.hero.isDead()) {
+        if (!this.isFirstStage()) {
             this.enemies.forEach(e -> e.potentiateEnemy());
         }
     }

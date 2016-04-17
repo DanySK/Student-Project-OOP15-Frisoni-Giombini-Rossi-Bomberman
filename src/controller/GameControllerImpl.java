@@ -23,6 +23,7 @@ public class GameControllerImpl implements GameController {
 
     private static final int FPS = 60;
     private static final int MULTIPLY = 2;
+    private static final long WAITING_TIME = 3000;
     private final Level level;
     private final GameFrame view;
     private volatile boolean isPlanted;
@@ -103,10 +104,19 @@ public class GameControllerImpl implements GameController {
                     level.setOpenDoor();
                 }
                 if (level.getHero().hasKey() && level.getHero().checkOpenDoorCollision(level.getDoor())) {
-                    view.closeView();
+                    pauseLoop();
+                    view.showNextStageMessage(2);
                     level.setNextStage();
-                    startGame();
-                    super.stopLoop();
+                    level.setNumberTiles();
+                    try {
+                        Thread.sleep(WAITING_TIME);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    view.updateStage();
+                    level.initLevel(view.getTileSize());
+                    view.removeMessage();
+                    unPauseLoop();
                 }
             }
 
@@ -144,6 +154,7 @@ public class GameControllerImpl implements GameController {
                             view.closeView();
                             level.setFirstStage();
                             time = 0;
+                            level.setNumberTiles();
                             startGame();
                         }
 

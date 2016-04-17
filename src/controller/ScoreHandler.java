@@ -145,8 +145,8 @@ public final class ScoreHandler {
     }
 
     /**
-     * This method return a queue of pairs score-time of the ten last scores.
-     * @return a queue of the ten last scores.
+     * This method return a list of pairs score-time of the ten last scores.
+     * @return a list of the ten last scores.
      */
     public LinkedList<Pair<Integer, Integer>> getLastScores() {
         return new LinkedList<>(this.scores);
