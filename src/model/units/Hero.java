@@ -1,5 +1,6 @@
 package model.units;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
@@ -29,9 +30,10 @@ public interface Hero extends Entity {
     /**
      * Plants a bomb.
      * 
+     * @param p the point where to place a bomb 
      * @return the bomb to plant
      */
-    void plantBomb(final int nTiles);
+    void plantBomb(final Point p);
     
     /**
      * Increase the number of bombs.

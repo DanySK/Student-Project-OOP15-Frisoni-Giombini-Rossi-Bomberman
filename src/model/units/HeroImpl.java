@@ -9,7 +9,6 @@ import model.Tile;
 import model.level.Collision;
 import model.level.HeroCollision;
 import model.level.HeroCollisionImpl;
-import model.utilities.MapPoint;
 
 /**
  * Implementation of {@link Hero}.
@@ -56,9 +55,9 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * Gets the bomb to plant.
      */
     @Override
-    public void plantBomb(final int nTiles) {
-        this.detonator.plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
-                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+    public void plantBomb(final Point p) {
+        this.detonator.plantBomb(p);
+        
     }
        
     /**

@@ -70,7 +70,7 @@ public class LevelImpl implements Level {
      * This method initialize correctly the hero.
      */
     private void initHero(){
-        if(!this.isFirstStage() && !this.hero.isDead()){
+        if(!this.isFirstStage()){
             final int lives = this.hero.getRemainingLives();
             final int attack = this.hero.getAttack();
             final int score = this.hero.getScore();
@@ -220,7 +220,8 @@ public class LevelImpl implements Level {
      */
     @Override
     public void plantBomb() {
-        this.hero.plantBomb(this.nTiles);
+        this.hero.plantBomb(new Point(MapPoint.getCorrectPos(this.hero.getX(), nTiles, this.tileDimension), 
+                MapPoint.getCorrectPos(this.hero.getY(), nTiles, this.tileDimension)));
     }
 
     /**
