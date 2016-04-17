@@ -132,11 +132,6 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    if (darkMode) {
-                        ScoreHandler.getHandler().saveScore(level.getHero().getScore() * MULTIPLY, time);
-                    } else {
-                        ScoreHandler.getHandler().saveScore(level.getHero().getScore(), time);
-                    }
                     view.showGameOverPanel(/*level.getHero().getScore(), time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),*/
                             new GameOverPanel.GameOverObserver() {
                         @Override
@@ -154,6 +149,11 @@ public class GameControllerImpl implements GameController {
                             view.closeView();
                         }
                     });
+                    if (darkMode) {
+                        ScoreHandler.getHandler().saveScore(level.getHero().getScore() * MULTIPLY, time);
+                    } else {
+                        ScoreHandler.getHandler().saveScore(level.getHero().getScore(), time);
+                    }
                 }
             }
 

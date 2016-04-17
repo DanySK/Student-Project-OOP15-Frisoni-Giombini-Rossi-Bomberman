@@ -72,7 +72,7 @@ public final class ScoreHandler {
                 ) {
             try {
                 this.playerName = reader.readUTF();
-                this.record = Optional.of((Pair<Integer, Integer>) reader.readObject());
+                this.record = (Optional<Pair<Integer, Integer>>) reader.readObject();
                 final int size = reader.readInt();
                 for (int i = 0; i < size; i++) {
                     this.scores.addLast((Pair<Integer, Integer>) reader.readObject());
@@ -148,7 +148,7 @@ public final class ScoreHandler {
      * This method return a queue of pairs score-time of the ten last scores.
      * @return a queue of the ten last scores.
      */
-    public Deque<Pair<Integer, Integer>> getLastScores() {
+    public LinkedList<Pair<Integer, Integer>> getLastScores() {
         return new LinkedList<>(this.scores);
     }
 
