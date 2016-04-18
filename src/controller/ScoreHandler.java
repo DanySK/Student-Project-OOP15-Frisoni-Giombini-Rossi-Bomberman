@@ -15,11 +15,13 @@ import java.util.Objects;
 import com.google.common.base.Optional;
 
 import controller.utilities.Pair;
+import controller.utilities.ScoreData;
+import view.utilities.ESource;
 
 /**
  * This class keeps in memory all of the players data and of respective scores and their timing.
  */
-public final class ScoreHandler {
+public final class ScoreHandler extends ESource<ScoreData> {
 
     private static final String NAME_DIRECTORY = System.getProperty("user.home") 
             + System.getProperty("file.separator") + "Bomberman";
@@ -30,7 +32,6 @@ public final class ScoreHandler {
     private final Deque<Pair<Integer, Integer>> scores;
     private Optional<Pair<Integer, Integer>> record;
     private String playerName;
-    private String fileName;
 
     /**
      * Constructor for ScoreManagementImpl.
@@ -38,26 +39,29 @@ public final class ScoreHandler {
     private ScoreHandler() {
         this.scores = new LinkedList<>();
         this.record = Optional.absent();
-        this.fileName = FILE_NAME;
-        final File file = new File(this.fileName);
+        final File file = new File(FILE_NAME);
         if (file.exists()) {
             this.readScores();
         }
-    }
-    
-    public void init(final String fileName) {
-        this.fileName = NAME_DIRECTORY + System.getProperty("file.separator") + fileName;
     }
 
     /**
      * This method create a file where the scores will be saved.
      */
-    private void createFile() {
-        final File file = new File(this.fileName);
-        try {
-            file.createNewFile();
-        } catch (final IOException e) {
-            System.err.println(e);
+    public void createFile() {
+        final File directory = new File(NAME_DIRECTORY);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        final File file = new File(FILE_NAME);
+        if (file.exists()) {
+            throw new UnsupportedOperationException("The file already exists!");
+        } else {
+            try {
+                file.createNewFile();
+            } catch (final IOException e) {
+                System.err.println(e);
+            }
         }
     }
 
@@ -68,7 +72,7 @@ public final class ScoreHandler {
     private void readScores() {
         try (
                 final ObjectInputStream reader = new ObjectInputStream(
-                        new BufferedInputStream(new FileInputStream(this.fileName)));
+                        new BufferedInputStream(new FileInputStream(FILE_NAME)));
                 ) {
             try {
                 this.playerName = reader.readUTF();
@@ -109,11 +113,13 @@ public final class ScoreHandler {
         }
         if (!this.record.isPresent() || score > this.record.get().getX()) {
             this.record = Optional.of(new Pair<>(score, time));
+            this.notifyEObservers(ScoreData.RECORD);
         }
         if (this.scores.size() >= MAX_LENGTH) {
             this.scores.removeFirst();
         }
         this.scores.addLast(new Pair<>(score, time));
+        this.notifyEObservers(ScoreData.LAST_SCORES);
         this.writeData();
     }
 
@@ -123,7 +129,7 @@ public final class ScoreHandler {
     private void writeData() {
         try (
                 final ObjectOutputStream writer = new ObjectOutputStream(
-                        new BufferedOutputStream(new FileOutputStream(this.fileName)));
+                        new BufferedOutputStream(new FileOutputStream(FILE_NAME)));
                 ) {
             writer.writeUTF(this.playerName);
             writer.writeObject(this.record);
@@ -159,23 +165,22 @@ public final class ScoreHandler {
     public boolean isScoreEmpty() {
         return this.scores.isEmpty();
     }
+    
+    /**
+     * This method return the playerName.
+     * @return the playerName
+     */
+    public String getPlayerName() {
+        return this.playerName;
+    }
 
     /**
      * This method check if file is present and if it not exists creates.
      * @return true if file exists, false otherwise
      */
     public boolean isFilePresent() {
-        final File directory = new File(NAME_DIRECTORY);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
-        final File file = new File(this.fileName);
-        if (file.exists()) {
-            return true;
-        } else {
-            this.createFile();
-            return false;
-        }
+        final File file = new File(FILE_NAME);
+        return file.exists();
     }
 
     /**
@@ -188,14 +193,18 @@ public final class ScoreHandler {
         if (score < 0) {
             throw new IllegalArgumentException("The score must be positive!");
         }
-        return score > this.record.get().getX();
+        if (this.record.isPresent()) {
+            return score > this.record.get().getX();
+        } else {
+            return true;
+        }
     }
-    
+
     /**
      * This method check if file exists and in case it delete.
      */
     public void reset() {
-        final File file = new File(this.fileName);
+        final File file = new File(FILE_NAME);
         if (file.exists()) {
             this.scores.clear();
             this.record = Optional.absent();

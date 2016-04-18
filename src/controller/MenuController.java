@@ -36,6 +36,7 @@ public class MenuController implements MenuObserver {
             welcome.setObserver(new WelcomeView.WelcomeObserver() {
                 @Override
                 public void setName(final String name) {
+                    ScoreHandler.getHandler().createFile();
                     ScoreHandler.getHandler().saveName(name);
                     final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
                     menuView.setObserver(MenuController.this);

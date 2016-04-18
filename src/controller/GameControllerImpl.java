@@ -1,7 +1,9 @@
 package controller;
 
+import java.util.LinkedList;
 import java.util.Set;
 
+import controller.utilities.Pair;
 import model.Tile;
 import model.level.Level;
 import model.units.Bomb;
@@ -142,11 +144,6 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    if (darkMode) {
-                        ScoreHandler.getHandler().saveScore(level.getHero().getScore() * MULTIPLY, time);
-                    } else {
-                        ScoreHandler.getHandler().saveScore(level.getHero().getScore(), time);
-                    }
                     view.showGameOverPanel(level.getHero().getScore(), time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),
                             new GameOverPanel.GameOverObserver() {
                         @Override
@@ -236,5 +233,20 @@ public class GameControllerImpl implements GameController {
     @Override
     public int getTime() {
         return this.time;
+    }
+
+    @Override
+    public Pair<Integer, Integer> getRecord() {
+        return null;
+    }
+
+    @Override
+    public LinkedList<Pair<Integer, Integer>> getLastScores() {
+        return null;
+    }
+
+    @Override
+    public boolean isScoreEmpty() {
+        return false;
     }
 }

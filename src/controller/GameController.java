@@ -1,7 +1,9 @@
 package controller;
 
+import java.util.LinkedList;
 import java.util.Set;
 
+import controller.utilities.Pair;
 import model.Tile;
 import model.units.Bomb;
 import model.units.Hero;
@@ -70,5 +72,23 @@ public interface GameController {
      * @return the time of game
      */
     int getTime();
+    
+    /**
+     * This method return a pair of score-time of the best score.
+     * @return the best score.
+     */
+    Pair<Integer, Integer> getRecord();
+    
+    /**
+     * This method return a list of pairs score-time of the ten last scores.
+     * @return a list of the ten last scores.
+     */
+    LinkedList<Pair<Integer, Integer>> getLastScores();
+    
+    /**
+     * This method check if the queue of scores is empty.
+     * @return true if is empty, false otherwise
+     */
+    boolean isScoreEmpty();
     
 }
