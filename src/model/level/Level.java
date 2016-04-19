@@ -57,6 +57,13 @@ public interface Level {
     int getSize();
     
     /**
+     * Gets the actual stage.
+     * 
+     * @return the stage
+     */
+    int getStage();
+    
+    /**
      * Gets all the tiles where there isn't a powerup status.
      * 
      * @return the set of tiles

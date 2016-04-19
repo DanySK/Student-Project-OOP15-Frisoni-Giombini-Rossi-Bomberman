@@ -53,7 +53,7 @@ public class LevelImpl implements Level {
      */
     public LevelImpl() {
         this.setNumberTiles();
-        this.setFirstStage();
+        //this.setFirstStage();
     }
 
     /**
@@ -354,6 +354,16 @@ public class LevelImpl implements Level {
     }
 
     /**
+     * This method return the stage's number.
+     * 
+     * @return the stage
+     */
+    @Override
+    public int getStage(){
+        return this.stage;
+    }
+    
+    /**
      * This method return the size of the map.
      * 
      * @return the size of the map
@@ -508,6 +518,7 @@ public class LevelImpl implements Level {
      */
     @Override
     public void setFirstStage(){
+        System.out.println("stage");
         this.stage = FIRST_STAGE;
     }
 
