@@ -53,7 +53,7 @@ public class LevelImpl implements Level {
      */
     public LevelImpl() {
         this.setNumberTiles();
-        //this.setFirstStage();
+        this.setFirstStage();
     }
 
     /**
