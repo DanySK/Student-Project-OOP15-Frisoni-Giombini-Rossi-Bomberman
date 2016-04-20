@@ -41,11 +41,11 @@ public class GameControllerImpl implements GameController {
     public GameControllerImpl(final Level model, final GameFrame view, final boolean darkMode) {
         this.level = model;
         this.view = view;
+        this.level.setFirstStage();
         this.startGame();
         this.isPlanted = false;
         this.inPaused = false;
         this.time = 0;
-        this.level.setFirstStage();
         this.darkMode = darkMode;
     }
 
@@ -107,7 +107,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.getHero().hasKey() && level.getHero().checkOpenDoorCollision(level.getDoor())) {
                     pauseLoop();
-                    view.showNextStageMessage(2);
+                    view.showNextStageMessage(level.getStage());
                     level.setNextStage();
                     level.setNumberTiles();
                     try {
