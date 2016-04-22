@@ -221,7 +221,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public long getBombDelay() {
-        return level.getHero().getBombDelay();
+        return level.getHero().getDetonator().getBombDelay();
     }
     @Override
     public Set<Enemy> getEnemies() {
