@@ -47,7 +47,7 @@ public interface GameController {
      * This method return the list of bombs.
      * @return the list of bombs in the map
      */
-    List<Bomb> getPlantedBombs();
+    //List<Bomb> getPlantedBombs();
     
     /**
      * Get's FPS.

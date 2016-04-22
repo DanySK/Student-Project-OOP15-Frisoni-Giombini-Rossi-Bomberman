@@ -154,7 +154,7 @@ public class GameControllerImpl implements GameController {
                             view.closeView();
                             level.setFirstStage();
                             time = 0;
-                            level.setNumberTiles();
+                            //level.setNumberTiles();
                             startGame();
                         }
 
@@ -200,10 +200,10 @@ public class GameControllerImpl implements GameController {
         return level.getSize();
     }
 
-    @Override
+    /*@Override
     public List<Bomb> getPlantedBombs() {
         return level.getHero().getDetonator().getPlantedBombs();
-    }
+    }*/
 
     @Override
     public Set<Tile> getPowerUp() {
