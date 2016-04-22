@@ -34,9 +34,9 @@ public class InformationView extends AbstractMenuPanel {
 
         final JTabbedPane jtb = new GUIFactory.Standard().createLeftTabbedPane();
 
-        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("commands"), new CommandsPanel().getPanel());
-        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("powerUps"), new PowerUpsPanel().getPanel());
-        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("authors"), new CreditsPanel().getPanel());
+        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("commands"), new CommandsPanel());
+        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("powerUps"), new PowerUpsPanel());
+        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("authors"), new CreditsPanel());
         
         panel.add(jtb, BorderLayout.CENTER);
         panel.setOpaque(false);

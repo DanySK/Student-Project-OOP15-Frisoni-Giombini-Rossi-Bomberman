@@ -50,7 +50,7 @@ public class GamePanel extends JPanel {
     private static final double SCALE = 0.6;
     private static final long EXPLOSION_DURATION = 300L;
 
-    private GameController controller;
+    private final GameController controller;
 
     private int tileSize;
     private Map<TileType, Image> tilesImages;
@@ -78,7 +78,7 @@ public class GamePanel extends JPanel {
      * Loads the resources according to the level's size and clears the collections
      * for the view-animations.
      */
-    public void initialize() {
+    public final void initialize() {
         /*
          * Calculates the tile size according to the screen resolution
          * and the map's side (number of tiles in height/width).

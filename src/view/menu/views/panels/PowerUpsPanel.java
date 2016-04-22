@@ -19,10 +19,15 @@ import view.ImageLoader.GameImage;
 import view.LanguageHandler;
 
 /**
- * This class is used to realize a view representation of the power-up legend.
+ * This {@link JPanel} is used to realize a view representation of the power-up legend.
  *
  */
-public class PowerUpsPanel {
+public class PowerUpsPanel extends JPanel {
+    
+    /**
+     * Auto-generated UID.
+     */
+    private static final long serialVersionUID = 2710422123859403086L;
     
     private final GUIFactory factory;
     
@@ -31,14 +36,12 @@ public class PowerUpsPanel {
      */
     public PowerUpsPanel() {
         this.factory = new GUIFactory.Standard();
+        initialize();
     }
     
-    /**
-     * @return a panel with a list containing the power-ups' details.
-     */
-    public JPanel getPanel() {
-        final JPanel panel = new JPanel(new BorderLayout());
-
+    private void initialize() {
+        this.setLayout(new BorderLayout());
+        
         // Creates the model and adds elements
         final DefaultListModel<PowerUpEntry> listModel = new DefaultListModel<>();
         listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.ATTACK_UP), PowerUpType.ATTACK.name(),
@@ -65,10 +68,9 @@ public class PowerUpsPanel {
         final JScrollPane scrollPane = new JScrollPane(powerUpList);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
         
-        panel.setBackground(Color.DARK_GRAY);
-        return panel;
+        this.setBackground(Color.DARK_GRAY);
     }
     
     private final class PowerUpEntry {
