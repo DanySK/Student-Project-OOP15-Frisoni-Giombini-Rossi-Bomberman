@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import controller.utilities.Pair;
@@ -44,10 +43,10 @@ public interface GameController {
     int getLevelSize();
     
     /**
-     * This method return the list of bombs.
-     * @return the list of bombs in the map
+     * This method return the set of bombs.
+     * @return the set of bombs in the map
      */
-    //List<Bomb> getPlantedBombs();
+    Set<Bomb> getPlantedBombs();
     
     /**
      * Get's FPS.
