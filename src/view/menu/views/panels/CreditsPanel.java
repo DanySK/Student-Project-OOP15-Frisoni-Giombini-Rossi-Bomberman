@@ -18,11 +18,16 @@ import view.GUIFactory;
 import view.menu.components.FadingLabel;
 
 /**
- * This class handles the credits panel of the game.
+ * This {@link JPanel} handles the credits panel of the game.
  *
  */
-public class CreditsPanel {
-    
+public class CreditsPanel extends JPanel {
+
+    /**
+     * Auto-generated UID.
+     */
+    private static final long serialVersionUID = 8787663615572260102L;
+
     /*
      * This map contains the name of the contributors and the list of jobs they perform.
      */
@@ -33,43 +38,43 @@ public class CreditsPanel {
         CONTRIBUTORS.put("Giacomo Frisoni", Arrays.asList("View"));
         CONTRIBUTORS.put("Giulia Giombini", Arrays.asList("Controller", "Tests", "Enemies"));
     }
-    
+
     /**
-     * @return a panel with authors' information.
+     * Constructs a new CreditsPanel with authors' information.
      */
-    public JPanel getPanel() {
+    public CreditsPanel() {
         final GUIFactory factory = new GUIFactory.Standard();
-        final JPanel panel = new JPanel(new GridBagLayout());
+        this.setLayout(new GridBagLayout());
         final GridBagConstraints cnst = new GridBagConstraints();
         cnst.gridwidth = GridBagConstraints.REMAINDER;
-        
+
         final List<FadingLabel> labels = new ArrayList<>();
         CONTRIBUTORS.entrySet()
-                    .stream()
-                    .sorted((a1, a2) -> a1.getKey().compareTo(a2.getKey()))
-                    .map(e -> {
-                        final JPanel contributor = new JPanel(new FlowLayout());
-                        final FadingLabel nameLabel = 
-                                factory.createFadingLabelOfColor(e.getKey() + ":", Color.LIGHT_GRAY);
-                        contributor.add(nameLabel);
-                        labels.add(nameLabel);
-                        for (final String job : e.getValue()) {
-                            final FadingLabel jobLabel = factory.createFadingLabelOfColor(job, Color.WHITE);
-                            contributor.add(jobLabel);
-                            labels.add(jobLabel);
-                        }
-                        contributor.setOpaque(false);
-                        return contributor;
-                    })
-                    .forEach(p -> {
-                        panel.add(p, cnst);
-                    });
+        .stream()
+        .sorted((a1, a2) -> a1.getKey().compareTo(a2.getKey()))
+        .map(e -> {
+            final JPanel contributor = new JPanel(new FlowLayout());
+            final FadingLabel nameLabel = 
+                    factory.createFadingLabelOfColor(e.getKey() + ":", Color.LIGHT_GRAY);
+            contributor.add(nameLabel);
+            labels.add(nameLabel);
+            for (final String job : e.getValue()) {
+                final FadingLabel jobLabel = factory.createFadingLabelOfColor(job, Color.WHITE);
+                contributor.add(jobLabel);
+                labels.add(jobLabel);
+            }
+            contributor.setOpaque(false);
+            return contributor;
+        })
+        .forEach(p -> {
+            this.add(p, cnst);
+        });
 
         /*
          * Starts the fading animations of the labels when the panel is shown
          * and stops them when it isn't visible.
          */
-        panel.addAncestorListener(new AncestorListener() {
+        this.addAncestorListener(new AncestorListener() {
             @Override
             public void ancestorAdded(final AncestorEvent event) {
                 new Thread(new Runnable() {
@@ -94,7 +99,6 @@ public class CreditsPanel {
             }
         });
 
-        panel.setBackground(Color.DARK_GRAY);
-        return panel;
+        this.setBackground(Color.DARK_GRAY);
     }
 }

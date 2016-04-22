@@ -44,11 +44,14 @@ public class ScoresView extends AbstractMenuPanel {
     private static final String SEPARATOR = " ";
 
     private GUIFactory factory;
-    
+
     private JTabbedPane jtb;
     private JPanel scorePanel;
     private JPanel recordPanel;
 
+    /**
+     * Constructs a new score view.
+     */
     public ScoresView() {
         super();
         ScoreHandler.getHandler().addEObserver((s, msg) -> {
@@ -61,6 +64,8 @@ public class ScoresView extends AbstractMenuPanel {
                 this.scorePanel = createProgressPanel();
                 refreshTabbedPane();
                 break;
+            default:
+                throw new IllegalArgumentException("There isn't a view action associated to " + msg);
             }
         });
     }
@@ -77,7 +82,7 @@ public class ScoresView extends AbstractMenuPanel {
 
         this.recordPanel = createBestScorePanel();
         this.scorePanel = createProgressPanel();
-        
+
         jtb = factory.createLeftTabbedPane();
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), this.recordPanel);
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("progress"), this.scorePanel);
@@ -86,7 +91,7 @@ public class ScoresView extends AbstractMenuPanel {
         panel.setOpaque(false);
         return panel;
     }
-    
+
     private void refreshTabbedPane() {
         ScoresView.this.jtb.removeAll();
         ScoresView.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), this.recordPanel);
@@ -112,27 +117,27 @@ public class ScoresView extends AbstractMenuPanel {
         cnst.insets = INSETS;
 
         // Sets the record panel
-        final JPanel recordPanel = new JPanel();
-        if (!ScoreHandler.getHandler().isScoreEmpty()) {
-            recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
-            recordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            recordPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-            final JLabel name = factory.createLabel(ScoreHandler.getHandler().getPlayerName(), factory.getSmallFont(),factory.getBombermanColor().brighter());
+        final JPanel bestScorePanel = new JPanel();
+        if (ScoreHandler.getHandler().isScoreEmpty()) {
+            bestScorePanel.add(factory.createLabel(LanguageHandler.getHandler().getLocaleResource().getString("noScores"),
+                    factory.getDescriptionFont(), Color.WHITE));
+        } else {
+            bestScorePanel.setLayout(new BoxLayout(bestScorePanel, BoxLayout.Y_AXIS));
+            bestScorePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            bestScorePanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+            final JLabel name = factory.createLabel(ScoreHandler.getHandler().getPlayerName(), factory.getSmallFont(), factory.getBombermanColor().brighter());
             final JLabel score = factory.createLabel(LanguageHandler.getHandler().getLocaleResource().getString("bestScore") + VALUE_SEPARATOR
                     + ScoreHandler.getHandler().getRecord().getX(), factory.getSmallFont(), Color.WHITE);
             final JLabel time = factory.createLabel(
-                    LanguageHandler.getHandler().getLocaleResource().getString("time") + VALUE_SEPARATOR +
+                    LanguageHandler.getHandler().getLocaleResource().getString("time") + VALUE_SEPARATOR
                     + ScoreHandler.getHandler().getRecord().getY() + SEPARATOR
                     + LanguageHandler.getHandler().getLocaleResource().getString("seconds"), factory.getSmallFont(), Color.WHITE);
-            recordPanel.add(name);
-            recordPanel.add(score);
-            recordPanel.add(time);
-        } else {
-            recordPanel.add(factory.createLabel(LanguageHandler.getHandler().getLocaleResource().getString("noScores"),
-                    factory.getDescriptionFont(), Color.WHITE));
+            bestScorePanel.add(name);
+            bestScorePanel.add(score);
+            bestScorePanel.add(time);
         }
-        recordPanel.setOpaque(false);
-        panel.add(recordPanel, cnst);
+        bestScorePanel.setOpaque(false);
+        panel.add(bestScorePanel, cnst);
         cnst.gridx++;
 
         // Sets the image
