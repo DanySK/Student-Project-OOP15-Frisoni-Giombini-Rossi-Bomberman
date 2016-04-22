@@ -53,7 +53,8 @@ public interface Collision {
     <X> boolean elementCollision(final Set<X> set, final Predicate<X> pred);
     
     /**
-     * Checks if there's a collision with an explosion
+     * Checks if there's a collision with an explosion.
+     * 
      * @param rec
      *          the element hitbox
      * @return true if there's a collision, false otherwise

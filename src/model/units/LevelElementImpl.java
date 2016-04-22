@@ -93,9 +93,9 @@ public class LevelElementImpl implements LevelElement{
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof LevelElementImpl && this.curPos.equals(((LevelElementImpl) obj).curPos)
                 && this.hitBox.equals(((LevelElementImpl) obj).hitBox);
     }
-       
+    
 }

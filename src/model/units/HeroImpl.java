@@ -9,15 +9,16 @@ import model.Tile;
 import model.level.Collision;
 import model.level.HeroCollision;
 import model.level.HeroCollisionImpl;
+import model.utilities.MapPoint;
 
 /**
  * Implementation of {@link Hero}.
  */
 public class HeroImpl extends AbstractEntity implements Hero {
 
-    private Detonator detonator;
+    private final Detonator detonator;
     private final HeroCollision heroCollision;
-    private boolean isConfused;
+    private boolean inConfusion;
     private boolean key;
 
     /**
@@ -30,60 +31,54 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * @param dim
      *          the dimension of the hitBox
      */
-    public HeroImpl(final Point pos, final Direction dir, final Dimension dim) {
-        super(pos, dir, dim);
+    public HeroImpl(final Point pos, final Dimension dim) {
+        super(pos, dim);
         this.detonator = new Detonator(dim);
         this.heroCollision = new HeroCollisionImpl(this);
-        this.isConfused = false;
+        this.inConfusion = false;
         this.key = false;
     }
     
     /**
      * Hero's movement.
      */
-    public void move(final Direction dir, final Set<Rectangle> blockSet, final Set<Rectangle> bombSet,
-            final Set<Tile> powerUpSet){
+    public void move(final Direction dir, final Set<Rectangle> blockSet, 
+            final Set<Rectangle> bombSet, final Set<Tile> powerUpSet) {
         this.heroCollision.updateEntityRec(dir);
-        if(this.heroCollision.blockCollision(blockSet) && this.heroCollision.bombCollision(bombSet) &&
-                this.heroCollision.powerUpCollision(powerUpSet)){
+        if (this.heroCollision.blockCollision(blockSet) && this.heroCollision.bombCollision(bombSet)
+                && this.heroCollision.powerUpCollision(powerUpSet)) {
             this.setMoving(true);
             super.move(dir);
         }
     }
     
     /**
-     * Gets the bomb to plant.
+     * Verifies if a bomb can be planted.
+     * 
+     * @return true if the bomb can be planted, false otherwise
      */
     @Override
-    public void plantBomb(final Point p) {
-        this.detonator.plantBomb(p);
-        
-    }
-       
-    /**
-     * Adds a bomb to his detonator.
-     */
-    @Override
-    public void increaseBomb() {
-        System.out.println("increase bomb");
-        this.detonator.increaseBombs();       
+    public boolean canPlantBomb(final int nTiles) {
+        final Point point = new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height));
+        return !this.getDetonator().getPlantedBombs().stream().anyMatch(b -> b.getPosition().equals(point));
     }
 
     /**
-     * Increases the range of a bomb.
+     * Plants a bomb.
      */
     @Override
-    public void increaseRange() {
-        System.out.println("increase range");
-        this.detonator.increaseRange(); 
-    } 
+    public void plantBomb(final int nTiles) {
+        this.getDetonator().plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
+    }
     
     /**
      * Increases hero's score.
      */
     @Override
-    public void increaseScore(int enemyScore) {
-        super.score += enemyScore; 
+    public void increaseScore(final int scoreToAdd) {
+        super.score += scoreToAdd; 
     }
 
     /**
@@ -107,20 +102,10 @@ public class HeroImpl extends AbstractEntity implements Hero {
      *          the score
      */
     @Override
-    public void nextLevel(int lives, int attack, int score) {
+    public void nextLevel(final int lives, final int attack, final int score) {
         this.modifyLife(lives - 1);
         this.increaseAttack(attack - 1);
         this.increaseScore(score); 
-    }
-    
-    /**
-     * Gets bomb delay.
-     * 
-     * @return bomb delay
-     */
-    @Override
-    public long getBombDelay() {
-        return this.detonator.getBombDelay();        
     }
     
     /**
@@ -131,7 +116,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
      * @return the direction where he will move
      */
     public Direction getCorrectDirection(final Direction dir) {
-        return this.isConfused ? dir.getOppositeDirection() : dir;
+        return this.inConfusion ? dir.getOppositeDirection() : dir;
     }
     
     /**
@@ -167,13 +152,7 @@ public class HeroImpl extends AbstractEntity implements Hero {
      */
     @Override
     public void setConfusion(final boolean b) {
-        if(b){
-            System.out.println("confusion_on"); 
-        } else {
-            System.out.println("confusion_off");
-        }
-
-        this.isConfused = b;
+        this.inConfusion = b;
     }
 
     /**
@@ -181,7 +160,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
      */
     @Override
     public void setKey() {
-        System.out.println("key");
         this.key = true;
     }
     
@@ -193,21 +171,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
     @Override
     public boolean hasKey() {
         return this.key;
-    }
-
-    /**
-     * Checks if he has bomb to plant.
-     * 
-     * @return true if there's a bomb, false otherwise
-     */
-    @Override
-    public boolean hasBomb() {
-        return this.detonator.hasBombs();
-    }
-    
-    @Override
-    public boolean isConfused(){
-        return this.isConfused;
     }
     
     /**
@@ -226,15 +189,15 @@ public class HeroImpl extends AbstractEntity implements Hero {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (isConfused ? 1231 : 1237);
+        result = prime * result + (inConfusion ? 1231 : 1237);
         result = prime * result + (key ? 1231 : 1237);
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof HeroImpl && this.isConfused == ((HeroImpl) obj).isConfused
+    public boolean equals(final Object obj) {
+        return obj instanceof HeroImpl && this.inConfusion == ((HeroImpl) obj).inConfusion
                 && this.key == ((HeroImpl) obj).key;
     }
-    
+  
 }

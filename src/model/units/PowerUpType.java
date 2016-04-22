@@ -14,7 +14,7 @@ public enum PowerUpType {
      * Increase attack.
      */
     ATTACK(){
-        public void doApply(final Hero hero){
+        public void doApply(final Hero hero) {
             hero.increaseAttack(INC);
         }
     },
@@ -23,7 +23,7 @@ public enum PowerUpType {
      * Increase lives. 
      */
     LIFE(){
-        public void doApply(final Hero hero){
+        public void doApply(final Hero hero) {
             hero.modifyLife(INC);
         }
     },
@@ -34,7 +34,7 @@ public enum PowerUpType {
     BOMB() {
         @Override
         public void doApply(final Hero hero) {
-            hero.increaseBomb();
+            hero.getDetonator().increaseBombs();
         }
     },
     
@@ -44,7 +44,7 @@ public enum PowerUpType {
     RANGE() {
         @Override
         public void doApply(final Hero hero) {
-            hero.increaseRange();
+            hero.getDetonator().increaseRange();
         }
     },
     
@@ -84,7 +84,7 @@ public enum PowerUpType {
     MYSTERY() {
         @Override
         public void doApply(final Hero hero) {
-            Random random = new Random();
+            final Random random = new Random();
             PowerUpType powerup = MYSTERY;
             while (powerup == MYSTERY) {
                 powerup = PowerUpType.values()[random.nextInt(PowerUpType.values().length - 1)];
@@ -112,7 +112,7 @@ public enum PowerUpType {
      * @param hero
      *          the entity that benefits powerup's power
      */
-    public void apply(final Hero hero){
+    public void apply(final Hero hero) {
         this.doApply(hero);
     }
     

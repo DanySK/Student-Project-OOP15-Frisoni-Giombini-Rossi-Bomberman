@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import model.utilities.CopyFactory;
@@ -20,7 +21,7 @@ public class Detonator {
     private final Dimension dim;
     private int bombRange;
     private int maxBombs;
-    private Deque<Bomb> bombList;
+    private final Deque<Bomb> bombList;
 
     /**
      * It creates a detonator.
@@ -28,7 +29,7 @@ public class Detonator {
      * @param dim
      *          the dimension of a bomb
      */
-    public Detonator(final Dimension dim){
+    public Detonator(final Dimension dim) {
         this.dim = dim;
         this.bombRange = INITIAL_RANGE;
         this.maxBombs = INITIAL_BOMBS;
@@ -38,21 +39,21 @@ public class Detonator {
     /**
      * It adds a bomb to the List.
      */
-    public void addBomb(final Point p){
+    public void addBomb(final Point p) {
         this.bombList.addLast(new BombImpl(p, this.dim, this.bombRange));
     }
 
     /**
      * It increases the range of a bomb.
      */
-    public void increaseRange(){
+    public void increaseRange() {
         this.bombRange++;
     }
 
     /**
      * It increases the number of bombs that can be planted.
      */
-    public void increaseBombs(){
+    public void increaseBombs() {
         this.maxBombs++;
     }
 
@@ -63,7 +64,7 @@ public class Detonator {
      *          the new bomb's position
      * @return the bomb with the position updated
      */
-    public void plantBomb(final Point p){
+    public void plantBomb(final Point p) {
         this.addBomb(p);
         this.getBombToPlant().setPlanted(true);
     }
@@ -71,7 +72,7 @@ public class Detonator {
     /**
      * Reactivates a bomb that has already exploded.
      */
-    public void reactivateBomb(){
+    public void reactivateBomb() {
         synchronized (this.bombList) {
             this.bombList.removeFirst();
         }
@@ -82,7 +83,7 @@ public class Detonator {
      * 
      * @return a bomb that can be planted.
      */
-    private Bomb getBombToPlant(){
+    private Bomb getBombToPlant() {
         return this.bombList.stream().filter(b -> !b.isPositioned()).findFirst().get();
     }
 
@@ -91,7 +92,7 @@ public class Detonator {
      * 
      * @return a bomb that has to be reactivated
      */
-    public Bomb getBombToReactivate(){
+    public Bomb getBombToReactivate() {
         return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
     }
 
@@ -100,7 +101,7 @@ public class Detonator {
      * 
      * @return bomb's delay
      */
-    public long getBombDelay(){
+    public long getBombDelay() {
         return BOMB_DELAY;
     }
 
@@ -109,7 +110,7 @@ public class Detonator {
      *  
      * @return true if there's at least a bomb to plant.
      */
-    public boolean hasBombs(){
+    public boolean hasBombs() {
         return this.bombList.size() < this.maxBombs;
     }
 
@@ -118,11 +119,11 @@ public class Detonator {
      * 
      * @return the list of planted bombs
      */
-    public LinkedList<Bomb> getPlantedBombs(){
-        synchronized (this.bombList){
+    public Set<Bomb> getPlantedBombs() {
+        synchronized (this.bombList) {
             return this.bombList.stream().filter(b -> b.isPositioned())
                     .map(b -> CopyFactory.getCopy(b))
-                    .collect(Collectors.toCollection(LinkedList::new));
+                    .collect(Collectors.toSet());
         }        
     }
 
@@ -131,7 +132,7 @@ public class Detonator {
      * 
      * @return the actual range of a bomb
      */
-    public int getActualRange(){
+    public int getActualRange() {
         return this.bombRange;
     }
     
@@ -140,7 +141,7 @@ public class Detonator {
      * 
      * @return the actual number of bombs
      */
-    public int getActualBombs(){
+    public int getActualBombs() {
         return this.maxBombs;
     }
     
@@ -155,7 +156,7 @@ public class Detonator {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof Detonator && this.dim.equals(((Detonator) obj).dim)
                 && this.bombRange == ((Detonator) obj).bombRange 
                 && this.maxBombs == ((Detonator) obj).maxBombs;

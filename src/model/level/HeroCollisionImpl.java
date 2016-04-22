@@ -2,7 +2,6 @@ package model.level;
 
 import java.awt.Rectangle;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import model.Tile;
 import model.TileType;
@@ -10,7 +9,7 @@ import model.units.Entity;
 import model.units.Hero;
 
 /**
- * Implementation of {@link HeroCollision}
+ * Implementation of {@link HeroCollision}.
  */
 
 public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
@@ -21,7 +20,7 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
      * @param entity
      *          the hero
      */
-    public HeroCollisionImpl(Entity entity) {
+    public HeroCollisionImpl(final Entity entity) {
         super(entity);
     }
 
@@ -32,17 +31,14 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
      *          the set of tiles that contains a power up
      * @return true if there's a collision, false otherwise
      */
-    public boolean powerUpCollision(final Set<Tile> powerUpSet){
-        return super.elementCollision(powerUpSet, new Predicate<Tile>(){
-            @Override
-            public boolean test(final Tile t) {
-                if(entityRec.intersects(t.getHitbox())){
-                    t.getPowerup().get().apply((Hero) entity);
-                    t.removePowerUp();
-                    t.setType(TileType.WALKABLE);
-                }
-                return false;
+    public boolean powerUpCollision(final Set<Tile> powerUpSet) {
+        return super.elementCollision(powerUpSet, (t) -> {
+            if (entityRec.intersects(t.getHitbox())) {
+                t.getPowerup().get().apply((Hero) entity);
+                t.removePowerUp();
+                t.setType(TileType.WALKABLE);
             }
+            return false;
         });
     }
 

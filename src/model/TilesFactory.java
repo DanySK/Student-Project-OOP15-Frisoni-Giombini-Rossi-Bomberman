@@ -15,10 +15,11 @@ import model.utilities.MapPoint;
  */
 public class TilesFactory {
 
+    private static final double BLOCK_DENSITY = 0.5;
+    private static final double POWERUP_DENSITY = 0.75;
+    
     private final int rows;
     private final int columns;
-    private final double blockDensity;
-    private final double powerupDensity;
 
     /**
      * Construct a TileFactory.
@@ -32,12 +33,9 @@ public class TilesFactory {
      * @param tileDimension
      *          the dimension of a tile
      */
-    public TilesFactory(final int rows, final int columns, final double blockDensity, 
-            final double powerupDensity) {
+    public TilesFactory(final int rows, final int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.blockDensity = blockDensity;
-        this.powerupDensity = powerupDensity;
     }
 
     /**
@@ -70,9 +68,9 @@ public class TilesFactory {
     private TileType getTypeForCoordinates(final int row, final int column) {
         if (this.tileIsConcrete(row, column)) {
             return TileType.CONCRETE;
-        } else if (Math.random() < this.blockDensity && !MapPoint.isEntryPoint(row, column)) {
+        } else if (Math.random() < BLOCK_DENSITY && !MapPoint.isEntryPoint(row, column)) {
             return TileType.RUBBLE;
-        }else {
+        } else {
             return TileType.WALKABLE;
         }
     }
@@ -97,18 +95,14 @@ public class TilesFactory {
      * 
      * @param type
      *          block type
-     * @return an Optional<Powerup> because a block might not have a powerup
+     * @return an powerup that is an optional
+     *           because a block might not have a powerup
      */
-    private Optional<PowerUpType> getPowerup(final TileType type){
-        if(!type.equals(TileType.RUBBLE)){
+    private Optional<PowerUpType> getPowerup(final TileType type) {
+        if (!type.equals(TileType.RUBBLE) || Math.random() < POWERUP_DENSITY) {
             return Optional.empty();
-        }
-        else{
-            if(Math.random() < this.powerupDensity){
-                return Optional.empty();
-            } else {
+        } else {
                 return Optional.of(this.selectType());
-            }
         }
     }
 
@@ -117,9 +111,9 @@ public class TilesFactory {
      * 
      * @return a powerup type
      */
-    public PowerUpType selectType(){
+    public PowerUpType selectType() {
         PowerUpType type = PowerUpType.KEY;
-        while(type.equals(PowerUpType.KEY)){
+        while (type.equals(PowerUpType.KEY)) {
             type = PowerUpType.values()[new Random().nextInt(PowerUpType.values().length)];
         }
         return type;
@@ -131,7 +125,7 @@ public class TilesFactory {
      * @param walkableTiles
      *          the set of walkable tiles
      */
-    public void setDoor(final Set<Tile> walkableTiles){
+    public void setDoor(final Set<Tile> walkableTiles) {
         walkableTiles.stream().findAny().get().setType(TileType.DOOR_CLOSED);
     }
 

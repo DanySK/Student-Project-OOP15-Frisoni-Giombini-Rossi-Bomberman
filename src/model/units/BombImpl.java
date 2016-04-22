@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 /**
- * Implementation of {@link Bomb}
+ * Implementation of {@link Bomb}.
  */
 public class BombImpl extends DynamicLevelElement implements Bomb{
     
@@ -66,7 +66,7 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
      * @return bomb's description
      */
     @Override
-    public String toString(){
+    public String toString() {
         return new StringBuilder().append("BOMB -  ")
                 .append("Range is: ")
                 .append(this.getRange())
@@ -88,7 +88,7 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof BombImpl && this.range == ((BombImpl) obj).range
                 && this.isPlanted == ((BombImpl) obj).isPlanted;
     }

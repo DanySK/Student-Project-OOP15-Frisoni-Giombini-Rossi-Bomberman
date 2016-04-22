@@ -28,7 +28,7 @@ public class Tile extends LevelElementImpl{
      * @param powerup
      *          the associated powerup
      */
-    public Tile(Point pos, Dimension dim, final TileType type, final Optional<PowerUpType> powerup) {
+    public Tile(final Point pos, final Dimension dim, final TileType type, final Optional<PowerUpType> powerup) {
         super(pos, dim);
         this.type = type;
         this.powerup = powerup;
@@ -48,7 +48,7 @@ public class Tile extends LevelElementImpl{
      * 
      * @return the powerup associated
      */
-    public Optional<PowerUpType> getPowerup(){
+    public Optional<PowerUpType> getPowerup() {
         return this.powerup;
     }
 
@@ -58,21 +58,21 @@ public class Tile extends LevelElementImpl{
      * @param newType
      *          the new type 
      */
-    public void setType(final TileType newType){
+    public void setType(final TileType newType) {
         this.type = newType;
     }
 
     /**
      * Sets the key.
      */
-    public void setKeyPowerUp(){
+    public void setKeyPowerUp() {
         this.powerup = Optional.of(PowerUpType.KEY);
     }
 
     /**
      * Remove the powerup.
      */
-    public void removePowerUp(){
+    public void removePowerUp() {
         this.powerup = Optional.empty();
     }
 
@@ -81,7 +81,7 @@ public class Tile extends LevelElementImpl{
      * 
      * @return tile's description
      */
-    public String toString(){
+    public String toString() {
         return new StringBuilder().append("TILE -  ")
                 .append("Type is: ")
                 .append(this.getType())
@@ -92,7 +92,7 @@ public class Tile extends LevelElementImpl{
                 .append(super.toString())
                 .toString();
     }
-    /*
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -103,8 +103,8 @@ public class Tile extends LevelElementImpl{
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof Tile && this.type.equals(((Tile) obj).type)
                 && this.powerup.equals(((Tile) obj).powerup);
-    }*/
+    }
 }

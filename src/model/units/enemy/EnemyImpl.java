@@ -31,7 +31,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      */
     public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, 
             final EnemyType enemyType) {
-        super(pos, dir, dim);
+        super(pos, dim);
         this.enemyCollision = new EnemyCollisionImpl(this);
         this.enemyType = enemyType;
         super.modifyLife(this.enemyType.getEnemyLives() - 1);

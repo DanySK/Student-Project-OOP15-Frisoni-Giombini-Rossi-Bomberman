@@ -18,7 +18,6 @@ import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
-import model.units.LevelElement;
 import model.units.enemy.Enemy;
 import model.units.enemy.EnemyImpl;
 import model.units.enemy.EnemyType;
@@ -33,11 +32,8 @@ import model.utilities.MapPoint;
 public class LevelImpl implements Level {
 
     private static final Point START_HERO_POS = new Point(1, 1);
-    private static final double BLOCK_DENSITY = 0.5;
-    private static final double POWERUP_DENSITY = 0.75;
     private static final int MIN_TILES = 11;
-    private static final int MAX_TILES = 19;
-    private static final int FIRST_STAGE = 1; 
+    private static final int MAX_TILES = 19; 
     private static final int ENEMY_FACTOR = 8;
 
     private Tile[][] map;
@@ -52,7 +48,7 @@ public class LevelImpl implements Level {
      * because it's the first thing to do to start the game.
      */
     public LevelImpl() {
-        this.setNumberTiles();
+        this.setTilesNumber();
     }
 
     /**
@@ -69,14 +65,14 @@ public class LevelImpl implements Level {
      * This method initialize correctly the hero.
      */
     private void initHero(){
-        if(!this.isFirstStage()){
+        if (this.isFirstStage()) {
+            this.createHero();            
+        } else {
             final int lives = this.hero.getRemainingLives();
             final int attack = this.hero.getAttack();
             final int score = this.hero.getScore();
             this.createHero();
-            this.hero.nextLevel(lives, attack, score);            
-        } else {
-            this.createHero();
+            this.hero.nextLevel(lives, attack, score);
         }
     }
 
@@ -84,8 +80,7 @@ public class LevelImpl implements Level {
      * This method creates the hero.
      */
     private void createHero(){
-        this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension), 
-                Direction.DOWN, 
+        this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension),
                 new Dimension(this.tileDimension, this.tileDimension));
     }
 
@@ -120,8 +115,7 @@ public class LevelImpl implements Level {
      * with the specified size and block density.
      */
     private void createLevel() {
-        final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles, BLOCK_DENSITY,
-                POWERUP_DENSITY);
+        final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles);
         this.map = new Tile[this.nTiles][this.nTiles];
         for (int i = 0; i < this.nTiles; i++) {
             for (int j = 0; j < this.nTiles; j++) {
@@ -138,7 +132,7 @@ public class LevelImpl implements Level {
      * @param factory
      *          the TilesFactory object
      */
-    private void setDoor(final TilesFactory factory){
+    private void setDoor(final TilesFactory factory) {
         factory.setDoor(this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE)));
     }
 
@@ -148,7 +142,7 @@ public class LevelImpl implements Level {
      * @param factory
      *          the TilesFactory object
      */
-    private void setKey(final TilesFactory factory){
+    private void setKey(final TilesFactory factory) {
         factory.setKey(this.getGenericSet(t -> t.getType().equals(TileType.RUBBLE)));
     }
 
@@ -159,14 +153,15 @@ public class LevelImpl implements Level {
     @Override
     public void moveHero(final Direction dir) {
         this.hero.move(this.hero.getCorrectDirection(dir), this.getBlocks(), 
-                this.getRectangles(this.getPlantedBombs()), this.getPowerUpForMovement());
+                this.hero.getDetonator().getPlantedBombs().stream().map(b -> b.getHitbox()).collect(Collectors.toSet()), 
+                this.getPowerUpForMovement());
     }
 
     @Override
     public void moveEnemies() {
         synchronized (this.enemies) {
-            this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, 
-                    e.getRandomDirection(), this.getRectangles(this.getPlantedBombs())));
+            this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(),
+                    this.hero.getDetonator().getPlantedBombs().stream().map(b -> b.getHitbox()).collect(Collectors.toSet())));
         }
     }
 
@@ -199,39 +194,15 @@ public class LevelImpl implements Level {
     }
 
     /**
-     * Verifies if a bomb can be planted.
-     * 
-     * @return true if the bomb can be planted, false otherwise
-     */
-    public boolean canPlantBomb(){
-        final Point point = new Point(MapPoint.getCorrectPos(this.hero.getX(), nTiles, this.tileDimension), 
-                MapPoint.getCorrectPos(this.hero.getY(), nTiles, this.tileDimension));
-        for(final Bomb b: this.getPlantedBombs()){
-            if(b.getPosition().equals(point)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Plants a bomb.
-     */
-    @Override
-    public void plantBomb() {
-        this.hero.plantBomb(new Point(MapPoint.getCorrectPos(this.hero.getX(), nTiles, this.tileDimension), 
-                MapPoint.getCorrectPos(this.hero.getY(), nTiles, this.tileDimension)));
-    }
-
-    /**
      * Detonates a bomb.
      * 
      * @return the set of afflicted tiles
      */
     @Override
     public Set<Tile> detonateBomb() {
-        final Set<Tile> tiles = this.getAllAfflictedTiles(CopyFactory.getCopy(this.hero.getDetonator().getBombToReactivate()));
-        if(this.hero.checkFlameCollision(tiles)){
+        final Set<Tile> tiles = this.getAllAfflictedTiles(
+                CopyFactory.getCopy(this.hero.getDetonator().getBombToReactivate()));
+        if (this.hero.checkFlameCollision(tiles)) {
             this.hero.modifyLife(-this.hero.getAttack());
         }
         this.checkCollisionWithExplosionBomb(tiles);
@@ -248,15 +219,19 @@ public class LevelImpl implements Level {
         final Set<Tile> afflictedTiles = new HashSet<>();
         afflictedTiles.addAll(this.getAfflictedTiles(Direction.UP, b, 
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), -b.getRange())));
+                MapPoint.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension),
+                        -b.getRange(), this.nTiles)));
         afflictedTiles.addAll(this.getAfflictedTiles(Direction.RIGHT, b,
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), +b.getRange()), 
+                MapPoint.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
+                        +b.getRange(), this.nTiles), 
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
         afflictedTiles.addAll(this.getAfflictedTiles(Direction.DOWN, b, 
                 MapPoint.getInvCoordinate(b.getX(), this.tileDimension),
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), +b.getRange())));
+                MapPoint.checkBoundaries(MapPoint.getInvCoordinate(b.getY(), this.tileDimension), 
+                        +b.getRange(), this.nTiles)));
         afflictedTiles.addAll(this.getAfflictedTiles(Direction.LEFT, b,
-                this.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), -b.getRange()), 
+                MapPoint.checkBoundaries(MapPoint.getInvCoordinate(b.getX(), this.tileDimension), 
+                        -b.getRange(), this.nTiles), 
                 MapPoint.getInvCoordinate(b.getY(), this.tileDimension)));
         return afflictedTiles;
     }
@@ -275,18 +250,19 @@ public class LevelImpl implements Level {
      *          the max y coordinate
      * @return the set of afflicted tiles
      */
-    private Set<Tile> getAfflictedTiles(final Direction dir, final Bomb b, final int maxX, final int maxY){
+    private Set<Tile> getAfflictedTiles(final Direction dir, final Bomb b, final int maxX, final int maxY) {
         final Set<Tile> afflictedTiles = new HashSet<>();
         boolean stop = false;
-        for(int i = MapPoint.getInvCoordinate(b.getX(), this.tileDimension); this.stop(i, maxX, dir) && !stop; i += this.next(dir) ){
-            for(int j = MapPoint.getInvCoordinate(b.getY(), this.tileDimension); this.stop(j, maxY, dir) && !stop; j += this.next(dir) ){
-                if(this.map[i][j].getType().equals(TileType.CONCRETE)){
+        for (int i = MapPoint.getInvCoordinate(b.getX(), this.tileDimension); 
+                MapPoint.stopCycle(i, maxX, dir) && !stop; i += MapPoint.continueCycle(dir)) {
+            for (int j = MapPoint.getInvCoordinate(b.getY(), this.tileDimension); 
+                    MapPoint.stopCycle(j, maxY, dir) && !stop; j += MapPoint.continueCycle(dir)) {
+                if (this.map[i][j].getType().equals(TileType.CONCRETE)) {
                     stop = true;
-                }
-                else {
+                } else {
                     afflictedTiles.add(CopyFactory.getCopy(this.map[i][j]));
-                    if(this.map[i][j].getType().equals(TileType.RUBBLE)){
-                        if(this.map[i][j].getPowerup().isPresent()){
+                    if (this.map[i][j].getType().equals(TileType.RUBBLE)) {
+                        if (this.map[i][j].getPowerup().isPresent()) {
                             this.map[i][j].setType(TileType.POWERUP_STATUS);
                         } else {
                             this.map[i][j].setType(TileType.WALKABLE);
@@ -299,69 +275,6 @@ public class LevelImpl implements Level {
         return afflictedTiles;
     }
 
-    /**
-     * Checks boundaries.
-     * 
-     * @param coordinate
-     *          the coordinate
-     * @param range
-     *          the bomb's range
-     * @return the maximum possible coordinate
-     */
-    private int checkBoundaries(final int coordinate, final int range){
-        if((coordinate + range) > this.nTiles - 1){
-            return this.nTiles - 1;
-        } else if ((coordinate + range) < 0){
-            return 0;
-        } else {
-            return coordinate + range;
-        }
-    }
-
-    /**
-     * Checks if the cycle must be stopped or not.
-     * 
-     * @param coordinate
-     *          the coordinate
-     * @param max
-     *          the max coordinate
-     * @param dir
-     *          the direction
-     * @return true if the cycle can continue, false otherwise
-     */
-    private boolean stop(final int coordinate, final int max, final Direction dir){
-        if(dir.equals(Direction.UP) || dir.equals(Direction.LEFT)){
-            return coordinate >= max;
-        } else {
-            return coordinate <= max; 
-        }
-    }
-
-    /**
-     * Return the next value the coordinate has to add.
-     * 
-     * @param dir
-     *          the direction
-     * @return the integer to add to the coordinate
-     */
-    private int next(final Direction dir){
-        if(dir.equals(Direction.UP) || dir.equals(Direction.LEFT)){
-            return -1;
-        } else {
-            return 1;
-        }
-    }
-
-    /**
-     * This method return the stage's number.
-     * 
-     * @return the stage
-     */
-    @Override
-    public int getStage(){
-        return this.stage;
-    }
-    
     /**
      * This method return the size of the map.
      * 
@@ -389,21 +302,12 @@ public class LevelImpl implements Level {
      * @return the PowerUp sets
      */
     @Override
-    public Set<Tile> getPowerUp(){
-        return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent())
-                .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
+    public Set<Tile> getPowerUp() {
+        return this.getPowerUpForMovement().stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
 
-    private Set<Tile> getPowerUpForMovement(){
+    private Set<Tile> getPowerUpForMovement() {
         return this.getGenericSet(t -> t.getType().equals(TileType.POWERUP_STATUS) && t.getPowerup().isPresent());
-    }
-
-    /**
-     * This method returns the set of planted bombs.
-     */
-    @Override
-    public Set<Bomb> getPlantedBombs() {
-        return this.hero.getDetonator().getPlantedBombs().stream().collect(Collectors.toSet());
     }
 
     /**
@@ -412,12 +316,11 @@ public class LevelImpl implements Level {
      * @return the tile that represents the door
      */
     @Override
-    public Tile getDoor(){
-        return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
-                .stream().map(t -> CopyFactory.getCopy(t)).findFirst().get();
+    public Tile getDoor() {
+        return CopyFactory.getCopy(this.getDoorToOpen());
     }
 
-    private Tile getDoorToOpen(){
+    private Tile getDoorToOpen() {
         return this.getGenericSet(t -> t.getType().equals(TileType.DOOR_CLOSED) || t.getType().equals(TileType.DOOR_OPENED))
                 .stream().findFirst().get();
     }
@@ -428,7 +331,7 @@ public class LevelImpl implements Level {
      * 
      * @return the set of blocks
      */
-    private Set<Rectangle> getBlocks(){
+    private Set<Rectangle> getBlocks() {
         return this.getGenericSet(t -> t.getType().equals(TileType.RUBBLE) || t.getType().equals(TileType.CONCRETE))
                 .stream().map(t -> CopyFactory.getCopy(t)).map(t -> t.getHitbox()).collect(Collectors.toSet());
     }
@@ -439,9 +342,9 @@ public class LevelImpl implements Level {
      * 
      * @return the set of free tiles
      */
-    private Set<Tile> getFreeTiles(){
-        return this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE) && 
-                !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
+    private Set<Tile> getFreeTiles() {
+        return this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE) 
+                && !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
                         MapPoint.getInvCoordinate(t.getY(), tileDimension)))
                 .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
@@ -453,26 +356,16 @@ public class LevelImpl implements Level {
      *          the function
      * @return a set of elements
      */
-    private Set<Tile> getGenericSet(final Predicate<Tile> pred){
+    private Set<Tile> getGenericSet(final Predicate<Tile> pred) {
         final Set<Tile> set = new HashSet<>();
-        for(int i = 0; i < this.map.length; i++){
-            for(int j = 0; j < this.map.length; j++){
-                if(pred.test(this.map[i][j])){
+        for (int i = 0; i < this.map.length; i++) {
+            for (int j = 0; j < this.map.length; j++) {
+                if (pred.test(this.map[i][j])) {
                     set.add(this.map[i][j]);
                 }
             }
         }
         return set;
-    }
-
-    /**
-     * This method return a set of LevelElement's boundbox.
-     * 
-     * @param set
-     * @return
-     */
-    private <X extends LevelElement> Set<Rectangle> getRectangles(final Set<X> set ){
-        return set.stream().map(p -> p.getHitbox()).collect(Collectors.toSet());
     }
 
     /**
@@ -488,7 +381,7 @@ public class LevelImpl implements Level {
      * as the size of the map.
      */
     @Override
-    public void setNumberTiles() {
+    public final void setTilesNumber() {
         int tiles = 0;
         while (tiles % 2 == 0) {
             tiles = new Random().nextInt(MAX_TILES - MIN_TILES) + MIN_TILES;
@@ -508,7 +401,7 @@ public class LevelImpl implements Level {
      * Set the open door.
      */
     @Override
-    public void setOpenDoor(){
+    public void setOpenDoor() {
         this.getDoorToOpen().setType(TileType.DOOR_OPENED);
     }
 
@@ -516,15 +409,15 @@ public class LevelImpl implements Level {
      * Sets first stage.
      */
     @Override
-    public void setFirstStage(){
-        this.stage = FIRST_STAGE;
+    public void setFirstStage() {
+        this.stage = 0;
     }
 
     /**
      * Sets next stage.
      */
     @Override
-    public void setNextStage(){
+    public void setNextStage() {
         this.stage++;
     }
 
@@ -533,8 +426,8 @@ public class LevelImpl implements Level {
      * 
      * @return true if it's the first stage, false otherwise
      */
-    private boolean isFirstStage(){
-        return this.stage == FIRST_STAGE;
+    private boolean isFirstStage() {
+        return this.stage == 0;
     }
 
     /**

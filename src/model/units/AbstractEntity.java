@@ -28,9 +28,9 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     /**
      * Constructs a new Entity.
      */
-    public AbstractEntity(final Point pos, final Direction dir, final Dimension dim) {
+    public AbstractEntity(final Point pos, final Dimension dim) {
         super(pos, dim);
-        this.curDir = dir; 
+        this.curDir = Direction.DOWN; 
         this.inMovement = false;
         this.lives = INITIAL_LIVES;
         this.attack = INITIAL_ATTACK;
@@ -42,10 +42,9 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      * different depending on the type of the entity.
      */
     @Override
-    public void move(final Direction d){
+    public void move(final Direction d) {
         this.update(this.getPossiblePos(d.getPoint()));
         this.updateDirection(d);
-
     }
     
     /**
@@ -63,7 +62,6 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      */
     @Override
     public void modifyLife(final int change) {
-        System.out.println("life");
         this.lives += change;        
     }
     
@@ -80,7 +78,6 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      */
     @Override
     public void increaseAttack(final int attackToAdd) {
-        System.out.println("attack");
         this.attack += attackToAdd;        
     }
 
@@ -89,7 +86,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      * possible future position of the entity.
      */
     @Override
-    public Point getPossiblePos(final Point pos){
+    public Point getPossiblePos(final Point pos) {
         return new Point(super.getX() + pos.x, super.getY() + pos.y);
     }
 
@@ -117,7 +114,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      * @return entity's score
      */
     @Override
-    public int getScore(){
+    public int getScore() {
         return this.score;
     }
 
@@ -156,7 +153,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     }
 
     @Override
-    public void setDirection(Direction dir) {
+    public void setDirection(final Direction dir) {
         this.curDir = dir;
     }
     
@@ -166,7 +163,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      * @return entity's description
      */
     @Override
-    public String toString(){
+    public String toString() {
         return new StringBuilder().append("Direction is: ")
                 .append(this.getDirection())
                 .append(";\n")
@@ -193,7 +190,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof AbstractEntity && this.attack == ((AbstractEntity) obj).attack
                 && this.curDir.equals(((AbstractEntity) obj).curDir) && this.inMovement == ((AbstractEntity) obj).inMovement
                 && this.lives == ((AbstractEntity) obj).lives && this.score == ((AbstractEntity) obj).score;

@@ -3,7 +3,6 @@ package model.level;
 import java.util.Set;
 
 import model.Tile;
-import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
 import model.units.enemy.Enemy;
@@ -31,18 +30,6 @@ public interface Level {
     void moveHero(Direction dir);
 
     /**
-     * Verifies if there's already a bomb in that tile.
-     * 
-     * @return true if the bomb can be planted, false otherwise
-     */
-    boolean canPlantBomb();
-    
-    /**
-     * Plants a bomb.
-     */
-    void plantBomb();
-
-    /**
      * Detonates a bomb.
      * 
      * @return the set of afflicted tiles
@@ -57,13 +44,6 @@ public interface Level {
     int getSize();
     
     /**
-     * Gets the actual stage.
-     * 
-     * @return the stage
-     */
-    int getStage();
-    
-    /**
      * Gets all the tiles where there isn't a powerup status.
      * 
      * @return the set of tiles
@@ -76,13 +56,6 @@ public interface Level {
      * @return the set of powerups
      */
     Set<Tile> getPowerUp();
-
-    /**
-     * Gets all panted bombs.
-     * 
-     * @return the set of bombs in the map
-     */
-    Set<Bomb> getPlantedBombs();
 
     /**
      * Gets the door.
@@ -102,7 +75,7 @@ public interface Level {
      * This method generates a random value to set
      * as the size of the map.
      */
-    void setNumberTiles();
+    void setTilesNumber();
 
     /**
      * Sets the dimension (weight/height) of a tile.
@@ -123,7 +96,7 @@ public interface Level {
     void setFirstStage();
     
     /**
-     * Sets the next stage;
+     * Sets the next stage.
      */
     void setNextStage();
 
@@ -141,6 +114,7 @@ public interface Level {
     
     /**
      * This method returns a set of enemy entities in the map.
+     * 
      * @return the set of enemies.
      */
     Set<Enemy> getEnemies();

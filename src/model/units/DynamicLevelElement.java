@@ -18,7 +18,7 @@ public class DynamicLevelElement extends LevelElementImpl{
      * @param dim
      *          the dimension
      */
-    public DynamicLevelElement(Point pos, Dimension dim) {
+    public DynamicLevelElement(final Point pos, final Dimension dim) {
         super(pos, dim);
     }
     
@@ -46,7 +46,7 @@ public class DynamicLevelElement extends LevelElementImpl{
      * @param p
      *          the new position
      */
-    public void update(Point p) {
+    public void update(final Point p) {
         this.updatePosition(p);
         this.updateHitbox();
     }
