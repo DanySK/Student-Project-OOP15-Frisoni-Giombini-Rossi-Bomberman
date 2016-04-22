@@ -12,6 +12,7 @@ import model.units.Hero;
 import model.units.enemy.Enemy;
 import view.InputAction;
 import view.InputHandler;
+import view.game.DrawableFrameImpl.GameMessage;
 import view.game.GameFrame;
 import view.game.GameOverPanel;
 import view.menu.MenuFrameImpl;
@@ -84,7 +85,7 @@ public class GameControllerImpl implements GameController {
                 if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
                     if (level.canPlantBomb() && level.getHero().hasBomb()) {
                         level.plantBomb();
-                        this.doOperationAfterDelay(level.getHero().getBombDelay(), new Runnable() {
+                        this.doOperationAfterDelay(level.getHero().getDetonator().getBombDelay(), new Runnable() {
                             @Override
                             public void run() {
                                 view.renderExplosions(level.detonateBomb());
@@ -107,7 +108,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.getHero().hasKey() && level.getHero().checkOpenDoorCollision(level.getDoor())) {
                     pauseLoop();
-                    //view.showNextStageMessage(level.getStage());
+                    view.showMessage(GameMessage.STAGE);
                     level.setNextStage();
                     level.setNumberTiles();
                     try {
@@ -132,7 +133,7 @@ public class GameControllerImpl implements GameController {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
                     if (!this.isPaused()) {
                         this.pauseLoop();
-                        //view.showPauseMessage();
+                        view.showMessage(GameMessage.PAUSE);
                     } else {
                         this.unPauseLoop();
                         view.removeMessage();
