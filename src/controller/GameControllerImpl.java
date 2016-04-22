@@ -107,7 +107,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.getHero().hasKey() && level.getHero().checkOpenDoorCollision(level.getDoor())) {
                     pauseLoop();
-                    view.showNextStageMessage(level.getStage());
+                    //view.showNextStageMessage(level.getStage());
                     level.setNextStage();
                     level.setNumberTiles();
                     try {
@@ -132,7 +132,7 @@ public class GameControllerImpl implements GameController {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
                     if (!this.isPaused()) {
                         this.pauseLoop();
-                        view.showPauseMessage();
+                        //view.showPauseMessage();
                     } else {
                         this.unPauseLoop();
                         view.removeMessage();
@@ -144,7 +144,8 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    view.showGameOverPanel(level.getHero().getScore(), time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),
+                    final int score = darkMode ? level.getHero().getScore() * MULTIPLY : level.getHero().getScore();
+                    view.showGameOverPanel(score, time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),
                             new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
@@ -162,11 +163,7 @@ public class GameControllerImpl implements GameController {
                             view.closeView();
                         }
                     });
-                    if (darkMode) {
-                        ScoreHandler.getHandler().saveScore(level.getHero().getScore() * MULTIPLY, time);
-                    } else {
-                        ScoreHandler.getHandler().saveScore(level.getHero().getScore(), time);
-                    }
+                    ScoreHandler.getHandler().saveScore(score, time);
                 }
             }
 
