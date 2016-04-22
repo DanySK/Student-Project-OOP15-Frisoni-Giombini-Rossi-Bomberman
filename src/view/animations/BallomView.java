@@ -32,7 +32,7 @@ public class BallomView extends AbstractEnemyView {
     }
     
     /**
-     * Constructs a new view for the ballom.
+     * Constructs a new ballom view for the enemy.
      * 
      * @param enemy
      *          the enemy to represent

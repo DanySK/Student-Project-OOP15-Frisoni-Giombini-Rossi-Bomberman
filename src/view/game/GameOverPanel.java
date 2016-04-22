@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,7 +32,7 @@ public class GameOverPanel extends JPanel {
      */
     private static final long serialVersionUID = -8714937523727340290L;
 
-    private static final long ANIMATION_PERIOD = 100L;
+    private static final long RECORD_ANIMATION_PERIOD = 100L;
     private static final int RGB = 256;
     private static final String VALUE_SEPARATOR = ": ";
     private static final String SEPARATOR = ", ";
@@ -45,6 +46,13 @@ public class GameOverPanel extends JPanel {
 
     /**
      * Creates a GameOverPanel.
+     * 
+     * @param score
+     *          the score obtained by the player
+     * @param time
+     *          the time reached by the player
+     * @param isRecord
+     *          true if the score represents a new record, false otherwise
      */
     public GameOverPanel(final int score, final int time, final boolean isRecord) {
         this.seed = new Random();
@@ -77,7 +85,7 @@ public class GameOverPanel extends JPanel {
         cnst.gridwidth = 2;
         final JLabel lblImage = new JLabel();
         lblImage.setHorizontalAlignment(SwingConstants.CENTER);
-        lblImage.setIcon(new StretchIcon(ImageLoader.getLoader().createImage(GameImage.GAME_OVER)));
+        lblImage.setIcon(new StretchIcon(ImageLoader.createImage(GameImage.GAME_OVER)));
         this.add(lblImage, cnst);
         cnst.gridy++;
 
@@ -119,13 +127,14 @@ public class GameOverPanel extends JPanel {
      * It is used principally to render a new record.
      */
     private void animateLabel(final JLabel label) {
+        Objects.requireNonNull(label);
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 label.setForeground(new Color(seed.nextInt(RGB), seed.nextInt(RGB), seed.nextInt(RGB)));
             }
-        }, 0L, ANIMATION_PERIOD);
+        }, 0L, RECORD_ANIMATION_PERIOD);
     }
 
     /**
@@ -140,7 +149,7 @@ public class GameOverPanel extends JPanel {
 
     /**
      * This interface indicates the operations that an observer
-     * of the GameOverPanel can do.
+     * of a GameOverPanel can do.
      *
      */
     public interface GameOverObserver {

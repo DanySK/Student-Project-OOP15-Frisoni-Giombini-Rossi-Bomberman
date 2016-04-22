@@ -18,7 +18,7 @@ import view.GUIFactory;
 import view.menu.components.FadingLabel;
 
 /**
- * This class handles the credit panel of the game.
+ * This class handles the credits panel of the game.
  *
  */
 public class CreditsPanel {

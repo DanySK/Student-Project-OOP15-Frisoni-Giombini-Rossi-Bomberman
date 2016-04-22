@@ -30,6 +30,7 @@ import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.LanguageHandler;
 import view.SoundEffect;
+import view.game.DrawableFrameImpl.GameMessage;
 import view.game.GameOverPanel.GameOverObserver;
 
 /**
@@ -39,8 +40,6 @@ import view.game.GameOverPanel.GameOverObserver;
 public class GameFrameImpl implements GameFrame {
 
     private static final String FRAME_NAME = "Game";
-    private static final float MESSAGE_OPACITY = 0.7f;
-    private static final float NEXT_STAGE_OPACITY = 1f;
 
     private DrawableFrameImpl frame;
 
@@ -69,7 +68,7 @@ public class GameFrameImpl implements GameFrame {
         // Sets the frame
         this.frame = new DrawableFrameImpl();
         this.frame.setTitle(FRAME_NAME);
-        this.frame.setIconImage(ImageLoader.getLoader().createImage(GameImage.ICON));
+        this.frame.setIconImage(ImageLoader.createImage(GameImage.ICON));
         this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -89,8 +88,7 @@ public class GameFrameImpl implements GameFrame {
             public void focusLost(final FocusEvent e) {
                 if (GameFrameImpl.this.gameLoop.isRunningLoop()) {
                     GameFrameImpl.this.gameLoop.pauseLoop();
-                    GameFrameImpl.this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"),
-                            MESSAGE_OPACITY);
+                    GameFrameImpl.this.frame.drawMessage(GameMessage.FOCUS);
                 }
             }
         });
@@ -178,7 +176,7 @@ public class GameFrameImpl implements GameFrame {
         this.statisticPanel.updateStats();
         this.statisticPanel.updateScore(this.controller.getHero().getScore());
         if (this.darkMode) {
-            this.layerUI.moveLight(this.gamePanel.getHeroViewCenterPoint(), this.jlayer);
+            this.gamePanel.getHeroViewCenterPoint().ifPresent(p -> this.layerUI.moveLight(p, this.jlayer));
         }
     }
 
@@ -195,29 +193,21 @@ public class GameFrameImpl implements GameFrame {
     @Override
     public void renderExplosions(final Set<Tile> tiles) {
         this.gamePanel.addExplosions(tiles);
-        SoundEffect.EXPLOSION.playOnce();
     }
 
     @Override
     public void removeExplosion() {
         this.gamePanel.removeExpolosions();
     }
-
+    
     @Override
-    public void showPauseMessage() {
-        this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("pause"),
-                MESSAGE_OPACITY);
+    public void showMessage(final GameMessage gameMessage) {
+        this.frame.drawMessage(gameMessage);
     }
-
+    
     @Override
     public void removeMessage() {
         this.frame.clearMessage();
-    }
-
-    @Override
-    public void showNextStageMessage(final int stageNumber) {
-        this.frame.drawMessage(LanguageHandler.getHandler().getLocaleResource().getString("stage") + " " + stageNumber,
-                NEXT_STAGE_OPACITY);
     }
 
     @Override

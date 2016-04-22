@@ -30,7 +30,7 @@ public class MenuController implements MenuObserver {
             final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
             menuView.setObserver(this);
             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
-            MenuFrameImpl.getMenuFrame().initView();
+            MenuFrameImpl.getMenuFrame().showView();
         } else {
             final WelcomeView welcome = (WelcomeView) MenuCard.WELCOME.getPanel();
             welcome.setObserver(new WelcomeView.WelcomeObserver() {
@@ -44,7 +44,7 @@ public class MenuController implements MenuObserver {
                 }
             });
             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.WELCOME);
-            MenuFrameImpl.getMenuFrame().initView();
+            MenuFrameImpl.getMenuFrame().showView();
         }
         this.darkMode = false;
     }
@@ -75,7 +75,7 @@ public class MenuController implements MenuObserver {
     }
 
     @Override
-    public void credits() {
+    public void info() {
         MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.CREDITS);
     }
 }

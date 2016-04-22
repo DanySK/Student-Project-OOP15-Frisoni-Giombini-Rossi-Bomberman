@@ -38,6 +38,9 @@ public abstract class AbstractEntityView extends AbstractAnimationView implement
      */
     public AbstractEntityView(final Entity entity, final int fps) {
         super(entity);
+        if (fps <= 0) {
+            throw new IllegalArgumentException("Invalid fps value: " + fps);
+        }
         this.entity = entity;
         this.currAnimation = Optional.empty();
         loadAnimations((int) (fps * UPDATE_FRAME_DELAY));
@@ -51,7 +54,7 @@ public abstract class AbstractEntityView extends AbstractAnimationView implement
     public abstract EnumMap<Direction, List<BufferedImage>> standingFrames();
     
     @Override
-    public Animation getAnimation() {
+    protected Animation getAnimation() {
         return this.currAnimation.get();
     }
     
@@ -67,8 +70,8 @@ public abstract class AbstractEntityView extends AbstractAnimationView implement
     }
 
     private void updateAnimation() {
-        Animation nextAnimation;
-        nextAnimation = this.entity.isMoving() ? movementAnimations.get(this.entity.getDirection()) : standingAnimations.get(this.entity.getDirection());
+        final Direction dir = this.entity.getDirection();
+        final Animation nextAnimation = this.entity.isMoving() ? movementAnimations.get(dir) : standingAnimations.get(dir);
         if (!this.currAnimation.isPresent() || !this.currAnimation.get().equals(nextAnimation)) {
             this.currAnimation = Optional.of(nextAnimation);
             this.currAnimation.get().start();

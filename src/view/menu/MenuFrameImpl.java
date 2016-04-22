@@ -54,7 +54,7 @@ public final class MenuFrameImpl implements MenuFrame {
     
     private void initialize() {
         this.frame.setTitle(FRAME_NAME);
-        this.frame.setIconImage(ImageLoader.getLoader().createImage(GameImage.ICON));
+        this.frame.setIconImage(ImageLoader.createImage(GameImage.ICON));
         this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -83,11 +83,11 @@ public final class MenuFrameImpl implements MenuFrame {
     }
     
     @Override
-    public void initView() {
-        this.frame.setVisible(true);
+    public void showView() {
         if (SoundEffect.isMusicOn()) {
             SoundEffect.THEME.playLoop();
         }
+        this.frame.setVisible(true);
     }
 
     @Override
@@ -99,7 +99,7 @@ public final class MenuFrameImpl implements MenuFrame {
 
     @Override
     public void closeView() {
-        this.frame.dispose();
         SoundEffect.THEME.stop();
+        this.frame.dispose();
     }
 }

@@ -73,7 +73,7 @@ public class MenuView extends JPanel {
         // Sets title menu
         final JLabel lblTitle = new JLabel();
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitle.setIcon(ImageLoader.getLoader().createImageIcon(GameImage.TITLE));
+        lblTitle.setIcon(ImageLoader.createImageIcon(GameImage.TITLE));
         cnst.gridwidth = 2;
         cnst.insets = TITLE_INSETS;
         panel.add(lblTitle, cnst);
@@ -91,7 +91,7 @@ public class MenuView extends JPanel {
 
         // Sets stretchable image
         final JLabel lblImage = new JLabel();
-        lblImage.setIcon(new StretchIcon(ImageLoader.getLoader().createImage(GameImage.BOMBERMAN)));
+        lblImage.setIcon(new StretchIcon(ImageLoader.createImage(GameImage.BOMBERMAN)));
         cnst.gridheight = strategy.getButtons().size();
         cnst.insets = IMAGE_INSETS;
         cnst.gridx = 1;
@@ -135,8 +135,8 @@ public class MenuView extends JPanel {
         void settings();
 
         /**
-         * Show some information about the author of the game.
+         * Show some information about the game.
          */
-        void credits();
+        void info();
     }
 }

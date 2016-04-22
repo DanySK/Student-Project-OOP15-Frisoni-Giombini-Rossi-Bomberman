@@ -79,11 +79,11 @@ public class WelcomeView extends JPanel {
         cnst.insets = IMAGE_INSETS;
         final JLabel lblImage = new JLabel();
         lblImage.setHorizontalAlignment(SwingConstants.CENTER);
-        lblImage.setIcon(new StretchIcon(ImageLoader.getLoader().createImage(GameImage.WELCOME)));
+        lblImage.setIcon(new StretchIcon(ImageLoader.createImage(GameImage.WELCOME)));
         panel.add(lblImage, cnst);
         final JLabel lblExplosion = new JLabel();
         lblExplosion.setHorizontalAlignment(SwingConstants.CENTER);
-        lblExplosion.setIcon(new StretchIcon(ImageLoader.getLoader().createImage(GameImage.EXPLOSION)));
+        lblExplosion.setIcon(new StretchIcon(ImageLoader.createImage(GameImage.EXPLOSION)));
         panel.add(lblExplosion, cnst);
         cnst.gridy++;
 

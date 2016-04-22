@@ -35,10 +35,10 @@ public class MinvoView extends AbstractEnemyView {
     }
     
     /**
-     * Constructs a new view for the minvo.
+     * Constructs a new minvo view for the enemy.
      * 
      * @param enemy
-     *          the entity to represent
+     *          the enemy to represent
      * @param fps
      *          the number of frame-per-second
      */

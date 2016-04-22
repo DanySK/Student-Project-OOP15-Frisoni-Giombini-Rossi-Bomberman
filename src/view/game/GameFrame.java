@@ -6,6 +6,7 @@ import java.util.Set;
 import controller.GameController;
 import controller.GameLoop;
 import model.Tile;
+import view.game.DrawableFrameImpl.GameMessage;
 import view.game.GameOverPanel.GameOverObserver;
 
 /**
@@ -92,22 +93,14 @@ public interface GameFrame {
     void removeExplosion();
     
     /**
-     * Shows a message associated to the pause-state of the game.
+     * Shows a game message.
      */
-    void showPauseMessage();
+    void showMessage(GameMessage gameMessage);
     
     /**
      * Removes the pause message.
      */
     void removeMessage();
-    
-    /**
-     * Shows a message before the next level stage rendering.
-     * 
-     * @param stageNumber
-     *          the number of the stage to display
-     */
-    void showNextStageMessage(int stageNumber);
     
     /**
      * Shows a panel associated to the end of the game.

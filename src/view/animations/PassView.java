@@ -32,10 +32,10 @@ public class PassView extends AbstractEnemyView {
     }
     
     /**
-     * Constructs a new view for the kondoria.
+     * Constructs a new pass view for the enemy.
      * 
      * @param enemy
-     *          the entity to represent
+     *          the enemy to represent
      * @param fps
      *          the number of frame-per-second
      */

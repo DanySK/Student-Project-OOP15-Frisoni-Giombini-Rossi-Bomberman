@@ -37,7 +37,7 @@ import view.animations.unit.AbstractEnemyView;
 
 /**
  * A {@link JPanel} for the principal game's rendering.
- * It draws the BoardMap and all the entities of the game.
+ * It draws the board map and all the elements of the game.
  *
  */
 public class GamePanel extends JPanel {
@@ -92,26 +92,26 @@ public class GamePanel extends JPanel {
          * So this is the best way to proceed.
          */
         tilesImages = new HashMap<>();
-        tilesImages.put(TileType.WALKABLE, ImageLoader.getLoader().createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
-        tilesImages.put(TileType.RUBBLE, ImageLoader.getLoader().createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
-        tilesImages.put(TileType.CONCRETE, ImageLoader.getLoader().createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
-        tilesImages.put(TileType.DOOR_OPENED, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_OPENED, this.tileSize, this.tileSize));
-        tilesImages.put(TileType.DOOR_CLOSED, ImageLoader.getLoader().createImageOfSize(GameImage.DOOR_CLOSED, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.WALKABLE, ImageLoader.createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.RUBBLE, ImageLoader.createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.CONCRETE, ImageLoader.createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.DOOR_OPENED, ImageLoader.createImageOfSize(GameImage.DOOR_OPENED, this.tileSize, this.tileSize));
+        tilesImages.put(TileType.DOOR_CLOSED, ImageLoader.createImageOfSize(GameImage.DOOR_CLOSED, this.tileSize, this.tileSize));
 
         /*
          * EnumMap for associating the power-ups' types with images.
          * It uses the same logic adopted for tiles' types rendering.
          */
         powerUpImages = new EnumMap<>(PowerUpType.class);
-        powerUpImages.put(PowerUpType.ATTACK, ImageLoader.getLoader().createImageOfSize(GameImage.ATTACK_UP, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.LIFE, ImageLoader.getLoader().createImageOfSize(GameImage.LIFE_UP, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.BOMB, ImageLoader.getLoader().createImageOfSize(GameImage.BOMBS_UP, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.RANGE, ImageLoader.getLoader().createImageOfSize(GameImage.RANGE_UP, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.HURT, ImageLoader.getLoader().createImageOfSize(GameImage.LIFE_DOWN, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.CONFUSION_ON, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_ON, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.CONFUSION_OFF, ImageLoader.getLoader().createImageOfSize(GameImage.CONFUSION_OFF, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.getLoader().createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
-        powerUpImages.put(PowerUpType.KEY, ImageLoader.getLoader().createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.ATTACK, ImageLoader.createImageOfSize(GameImage.ATTACK_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.LIFE, ImageLoader.createImageOfSize(GameImage.LIFE_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.BOMB, ImageLoader.createImageOfSize(GameImage.BOMBS_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.RANGE, ImageLoader.createImageOfSize(GameImage.RANGE_UP, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.HURT, ImageLoader.createImageOfSize(GameImage.LIFE_DOWN, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.CONFUSION_ON, ImageLoader.createImageOfSize(GameImage.CONFUSION_ON, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.CONFUSION_OFF, ImageLoader.createImageOfSize(GameImage.CONFUSION_OFF, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.MYSTERY, ImageLoader.createImageOfSize(GameImage.MYSTERY, this.tileSize, this.tileSize));
+        powerUpImages.put(PowerUpType.KEY, ImageLoader.createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
         this.hero = Optional.empty();
         this.bombs = new HashSet<>();
@@ -196,10 +196,11 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * @return the center point of the sprite associated to the hero.
+     * Returns the center point of the sprite associated to the hero.
+     * @return the point if the hero view is present, an empty value otherwise.
      */
-    public Point getHeroViewCenterPoint() {
-        return this.hero.get().getCenterPoint();
+    public Optional<Point> getHeroViewCenterPoint() {
+        return this.hero.isPresent() ? Optional.of(this.hero.get().getCenterPoint()) : Optional.empty();
     }
 
     /**
@@ -223,6 +224,7 @@ public class GamePanel extends JPanel {
      *          the tiles involved in a bomb's explosion
      */
     public void addExplosions(final Set<Tile> tiles) {
+        SoundEffect.EXPLOSION.playOnce();
         this.explosions.addLast(tiles.stream()
                 .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
                 .collect(Collectors.toSet()));
@@ -248,6 +250,9 @@ public class GamePanel extends JPanel {
      * @return the size of a single tile
      */
     private static int calculateTileSize(final double scale, final int nTiles) {
+        if (scale < 0 || nTiles < 0) {
+            throw new IllegalArgumentException();
+        }
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int height = (int) screen.getHeight();
         return Math.toIntExact(Math.round((height * scale) / nTiles));

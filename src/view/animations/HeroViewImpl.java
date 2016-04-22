@@ -12,8 +12,7 @@ import view.animations.unit.Sprite;
 
 /**
  * An implementation of {@link HeroView}.
- * It calculates the frame to display based on the hero's status and manages
- * the speed of the animations.
+ * It calculates the frame to display based on the hero's status.
  *
  */
 public class HeroViewImpl extends AbstractEntityView implements HeroView {

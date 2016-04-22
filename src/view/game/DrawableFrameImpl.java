@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import view.GUIFactory;
+import view.LanguageHandler;
 import view.SoundEffect;
 
 /**
@@ -29,7 +30,59 @@ public class DrawableFrameImpl extends JFrame implements DrawableFrame {
      * Auto-generated UID.
      */
     private static final long serialVersionUID = -4905480110288926483L;
-    
+
+    /**
+     * Enumeration for all the game messages.
+     *
+     */
+    public enum GameMessage {
+        
+        PAUSE(LanguageHandler.getHandler().getLocaleResource().getString("pause"), 0.7f, SoundEffect.ADVICE),
+        FOCUS(LanguageHandler.getHandler().getLocaleResource().getString("focus"), 0.7f, SoundEffect.ADVICE),
+        STAGE(LanguageHandler.getHandler().getLocaleResource().getString("stageClear"), 1.0f, SoundEffect.NEXT_LEVEL);
+
+        private final String message;
+        private final float opacity;
+        private final SoundEffect sound;
+
+        /**
+         * Creates a new game message.
+         * 
+         * @param message
+         *      the message to display
+         * @param opacity
+         *      the background opacity
+         * @param sound
+         *      the sound to play
+         */
+        GameMessage(final String message, final float opacity, final SoundEffect sound) {
+            this.message = message;
+            this.opacity = opacity;
+            this.sound = sound;
+        }
+
+        /**
+         * @return the message.
+         */
+        public String getMessage() {
+            return this.message;
+        }
+
+        /**
+         * @return the background opacity.
+         */
+        public float getOpacity() {
+            return this.opacity;
+        }
+
+        /**
+         * @return the sound to play at the notification.
+         */
+        public SoundEffect getSound() {
+            return this.sound;
+        }
+    }
+
     private final JPanel overlayPanel;
     
     /**
@@ -40,28 +93,32 @@ public class DrawableFrameImpl extends JFrame implements DrawableFrame {
         this.overlayPanel.setOpaque(false);
         this.setGlassPane(this.overlayPanel);
     }
-    
+
     @Override
     public void initDrawable() {
         this.overlayPanel.setPreferredSize(this.getPreferredSize());
     }
-    
+
     @Override
-    public void drawMessage(final String msg, final float opacity) {
+    public void drawMessage(final GameMessage gameMessage) {
+        if (gameMessage.getOpacity() < 0 || gameMessage.getOpacity() > 1) {
+            throw new IllegalArgumentException("Opacity parameter outside of expected range");
+        }
+
         this.overlayPanel.setVisible(true);
         final Dimension d = this.overlayPanel.getPreferredSize();
         final BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 
         final Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(new Color(0.0f, 0.0f, 0.0f, opacity));
+        g.setColor(new Color(0.0f, 0.0f, 0.0f, gameMessage.getOpacity()));
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.WHITE);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
         final Font font = new GUIFactory.Standard().getFullFrameFont();
         final FontRenderContext frc = new FontRenderContext(null, true, true);
-        final Rectangle2D r = font.getStringBounds(msg, frc);
+        final Rectangle2D r = font.getStringBounds(gameMessage.getMessage(), frc);
 
         final int rWidth = (int) Math.round(r.getWidth());
         final int rHeight = (int) Math.round(r.getHeight());
@@ -71,14 +128,14 @@ public class DrawableFrameImpl extends JFrame implements DrawableFrame {
         final int y = d.height / 2 - rHeight / 2 - rY;
 
         g.setFont(font);
-        g.drawString(msg, x, y);
+        g.drawString(gameMessage.getMessage(), x, y);
         g.dispose();
         if (this.overlayPanel.getGraphics() != null) {
             this.overlayPanel.repaint();
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     DrawableFrameImpl.this.overlayPanel.getGraphics().drawImage(image, 0, 0, null);
-                    SoundEffect.ADVICE.playOnce();
+                    gameMessage.getSound().playOnce();
                 }
             });
         }

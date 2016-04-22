@@ -159,7 +159,7 @@ public class GameControllerImpl implements GameController {
                         @Override
                         public void exit() {
                             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
-                            MenuFrameImpl.getMenuFrame().initView();
+                            MenuFrameImpl.getMenuFrame().showView();
                             view.closeView();
                         }
                     });

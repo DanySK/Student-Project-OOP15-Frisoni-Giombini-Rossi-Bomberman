@@ -60,7 +60,7 @@ public class SettingsView extends AbstractMenuPanel {
         // Sets the image
         cnst.insets = IMAGE_INSETS;
         final JLabel lblImage = new JLabel();
-        lblImage.setIcon(new StretchIcon(ImageLoader.getLoader().createImage(GameImage.BOMBERMAN_2)));
+        lblImage.setIcon(new StretchIcon(ImageLoader.createImage(GameImage.BOMBERMAN_2)));
         panel.add(lblImage, cnst);
 
         // Sets the options panel

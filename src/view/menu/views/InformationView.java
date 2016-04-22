@@ -30,10 +30,9 @@ public class InformationView extends AbstractMenuPanel {
 
     @Override
     public JPanel getPanel() {
-        final GUIFactory factory = new GUIFactory.Standard();
         final JPanel panel = new JPanel(new BorderLayout());
 
-        final JTabbedPane jtb = factory.createLeftTabbedPane();
+        final JTabbedPane jtb = new GUIFactory.Standard().createLeftTabbedPane();
 
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("commands"), new CommandsPanel().getPanel());
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("powerUps"), new PowerUpsPanel().getPanel());

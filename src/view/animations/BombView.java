@@ -9,7 +9,7 @@ import view.animations.unit.AbstractSingleAnimationView;
 import view.animations.unit.Sprite;
 
 /**
- * An implementation of {@link BombView}.
+ * This class handles the view representation of a {@link Bomb}.
  *
  */
 public class BombView extends AbstractSingleAnimationView {

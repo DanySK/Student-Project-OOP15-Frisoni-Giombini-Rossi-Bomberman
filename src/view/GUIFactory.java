@@ -124,7 +124,7 @@ public interface GUIFactory {
     Font getDescriptionFont();
     
     /**
-     * @return a small {@link Font} for description texts.
+     * @return a small {@link Font} for detail texts.
      */
     Font getSmallFont();
     

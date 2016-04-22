@@ -28,7 +28,7 @@ public abstract class AbstractAnimationView implements AnimationView {
     /**
      * @return the current animation to manage.
      */
-    public abstract Animation getAnimation();
+    protected abstract Animation getAnimation();
     
     @Override
     public Image getImage() {

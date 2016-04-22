@@ -44,6 +44,26 @@ public class ScoresView extends AbstractMenuPanel {
     private static final String SEPARATOR = " ";
 
     private GUIFactory factory;
+    
+    private JTabbedPane jtb;
+    private JPanel scorePanel;
+    private JPanel recordPanel;
+
+    public ScoresView() {
+        super();
+        ScoreHandler.getHandler().addEObserver((s, msg) -> {
+            switch (msg) {
+            case RECORD:
+                this.recordPanel = createBestScorePanel();
+                refreshTabbedPane();
+                break;
+            case LAST_SCORES:
+                this.scorePanel = createProgressPanel();
+                refreshTabbedPane();
+                break;
+            }
+        });
+    }
 
     @Override
     public String getTitle() {
@@ -55,13 +75,24 @@ public class ScoresView extends AbstractMenuPanel {
         factory = new GUIFactory.Standard();
         final JPanel panel = new JPanel(new BorderLayout());
 
-        final JTabbedPane jtb = factory.createLeftTabbedPane();
-        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), createBestScorePanel());
-        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("progress"), createProgressPanel());
+        this.recordPanel = createBestScorePanel();
+        this.scorePanel = createProgressPanel();
+        
+        jtb = factory.createLeftTabbedPane();
+        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), this.recordPanel);
+        jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("progress"), this.scorePanel);
 
         panel.add(jtb, BorderLayout.CENTER);
         panel.setOpaque(false);
         return panel;
+    }
+    
+    private void refreshTabbedPane() {
+        ScoresView.this.jtb.removeAll();
+        ScoresView.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), this.recordPanel);
+        ScoresView.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("progress"), this.scorePanel);
+        ScoresView.this.jtb.revalidate();
+        ScoresView.this.jtb.repaint();
     }
 
     private JPanel createBestScorePanel() {
@@ -86,12 +117,14 @@ public class ScoresView extends AbstractMenuPanel {
             recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
             recordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
             recordPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+            final JLabel name = factory.createLabel(ScoreHandler.getHandler().getPlayerName(), factory.getSmallFont(),factory.getBombermanColor().brighter());
             final JLabel score = factory.createLabel(LanguageHandler.getHandler().getLocaleResource().getString("bestScore") + VALUE_SEPARATOR
                     + ScoreHandler.getHandler().getRecord().getX(), factory.getSmallFont(), Color.WHITE);
             final JLabel time = factory.createLabel(
                     LanguageHandler.getHandler().getLocaleResource().getString("time") + VALUE_SEPARATOR +
                     + ScoreHandler.getHandler().getRecord().getY() + SEPARATOR
                     + LanguageHandler.getHandler().getLocaleResource().getString("seconds"), factory.getSmallFont(), Color.WHITE);
+            recordPanel.add(name);
             recordPanel.add(score);
             recordPanel.add(time);
         } else {
@@ -106,7 +139,7 @@ public class ScoresView extends AbstractMenuPanel {
         cnst.fill = GridBagConstraints.BOTH;
         final JLabel lblImage = new JLabel();
         lblImage.setHorizontalAlignment(SwingConstants.CENTER);
-        lblImage.setIcon(new StretchIcon(ImageLoader.getLoader().createImage(GameImage.MEDAL)));
+        lblImage.setIcon(new StretchIcon(ImageLoader.createImage(GameImage.MEDAL)));
         panel.add(lblImage, cnst);
 
         return panel;

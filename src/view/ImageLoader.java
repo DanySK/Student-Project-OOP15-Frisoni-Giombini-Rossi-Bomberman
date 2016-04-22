@@ -9,8 +9,7 @@ import javax.swing.ImageIcon;
 import view.menu.views.MenuView;
 
 /**
- * This class uses a Singleton Pattern to make an image loader
- * for the application.
+ * This utility class is used as an image loader for the application.
  *
  */
 public final class ImageLoader {
@@ -19,8 +18,6 @@ public final class ImageLoader {
     private static final String MENU_FOLDER = IMAGES_FOLDER + "menu/";
     private static final String TILES_FOLDER = IMAGES_FOLDER + "tiles/";
     private static final String SPRITES_FOLDER = IMAGES_FOLDER + "sprites/";
-
-    private static volatile ImageLoader il;
 
     /**
      * Enumeration for all game images.
@@ -174,28 +171,7 @@ public final class ImageLoader {
         }
     }
 
-    /**
-     * Creates a new ImageLoader.
-     */
     private ImageLoader() { }
-
-    /**
-     * This method returns the ImageLoader.
-     * If the ImageLoader is null it creates a new one on the first call.
-     * This way the resources are loaded only if necessary.
-     * 
-     * @return the ImageLoader.
-     */
-    public static ImageLoader getLoader() {
-        if (il == null) {
-            synchronized (ImageLoader.class) {
-                if (il == null) {
-                    il = new ImageLoader();
-                }
-            }
-        }
-        return il;
-    }
 
     /**
      * Creates an ImageIcon from the specified GameImage.
@@ -204,7 +180,7 @@ public final class ImageLoader {
      *          the GameImage to use
      * @return the specified ImageIcon.
      */
-    public ImageIcon createImageIcon(final GameImage img) {
+    public static ImageIcon createImageIcon(final GameImage img) {
         final java.net.URL imgURL = MenuView.class.getResource(img.getPath());
         if (imgURL != null) {
             return new ImageIcon(imgURL);
@@ -219,7 +195,7 @@ public final class ImageLoader {
      *          the GameImage to use
      * @return the specified Image.
      */
-    public Image createImage(final GameImage img) {
+    public static Image createImage(final GameImage img) {
         return createImageIcon(img).getImage();
     }
 
@@ -234,7 +210,7 @@ public final class ImageLoader {
      *          the height of the image
      * @return the sized Image.
      */
-    public Image createImageOfSize(final GameImage img, final int width, final int height) {
+    public static Image createImageOfSize(final GameImage img, final int width, final int height) {
         return createImage(img).getScaledInstance(width, height, Image.SCALE_DEFAULT);
     }
 
@@ -245,7 +221,7 @@ public final class ImageLoader {
      *          the GameImage to use
      * @return the specified BufferedImage.
      */
-    public BufferedImage createBufferedImage(final GameImage img) {
+    public static BufferedImage createBufferedImage(final GameImage img) {
         final ImageIcon icon = createImageIcon(img);
         final BufferedImage bi = new BufferedImage(
                 icon.getIconWidth(),

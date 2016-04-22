@@ -84,10 +84,10 @@ public class StatisticPanel extends JPanel {
         this.attack = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
         this.bombs = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
         this.range = factory.createLabel(factory.getDescriptionFont(), Color.WHITE);
-        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.LIFE_INFO), this.life));
-        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.ATTACK_INFO), this.attack));
-        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.BOMBS_INFO), this.bombs));
-        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.getLoader().createImage(GameImage.RANGE_INFO), this.range));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.createImage(GameImage.LIFE_INFO), this.life));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.createImage(GameImage.ATTACK_INFO), this.attack));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.createImage(GameImage.BOMBS_INFO), this.bombs));
+        statsPanel.add(factory.createImageWithLabelPanel(ImageLoader.createImage(GameImage.RANGE_INFO), this.range));
         this.add(statsPanel);
     }
 

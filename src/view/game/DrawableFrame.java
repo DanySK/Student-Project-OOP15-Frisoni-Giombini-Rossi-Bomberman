@@ -1,5 +1,7 @@
 package view.game;
 
+import view.game.DrawableFrameImpl.GameMessage;
+
 /**
  * This interface models the actions that can be performed on
  * a frame that supports the rendering of messages.
@@ -15,12 +17,10 @@ public interface DrawableFrame {
     /**
      * Draws the specified message.
      * 
-     * @param msg
-     *          the message to display
-     * @param opacity
-     *          the background opacity for the message's rendering
+     * @param gameMessage
+     *          the game message to render
      */
-    void drawMessage(String msg, float opacity);
+    void drawMessage(GameMessage gameMessage);
     
     /**
      * Clears the message.

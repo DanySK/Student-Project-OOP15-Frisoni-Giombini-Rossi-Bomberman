@@ -31,6 +31,9 @@ public abstract class AbstractSingleAnimationView extends AbstractAnimationView 
      */
     public AbstractSingleAnimationView(final LevelElement element, final int fps, final long duration) {
         super(element);
+        if (fps <= 0) {
+            throw new IllegalArgumentException("Invalid fps value: " + fps);
+        }
         this.animation = new Animation(animationFrames(), (int) ((fps / animationFrames().size() * duration) / TIME_FACTOR), false);
         this.animation.start();
     }
@@ -39,7 +42,7 @@ public abstract class AbstractSingleAnimationView extends AbstractAnimationView 
     public abstract List<BufferedImage> animationFrames();
     
     @Override
-    public Animation getAnimation() {
+    protected Animation getAnimation() {
         return this.animation;
     }
 }

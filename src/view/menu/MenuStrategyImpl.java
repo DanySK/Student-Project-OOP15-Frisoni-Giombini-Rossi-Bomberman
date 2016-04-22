@@ -17,28 +17,28 @@ import view.LanguageHandler;
 public class MenuStrategyImpl implements MenuStrategy {
 
     private enum MainMenuButton implements MenuButton {
-        PLAY("play", ImageLoader.getLoader().createImageIcon(GameImage.PLAY)) {
+        PLAY("play", ImageLoader.createImageIcon(GameImage.PLAY)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 observer.play();
             }
         },
-        SCORES("scores", ImageLoader.getLoader().createImageIcon(GameImage.SCORES)) {
+        SCORES("scores", ImageLoader.createImageIcon(GameImage.SCORES)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 observer.scores();
             }
         },
-        SETTINGS("settings", ImageLoader.getLoader().createImageIcon(GameImage.SETTINGS)) {
+        SETTINGS("settings", ImageLoader.createImageIcon(GameImage.SETTINGS)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
                 observer.settings();
             }
         },
-        INFO("info", ImageLoader.getLoader().createImageIcon(GameImage.INFO)) {
+        INFO("info", ImageLoader.createImageIcon(GameImage.INFO)) {
             @Override
             public void clickEvent(final MenuObserver observer) {
-                observer.credits();
+                observer.info();
             }
         };
 

@@ -41,23 +41,23 @@ public class PowerUpsPanel {
 
         // Creates the model and adds elements
         final DefaultListModel<PowerUpEntry> listModel = new DefaultListModel<>();
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.ATTACK_UP), PowerUpType.ATTACK.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.ATTACK_UP), PowerUpType.ATTACK.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("attack")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.LIFE_UP), PowerUpType.LIFE.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.LIFE_UP), PowerUpType.LIFE.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("life")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.BOMBS_UP), PowerUpType.BOMB.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.BOMBS_UP), PowerUpType.BOMB.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("bomb")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.RANGE_UP), PowerUpType.RANGE.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.RANGE_UP), PowerUpType.RANGE.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("range")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.LIFE_DOWN), PowerUpType.HURT.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.LIFE_DOWN), PowerUpType.HURT.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("hurt")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.CONFUSION_ON), PowerUpType.CONFUSION_ON.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.CONFUSION_ON), PowerUpType.CONFUSION_ON.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("confusionOn")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.CONFUSION_OFF), PowerUpType.CONFUSION_OFF.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.CONFUSION_OFF), PowerUpType.CONFUSION_OFF.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("confusionOff")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.MYSTERY), PowerUpType.MYSTERY.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.MYSTERY), PowerUpType.MYSTERY.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("mistery")));
-        listModel.addElement(new PowerUpEntry(ImageLoader.getLoader().createImageIcon(GameImage.KEY), PowerUpType.KEY.name(),
+        listModel.addElement(new PowerUpEntry(ImageLoader.createImageIcon(GameImage.KEY), PowerUpType.KEY.name(),
                 LanguageHandler.getHandler().getLocaleResource().getString("key")));
         
         // Creates the list
@@ -77,6 +77,16 @@ public class PowerUpsPanel {
         private final String name;
         private final String description;
         
+        /**
+         * Creates a new power-up entry.
+         * 
+         * @param image
+         *      the icon associated to the power-up
+         * @param name
+         *      the power-up's name
+         * @param description
+         *      the power-up's description
+         */
         PowerUpEntry(final ImageIcon image, final String name, final String description) {
             this.image = image;
             this.name = name;

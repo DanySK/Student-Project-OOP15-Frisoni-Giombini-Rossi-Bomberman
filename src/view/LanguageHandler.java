@@ -56,7 +56,7 @@ public final class LanguageHandler extends ESource<Locale> {
     }
 
     /**
-     * @return a list whit the {@link Locale} associated to the languages
+     * @return a list with the {@link Locale} associated to the languages
      * supported by the application.
      */
     public Locale[] getSupportedLanguages() {

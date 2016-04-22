@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 
 /**
- * A custom JPanel with a gradient background.
+ * A custom {@link JPanel} with a gradient background.
  *
  */
 public class GradientPanel extends JPanel {
@@ -26,7 +26,7 @@ public class GradientPanel extends JPanel {
     private final Color endColor;
 
     /**
-     * Constructor supplying a color.
+     * Creates a new gradient panel.
      * 
      * @param startColor
      *          the first color of the gradient

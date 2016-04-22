@@ -16,7 +16,7 @@ import view.menu.views.WelcomeView;
 public interface MenuFrame {
 
     /**
-     * The possible panels that can be shown.
+     * The possible panels that can be displayed.
      */
     enum MenuCard {
         HOME(new MenuView()),
@@ -49,7 +49,7 @@ public interface MenuFrame {
      * This method is called before the UI is used.
      * It shows the user interface on the screen.
      */
-    void initView();
+    void showView();
     
     /**
      * Changes the {@link MenuCard} shown in the main frame with another provided.

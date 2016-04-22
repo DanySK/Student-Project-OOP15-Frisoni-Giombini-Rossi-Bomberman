@@ -11,7 +11,7 @@ import view.ImageLoader;
 import view.ImageLoader.GameImage;
 
 /**
- * This class uses a Singleton Pattern to get one or more sprites of the game
+ * This utility class is used to get one or more sprites of the game
  * from the sprite-sheet.
  *
  */
@@ -37,7 +37,7 @@ public final class Sprite {
         if (spriteSheet == null) {
             synchronized (Sprite.class) {
                 if (spriteSheet == null) {
-                    spriteSheet = ImageLoader.getLoader().createBufferedImage(GameImage.SPRITE_SHEET);
+                    spriteSheet = ImageLoader.createBufferedImage(GameImage.SPRITE_SHEET);
                 }
             }
         }
