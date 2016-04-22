@@ -94,6 +94,9 @@ public interface GameFrame {
     
     /**
      * Shows a game message.
+     * 
+     * @param gameMessage
+     *          the game message to render
      */
     void showMessage(GameMessage gameMessage);
     

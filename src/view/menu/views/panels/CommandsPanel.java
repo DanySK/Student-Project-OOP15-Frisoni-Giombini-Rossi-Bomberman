@@ -20,11 +20,16 @@ import view.InputHandler;
 import view.LanguageHandler;
 
 /**
- * This class is used to realize a view representation of the input commands.
+ * This {@link JPanel} is used to realize a view representation of the input commands.
  *
  */
-public class CommandsPanel {
+public class CommandsPanel extends JPanel {
 
+    /**
+     * Auto-generated UID.
+     */
+    private static final long serialVersionUID = 4451048214593900303L;
+    
     private final GUIFactory factory;
 
     /**
@@ -32,13 +37,11 @@ public class CommandsPanel {
      */
     public CommandsPanel() {
         this.factory = new GUIFactory.Standard();
+        initialize();
     }
 
-    /**
-     * @return a panel containing a table with input information.
-     */
-    public JPanel getPanel() {
-        final JPanel panel = new JPanel(new BorderLayout());
+    private void initialize() {
+        this.setLayout(new BorderLayout());
 
         final DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(new Object[] { LanguageHandler.getHandler().getLocaleResource().getString("action"),
@@ -60,7 +63,7 @@ public class CommandsPanel {
         final JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
 
         final CommandCellRenderer cellRenderer = new CommandCellRenderer(); 
         final CommandHeaderRenderer headerRenderer = new CommandHeaderRenderer();
@@ -71,8 +74,7 @@ public class CommandsPanel {
                      columnModel.getColumn(i).setHeaderRenderer(headerRenderer);
                  });
         
-        panel.setBackground(Color.DARK_GRAY);
-        return panel;
+        this.setBackground(Color.DARK_GRAY);
     }
 
     private class CommandHeaderRenderer extends JLabel implements TableCellRenderer {
