@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import controller.utilities.Pair;
@@ -82,8 +83,8 @@ public class GameControllerImpl implements GameController {
                         && !inputListener.isInputActive(InputAction.MOVE_UP)) {
                     level.getHero().setMoving(false);
                 }
-                if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
-                    if (level.canPlantBomb() && level.getHero().hasBomb()) {
+                /*if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
+                    if (level.canPlantBomb() && level.getHero().getDetonator().hasBombs()) {
                         level.plantBomb();
                         this.doOperationAfterDelay(level.getHero().getDetonator().getBombDelay(), new Runnable() {
                             @Override
@@ -102,7 +103,7 @@ public class GameControllerImpl implements GameController {
                 }
                 if (!inputListener.isInputActive(InputAction.PLANT_BOMB)) {
                     isPlanted = false;
-                }
+                }*/
                 if (level.getHero().hasKey()) {
                     level.setOpenDoor();
                 }
@@ -110,7 +111,7 @@ public class GameControllerImpl implements GameController {
                     pauseLoop();
                     view.showMessage(GameMessage.STAGE);
                     level.setNextStage();
-                    level.setNumberTiles();
+                    //level.setNumberTiles();
                     try {
                         Thread.sleep(WAITING_TIME);
                     } catch (InterruptedException e) {
@@ -200,8 +201,8 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public Set<Bomb> getPlantedBombs() {
-        return level.getPlantedBombs();
+    public List<Bomb> getPlantedBombs() {
+        return level.getHero().getDetonator().getPlantedBombs();
     }
 
     @Override
