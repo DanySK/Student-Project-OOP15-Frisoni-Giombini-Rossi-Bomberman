@@ -53,7 +53,6 @@ public class LevelImpl implements Level {
      */
     public LevelImpl() {
         this.setNumberTiles();
-        this.setFirstStage();
     }
 
     /**
@@ -518,7 +517,6 @@ public class LevelImpl implements Level {
      */
     @Override
     public void setFirstStage(){
-        System.out.println("stage");
         this.stage = FIRST_STAGE;
     }
 
