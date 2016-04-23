@@ -1,6 +1,6 @@
 package controller;
 
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import controller.utilities.Pair;
@@ -83,7 +83,7 @@ public interface GameController {
      * This method return a list of pairs score-time of the ten last scores.
      * @return a list of the ten last scores.
      */
-    LinkedList<Pair<Integer, Integer>> getLastScores();
+    List<Pair<Integer, Integer>> getLastScores();
     
     /**
      * This method check if the queue of scores is empty.

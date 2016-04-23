@@ -103,7 +103,7 @@ public class LevelImpl implements Level {
         for (int i = 0; i < this.getFreeTiles().size() / ENEMY_FACTOR; i++) {
             final Tile t = set.stream().findAny().get();
             set.remove(t);
-            this.enemies.add(new EnemyImpl(t.getPosition(), Direction.DOWN,
+            this.enemies.add(new EnemyImpl(t.getPosition(),
                     new Dimension(this.tileDimension, this.tileDimension), 
                     vet[new Random().nextInt(vet.length)]));
         }
@@ -156,8 +156,10 @@ public class LevelImpl implements Level {
     @Override
     public void moveEnemies() {
         synchronized (this.enemies) {
-            this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, e.getRandomDirection(),
-                    this.hero.getDetonator().getPlantedBombs().stream().map(b -> b.getHitbox()).collect(Collectors.toSet())));
+            this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, 
+                    e.getRandomDirection(),
+                    this.hero.getDetonator().getPlantedBombs().stream().map(b -> 
+                    b.getHitbox()).collect(Collectors.toSet())));
         }
     }
 

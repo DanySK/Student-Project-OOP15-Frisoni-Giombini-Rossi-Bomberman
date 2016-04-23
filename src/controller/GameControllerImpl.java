@@ -1,6 +1,6 @@
 package controller;
 
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import controller.utilities.Pair;
@@ -33,7 +33,7 @@ public class GameControllerImpl implements GameController {
     private volatile boolean inPaused;
     private int time;
     private final boolean darkMode;
-    
+
     /**
      * Constructor for GameControllerImpl.
      * @param model the model object.
@@ -83,9 +83,11 @@ public class GameControllerImpl implements GameController {
                     level.getHero().setMoving(false);
                 }
                 if (inputListener.isInputActive(InputAction.PLANT_BOMB) && !isPlanted) {
-                    if (level.getHero().canPlantBomb(level.getSize()) && level.getHero().getDetonator().hasBombs()) {
+                    if (level.getHero().canPlantBomb(level.getSize()) 
+                            && level.getHero().getDetonator().hasBombs()) {
                         level.getHero().plantBomb(level.getSize());
-                        this.doOperationAfterDelay(level.getHero().getDetonator().getBombDelay(), new Runnable() {
+                        this.doOperationAfterDelay(level.getHero().getDetonator().getBombDelay(),
+                                new Runnable() {
                             @Override
                             public void run() {
                                 view.renderExplosions(level.detonateBomb());
@@ -106,7 +108,8 @@ public class GameControllerImpl implements GameController {
                 if (level.getHero().hasKey()) {
                     level.setOpenDoor();
                 }
-                if (level.getHero().hasKey() && level.getHero().checkOpenDoorCollision(level.getDoor())) {
+                if (level.getHero().hasKey() 
+                        && level.getHero().checkOpenDoorCollision(level.getDoor())) {
                     pauseLoop();
                     view.showMessage(GameMessage.STAGE);
                     level.setNextStage();
@@ -114,7 +117,7 @@ public class GameControllerImpl implements GameController {
                     try {
                         Thread.sleep(WAITING_TIME);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        System.err.println(e);
                     }
                     view.updateStage();
                     level.initLevel(view.getTileSize());
@@ -131,12 +134,12 @@ public class GameControllerImpl implements GameController {
             @Override
             public void updateGameState() {
                 if (inputListener.isInputActive(InputAction.PAUSE) && !inPaused) {
-                    if (!this.isPaused()) {
-                        this.pauseLoop();
-                        view.showMessage(GameMessage.PAUSE);
-                    } else {
+                    if (this.isPaused()) {
                         this.unPauseLoop();
                         view.removeMessage();
+                    } else {
+                        this.pauseLoop();
+                        view.showMessage(GameMessage.PAUSE);
                     }
                     inPaused = true;
                 }
@@ -145,8 +148,10 @@ public class GameControllerImpl implements GameController {
                 }
                 if (level.isGameOver()) {
                     super.stopLoop();
-                    final int score = darkMode ? level.getHero().getScore() * MULTIPLY : level.getHero().getScore();
-                    view.showGameOverPanel(score, time, ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),
+                    final int score = darkMode ? level.getHero().getScore() * MULTIPLY 
+                            : level.getHero().getScore();
+                    view.showGameOverPanel(score, time, 
+                            ScoreHandler.getHandler().isBestScore(level.getHero().getScore()),
                             new GameOverPanel.GameOverObserver() {
                         @Override
                         public void replay() {
@@ -227,7 +232,7 @@ public class GameControllerImpl implements GameController {
     public Set<Enemy> getEnemies() {
         return level.getEnemies();
     }
-    
+
     @Override
     public int getTime() {
         return this.time;
@@ -239,7 +244,7 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public LinkedList<Pair<Integer, Integer>> getLastScores() {
+    public List<Pair<Integer, Integer>> getLastScores() {
         return null;
     }
 

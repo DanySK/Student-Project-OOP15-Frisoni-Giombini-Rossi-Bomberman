@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import com.google.common.base.Optional;
@@ -25,7 +26,8 @@ public final class ScoreHandler extends ESource<ScoreData> {
 
     private static final String NAME_DIRECTORY = System.getProperty("user.home") 
             + System.getProperty("file.separator") + "Bomberman";
-    private static final String FILE_NAME = NAME_DIRECTORY + System.getProperty("file.separator") + "Scores.dat";
+    private static final String FILE_NAME = NAME_DIRECTORY 
+            + System.getProperty("file.separator") + "Scores.dat";
     private static final int MAX_LENGTH = 10;
 
     private static volatile ScoreHandler singleton;
@@ -95,7 +97,7 @@ public final class ScoreHandler extends ESource<ScoreData> {
      */
     public void saveName(final String playerName) {
         Objects.requireNonNull(playerName);
-        if (playerName.equals("")) {
+        if ("".equals(playerName)) {
             throw new IllegalArgumentException("The name's player isn't empty!");
         }
         this.playerName = playerName;
@@ -154,7 +156,7 @@ public final class ScoreHandler extends ESource<ScoreData> {
      * This method return a list of pairs score-time of the ten last scores.
      * @return a list of the ten last scores.
      */
-    public LinkedList<Pair<Integer, Integer>> getLastScores() {
+    public List<Pair<Integer, Integer>> getLastScores() {
         return new LinkedList<>(this.scores);
     }
 
