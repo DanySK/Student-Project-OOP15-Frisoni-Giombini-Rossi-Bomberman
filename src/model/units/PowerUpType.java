@@ -86,8 +86,8 @@ public enum PowerUpType {
         public void doApply(final Hero hero) {
             final Random random = new Random();
             PowerUpType powerup = MYSTERY;
-            while (powerup == MYSTERY) {
-                powerup = PowerUpType.values()[random.nextInt(PowerUpType.values().length - 1)];
+            while (powerup == MYSTERY || powerup == KEY) {
+                powerup = PowerUpType.values()[random.nextInt(PowerUpType.values().length)];
             }
             powerup.doApply(hero);
         }

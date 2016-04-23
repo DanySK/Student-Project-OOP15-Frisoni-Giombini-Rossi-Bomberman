@@ -1,4 +1,4 @@
-package model.level;
+package model.level.collision;
 
 import java.awt.Rectangle;
 import java.util.Set;

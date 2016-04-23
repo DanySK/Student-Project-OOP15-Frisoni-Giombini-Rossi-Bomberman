@@ -54,7 +54,8 @@ public final class MapPoint {
     private static int getPos(final int coordinate, final int nTiles, final int tileDimension) {
         int index = 0;
         boolean stop = false;
-        for (int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 && !stop; i += tileDimension) {
+        for (int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 
+                && !stop; i += tileDimension) {
             if (coordinate <= i) {
                 stop = true;
             } else {
@@ -75,9 +76,11 @@ public final class MapPoint {
      *          the dimension of a tile          
      * @return the correct coordinate
      */
-    public static int getCorrectPos(final int coordinate, final int nTiles, final int tileDimension) {
-        if (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate <
-                coordinate + tileDimension - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)) {
+    public static int getCorrectPos(final int coordinate, final int nTiles,
+            final int tileDimension) {
+        if (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate 
+                < coordinate + tileDimension 
+                - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)) {
             return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
         } else {
             return MapPoint.getPos(coordinate, nTiles, tileDimension);

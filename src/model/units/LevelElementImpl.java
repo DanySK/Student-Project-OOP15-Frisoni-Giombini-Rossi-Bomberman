@@ -28,51 +28,26 @@ public class LevelElementImpl implements LevelElement{
         this.hitBox = new Rectangle(pos.x, pos.y, dim.width, dim.height);
     }
     
-    /**
-     * Gets the position.
-     * 
-     * @return the game element's position
-     */
     @Override
     public Point getPosition() {
         return new Point(this.curPos);
     }
-
-    /**
-     * Gets the hitbox.
-     * 
-     * @return the game element's hitbox
-     */
+    
     @Override
     public Rectangle getHitbox() {
         return (Rectangle) this.hitBox.clone();
     }
 
-    /**
-     * Gets x coordinate.
-     * 
-     * @return x coordinate
-     */
     @Override
     public int getX() {
         return this.curPos.x;
     }
-
-    /**
-     * Gets y coordinate.
-     * 
-     * @return y coordinate.
-     */
+    
     @Override
     public int getY() {
         return this.curPos.y;
     }
-        
-    /**
-     * LevelElement's toString.
-     * 
-     * @return level element's description
-     */
+
     @Override
     public String toString(){
         return new StringBuilder().append("\tPosition: (")
@@ -94,7 +69,8 @@ public class LevelElementImpl implements LevelElement{
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof LevelElementImpl && this.curPos.equals(((LevelElementImpl) obj).curPos)
+        return obj instanceof LevelElementImpl 
+                && this.curPos.equals(((LevelElementImpl) obj).curPos)
                 && this.hitBox.equals(((LevelElementImpl) obj).hitBox);
     }
     

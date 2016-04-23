@@ -28,7 +28,8 @@ public class Tile extends LevelElementImpl{
      * @param powerup
      *          the associated powerup
      */
-    public Tile(final Point pos, final Dimension dim, final TileType type, final Optional<PowerUpType> powerup) {
+    public Tile(final Point pos, final Dimension dim, final TileType type, 
+            final Optional<PowerUpType> powerup) {
         super(pos, dim);
         this.type = type;
         this.powerup = powerup;

@@ -94,15 +94,18 @@ public interface Hero extends Entity {
     /**
      * This method set the hero in movement or not. 
      * 
-     * @param b
+     * @param bool
      *          true if he's in movements, false otherwise
      */
-    void setMoving(boolean b);
+    void setMoving(boolean bool);
 
     /**
      * Set the hero to be confused or not.
+     * 
+     * @param bool
+     *          true if the's in confusion, false otherwise
      */
-    void setConfusion(final boolean b);
+    void setConfusion(final boolean bool);
 
     /**
      * Set the key.
@@ -115,12 +118,5 @@ public interface Hero extends Entity {
      * @return true if he's got it, false otherwise
      */
     boolean hasKey();
-
-    /**
-     * Hero's toString.
-     * 
-     * @return the string describing the hero
-     */
-    String toString();
 
 }

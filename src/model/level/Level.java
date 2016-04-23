@@ -55,7 +55,7 @@ public interface Level {
      * 
      * @return the set of powerups
      */
-    Set<Tile> getPowerUp();
+    Set<Tile> getPowerUps();
 
     /**
      * Gets the door.

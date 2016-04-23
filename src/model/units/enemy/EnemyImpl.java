@@ -6,9 +6,9 @@ import java.awt.Rectangle;
 import java.util.Random;
 import java.util.Set;
 
-import model.level.Collision;
-import model.level.EnemyCollision;
-import model.level.EnemyCollisionImpl;
+import model.level.collision.Collision;
+import model.level.collision.EnemyCollision;
+import model.level.collision.EnemyCollisionImpl;
 import model.units.AbstractEntity;
 import model.units.Direction;
 import model.units.Hero;

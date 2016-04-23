@@ -36,11 +36,11 @@ public enum Direction {
         RIGHT.opposite = LEFT;
     }
 
-    private Point p;
+    private Point translation;
     private Direction opposite;
     
-    private Direction(final Point p) {
-        this.p = p;
+    private Direction(final Point pos) {
+        this.translation = pos;
     }
 
     /**
@@ -51,7 +51,7 @@ public enum Direction {
      *          the relative Point
      */
     public Point getPoint() {
-        return this.p;
+        return this.translation;
     }
     
     /**

@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.Set;
 
 import model.Tile;
-import model.level.Collision;
+import model.level.collision.Collision;
 
 public interface Entity extends LevelElement{
     
@@ -49,11 +49,11 @@ public interface Entity extends LevelElement{
     /**
      * This method returns the position where the hero would be if there's no collision.
      * 
-     * @param p
+     * @param pos
      *          the point whose coordinates are to be added
      * @return the position where the hero would move
      */
-    Point getPossiblePos(Point p);
+    Point getPossiblePos(Point pos);
     
     /**
      * This method is used to know the actual direction of the entity.
@@ -91,6 +91,13 @@ public interface Entity extends LevelElement{
     int getRemainingLives();
     
     /**
+     * This method set the current direction.
+     * @param dir
+     *          the movement direction 
+     */
+    void setDirection(Direction dir);
+    
+    /**
      * Checks if the entity is dead.
      * 
      * @return true if the entity is dead
@@ -103,19 +110,5 @@ public interface Entity extends LevelElement{
      * @return true if he's in movement, false otherwise
      */
     boolean isMoving();
-    
-    /**
-     * This method set the current direction.
-     * @param dir
-     *          the movement direction 
-     */
-    void setDirection(Direction dir);
-    
-    /**
-     * Entity's toString.
-     * 
-     * @return the string describing the entity
-     */
-    String toString();
     
 }

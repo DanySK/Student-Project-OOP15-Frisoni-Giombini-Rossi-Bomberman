@@ -6,9 +6,9 @@ import java.awt.Rectangle;
 import java.util.Set;
 
 import model.Tile;
-import model.level.Collision;
-import model.level.HeroCollision;
-import model.level.HeroCollisionImpl;
+import model.level.collision.Collision;
+import model.level.collision.HeroCollision;
+import model.level.collision.HeroCollisionImpl;
 import model.utilities.MapPoint;
 
 /**
@@ -38,10 +38,8 @@ public class HeroImpl extends AbstractEntity implements Hero {
         this.inConfusion = false;
         this.key = false;
     }
-    
-    /**
-     * Hero's movement.
-     */
+
+    @Override
     public void move(final Direction dir, final Set<Rectangle> blockSet, 
             final Set<Rectangle> bombSet, final Set<Tile> powerUpSet) {
         this.heroCollision.updateEntityRec(dir);
@@ -51,140 +49,83 @@ public class HeroImpl extends AbstractEntity implements Hero {
             super.move(dir);
         }
     }
-    
-    /**
-     * Verifies if a bomb can be planted.
-     * 
-     * @return true if the bomb can be planted, false otherwise
-     */
+
     @Override
     public boolean canPlantBomb(final int nTiles) {
-        final Point point = new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
-                MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height));
-        return !this.getDetonator().getPlantedBombs().stream().anyMatch(b -> b.getPosition().equals(point));
+        final Point point = new Point(MapPoint.getCorrectPos(this.getX(), nTiles,
+                this.getHitbox().width), 
+                MapPoint.getCorrectPos(this.getY(), nTiles, 
+                        this.getHitbox().height));
+        return !this.getDetonator().getPlantedBombs().stream()
+                .anyMatch(b -> b.getPosition().equals(point));
     }
 
-    /**
-     * Plants a bomb.
-     */
     @Override
     public void plantBomb(final int nTiles) {
-        this.getDetonator().plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles, this.getHitbox().width), 
+        this.getDetonator().plantBomb(new Point(MapPoint.getCorrectPos(this.getX(), nTiles,
+                this.getHitbox().width), 
                 MapPoint.getCorrectPos(this.getY(), nTiles, this.getHitbox().height)));
     }
-    
-    /**
-     * Increases hero's score.
-     */
+
     @Override
     public void increaseScore(final int scoreToAdd) {
         super.score += scoreToAdd; 
     }
 
-    /**
-     * Checks the collision with the open door.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
     @Override
     public boolean checkOpenDoorCollision(final Tile doorOpened) {
         return this.heroCollision.openDoorCollision(doorOpened.getHitbox());
     }
-    
-    /**
-     * Sets correctly hero for next game level.
-     * 
-     * @param lives
-     *          the lives
-     * @param attack
-     *          the attack
-     * @param score
-     *          the score
-     */
+
     @Override
     public void nextLevel(final int lives, final int attack, final int score) {
         this.modifyLife(lives - 1);
         this.increaseAttack(attack - 1);
         this.increaseScore(score); 
     }
-    
-    /**
-     * Gets the correct direction depending on the boolean confusion.
-     * 
-     * @param dir
-     *          the direction where he would move
-     * @return the direction where he will move
-     */
+
+    @Override
     public Direction getCorrectDirection(final Direction dir) {
         return this.inConfusion ? dir.getOppositeDirection() : dir;
     }
-    
-    /**
-     * Gets hero's detonator.
-     * 
-     * @return hero's detonator
-     */
+
     @Override
     public Detonator getDetonator() {
         return this.detonator;
     }
-        
-    /**
-     * Gets hero's collision.
-     * 
-     * @return hero's collision
-     */
+
     @Override
     public Collision getCollision() {
         return this.heroCollision;
     }
-    
-    /**
-     * Set the hero to be in movement or not.
-     */
+
     @Override
-    public void setMoving(final boolean b) {
-        super.inMovement = b;
+    public void setMoving(final boolean bool) {
+        super.inMovement = bool;
     }
 
-    /**
-     * Sets confusion.
-     */
     @Override
-    public void setConfusion(final boolean b) {
-        this.inConfusion = b;
+    public void setConfusion(final boolean bool) {
+        this.inConfusion = bool;
     }
 
-    /**
-     * Set the hero to own the key.
-     */
     @Override
     public void setKey() {
         this.key = true;
     }
-    
-    /**
-     * Cheks if hero's got the key.
-     * 
-     * @return true if he's got it, false otherwise
-     */
+
     @Override
     public boolean hasKey() {
         return this.key;
     }
-    
-    /**
-     * Hero's toString.
-     * 
-     * @return hero's description
-     */
+
     @Override
     public String toString(){
         return new StringBuilder().append("HERO -  ")
                 .append(super.toString())
                 .toString();
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -199,5 +140,5 @@ public class HeroImpl extends AbstractEntity implements Hero {
         return obj instanceof HeroImpl && this.inConfusion == ((HeroImpl) obj).inConfusion
                 && this.key == ((HeroImpl) obj).key;
     }
-  
+
 }

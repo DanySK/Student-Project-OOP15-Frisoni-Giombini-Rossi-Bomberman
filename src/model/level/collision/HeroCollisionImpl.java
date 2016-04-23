@@ -1,4 +1,4 @@
-package model.level;
+package model.level.collision;
 
 import java.awt.Rectangle;
 import java.util.Set;
@@ -24,29 +24,18 @@ public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
         super(entity);
     }
 
-    /**
-     * This method checks if there's a collision with power ups.
-     * 
-     * @param powerUpSet
-     *          the set of tiles that contains a power up
-     * @return true if there's a collision, false otherwise
-     */
+    @Override
     public boolean powerUpCollision(final Set<Tile> powerUpSet) {
-        return super.elementCollision(powerUpSet, (t) -> {
-            if (entityRec.intersects(t.getHitbox())) {
-                t.getPowerup().get().apply((Hero) entity);
-                t.removePowerUp();
-                t.setType(TileType.WALKABLE);
+        return super.elementCollision(powerUpSet, (tile) -> {
+            if (entityRec.intersects(tile.getHitbox())) {
+                tile.getPowerup().get().apply((Hero) entity);
+                tile.removePowerUp();
+                tile.setType(TileType.WALKABLE);
             }
             return false;
         });
     }
 
-    /**
-     * This method checks if there's a collision with the open door.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
     @Override
     public boolean openDoorCollision(final Rectangle doorOpened) {
             return entityRec.intersects(doorOpened);

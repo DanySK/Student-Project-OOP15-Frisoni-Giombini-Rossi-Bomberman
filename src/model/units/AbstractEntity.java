@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.Set;
 
 import model.Tile;
-import model.level.Collision;
+import model.level.collision.Collision;
 
 /**
  * This class represent the entity that is 
@@ -36,83 +36,48 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
         this.attack = INITIAL_ATTACK;
         this.score = INITIAL_SCORE;
     }
-
-    /**
-     * Abstract method, the implementation is 
-     * different depending on the type of the entity.
-     */
-    @Override
-    public void move(final Direction d) {
-        this.update(this.getPossiblePos(d.getPoint()));
-        this.updateDirection(d);
-    }
     
-    /**
-     * Checks flame collisions.
-     * 
-     * @return true if there's a collision, false otherwise
-     */
     @Override
-    public boolean checkFlameCollision(final Set<Tile> afflictedTiles){
+    public void move(final Direction dir) {
+        this.update(this.getPossiblePos(dir.getPoint()));
+        this.updateDirection(dir);
+    }
+
+    @Override
+    public boolean checkFlameCollision(final Set<Tile> afflictedTiles) {
         return this.getCollision().fireCollision(afflictedTiles);
     }
-
-    /**
-     * Increases or decreases life.
-     */
+    
     @Override
     public void modifyLife(final int change) {
         this.lives += change;        
     }
-    
-    /**
-     * Updates the direction.
-     */
+
     @Override
     public void updateDirection(final Direction dir) {
         this.curDir = dir;
     }
-    
-    /**
-     * Increase attack level.
-     */
+
     @Override
     public void increaseAttack(final int attackToAdd) {
         this.attack += attackToAdd;        
     }
 
-    /**
-     * This method is used to calculate the
-     * possible future position of the entity.
-     */
     @Override
     public Point getPossiblePos(final Point pos) {
         return new Point(super.getX() + pos.x, super.getY() + pos.y);
     }
 
-    /**
-     * Return the current direction.
-     */
     @Override
     public Direction getDirection() {
         return this.curDir;
     }
-    
-    /**
-     * Gets entiry's attack.
-     * 
-     * @return entity's attack
-     */
+
     @Override
     public int getAttack() {
         return this.attack;
     }
 
-    /**
-     * Gets entity's score.
-     * 
-     * @return entity's score
-     */
     @Override
     public int getScore() {
         return this.score;
@@ -125,36 +90,25 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
      */
     @Override
     public abstract Collision getCollision();
-
-    /**
-     * Gets remaining lives.
-     * 
-     * @return remaining lives
-     */
+    
     @Override
     public int getRemainingLives() {
         return this.lives;
     }
-
-    /**
-     * Verifies if the entity is dead.
-     */
+    
+    @Override
+    public void setDirection(final Direction dir) {
+        this.curDir = dir;
+    }
+    
     @Override
     public boolean isDead() {
         return this.lives <= 0;
     }
 
-    /**
-     * Verifies if the entity is in movement.
-     */
     @Override
     public boolean isMoving() {
         return this.inMovement;
-    }
-
-    @Override
-    public void setDirection(final Direction dir) {
-        this.curDir = dir;
     }
     
     /**
@@ -192,7 +146,9 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     @Override
     public boolean equals(final Object obj) {
         return obj instanceof AbstractEntity && this.attack == ((AbstractEntity) obj).attack
-                && this.curDir.equals(((AbstractEntity) obj).curDir) && this.inMovement == ((AbstractEntity) obj).inMovement
-                && this.lives == ((AbstractEntity) obj).lives && this.score == ((AbstractEntity) obj).score;
+                && this.curDir.equals(((AbstractEntity) obj).curDir) 
+                && this.inMovement == ((AbstractEntity) obj).inMovement
+                && this.lives == ((AbstractEntity) obj).lives 
+                && this.score == ((AbstractEntity) obj).score;
     }
 }

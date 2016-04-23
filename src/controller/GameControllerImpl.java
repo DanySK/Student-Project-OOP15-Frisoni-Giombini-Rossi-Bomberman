@@ -206,7 +206,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public Set<Tile> getPowerUp() {
-        return level.getPowerUp();
+        return level.getPowerUps();
     }
 
     @Override

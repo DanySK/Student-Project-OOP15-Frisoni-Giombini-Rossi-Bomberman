@@ -18,28 +18,28 @@ public final class CopyFactory {
     /**
      * Gets a copy of the tile.
      * 
-     * @param t
+     * @param tile
      *          the tile to copy
      * @return the copy of the tile
      */
-    public static Tile getCopy(final Tile t) {
-        return new Tile(new Point(t.getPosition()), 
-                new Dimension(t.getHitbox().width, t.getHitbox().height), 
-                t.getType(), t.getPowerup());
+    public static Tile getCopy(final Tile tile) {
+        return new Tile(new Point(tile.getPosition()), 
+                new Dimension(tile.getHitbox().width, tile.getHitbox().height), 
+                tile.getType(), tile.getPowerup());
     }
     
     /**
      * Gets a copy of a bomb.
      * 
-     * @param b
+     * @param bomb
      *          the bomb to copy
      * @return the copy of the bomb
      */
-    public static Bomb getCopy(final Bomb b) {
-        final Bomb bombCopy = new BombImpl(new Point(b.getPosition()), 
-                new Dimension(b.getHitbox().width, b.getHitbox().height), 
-                b.getRange());
-        bombCopy.setPlanted(b.isPositioned());
+    public static Bomb getCopy(final Bomb bomb) {
+        final Bomb bombCopy = new BombImpl(new Point(bomb.getPosition()), 
+                new Dimension(bomb.getHitbox().width, bomb.getHitbox().height), 
+                bomb.getRange());
+        bombCopy.setPlanted(bomb.isPositioned());
         return bombCopy;
     }
 }

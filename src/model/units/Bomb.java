@@ -23,10 +23,10 @@ public interface Bomb extends LevelElement{
     /**
      * Set the bomb to be planted or not.
      * 
-     * @param b
+     * @param bool
      *          the boolean describing if it is planted or not
      */
-    void setPlanted(final boolean b);
+    void setPlanted(final boolean bool);
 
     /**
      * Verifies if the bomb is planted.
@@ -34,12 +34,5 @@ public interface Bomb extends LevelElement{
      * @return true if it is planted, otherwise false
      */
     boolean isPositioned();
-    
-    /**
-     * Bomb's toString.
-     * 
-     * @return the string describing the bomb
-     */
-    String toString();
     
 }

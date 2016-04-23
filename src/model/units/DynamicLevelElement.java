@@ -25,11 +25,11 @@ public class DynamicLevelElement extends LevelElementImpl{
     /**
      * This method is used to update the element's position.
      * 
-     * @param p
+     * @param newPoss
      *          the new position
      */
-    private void updatePosition(final Point p) {
-        this.curPos = new Point(p);
+    private void updatePosition(final Point newPos) {
+        this.curPos = new Point(newPos);
     }
     
     /**
@@ -43,11 +43,11 @@ public class DynamicLevelElement extends LevelElementImpl{
      * This method updates both position and hitbox of the
      * game element.
      * 
-     * @param p
+     * @param newPos
      *          the new position
      */
-    public void update(final Point p) {
-        this.updatePosition(p);
+    public void update(final Point newPos) {
+        this.updatePosition(newPos);
         this.updateHitbox();
     }
 }
