@@ -3,6 +3,7 @@ package view.menu;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Arrays;
 import java.util.Objects;
 
 import javax.swing.JFrame;
@@ -62,9 +63,7 @@ public final class MenuFrameImpl implements MenuFrame {
          * Registers the panels of the CardLayout.
          */
         this.frame.getContentPane().setLayout(new CardLayout());
-        for (final MenuCard m : MenuCard.values()) {
-            frame.getContentPane().add(m.getPanel(), m.name());
-        }
+        Arrays.stream(MenuCard.values()).forEach(m -> frame.getContentPane().add(m.getPanel(), m.name()));
         
         /* 
          * Sets the frame's dimension according to the resolution of the screen.

@@ -28,7 +28,7 @@ import view.menu.components.StretchIcon;
 
 /**
  * This class handles the view displayed the first time that the application
- * is started on a new PC.
+ * is started and there isn't a score file.
  *
  */
 public class WelcomeView extends JPanel {

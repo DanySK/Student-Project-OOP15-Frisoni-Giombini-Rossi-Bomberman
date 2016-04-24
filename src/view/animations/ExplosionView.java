@@ -9,7 +9,7 @@ import view.animations.unit.AbstractSingleAnimationView;
 import view.animations.unit.Sprite;
 
 /**
- * This class handles the representation of {@link Tile} involved in a bomb's explosion.
+ * This class handles the representation of a {@link Tile} involved in a bomb's explosion.
  *
  */
 public class ExplosionView extends AbstractSingleAnimationView {

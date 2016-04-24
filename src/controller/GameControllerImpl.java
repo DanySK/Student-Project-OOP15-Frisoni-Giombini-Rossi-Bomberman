@@ -12,11 +12,11 @@ import model.units.Hero;
 import model.units.enemy.Enemy;
 import view.InputAction;
 import view.InputHandler;
-import view.game.DrawableFrameImpl.GameMessage;
+import view.game.DrawableFrame.GameMessage;
 import view.game.GameFrame;
 import view.game.GameOverPanel;
-import view.menu.MenuFrameImpl;
 import view.menu.MenuFrame.MenuCard;
+import view.menu.MenuFrameImpl;
 
 /**
  * Implementation of {@link GameController}.
@@ -56,6 +56,8 @@ public class GameControllerImpl implements GameController {
     private void startGame() {
         view.setObserver(this);
         view.initView();
+
+        view.initView();
         final InputHandler inputListener = new InputHandler();
         view.setKeyListener(inputListener);
         level.initLevel(view.getTileSize());
@@ -88,7 +90,7 @@ public class GameControllerImpl implements GameController {
                         this.doOperationAfterDelay(level.getHero().getDetonator().getBombDelay(), new Runnable() {
                             @Override
                             public void run() {
-                                view.renderExplosions(level.detonateBomb());
+                                view.renderExplosion(level.detonateBomb());
                                 doOperationAfterDelay(view.getExplosionDuration(), new Runnable() {
                                     @Override
                                     public void run() {

@@ -39,13 +39,13 @@ public class StatisticPanel extends JPanel {
 
     private final GameController controller;
 
-    private JLabel time = new JLabel();
-    private JLabel score = new JLabel();
+    private final JLabel time;
+    private final JLabel score;
 
-    private JLabel life;
-    private JLabel attack;
-    private JLabel bombs;
-    private JLabel range;
+    private final JLabel life;
+    private final JLabel attack;
+    private final JLabel bombs;
+    private final JLabel range;
 
     /**
      * Creates a new StatisticPanel.
@@ -55,12 +55,8 @@ public class StatisticPanel extends JPanel {
      */
     public StatisticPanel(final GameController controller) {
         this.controller = Objects.requireNonNull(controller);
-        createControl();
-    }
-
-    private void createControl() {
+        
         final GUIFactory factory = new GUIFactory.Standard();
-
         this.setLayout(new GridLayout(0, 2));
         this.setBackground(BG_COLOR);
         

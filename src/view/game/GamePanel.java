@@ -53,14 +53,14 @@ public class GamePanel extends JPanel {
     private final GameController controller;
 
     private int tileSize;
-    private Map<TileType, Image> tilesImages;
-    private Map<PowerUpType, Image> powerUpImages;
+    private final Map<TileType, Image> tilesImages;
+    private final Map<PowerUpType, Image> powerUpImages;
 
     private Optional<HeroView> hero;
-    private Set<BombView> bombs;
-    private Deque<Set<ExplosionView>> explosions;
-    private Set<AbstractEnemyView> enemies;
-    private Set<TextParticle> scores;
+    private final Set<BombView> bombs;
+    private final Deque<Set<ExplosionView>> explosions;
+    private final Set<AbstractEnemyView> enemies;
+    private final Set<TextParticle> scores;
 
     /**
      * Creates a new GamePanel.
@@ -70,6 +70,14 @@ public class GamePanel extends JPanel {
      */
     public GamePanel(final GameController controller) {
         this.controller = controller;
+        
+        this.tilesImages = new HashMap<>();
+        this.powerUpImages = new EnumMap<>(PowerUpType.class);
+        this.hero = Optional.empty();
+        this.bombs = new HashSet<>();
+        this.explosions = new LinkedList<>();
+        this.enemies = new HashSet<>();
+        this.scores = new HashSet<>();
         initialize();
     }
     
@@ -91,7 +99,6 @@ public class GamePanel extends JPanel {
          * Effectively, it is inefficient to load an image and scale it every time the component is asked to render itself.
          * So this is the best way to proceed.
          */
-        tilesImages = new HashMap<>();
         tilesImages.put(TileType.WALKABLE, ImageLoader.createImageOfSize(GameImage.WALKABLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.RUBBLE, ImageLoader.createImageOfSize(GameImage.RUBBLE, this.tileSize, this.tileSize));
         tilesImages.put(TileType.CONCRETE, ImageLoader.createImageOfSize(GameImage.CONCRETE, this.tileSize, this.tileSize));
@@ -102,7 +109,6 @@ public class GamePanel extends JPanel {
          * EnumMap for associating the power-ups' types with images.
          * It uses the same logic adopted for tiles' types rendering.
          */
-        powerUpImages = new EnumMap<>(PowerUpType.class);
         powerUpImages.put(PowerUpType.ATTACK, ImageLoader.createImageOfSize(GameImage.ATTACK_UP, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.LIFE, ImageLoader.createImageOfSize(GameImage.LIFE_UP, this.tileSize, this.tileSize));
         powerUpImages.put(PowerUpType.BOMB, ImageLoader.createImageOfSize(GameImage.BOMBS_UP, this.tileSize, this.tileSize));
@@ -114,10 +120,10 @@ public class GamePanel extends JPanel {
         powerUpImages.put(PowerUpType.KEY, ImageLoader.createImageOfSize(GameImage.KEY, this.tileSize, this.tileSize));
 
         this.hero = Optional.empty();
-        this.bombs = new HashSet<>();
-        this.explosions = new LinkedList<>();
-        this.enemies = new HashSet<>();
-        this.scores = new HashSet<>();
+        this.bombs.clear();
+        this.explosions.clear();
+        this.enemies.clear();
+        this.scores.clear();
 
         /*
          * Sets the preferred size of the panel. 
@@ -223,7 +229,7 @@ public class GamePanel extends JPanel {
      * @param tiles
      *          the tiles involved in a bomb's explosion
      */
-    public void addExplosions(final Set<Tile> tiles) {
+    public void addExplosion(final Set<Tile> tiles) {
         SoundEffect.EXPLOSION.playOnce();
         this.explosions.addLast(tiles.stream()
                 .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
@@ -233,7 +239,7 @@ public class GamePanel extends JPanel {
     /**
      * Removes the oldest set of exploded tiles.
      */
-    public void removeExpolosions() {
+    public void removeExplosion() {
         if (!this.explosions.isEmpty()) {
             this.explosions.removeFirst();
         }

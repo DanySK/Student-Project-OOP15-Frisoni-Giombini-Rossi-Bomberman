@@ -30,7 +30,7 @@ import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.LanguageHandler;
 import view.SoundEffect;
-import view.game.DrawableFrameImpl.GameMessage;
+import view.game.DrawableFrame.GameMessage;
 import view.game.GameOverPanel.GameOverObserver;
 
 /**
@@ -42,6 +42,7 @@ public class GameFrameImpl implements GameFrame {
     private static final String FRAME_NAME = "Game";
 
     private DrawableFrameImpl frame;
+    private boolean initialized;
 
     private GameController controller;
     private GameLoop gameLoop;
@@ -61,6 +62,7 @@ public class GameFrameImpl implements GameFrame {
      */
     public GameFrameImpl(final boolean darkMode) {
         this.darkMode = darkMode;
+        this.initialized = false;
     }
 
     @Override
@@ -113,6 +115,7 @@ public class GameFrameImpl implements GameFrame {
         this.frame.setLocationByPlatform(true);
         this.frame.setFocusable(true);
         this.frame.pack();
+        this.initialized = true;
     }
 
     /**
@@ -147,11 +150,13 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void setKeyListener(final KeyListener listener) {
+        checkInitialization();
         this.frame.addKeyListener(Objects.requireNonNull(listener));
     }
 
     @Override
     public void showView() {
+        checkInitialization();
         update();
         this.frame.initDrawable();
         this.frame.setVisible(true);
@@ -162,16 +167,19 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public int getTileSize() {
+        checkInitialization();
         return this.gamePanel.getTileSize();
     }
 
     @Override
     public long getExplosionDuration() {
+        checkInitialization();
         return this.gamePanel.getExplosionDuration();
     }
 
     @Override
     public void update() {
+        checkInitialization();
         this.gamePanel.repaint();
         this.statisticPanel.updateStats();
         this.statisticPanel.updateScore(this.controller.getHero().getScore());
@@ -182,36 +190,43 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void updateTime(final long seconds) {
+        checkInitialization();
         this.statisticPanel.updateTime(seconds);
     }
     
     @Override
     public void updateStage() {
+        checkInitialization();
         this.gamePanel.initialize();
     }
     
     @Override
-    public void renderExplosions(final Set<Tile> tiles) {
-        this.gamePanel.addExplosions(tiles);
+    public void renderExplosion(final Set<Tile> tiles) {
+        checkInitialization();
+        this.gamePanel.addExplosion(tiles);
     }
 
     @Override
     public void removeExplosion() {
-        this.gamePanel.removeExpolosions();
+        checkInitialization();
+        this.gamePanel.removeExplosion();
     }
     
     @Override
     public void showMessage(final GameMessage gameMessage) {
+        checkInitialization();
         this.frame.drawMessage(gameMessage);
     }
     
     @Override
     public void removeMessage() {
+        checkInitialization();
         this.frame.clearMessage();
     }
 
     @Override
     public void showGameOverPanel(final int score, final int time, final boolean isRecord, final GameOverObserver observer) {
+        checkInitialization();
         final GameOverPanel panel = new GameOverPanel(score, time, isRecord);
         panel.setObserver(Objects.requireNonNull(observer));
         this.frame.getContentPane().removeAll();
@@ -223,8 +238,18 @@ public class GameFrameImpl implements GameFrame {
 
     @Override
     public void closeView() {
+        checkInitialization();
         SoundEffect.GAME_THEME.stop();
         this.frame.dispose();
+    }
+    
+    /*
+     * Throws a {link IllegalStateException} when a method is called without first initializing the frame.
+     */
+    private void checkInitialization() {
+        if (!this.initialized) {
+            throw new IllegalStateException("Game frame not initialized");
+        }
     }
 
     /**

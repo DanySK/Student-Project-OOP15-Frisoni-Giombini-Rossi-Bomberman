@@ -34,6 +34,9 @@ public abstract class AbstractSingleAnimationView extends AbstractAnimationView 
         if (fps <= 0) {
             throw new IllegalArgumentException("Invalid fps value: " + fps);
         }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Invalid duration: " + duration);
+        }
         this.animation = new Animation(animationFrames(), (int) ((fps / animationFrames().size() * duration) / TIME_FACTOR), false);
         this.animation.start();
     }

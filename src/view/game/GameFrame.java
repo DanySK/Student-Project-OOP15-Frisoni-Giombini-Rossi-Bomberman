@@ -6,7 +6,7 @@ import java.util.Set;
 import controller.GameController;
 import controller.GameLoop;
 import model.Tile;
-import view.game.DrawableFrameImpl.GameMessage;
+import view.game.DrawableFrame.GameMessage;
 import view.game.GameOverPanel.GameOverObserver;
 
 /**
@@ -85,7 +85,7 @@ public interface GameFrame {
      * @param tiles
      *          the tiles involved in the explosion
      */
-    void renderExplosions(Set<Tile> tiles);
+    void renderExplosion(Set<Tile> tiles);
     
     /**
      * Stops the oldest explosion rendering.
