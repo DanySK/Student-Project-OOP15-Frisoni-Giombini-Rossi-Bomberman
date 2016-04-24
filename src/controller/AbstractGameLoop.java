@@ -13,7 +13,6 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
 
     private static final double TIME_FACTOR = 1000000000.0;
     private static final double SLEEP_FACTOR = 0.0000001;
-    private static final long MILLI = 0001;
 
     private final int gameSpeed;
     private volatile boolean running;
@@ -139,11 +138,11 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                         public void run() {
                             if (!paused) {
                                 try {
-                                    Agent.sleep(MILLI);
+                                    Agent.sleep(1);
                                 } catch (InterruptedException e) {
                                     System.err.println(e);
                                 }
-                                count += MILLI;
+                                count += 1;
                                 if (count >= delay) {
                                     action.run();
                                     stop = true;

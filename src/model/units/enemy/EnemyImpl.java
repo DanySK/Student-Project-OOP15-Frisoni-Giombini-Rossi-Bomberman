@@ -29,7 +29,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      * @param enemyType
      *          the type of enemy
      */
-    public EnemyImpl(final Point pos, final Direction dir, final Dimension dim, 
+    public EnemyImpl(final Point pos, final Dimension dim, 
             final EnemyType enemyType) {
         super(pos, dim);
         this.enemyCollision = new EnemyCollisionImpl(this);
@@ -126,7 +126,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof EnemyImpl && this.enemyType.equals(((EnemyImpl) obj).getEnemyType());
     }
 

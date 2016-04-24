@@ -12,7 +12,7 @@ import model.utilities.MapPoint;
 public class TestBomb {
 
     @Test
-    public void test1() {
+    public void test() {
         final int nTiles = 5;
         final int dimension = 10;
         final Detonator detonator = new Detonator(new Dimension(dimension, dimension));

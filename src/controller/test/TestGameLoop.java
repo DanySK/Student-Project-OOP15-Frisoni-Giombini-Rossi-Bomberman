@@ -11,6 +11,7 @@ import controller.AbstractGameLoop;
  */
 public class TestGameLoop {
     
+    private static final String INTERRUPTED = "Interrupted";
     private static final int TEST_FPS = 60;
     private static final int RANGE = TEST_FPS + 10;
     private static final int MILLIS = 1000;
@@ -27,18 +28,19 @@ public class TestGameLoop {
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
-            Assert.assertTrue("Interrupted", false);
+            Assert.assertTrue(INTERRUPTED, false);
         }
         Assert.assertTrue(this.countModel > 0 && this.countView > 0);
-        System.out.print("Test1: " + this.countView + " and " + this.countModel + " before stopped, ");
+        System.out.println("Test1: ");
+        System.out.print("      " + this.countView + " - " + this.countModel + " before stopped, ");
         game.stopLoop();
         final int n = this.countView;
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
-            Assert.assertTrue("Interrupted", false);
+            Assert.assertTrue("INTERRUPTED", false);
         }
-        System.out.println(this.countView + " and " + this.countModel + " after stopped.");
+        System.out.println(this.countView + " - " + this.countModel + " after stopped.");
         Assert.assertTrue(this.countView <= n + 1);
     }
     
@@ -52,25 +54,27 @@ public class TestGameLoop {
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
-            Assert.assertTrue("Interrupted", false);
+            Assert.assertTrue(INTERRUPTED, false);
         }
-        System.out.print("Test2: " + this.countView + " and " + this.countModel + " before pause, ");
+        System.out.println("Test2: ");
+        System.out.print("      " + this.countView + "/"
+                + this.countModel + " before pause, ");
         game1.pauseLoop();
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
-            Assert.assertTrue("Interrupted", false);
+            Assert.assertTrue(INTERRUPTED, false);
         }
-        System.out.print(this.countView + " and " + this.countModel + " after pause, ");
+        System.out.print(this.countView + "/" + this.countModel + " after pause, ");
         Assert.assertTrue(this.countModel < RANGE);
         game1.unPauseLoop();
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
-            Assert.assertTrue("Interrupted", false);
+            Assert.assertTrue(INTERRUPTED, false);
         }
         game1.stopLoop();
-        System.out.println(this.countView + " and " + this.countModel + " after stopped.");
+        System.out.println(this.countView + "/" + this.countModel + " after stopped.");
         Assert.assertTrue(this.countModel >= TEST_FPS);
     }
 
@@ -84,10 +88,12 @@ public class TestGameLoop {
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
-            Assert.assertTrue("Interrupted", false);
+            Assert.assertTrue(INTERRUPTED, false);
         }
         game2.stopLoop();
-        System.out.println("Test3: the result is " + this.countView + " for View and " + this.countModel + " for Model, the result expected is " + TEST_FPS + ".");
+        System.out.println("Test3: ");
+        System.out.println("      the result is " + this.countView + " for View and "
+                + this.countModel + " for Model, the result expected is " + TEST_FPS + ".");
     }
     
     /**
@@ -116,17 +122,17 @@ public class TestGameLoop {
 
         @Override
         public void updateGameState() {
-            
+            //do nothing
         }
 
         @Override
         public void updateEnemies() {
-            
+            //do nothing
         }
 
         @Override
         public void updateTime() {
-            
+            //do nothing
         }
 
     }

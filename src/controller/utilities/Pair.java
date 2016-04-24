@@ -3,7 +3,7 @@ package controller.utilities;
 import java.io.Serializable;
 
 /**
- * A standard generic Pair<X,Y>, with getters, hashCode, equals, and toString well implemented. 
+ * A standard generic Pair<X, Y>, with getters, hashCode, equals, and toString well implemented. 
  */
 public class Pair<X,Y> implements Serializable {
 
@@ -14,6 +14,13 @@ public class Pair<X,Y> implements Serializable {
     private final X x;
     private final Y y;
 
+    /**
+     * Constructor for Pair.
+     * @param x
+     *          the first element of pair
+     * @param y
+     *          the second element of pair
+     */
     public Pair(final X x, final Y y) {
         super();
         this.x = x;
@@ -37,27 +44,11 @@ public class Pair<X,Y> implements Serializable {
         return result;
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final Pair other = (Pair) obj;
-        if (x == null) {
-            if (other.x != null)
-                return false;
-        } else if (!x.equals(other.x))
-            return false;
-        if (y == null) {
-            if (other.y != null)
-                return false;
-        } else if (!y.equals(other.y))
-            return false;
-        return true;
+    public boolean equals(final Object obj) {
+        return obj instanceof Pair && this.x.equals(((Pair<X, Y>) obj).x) 
+                && this.y.equals(((Pair<X, Y>) obj).y);
     }
 
     @Override
