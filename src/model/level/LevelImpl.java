@@ -89,23 +89,23 @@ public class LevelImpl implements Level {
     private void initEnemies() {
         this.createEnemies();
         if (!this.isFirstStage()) {
-            this.enemies.forEach(e -> e.potentiateEnemy());
+            this.enemies.forEach(enemy -> enemy.potentiateEnemy());
         }
     }
 
     /**
-     * Creates the enemies.
+     * This method creates the enemies.
      */
     private void createEnemies() {
-        final Set<Tile> set = this.getFreeTiles();
+        final Set<Tile> freeTilesSet = this.getFreeTiles();
         this.enemies = Collections.synchronizedSet(new HashSet<>());
-        final EnemyType[] vet = EnemyType.values();
+        final EnemyType[] enemyType = EnemyType.values();
         for (int i = 0; i < this.getFreeTiles().size() / ENEMY_FACTOR; i++) {
-            final Tile t = set.stream().findAny().get();
-            set.remove(t);
+            final Tile t = freeTilesSet.stream().findAny().get();
+            freeTilesSet.remove(t);
             this.enemies.add(new EnemyImpl(t.getPosition(),
                     new Dimension(this.tileDimension, this.tileDimension), 
-                    vet[new Random().nextInt(vet.length)]));
+                    enemyType[new Random().nextInt(enemyType.length)]));
         }
     }
 
@@ -156,18 +156,18 @@ public class LevelImpl implements Level {
     @Override
     public void moveEnemies() {
         synchronized (this.enemies) {
-            this.enemies.forEach(e -> e.updateMove(this.getBlocks(), this.hero, 
-                    e.getRandomDirection(),
-                    this.hero.getDetonator().getPlantedBombs().stream().map(b -> 
-                    b.getHitbox()).collect(Collectors.toSet())));
+            this.enemies.forEach(enemy -> enemy.updateMove(this.getBlocks(), this.hero, 
+                    enemy.getRandomDirection(),
+                    this.hero.getDetonator().getPlantedBombs().stream().map(bomb -> 
+                    bomb.getHitbox()).collect(Collectors.toSet())));
         }
     }
 
     @Override
     public void setDirectionEnemies() {
         synchronized (this.enemies) {
-            this.enemies.stream().filter(e -> e.getEnemyType().equals(EnemyType.MINVO))
-            .forEach(e -> e.setDirection(e.getRandomDirection()));
+            this.enemies.stream().filter(enemy -> enemy.getEnemyType().equals(EnemyType.MINVO))
+            .forEach(enemy -> enemy.setDirection(enemy.getRandomDirection()));
         }
     }
 
@@ -177,15 +177,15 @@ public class LevelImpl implements Level {
      */
     private void checkCollisionWithExplosionBomb(final Set<Tile> tiles) {
         synchronized (this.enemies) {
-            final Iterator<Enemy> it = this.enemies.iterator();
-            while (it.hasNext()) {
-                final Enemy e = it.next();
-                if (e.checkFlameCollision(tiles)) {
-                    e.modifyLife(-this.hero.getAttack());
+            final Iterator<Enemy> enemiesIterator = this.enemies.iterator();
+            while (enemiesIterator.hasNext()) {
+                final Enemy enemy = enemiesIterator.next();
+                if (enemy.checkFlameCollision(tiles)) {
+                    enemy.modifyLife(-this.hero.getAttack());
                 }
-                if (e.getRemainingLives() <= 0) {
-                    this.getHero().increaseScore(e.getScore());
-                    it.remove();
+                if (enemy.getRemainingLives() <= 0) {
+                    this.getHero().increaseScore(enemy.getScore());
+                    enemiesIterator.remove();
                 }
             }
         }

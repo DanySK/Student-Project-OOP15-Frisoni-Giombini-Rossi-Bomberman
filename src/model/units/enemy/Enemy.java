@@ -7,6 +7,9 @@ import model.units.Direction;
 import model.units.Entity;
 import model.units.Hero;
 
+/**
+ * This class models a enemy.
+ */
 public interface Enemy extends Entity{
     
     /**

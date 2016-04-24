@@ -2,6 +2,10 @@ package model.level.collision;
 
 import model.units.Entity;
 
+/**
+ * This class models all the enemy's collision
+ * with other game elements.
+ */
 public interface EnemyCollision extends Collision {
     
     /**

@@ -9,6 +9,9 @@ import model.units.Bomb;
 import model.units.Hero;
 import model.units.enemy.Enemy;
 
+/**
+ * This class models a GameController.
+ */
 public interface GameController {
     
     /**
@@ -18,14 +21,14 @@ public interface GameController {
     Hero getHero();
     
     /**
-     * Gets all the powerups.
+     * Gets all the power up.
      * 
-     * @return the set of powerups
+     * @return the set of power up
      */
     Set<Tile> getPowerUp();
     
     /**
-     * Gets all the tiles where there isn't a powerup status.
+     * Gets all the tiles where there isn't a power up status.
      * 
      * @return the set of tiles
      */
@@ -55,8 +58,7 @@ public interface GameController {
     int getFPS();
     
     /**
-     * Gets bomb's delay.
-     * 
+     * This method return bomb's delay.
      * @return bomb's delay
      */
     long getBombDelay();

@@ -15,8 +15,8 @@ public class TestGameLoop {
     private static final int TEST_FPS = 60;
     private static final int RANGE = TEST_FPS + 10;
     private static final int MILLIS = 1000;
-    private volatile int countModel;
-    private volatile int countView; 
+    private volatile int nUpdatesModel;
+    private volatile int nUpdatesView; 
     
     /**
      * This test verifies the correct start and stop operation of AbstractGameLoop.
@@ -30,18 +30,18 @@ public class TestGameLoop {
         } catch (final InterruptedException e) {
             Assert.assertTrue(INTERRUPTED, false);
         }
-        Assert.assertTrue(this.countModel > 0 && this.countView > 0);
+        Assert.assertTrue(this.nUpdatesModel > 0 && this.nUpdatesView > 0);
         System.out.println("Test1: ");
-        System.out.print("      " + this.countView + " - " + this.countModel + " before stopped, ");
+        System.out.print("      " + this.nUpdatesView + " - " + this.nUpdatesModel + " before stopped, ");
         game.stopLoop();
-        final int n = this.countView;
+        final int n = this.nUpdatesView;
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue("INTERRUPTED", false);
         }
-        System.out.println(this.countView + " - " + this.countModel + " after stopped.");
-        Assert.assertTrue(this.countView <= n + 1);
+        System.out.println(this.nUpdatesView + " - " + this.nUpdatesModel + " after stopped.");
+        Assert.assertTrue(this.nUpdatesView <= n + 1);
     }
     
     /**
@@ -57,16 +57,16 @@ public class TestGameLoop {
             Assert.assertTrue(INTERRUPTED, false);
         }
         System.out.println("Test2: ");
-        System.out.print("      " + this.countView + "/"
-                + this.countModel + " before pause, ");
+        System.out.print("      " + this.nUpdatesView + "/"
+                + this.nUpdatesModel + " before pause, ");
         game1.pauseLoop();
         try {
             Thread.sleep(MILLIS);
         } catch (final InterruptedException e) {
             Assert.assertTrue(INTERRUPTED, false);
         }
-        System.out.print(this.countView + "/" + this.countModel + " after pause, ");
-        Assert.assertTrue(this.countModel < RANGE);
+        System.out.print(this.nUpdatesView + "/" + this.nUpdatesModel + " after pause, ");
+        Assert.assertTrue(this.nUpdatesModel < RANGE);
         game1.unPauseLoop();
         try {
             Thread.sleep(MILLIS);
@@ -74,8 +74,8 @@ public class TestGameLoop {
             Assert.assertTrue(INTERRUPTED, false);
         }
         game1.stopLoop();
-        System.out.println(this.countView + "/" + this.countModel + " after stopped.");
-        Assert.assertTrue(this.countModel >= TEST_FPS);
+        System.out.println(this.nUpdatesView + "/" + this.nUpdatesModel + " after stopped.");
+        Assert.assertTrue(this.nUpdatesModel >= TEST_FPS);
     }
 
     /**
@@ -92,8 +92,8 @@ public class TestGameLoop {
         }
         game2.stopLoop();
         System.out.println("Test3: ");
-        System.out.println("      the result is " + this.countView + " for View and "
-                + this.countModel + " for Model, the result expected is " + TEST_FPS + ".");
+        System.out.println("      the result is " + this.nUpdatesView + " for View and "
+                + this.nUpdatesModel + " for Model, the result expected is " + TEST_FPS + ".");
     }
     
     /**
@@ -106,18 +106,18 @@ public class TestGameLoop {
          */
         public GameLoop() {
             super(TEST_FPS);
-            countModel = 0;
-            countView = 0;
+            nUpdatesModel = 0;
+            nUpdatesView = 0;
         } 
 
         @Override
         public void updateModel() {
-            countModel++;
+            nUpdatesModel++;
         }
 
         @Override
         public void updateView() {
-            countView++;
+            nUpdatesView++;
         }
 
         @Override
@@ -134,7 +134,5 @@ public class TestGameLoop {
         public void updateTime() {
             //do nothing
         }
-
     }
-    
 }

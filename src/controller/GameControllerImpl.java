@@ -36,8 +36,12 @@ public class GameControllerImpl implements GameController {
 
     /**
      * Constructor for GameControllerImpl.
-     * @param model the model object.
-     * @param view the view object.
+     * @param model 
+     *          the model object.
+     * @param view 
+     *          the view object.
+     * @param darkMode
+     *          the game mode
      */
     public GameControllerImpl(final Level model, final GameFrame view, final boolean darkMode) {
         this.level = model;
@@ -55,8 +59,6 @@ public class GameControllerImpl implements GameController {
      */
     private void startGame() {
         view.setObserver(this);
-        view.initView();
-
         view.initView();
         final InputHandler inputListener = new InputHandler();
         view.setKeyListener(inputListener);

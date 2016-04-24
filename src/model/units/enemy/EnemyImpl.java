@@ -13,6 +13,9 @@ import model.units.AbstractEntity;
 import model.units.Direction;
 import model.units.Hero;
 
+/**
+ * Implementation of {@link Enemy}.
+ */
 public class EnemyImpl extends AbstractEntity implements Enemy {
     
     private final EnemyCollision enemyCollision;
@@ -22,8 +25,6 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
      * Constructor of EnemyImpl.
      * @param pos
      *          the initial position
-     * @param dir
-     *          the initial direction
      * @param dim
      *          the dimension of the hitBox
      * @param enemyType
@@ -52,8 +53,6 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     
     /**
      * This method checks if the enemy collides with blocks or with the hero or with planted bombs.
-     * @param dir
-     *          the direction where the enemy wants to go
      * @param blockSet
      *          the set of blocks that are in the map
      * @param hero
@@ -68,11 +67,17 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
                 && this.enemyCollision.bombCollision(bombSet) 
                 && this.enemyCollision.heroCollision(hero) ? false : true;
     }
-    
+   
     @Override
-    public Direction getRandomDirection() {
-        final Direction[] vet = Direction.values();
-        return vet[new Random().nextInt(vet.length)];
+    public void updateMove(final Set<Rectangle> blockSet, final Hero hero, 
+            final Direction dir, final Set<Rectangle> bombSet) {
+        this.move(this.getNewDirection(blockSet, hero, dir, bombSet), blockSet, hero, bombSet);
+    }
+
+    @Override
+    public void potentiateEnemy() {
+        this.modifyLife(+1);
+        this.increaseAttack(+1);
     }
     
     /**
@@ -95,25 +100,19 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
     
     @Override
-    public Collision getCollision() {
-        return this.enemyCollision;
+    public Direction getRandomDirection() {
+        final Direction[] vet = Direction.values();
+        return vet[new Random().nextInt(vet.length)];
     }
-   
-    @Override
-    public void updateMove(final Set<Rectangle> blockSet, final Hero hero, 
-            final Direction dir, final Set<Rectangle> bombSet) {
-        this.move(this.getNewDirection(blockSet, hero, dir, bombSet), blockSet, hero, bombSet);
-    }
-
+    
     @Override
     public EnemyType getEnemyType() {
         return this.enemyType;
     }
-
+    
     @Override
-    public void potentiateEnemy() {
-        this.modifyLife(+1);
-        this.increaseAttack(+1);
+    public Collision getCollision() {
+        return this.enemyCollision;
     }
 
     @Override

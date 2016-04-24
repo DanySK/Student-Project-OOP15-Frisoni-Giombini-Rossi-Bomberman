@@ -2,8 +2,17 @@ package model.level.collision;
 
 import model.units.Entity;
 
+/**
+ * Implementation of {@link EnemyCollision}.
+ */
+
 public class EnemyCollisionImpl extends CollisionImpl implements EnemyCollision {
 
+    /**
+     * Constructs a new EnemyCollision object.
+     * @param entity
+     *          the hero entity
+     */
     public EnemyCollisionImpl(final Entity entity) {
         super(entity);
     }

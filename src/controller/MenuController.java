@@ -15,7 +15,6 @@ import view.menu.MenuFrameImpl;
  * Implementation of {@link MenuObserver}.
  * This class will change the current card with the card request,
  * and it allows you to start a new game.
- *
  */
 public class MenuController implements MenuObserver {
 
@@ -23,7 +22,6 @@ public class MenuController implements MenuObserver {
 
     /**
      * Construct a controller for the menu of game.
-     *   
      */
     public MenuController() {
         if (ScoreHandler.getHandler().isFilePresent()) {

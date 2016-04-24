@@ -143,6 +143,18 @@ public final class ScoreHandler extends ESource<ScoreData> {
             System.err.println(e);
         }
     }
+    
+    /**
+     * This method check if file exists and in case it delete.
+     */
+    public void reset() {
+        final File file = new File(FILE_NAME);
+        if (file.exists()) {
+            this.scores.clear();
+            this.record = Optional.absent();
+            this.writeData();
+        }
+    }
 
     /**
      * This method return a pair of score-time of the best score.
@@ -199,18 +211,6 @@ public final class ScoreHandler extends ESource<ScoreData> {
             return score > this.record.get().getX();
         } else {
             return true;
-        }
-    }
-
-    /**
-     * This method check if file exists and in case it delete.
-     */
-    public void reset() {
-        final File file = new File(FILE_NAME);
-        if (file.exists()) {
-            this.scores.clear();
-            this.record = Optional.absent();
-            this.writeData();
         }
     }
 
