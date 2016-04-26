@@ -3,6 +3,7 @@ package model.units.enemy;
 import java.awt.Rectangle;
 import java.util.Set;
 
+import model.level.collision.EnemyCollision;
 import model.units.Direction;
 import model.units.Entity;
 import model.units.Hero;
@@ -57,6 +58,13 @@ public interface Enemy extends Entity{
      * a new level.
      */
     void potentiateEnemy();
+    
+    /**
+     * Gets eney's collision.
+     * 
+     * @return enemy's collision
+     */
+    EnemyCollision getEnemyCollision();
     
     /**
      * toString of enemy.

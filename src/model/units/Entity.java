@@ -1,10 +1,6 @@
 package model.units;
 
 import java.awt.Point;
-import java.util.Set;
-
-import model.Tile;
-import model.level.collision.Collision;
 
 public interface Entity extends LevelElement{
     
@@ -15,15 +11,6 @@ public interface Entity extends LevelElement{
      *          the direction where to move
      */
     void move(final Direction dir);
-    
-    /**
-     * Checks collisions with flames.
-     * 
-     * @param afflictedTiles
-     *          set of afflicted tiles
-     * @return true if there's a collision, false otherwise
-     */
-    boolean checkFlameCollision(final Set<Tile> afflictedTiles);
     
     /**
      * Method that modify the current value of lives.
@@ -75,13 +62,6 @@ public interface Entity extends LevelElement{
      * @return entity's score
      */
     int getScore();
-    
-    /**
-     * Gets entity's collision.
-     * 
-     * @return entity's collision
-     */
-    Collision getCollision();
     
     /**
      * Gets remaining lives.

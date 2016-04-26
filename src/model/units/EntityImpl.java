@@ -2,17 +2,13 @@ package model.units;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.Set;
-
-import model.Tile;
-import model.level.collision.Collision;
 
 /**
  * This class represent the entity that is 
  * the foundation of every entity in the game.
  *
  */
-public abstract class AbstractEntity extends DynamicLevelElement implements Entity {
+public class EntityImpl extends DynamicLevelElement implements Entity {
 
     private static final int INITIAL_LIVES = 1;
     private static final int INITIAL_ATTACK = 1;
@@ -28,7 +24,7 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     /**
      * Constructs a new Entity.
      */
-    public AbstractEntity(final Point pos, final Dimension dim) {
+    public EntityImpl(final Point pos, final Dimension dim) {
         super(pos, dim);
         this.curDir = Direction.DOWN; 
         this.inMovement = false;
@@ -41,11 +37,6 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     public void move(final Direction dir) {
         this.update(this.getPossiblePos(dir.getPoint()));
         this.updateDirection(dir);
-    }
-
-    @Override
-    public boolean checkFlameCollision(final Set<Tile> afflictedTiles) {
-        return this.getCollision().fireCollision(afflictedTiles);
     }
     
     @Override
@@ -82,14 +73,6 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
     public int getScore() {
         return this.score;
     }
-
-    /**
-     * Gets entity's collision.
-     * 
-     * @return entity's collision
-     */
-    @Override
-    public abstract Collision getCollision();
     
     @Override
     public int getRemainingLives() {
@@ -145,10 +128,11 @@ public abstract class AbstractEntity extends DynamicLevelElement implements Enti
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof AbstractEntity && this.attack == ((AbstractEntity) obj).attack
-                && this.curDir.equals(((AbstractEntity) obj).curDir) 
-                && this.inMovement == ((AbstractEntity) obj).inMovement
-                && this.lives == ((AbstractEntity) obj).lives 
-                && this.score == ((AbstractEntity) obj).score;
+        return obj instanceof EntityImpl && this.attack == ((EntityImpl) obj).attack
+                && this.curDir.equals(((EntityImpl) obj).curDir) 
+                && this.inMovement == ((EntityImpl) obj).inMovement
+                && this.lives == ((EntityImpl) obj).lives 
+                && this.score == ((EntityImpl) obj).score;
     }
+
 }

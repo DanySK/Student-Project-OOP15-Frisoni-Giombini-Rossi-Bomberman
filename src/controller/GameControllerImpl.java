@@ -113,7 +113,7 @@ public class GameControllerImpl implements GameController {
                     level.setOpenDoor();
                 }
                 if (level.getHero().hasKey() 
-                        && level.getHero().checkOpenDoorCollision(level.getDoor())) {
+                        && level.getHero().getHeroCollision().openDoorCollision(level.getDoor().getHitbox())) {
                     pauseLoop();
                     view.showMessage(GameMessage.STAGE);
                     level.setNextStage();

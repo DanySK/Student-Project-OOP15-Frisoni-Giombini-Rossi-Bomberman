@@ -180,7 +180,7 @@ public class LevelImpl implements Level {
             final Iterator<Enemy> enemiesIterator = this.enemies.iterator();
             while (enemiesIterator.hasNext()) {
                 final Enemy enemy = enemiesIterator.next();
-                if (enemy.checkFlameCollision(tiles)) {
+                if (enemy.getEnemyCollision().fireCollision(tiles)) {
                     enemy.modifyLife(-this.hero.getAttack());
                 }
                 if (enemy.getRemainingLives() <= 0) {
@@ -195,7 +195,7 @@ public class LevelImpl implements Level {
     public Set<Tile> detonateBomb() {
         final Set<Tile> tiles = this.getAfflictedTiles(
                 CopyFactory.getCopy(this.hero.getDetonator().getBombToReactivate()));
-        if (this.hero.checkFlameCollision(tiles)) {
+        if (this.hero.getHeroCollision().fireCollision(tiles)) {
             this.hero.modifyLife(-this.hero.getAttack());
         }
         this.checkCollisionWithExplosionBomb(tiles);
