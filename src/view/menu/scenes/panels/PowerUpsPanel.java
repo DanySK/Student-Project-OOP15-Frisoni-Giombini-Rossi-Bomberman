@@ -1,4 +1,4 @@
-package view.menu.views.panels;
+package view.menu.scenes.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

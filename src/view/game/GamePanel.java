@@ -245,7 +245,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-
     /**
      * Calculates the perfect size of a tile by desktop resolution.
      * 

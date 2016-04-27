@@ -45,7 +45,7 @@ public abstract class AbstractMenuPanel extends JPanel {
     /**
      * @return the body of the AbstractMenuPanel.
      */
-    public abstract JPanel getPanel();
+    public abstract JPanel getCenterPanel();
     
     /**
      * Initializes the contents of the panel.
@@ -60,7 +60,7 @@ public abstract class AbstractMenuPanel extends JPanel {
         panel.add(factory.createTitleLabel(getTitle()), BorderLayout.NORTH);
         
         // Sets the body panel
-        panel.add(getPanel(), BorderLayout.CENTER);
+        panel.add(getCenterPanel(), BorderLayout.CENTER);
         
         // Sets the "back" button
         final JButton btnBack = factory.createButton(

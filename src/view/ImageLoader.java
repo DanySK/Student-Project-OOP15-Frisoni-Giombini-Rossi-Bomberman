@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import view.menu.views.MenuView;
+import view.menu.scenes.MenuView;
 
 /**
  * This utility class is used as an image loader for the application.
@@ -14,7 +14,7 @@ import view.menu.views.MenuView;
  */
 public final class ImageLoader {
 
-    private static final String IMAGES_FOLDER = "/images/";
+    private static final String IMAGES_FOLDER = "images/";
     private static final String MENU_FOLDER = IMAGES_FOLDER + "menu/";
     private static final String TILES_FOLDER = IMAGES_FOLDER + "tiles/";
     private static final String SPRITES_FOLDER = IMAGES_FOLDER + "sprites/";
@@ -181,7 +181,7 @@ public final class ImageLoader {
      * @return the specified ImageIcon.
      */
     public static ImageIcon createImageIcon(final GameImage img) {
-        final java.net.URL imgURL = MenuView.class.getResource(img.getPath());
+        final java.net.URL imgURL = MenuView.class.getClassLoader().getResource(img.getPath());
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         }

@@ -1,4 +1,4 @@
-package view.menu.views;
+package view.menu.scenes;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -76,7 +76,7 @@ public class ScoresView extends AbstractMenuPanel {
     }
 
     @Override
-    public JPanel getPanel() {
+    public JPanel getCenterPanel() {
         factory = new GUIFactory.Standard();
         final JPanel panel = new JPanel(new BorderLayout());
 

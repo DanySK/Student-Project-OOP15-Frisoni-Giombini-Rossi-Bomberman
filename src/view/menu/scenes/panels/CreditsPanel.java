@@ -1,4 +1,4 @@
-package view.menu.views.panels;
+package view.menu.scenes.panels;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -50,25 +50,25 @@ public class CreditsPanel extends JPanel {
 
         final List<FadingLabel> labels = new ArrayList<>();
         CONTRIBUTORS.entrySet()
-        .stream()
-        .sorted((a1, a2) -> a1.getKey().compareTo(a2.getKey()))
-        .map(e -> {
-            final JPanel contributor = new JPanel(new FlowLayout());
-            final FadingLabel nameLabel = 
-                    factory.createFadingLabelOfColor(e.getKey() + ":", Color.LIGHT_GRAY);
-            contributor.add(nameLabel);
-            labels.add(nameLabel);
-            for (final String job : e.getValue()) {
-                final FadingLabel jobLabel = factory.createFadingLabelOfColor(job, Color.WHITE);
-                contributor.add(jobLabel);
-                labels.add(jobLabel);
-            }
-            contributor.setOpaque(false);
-            return contributor;
-        })
-        .forEach(p -> {
-            this.add(p, cnst);
-        });
+                    .stream()
+                    .sorted((a1, a2) -> a1.getKey().compareTo(a2.getKey()))
+                    .map(e -> {
+                        final JPanel contributor = new JPanel(new FlowLayout());
+                        final FadingLabel nameLabel = 
+                                factory.createFadingLabelOfColor(e.getKey() + ":", Color.LIGHT_GRAY);
+                        contributor.add(nameLabel);
+                        labels.add(nameLabel);
+                        for (final String job : e.getValue()) {
+                            final FadingLabel jobLabel = factory.createFadingLabelOfColor(job, Color.WHITE);
+                            contributor.add(jobLabel);
+                            labels.add(jobLabel);
+                        }
+                        contributor.setOpaque(false);
+                        return contributor;
+                    })
+                    .forEach(p -> {
+                        this.add(p, cnst);
+                    });
 
         /*
          * Starts the fading animations of the labels when the panel is shown

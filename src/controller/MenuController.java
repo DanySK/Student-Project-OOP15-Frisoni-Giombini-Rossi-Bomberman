@@ -5,10 +5,10 @@ import model.level.LevelImpl;
 import view.game.GameFrame;
 import view.game.GameFrameImpl;
 import view.menu.MenuFrame.MenuCard;
-import view.menu.views.MenuView;
-import view.menu.views.SettingsView;
-import view.menu.views.WelcomeView;
-import view.menu.views.MenuView.MenuObserver;
+import view.menu.scenes.MenuView;
+import view.menu.scenes.SettingsView;
+import view.menu.scenes.WelcomeView;
+import view.menu.scenes.MenuView.MenuObserver;
 import view.menu.MenuFrameImpl;
 
 /**

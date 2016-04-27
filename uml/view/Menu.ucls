@@ -28,26 +28,26 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <interface id="4" language="java" name="view.menu.views.WelcomeView.WelcomeObserver" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/WelcomeView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="183" y="136"/>    
+  <interface id="4" language="java" name="view.menu.scenes.WelcomeView.WelcomeObserver" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/WelcomeView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="198" y="133"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <class id="5" language="java" name="view.menu.views.WelcomeView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/WelcomeView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="184" y="270"/>    
+  <class id="5" language="java" name="view.menu.scenes.WelcomeView" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/WelcomeView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="199" y="267"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <interface id="6" language="java" name="view.menu.views.MenuView.MenuObserver" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/MenuView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="6" language="java" name="view.menu.scenes.MenuView.MenuObserver" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/MenuView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="420" y="112"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -55,8 +55,8 @@
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <class id="7" language="java" name="view.menu.views.MenuView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/MenuView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="view.menu.scenes.MenuView" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/MenuView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="418" y="268"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -64,8 +64,8 @@
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="view.menu.views.ScoresView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/ScoresView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="8" language="java" name="view.menu.scenes.ScoresView" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/ScoresView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="599" y="261"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -73,8 +73,8 @@
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <interface id="9" language="java" name="view.menu.views.SettingsView.SettingsObserver" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/SettingsView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="9" language="java" name="view.menu.scenes.SettingsView.SettingsObserver" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/SettingsView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="787" y="100"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -82,8 +82,8 @@
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <class id="10" language="java" name="view.menu.views.SettingsView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/SettingsView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="10" language="java" name="view.menu.scenes.SettingsView" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/SettingsView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="787" y="252"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -91,8 +91,8 @@
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="view.menu.views.InformationView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/views/InformationView.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="11" language="java" name="view.menu.scenes.InformationView" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/InformationView.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="979" y="263"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -100,117 +100,96 @@
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="view.menu.AbstractMenuPanel" project="Bomberman" 
-    file="/Bomberman/src/view/menu/AbstractMenuPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="849" y="459"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="false" protected="false" private="false" static="false"/>      
-      <operations public="true" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <dependency id="13">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <nesting id="14">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
-  </nesting>  
-  <dependency id="15">    
+  <dependency id="12">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="7"/>  
   </dependency>  
-  <association id="16">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="17" name="observer">        
-        <position height="0" width="0" x="28" y="8"/>      
+  <association id="13">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="14" name="observer">        
+        <position height="0" width="0" x="34" y="-4"/>      
       </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1">        
-        <position height="0" width="0" x="28" y="8"/>      
+      <multiplicity id="15" minimum="0" maximum="1">        
+        <position height="0" width="0" x="34" y="-4"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="19">    
+  <association id="16">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="20" name="menuFrame">        
+      <attribute id="17" name="menuFrame">        
         <position height="0" width="0" x="-25" y="9"/>      
       </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1">        
+      <multiplicity id="18" minimum="0" maximum="1">        
         <position height="0" width="0" x="-25" y="9"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="22">    
-    <end type="SOURCE" refId="1"/>    
+  <dependency id="19">    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <nesting id="23">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="4"/>  
-  </nesting>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <dependency id="25">    
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="21">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <generalization id="26">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <generalization id="27">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <generalization id="28">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <realization id="29">    
+  <nesting id="22">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <realization id="23">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
-  <association id="30">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="31" name="observer">        
-        <position height="0" width="0" x="19" y="-1"/>      
-      </attribute>      
-      <multiplicity id="32" minimum="0" maximum="1">        
-        <position height="0" width="0" x="19" y="-1"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="33">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="8"/>  
-  </dependency>  
-  <dependency id="34">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="35">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <association id="36">    
+  <association id="24">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="37" name="observer">        
+      <attribute id="25" name="observer">        
         <position height="0" width="0" x="9" y="5"/>      
       </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1">        
+      <multiplicity id="26" minimum="0" maximum="1">        
         <position height="0" width="0" x="9" y="5"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="27">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </nesting>  
+  <nesting id="28">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <nesting id="30">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <dependency id="31">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="32">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="33" name="observer">        
+        <position height="0" width="0" x="28" y="8"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="1">        
+        <position height="0" width="0" x="28" y="8"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

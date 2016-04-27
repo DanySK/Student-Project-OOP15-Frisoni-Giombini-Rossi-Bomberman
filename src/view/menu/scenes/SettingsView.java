@@ -1,9 +1,8 @@
-package view.menu.views;
+package view.menu.scenes;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -15,10 +14,11 @@ import javax.swing.JRadioButton;
 import view.GUIFactory;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
+import view.LanguageHandler;
+import view.LanguageHandler.Language;
+import view.SoundEffect;
 import view.menu.AbstractMenuPanel;
 import view.menu.components.StretchIcon;
-import view.LanguageHandler;
-import view.SoundEffect;
 
 /**
  * This class handles the settings menu of the game.
@@ -41,7 +41,7 @@ public class SettingsView extends AbstractMenuPanel {
     }
 
     @Override
-    public JPanel getPanel() {
+    public JPanel getCenterPanel() {
         final GUIFactory factory = new GUIFactory.Standard();
         final String on = LanguageHandler.getHandler().getLocaleResource().getString("on");
         final String off = LanguageHandler.getHandler().getLocaleResource().getString("off");
@@ -102,10 +102,10 @@ public class SettingsView extends AbstractMenuPanel {
                 LanguageHandler.getHandler().getLocaleResource().getString("darkMode"), radDarkModeOn, radDarkModeOff));
 
         // Sets comboBox for languages
-        final JComboBox<Locale> comboLanguages = factory.createComboBox(LanguageHandler.getHandler().getSupportedLanguages());
-        comboLanguages.setSelectedItem(LanguageHandler.getHandler().getLocaleResource().getLocale());
+        final JComboBox<Language> comboLanguages = factory.createComboBox(LanguageHandler.getHandler().getSupportedLanguages());
+        LanguageHandler.getHandler().getCurrentLanguage().ifPresent(l -> comboLanguages.setSelectedItem(l));
         comboLanguages.addActionListener(e -> {
-            LanguageHandler.getHandler().setLocale((Locale) comboLanguages.getSelectedItem());
+            LanguageHandler.getHandler().setLocale((Language) comboLanguages.getSelectedItem());
         });
         settings.add(factory.createHorizontalComponentPanel(
                 LanguageHandler.getHandler().getLocaleResource().getString("language"), comboLanguages));

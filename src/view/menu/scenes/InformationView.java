@@ -1,4 +1,4 @@
-package view.menu.views;
+package view.menu.scenes;
 
 import java.awt.BorderLayout;
 
@@ -8,9 +8,9 @@ import javax.swing.JTabbedPane;
 import view.GUIFactory;
 import view.LanguageHandler;
 import view.menu.AbstractMenuPanel;
-import view.menu.views.panels.CommandsPanel;
-import view.menu.views.panels.CreditsPanel;
-import view.menu.views.panels.PowerUpsPanel;
+import view.menu.scenes.panels.CommandsPanel;
+import view.menu.scenes.panels.CreditsPanel;
+import view.menu.scenes.panels.PowerUpsPanel;
 
 /**
  * This class handles the information scene of the menu.
@@ -29,7 +29,7 @@ public class InformationView extends AbstractMenuPanel {
     }
 
     @Override
-    public JPanel getPanel() {
+    public JPanel getCenterPanel() {
         final JPanel panel = new JPanel(new BorderLayout());
 
         final JTabbedPane jtb = new GUIFactory.Standard().createLeftTabbedPane();

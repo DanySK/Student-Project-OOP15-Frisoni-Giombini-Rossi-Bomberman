@@ -2,6 +2,7 @@ package view;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import view.utilities.ESource;
@@ -15,9 +16,38 @@ public final class LanguageHandler extends ESource<Locale> {
 
     private static final String PATH_PROPERTIES = "languages.LabelsBundle";
 
-    // The languages supported by the application.
-    private final Locale[] languages = new Locale[] {Locale.ITALY, Locale.UK, new Locale("pl")};
-
+    /**
+     * This enumeration represents the languages supported by the application.
+     *
+     */
+    public enum Language {
+        /**
+         * Italian language.
+         */
+        ITALIAN(Locale.ITALY),
+        /**
+         * English language.
+         */
+        ENGLISH(Locale.UK),
+        /**
+         * Polish language.
+         */
+        POLISH(new Locale("pl"));
+        
+        private final Locale locale;
+        
+        Language(final Locale locale) {
+            this.locale = locale;
+        }
+        
+        /**
+         * @return the locale associated to the supported language
+         */
+        public Locale getLocale() {
+            return this.locale;
+        }
+    }
+    
     private static volatile LanguageHandler singleton;
     private ResourceBundle res;
 
@@ -54,13 +84,19 @@ public final class LanguageHandler extends ESource<Locale> {
     public ResourceBundle getLocaleResource() {
         return singleton.res;
     }
+    
+    /**
+     * @return the current language.
+     */
+    public Optional<Language> getCurrentLanguage() {
+        return Arrays.stream(Language.values()).filter(l -> l.getLocale().equals(singleton.res.getLocale())).findAny();
+    }
 
     /**
-     * @return a list with the {@link Locale} associated to the languages
-     * supported by the application.
+     * @return an array with the {@link Language} supported by the application.
      */
-    public Locale[] getSupportedLanguages() {
-        return Arrays.copyOf(this.languages, this.languages.length);
+    public Language[] getSupportedLanguages() {
+        return Arrays.copyOf(Language.values(), Language.values().length);
     }
 
     /**
@@ -71,13 +107,13 @@ public final class LanguageHandler extends ESource<Locale> {
      * getBundle tries to find the closest match.
      * If it fails to find a match, it uses the base class.
      * 
-     * @param locale
-     *          the language locale to set
+     * @param language
+     *          the supported language to set
      */
-    public void setLocale(final Locale locale) {
-        if (!singleton.res.getLocale().equals(locale)) {
-            singleton.res = ResourceBundle.getBundle(PATH_PROPERTIES, locale);
-            this.notifyEObservers(locale);
+    public void setLocale(final Language language) {
+        if (!singleton.res.getLocale().equals(language.getLocale())) {
+            singleton.res = ResourceBundle.getBundle(PATH_PROPERTIES, language.getLocale());
+            this.notifyEObservers(language.getLocale());
         }
     }
 }

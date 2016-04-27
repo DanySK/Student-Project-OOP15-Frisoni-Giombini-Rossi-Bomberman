@@ -17,15 +17,15 @@ public interface DrawableFrame {
         /**
          * The message displayed when the game is paused.
          */
-        PAUSE(LanguageHandler.getHandler().getLocaleResource().getString("pause"), 0.7f, SoundEffect.ADVICE),
+        PAUSE("pause", 0.7f, SoundEffect.ADVICE),
         /**
          * The message displayed when the game frame has not focus.
          */
-        FOCUS(LanguageHandler.getHandler().getLocaleResource().getString("focusWarning"), 0.7f, SoundEffect.ADVICE),
+        FOCUS("focusWarning", 0.7f, SoundEffect.ADVICE),
         /**
          * The message displayed when a stage is completed.
          */
-        STAGE(LanguageHandler.getHandler().getLocaleResource().getString("stageClear"), 1.0f, SoundEffect.NEXT_LEVEL);
+        STAGE("stageClear", 1.0f, SoundEffect.NEXT_LEVEL);
 
         private final String message;
         private final float opacity;
@@ -51,7 +51,7 @@ public interface DrawableFrame {
          * @return the message.
          */
         public String getMessage() {
-            return this.message;
+            return LanguageHandler.getHandler().getLocaleResource().getString(this.message);
         }
 
         /**

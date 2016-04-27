@@ -2,11 +2,11 @@ package view.menu;
 
 import javax.swing.JPanel;
 
-import view.menu.views.InformationView;
-import view.menu.views.MenuView;
-import view.menu.views.ScoresView;
-import view.menu.views.SettingsView;
-import view.menu.views.WelcomeView;
+import view.menu.scenes.InformationView;
+import view.menu.scenes.MenuView;
+import view.menu.scenes.ScoresView;
+import view.menu.scenes.SettingsView;
+import view.menu.scenes.WelcomeView;
 
 /**
  * This interface handles the panel changes inside the {@link MenuFrameImpl}.
