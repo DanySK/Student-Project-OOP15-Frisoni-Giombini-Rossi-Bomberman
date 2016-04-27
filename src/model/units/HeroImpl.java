@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.util.Set;
 
 import model.Tile;
-import model.level.collision.Collision;
 import model.level.collision.HeroCollision;
 import model.level.collision.HeroCollisionImpl;
 import model.utilities.MapPoint;
@@ -14,7 +13,7 @@ import model.utilities.MapPoint;
 /**
  * Implementation of {@link Hero}.
  */
-public class HeroImpl extends AbstractEntity implements Hero {
+public class HeroImpl extends EntityImpl implements Hero {
 
     private final Detonator detonator;
     private final HeroCollision heroCollision;
@@ -73,15 +72,15 @@ public class HeroImpl extends AbstractEntity implements Hero {
     }
 
     @Override
-    public boolean checkOpenDoorCollision(final Tile doorOpened) {
-        return this.heroCollision.openDoorCollision(doorOpened.getHitbox());
-    }
-
-    @Override
     public void nextLevel(final int lives, final int attack, final int score) {
         this.modifyLife(lives - 1);
         this.increaseAttack(attack - 1);
         this.increaseScore(score); 
+    }
+    
+    @Override
+    public HeroCollision getHeroCollision() {
+        return this.heroCollision;
     }
 
     @Override
@@ -94,10 +93,6 @@ public class HeroImpl extends AbstractEntity implements Hero {
         return this.detonator;
     }
 
-    @Override
-    public Collision getCollision() {
-        return this.heroCollision;
-    }
 
     @Override
     public void setMoving(final boolean bool) {
@@ -140,5 +135,5 @@ public class HeroImpl extends AbstractEntity implements Hero {
         return obj instanceof HeroImpl && this.inConfusion == ((HeroImpl) obj).inConfusion
                 && this.key == ((HeroImpl) obj).key;
     }
-
+    
 }

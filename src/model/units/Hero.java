@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.Set;
 
 import model.Tile;
+import model.level.collision.HeroCollision;
 
 /**
  * This class models a Hero.
@@ -54,15 +55,6 @@ public interface Hero extends Entity {
     void increaseScore(final int scoreToAdd);
 
     /**
-     * Checks if there's a collision with the open door.
-     * 
-     * @param openDoor
-     *          the open door
-     * @return true if there's a collision, false otherwise
-     */
-    boolean checkOpenDoorCollision(final Tile openDoor);
-
-    /**
      * This method sets correctly hero
      * for the next level.
      * 
@@ -74,6 +66,13 @@ public interface Hero extends Entity {
      *          the score
      */
     void nextLevel(final int lives, final int attack, final int score);
+    
+    /**
+     * Gets hero's collision.
+     * 
+     *@return hero's collision
+     */
+    HeroCollision getHeroCollision();
 
     /**
      * Gets the direction where the hero would move.

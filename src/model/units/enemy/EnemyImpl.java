@@ -6,17 +6,16 @@ import java.awt.Rectangle;
 import java.util.Random;
 import java.util.Set;
 
-import model.level.collision.Collision;
 import model.level.collision.EnemyCollision;
 import model.level.collision.EnemyCollisionImpl;
-import model.units.AbstractEntity;
 import model.units.Direction;
+import model.units.EntityImpl;
 import model.units.Hero;
 
 /**
  * Implementation of {@link Enemy}.
  */
-public class EnemyImpl extends AbstractEntity implements Enemy {
+public class EnemyImpl extends EntityImpl implements Enemy {
     
     private final EnemyCollision enemyCollision;
     private final EnemyType enemyType;
@@ -111,7 +110,7 @@ public class EnemyImpl extends AbstractEntity implements Enemy {
     }
     
     @Override
-    public Collision getCollision() {
+    public EnemyCollision getEnemyCollision() {
         return this.enemyCollision;
     }
 
