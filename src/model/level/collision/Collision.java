@@ -48,6 +48,8 @@ public interface Collision {
      *          the set of elements 
      * @param pred
      *          the predicate
+     * @param X
+     *          the type of elements of the set
      * @return true if the entity can move, false otherwise
      */
     <X> boolean elementCollision(final Set<X> set, final Predicate<X> pred);

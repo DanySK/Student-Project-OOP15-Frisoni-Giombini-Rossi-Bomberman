@@ -11,7 +11,7 @@ import model.units.PowerUpType;
  * This class is used to identify a single Tile
  * in the map.
  */
-public class Tile extends LevelElementImpl{
+public class Tile extends LevelElementImpl {
 
     private TileType type;
     private Optional<PowerUpType> powerup;

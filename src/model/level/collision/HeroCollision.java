@@ -9,7 +9,7 @@ import model.Tile;
  * This class models all the hero's collision
  * with other game elements.
  */
-public interface HeroCollision extends Collision{
+public interface HeroCollision extends Collision {
     
     /**
      * Checks if there's a collision with a powerup.

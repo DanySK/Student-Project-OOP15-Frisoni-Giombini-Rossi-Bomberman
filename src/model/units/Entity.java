@@ -2,7 +2,10 @@ package model.units;
 
 import java.awt.Point;
 
-public interface Entity extends LevelElement{
+/**
+ * This class models a game entity.
+ */
+public interface Entity extends LevelElement {
     
     /**
      * This method allow the entity to move.
@@ -30,6 +33,9 @@ public interface Entity extends LevelElement{
     
     /**
      * Increase hero's attack level.
+     * 
+     * @param attackToAdd
+     *          the attack to add to the previous one
      */
     void increaseAttack(final int attackToAdd);
     

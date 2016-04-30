@@ -13,7 +13,7 @@ import model.units.BombImpl;
  */
 public final class CopyFactory {
 
-    private CopyFactory(){ }
+    private CopyFactory() { }
     
     /**
      * Gets a copy of the tile.

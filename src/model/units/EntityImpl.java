@@ -23,6 +23,11 @@ public class EntityImpl extends DynamicLevelElement implements Entity {
 
     /**
      * Constructs a new Entity.
+     * 
+     * @param pos
+     *          the entity's initial position
+     * @param dim
+     *          the entity's dimension     
      */
     public EntityImpl(final Point pos, final Dimension dim) {
         super(pos, dim);
@@ -35,7 +40,7 @@ public class EntityImpl extends DynamicLevelElement implements Entity {
     
     @Override
     public void move(final Direction dir) {
-        this.update(this.getPossiblePos(dir.getPoint()));
+        this.update(this.getPossiblePos(dir.getTranslation()));
         this.updateDirection(dir);
     }
     

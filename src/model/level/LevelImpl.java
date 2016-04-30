@@ -275,7 +275,7 @@ public class LevelImpl implements Level {
     }
 
     @Override
-    public Set<Tile> getTiles(){
+    public Set<Tile> getTiles() {
         return this.getGenericSet(t -> !t.getType().equals(TileType.POWERUP_STATUS))
                 .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }
@@ -333,7 +333,7 @@ public class LevelImpl implements Level {
      */
     private Set<Tile> getFreeTiles() {
         return this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE) 
-                && !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(),tileDimension),
+                && !MapPoint.isEntryPoint(MapPoint.getInvCoordinate(t.getX(), tileDimension),
                         MapPoint.getInvCoordinate(t.getY(), tileDimension)))
                 .stream().map(t -> CopyFactory.getCopy(t)).collect(Collectors.toSet());
     }

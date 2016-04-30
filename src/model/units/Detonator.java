@@ -38,6 +38,9 @@ public class Detonator {
 
     /**
      * It adds a bomb to the List.
+     * 
+     * @param pos
+     *          the bomb's position
      */
     public void addBomb(final Point pos) {
         this.bombList.addLast(new BombImpl(pos, this.dim, this.bombRange));
@@ -60,9 +63,8 @@ public class Detonator {
     /**
      * This method returns the bomb to be planted.
      * 
-     * @param p
+     * @param pos
      *          the new bomb's position
-     * @return the bomb with the position updated
      */
     public void plantBomb(final Point pos) {
         this.addBomb(pos);

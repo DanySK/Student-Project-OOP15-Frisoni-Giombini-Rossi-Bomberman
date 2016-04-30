@@ -13,7 +13,7 @@ public enum PowerUpType {
     /**
      * Increase attack.
      */
-    ATTACK(){
+    ATTACK() {
         public void doApply(final Hero hero) {
             hero.increaseAttack(INC);
         }
@@ -22,7 +22,7 @@ public enum PowerUpType {
     /**
      * Increase lives. 
      */
-    LIFE(){
+    LIFE() {
         public void doApply(final Hero hero) {
             hero.modifyLife(INC);
         }
@@ -96,7 +96,7 @@ public enum PowerUpType {
     /**
      * Set the key.
      */
-    KEY(){
+    KEY() {
         @Override
         public void doApply(final Hero hero) {
             hero.setKey();
@@ -116,6 +116,12 @@ public enum PowerUpType {
         this.doApply(hero);
     }
     
+    /**
+     * This method applies the power up's effect to the hero.
+     * 
+     * @param hero
+     *          the hero to who apply power up's effect
+     */
     public abstract void doApply(final Hero hero);
     
 }

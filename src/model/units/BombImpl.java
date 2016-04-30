@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * Implementation of {@link Bomb}.
  */
-public class BombImpl extends DynamicLevelElement implements Bomb{
+public class BombImpl extends DynamicLevelElement implements Bomb {
     
     private int range;
     private boolean isPlanted;
@@ -18,6 +18,8 @@ public class BombImpl extends DynamicLevelElement implements Bomb{
      *          the initial position
      * @param dim
      *          the dimension
+     * @param range
+     *          the bomb's range
      */
     public BombImpl(final Point pos, final Dimension dim, final int range) {
         super(pos, dim);

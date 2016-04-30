@@ -8,7 +8,7 @@ import java.awt.Point;
  * dynamic game element.
  */
 
-public class DynamicLevelElement extends LevelElementImpl{
+public class DynamicLevelElement extends LevelElementImpl {
 
     /**
      * Construct a game element.

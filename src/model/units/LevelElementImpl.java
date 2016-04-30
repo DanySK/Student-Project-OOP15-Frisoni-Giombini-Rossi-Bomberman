@@ -10,9 +10,18 @@ import java.awt.Rectangle;
  * Implementation of {@link LevelElement}.
  *
  */
-public class LevelElementImpl implements LevelElement{
+public class LevelElementImpl implements LevelElement {
 
+    /**
+     * The parameter curPos is the current position
+     * of a game element.
+     */
     protected Point curPos;
+    
+    /**
+     * The hitBox id the rectangle used for collisions
+     * between game elements.
+     */
     protected Rectangle hitBox;
     
     /**
@@ -49,7 +58,7 @@ public class LevelElementImpl implements LevelElement{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return new StringBuilder().append("\tPosition: (")
                 .append(this.getX())
                 .append(", ")

@@ -28,10 +28,6 @@ public class TilesFactory {
      *          the number of rows
      * @param columns
      *          the number of columns
-     * @param density
-     *          the density of the blocks
-     * @param tileDimension
-     *          the dimension of a tile
      */
     public TilesFactory(final int rows, final int columns) {
         this.rows = rows;
@@ -45,6 +41,8 @@ public class TilesFactory {
      *          the row in the map
      * @param column
      *          the column in the map
+     * @param tileDimension
+     *          the dimension of a tile
      * @return the new tile
      */
     public Tile createForCoordinates(final int row, final int column, final int tileDimension) {

@@ -25,8 +25,6 @@ public class HeroImpl extends EntityImpl implements Hero {
      * 
      * @param pos
      *          the initial position
-     * @param dir
-     *          the initial direction
      * @param dim
      *          the dimension of the hitBox
      */
@@ -115,7 +113,7 @@ public class HeroImpl extends EntityImpl implements Hero {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return new StringBuilder().append("HERO -  ")
                 .append(super.toString())
                 .toString();

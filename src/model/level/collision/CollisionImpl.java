@@ -11,7 +11,7 @@ import model.units.Entity;
 /**
  * Implementation of {@link Collision}. 
  */
-public class CollisionImpl implements Collision{
+public class CollisionImpl implements Collision {
 
     protected final Entity entity;
     protected final Rectangle entityRec;
@@ -20,10 +20,8 @@ public class CollisionImpl implements Collision{
      * The constructor initialize Collision's element
      * bringing them from the Level.
      * 
-     * @param map       
-     *          the background of the game
-     * @param hero 
-     *          the hero entity
+     * @param entity 
+     *          the entity that has the collision
      */
     public CollisionImpl(final Entity entity) {
         this.entity = entity;
@@ -64,8 +62,8 @@ public class CollisionImpl implements Collision{
 
     @Override
     public void updateEntityRec(final Direction dir) {
-        this.entityRec.setBounds(new Rectangle(this.entity.getPossiblePos(dir.getPoint()).x, 
-                this.entity.getPossiblePos(dir.getPoint()).y, 
+        this.entityRec.setBounds(new Rectangle(this.entity.getPossiblePos(dir.getTranslation()).x, 
+                this.entity.getPossiblePos(dir.getTranslation()).y, 
                 this.entity.getHitbox().width, 
                 this.entity.getHitbox().height));
     }

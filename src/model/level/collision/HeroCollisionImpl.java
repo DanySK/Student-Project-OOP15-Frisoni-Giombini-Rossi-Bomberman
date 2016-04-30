@@ -12,7 +12,7 @@ import model.units.Hero;
  * Implementation of {@link HeroCollision}.
  */
 
-public class HeroCollisionImpl extends CollisionImpl implements HeroCollision{
+public class HeroCollisionImpl extends CollisionImpl implements HeroCollision {
 
     /**
      * Constructs a new HeroCollision object.

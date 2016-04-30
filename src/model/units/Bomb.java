@@ -3,7 +3,7 @@ package model.units;
 /**
  * This interface shapes a Bomb.
  */
-public interface Bomb extends LevelElement{
+public interface Bomb extends LevelElement {
     
     /**
      * Gets boms's range.

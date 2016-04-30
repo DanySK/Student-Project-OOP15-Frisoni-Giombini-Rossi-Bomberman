@@ -88,7 +88,7 @@ public final class MapPoint {
     }
 
     /**
-     * Calculates the position in the matrix;
+     * Calculates the position in the matrix.
      * 
      * @param coordinate
      *          the coordinate to convert
@@ -120,6 +120,8 @@ public final class MapPoint {
      *          the coordinate
      * @param range
      *          the bomb's range
+     * @param nTiles
+     *          the dimension of a game map         
      * @return the maximum possible coordinate
      */
     public static int checkBoundaries(final int coordinate, final int range, final int nTiles) {
