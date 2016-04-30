@@ -7,17 +7,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import org.junit.Assert;
-import model.Tile;
-import model.TileType;
 import model.units.Bomb;
 import model.units.BombImpl;
 import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
 import model.units.PowerUpType;
+import model.units.Tile;
+import model.units.TileImpl;
+import model.units.TileType;
 import model.units.enemy.Enemy;
 import model.units.enemy.EnemyImpl;
 import model.units.enemy.EnemyType;
@@ -112,11 +113,11 @@ public class TestCollision {
         final Set<Tile> blockSet = this.createTiles();
         final Hero hero = this.createHero(1, 1);
         final Set<Tile> powerUpSet = new HashSet<>();
-        powerUpSet.add(new Tile(new Point(MapPoint.getCoordinate(2, TILE_DIMENSION),
+        powerUpSet.add(new TileImpl(new Point(MapPoint.getCoordinate(2, TILE_DIMENSION),
                 MapPoint.getCoordinate(1, TILE_DIMENSION)), 
                 new Dimension(TILE_DIMENSION, TILE_DIMENSION),
                 TileType.POWERUP_STATUS, Optional.of(PowerUpType.KEY)));
-        powerUpSet.add(new Tile(new Point(MapPoint.getCoordinate(1, TILE_DIMENSION),
+        powerUpSet.add(new TileImpl(new Point(MapPoint.getCoordinate(1, TILE_DIMENSION),
                 MapPoint.getCoordinate(2, TILE_DIMENSION)), 
                 new Dimension(TILE_DIMENSION, TILE_DIMENSION),
                 TileType.POWERUP_STATUS, Optional.of(PowerUpType.ATTACK)));
@@ -163,7 +164,7 @@ public class TestCollision {
             for (int j = 0; j < N_TILES; j++) {
                 type = i == 0 || j == 0 || i == N_TILES - 1 || j == N_TILES - 1
                         || i % 2 == 0 && j % 2 == 0 ? TileType.CONCRETE : TileType.WALKABLE;
-                blockSet.add(new Tile(new Point(MapPoint.getCoordinate(i, TILE_DIMENSION),
+                blockSet.add(new TileImpl(new Point(MapPoint.getCoordinate(i, TILE_DIMENSION),
                         MapPoint.getCoordinate(j, TILE_DIMENSION)), 
                         new Dimension(TILE_DIMENSION, TILE_DIMENSION),
                         type, Optional.of(PowerUpType.KEY)));

@@ -1,64 +1,30 @@
 package model.units;
 
-import java.awt.Dimension;
 import java.awt.Point;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import model.utilities.CopyFactory;
 
 /**
- * This class represent the hero's bomb set.
+ * This class models a Detonator.
  */
-public class Detonator {
-
-    private static final int INITIAL_RANGE = 1;
-    private static final int INITIAL_BOMBS = 1;
-    private static final long BOMB_DELAY = 3000L;
-
-    private final Dimension dim;
-    private int bombRange;
-    private int maxBombs;
-    private final Deque<Bomb> bombList;
-
-    /**
-     * It creates a detonator.
-     * 
-     * @param dim
-     *          the dimension of a bomb
-     */
-    public Detonator(final Dimension dim) {
-        this.dim = dim;
-        this.bombRange = INITIAL_RANGE;
-        this.maxBombs = INITIAL_BOMBS;
-        this.bombList = new LinkedList<>();
-    }
-
+public interface Detonator {
+    
     /**
      * It adds a bomb to the List.
      * 
      * @param pos
      *          the bomb's position
      */
-    public void addBomb(final Point pos) {
-        this.bombList.addLast(new BombImpl(pos, this.dim, this.bombRange));
-    }
+    void addBomb(final Point pos);
 
     /**
      * It increases the range of a bomb.
      */
-    public void increaseRange() {
-        this.bombRange++;
-    }
+    void increaseRange();
 
     /**
      * It increases the number of bombs that can be planted.
      */
-    public void increaseBombs() {
-        this.maxBombs++;
-    }
+    void increaseBombs();
 
     /**
      * This method returns the bomb to be planted.
@@ -66,101 +32,53 @@ public class Detonator {
      * @param pos
      *          the new bomb's position
      */
-    public void plantBomb(final Point pos) {
-        this.addBomb(pos);
-        this.getBombToPlant().setPlanted(true);
-    }
+    void plantBomb(final Point pos);
 
     /**
      * Reactivates a bomb that has already exploded.
      */
-    public void reactivateBomb() {
-        synchronized (this.bombList) {
-            this.bombList.removeFirst();
-        }
-    }
-
-    /**
-     * It returns a bomb to plant.
-     * 
-     * @return a bomb that can be planted.
-     */
-    private Bomb getBombToPlant() {
-        return this.bombList.stream().filter(b -> !b.isPositioned()).findFirst().get();
-    }
+    void reactivateBomb();
 
     /**
      * It returns the bomb to reactivate.
      * 
      * @return a bomb that has to be reactivated
      */
-    public Bomb getBombToReactivate() {
-        return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
-    }
+    Bomb getBombToReactivate();
 
     /**
      * Gets bomb's delay.
      * 
      * @return bomb's delay
      */
-    public long getBombDelay() {
-        return BOMB_DELAY;
-    }
+    long getBombDelay();
 
     /**
      * Checks if there are bombs to plant.
      *  
      * @return true if there's at least a bomb to plant.
      */
-    public boolean hasBombs() {
-        return this.bombList.size() < this.maxBombs;
-    }
+    boolean hasBombs();
 
     /**
      * Gets the list of planted bombs.
      * 
      * @return the list of planted bombs
      */
-    public Set<Bomb> getPlantedBombs() {
-        synchronized (this.bombList) {
-            return this.bombList.stream().filter(b -> b.isPositioned())
-                    .map(b -> CopyFactory.getCopy(b))
-                    .collect(Collectors.toSet());
-        }        
-    }
+    Set<Bomb> getPlantedBombs();
 
     /**
      * Gets the actual range of a bomb.
      * 
      * @return the actual range of a bomb
      */
-    public int getActualRange() {
-        return this.bombRange;
-    }
+    int getActualRange();
     
     /**
      * Gets the actual number of bombs.
      * 
      * @return the actual number of bombs
      */
-    public int getActualBombs() {
-        return this.maxBombs;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + bombRange;
-        result = prime * result + ((dim == null) ? 0 : dim.hashCode());
-        result = prime * result + maxBombs;
-        return result;
-    }
+    int getActualBombs();
 
-    @Override
-    public boolean equals(final Object obj) {
-        return obj instanceof Detonator && this.dim.equals(((Detonator) obj).dim)
-                && this.bombRange == ((Detonator) obj).bombRange 
-                && this.maxBombs == ((Detonator) obj).maxBombs;
-    }
 }

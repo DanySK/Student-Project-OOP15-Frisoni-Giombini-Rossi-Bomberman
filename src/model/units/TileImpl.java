@@ -1,17 +1,13 @@
-package model;
+package model.units;
 
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Optional;
 
-import model.units.LevelElementImpl;
-import model.units.PowerUpType;
-
 /**
- * This class is used to identify a single Tile
- * in the map.
+ * Implementation of {@link Tile}.
  */
-public class Tile extends LevelElementImpl {
+public class TileImpl extends LevelElementImpl implements Tile {
 
     private TileType type;
     private Optional<PowerUpType> powerup;
@@ -28,60 +24,38 @@ public class Tile extends LevelElementImpl {
      * @param powerup
      *          the associated powerup
      */
-    public Tile(final Point pos, final Dimension dim, final TileType type, 
+    public TileImpl(final Point pos, final Dimension dim, final TileType type, 
             final Optional<PowerUpType> powerup) {
         super(pos, dim);
         this.type = type;
         this.powerup = powerup;
     }
-
-    /**
-     * This method return the type of the tile.
-     * 
-     * @return the tile's type
-     */
+    
+    @Override
     public TileType getType() {
         return type;
     }
 
-    /**
-     * Returns the Powerup.
-     * 
-     * @return the powerup associated
-     */
+    @Override
     public Optional<PowerUpType> getPowerup() {
         return this.powerup;
     }
 
-    /**
-     * Sets a new TileType for the tile.
-     * 
-     * @param newType
-     *          the new type 
-     */
+    @Override
     public void setType(final TileType newType) {
         this.type = newType;
     }
 
-    /**
-     * Sets the key.
-     */
+    @Override
     public void setKeyPowerUp() {
         this.powerup = Optional.of(PowerUpType.KEY);
     }
 
-    /**
-     * Remove the powerup.
-     */
+    @Override
     public void removePowerUp() {
         this.powerup = Optional.empty();
     }
 
-    /**
-     * Tile's toString.
-     * 
-     * @return tile's description
-     */
     public String toString() {
         return new StringBuilder().append("TILE -  ")
                 .append("Type is: ")
@@ -105,7 +79,7 @@ public class Tile extends LevelElementImpl {
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof Tile && this.type.equals(((Tile) obj).type)
-                && this.powerup.equals(((Tile) obj).powerup);
+        return obj instanceof TileImpl && this.type.equals(((TileImpl) obj).type)
+                && this.powerup.equals(((TileImpl) obj).powerup);
     }
 }

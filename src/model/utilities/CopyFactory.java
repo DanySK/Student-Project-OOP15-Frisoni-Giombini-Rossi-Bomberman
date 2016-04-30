@@ -3,9 +3,10 @@ package model.utilities;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import model.Tile;
 import model.units.Bomb;
 import model.units.BombImpl;
+import model.units.Tile;
+import model.units.TileImpl;
 
 /**
  * This class is used to get a copy
@@ -23,7 +24,7 @@ public final class CopyFactory {
      * @return the copy of the tile
      */
     public static Tile getCopy(final Tile tile) {
-        return new Tile(new Point(tile.getPosition()), 
+        return new TileImpl(new Point(tile.getPosition()), 
                 new Dimension(tile.getHitbox().width, tile.getHitbox().height), 
                 tile.getType(), tile.getPowerup());
     }

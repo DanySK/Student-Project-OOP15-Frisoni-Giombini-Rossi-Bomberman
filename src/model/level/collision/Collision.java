@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import model.Tile;
 import model.units.Direction;
+import model.units.Tile;
 
 /**
  * This class models a generic collision whith

@@ -7,13 +7,16 @@ import java.util.Random;
 import java.util.Set;
 
 import model.units.PowerUpType;
+import model.units.Tile;
+import model.units.TileImpl;
+import model.units.TileType;
 import model.utilities.MapPoint;
 
 /**
  * This class allows to establish which type of tile
  * there will be in a specific position.
  */
-public class TilesFactory {
+public class TileFactory {
 
     private static final double BLOCK_DENSITY = 0.5;
     private static final double POWERUP_DENSITY = 0.75;
@@ -29,7 +32,7 @@ public class TilesFactory {
      * @param columns
      *          the number of columns
      */
-    public TilesFactory(final int rows, final int columns) {
+    public TileFactory(final int rows, final int columns) {
         this.rows = rows;
         this.columns = columns;
     }
@@ -45,10 +48,10 @@ public class TilesFactory {
      *          the dimension of a tile
      * @return the new tile
      */
-    public Tile createForCoordinates(final int row, final int column, final int tileDimension) {
+    public TileImpl createForCoordinates(final int row, final int column, final int tileDimension) {
         final TileType type = getTypeForCoordinates(row, column);
         final Optional<PowerUpType> powerup = this.getPowerup(type);
-        return new Tile(new Point(MapPoint.getCoordinate(row, tileDimension),
+        return new TileImpl(new Point(MapPoint.getCoordinate(row, tileDimension),
                 MapPoint.getCoordinate(column, tileDimension)), 
                 new Dimension(tileDimension, tileDimension),
                 type, powerup);

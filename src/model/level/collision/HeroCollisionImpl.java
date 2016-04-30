@@ -3,10 +3,10 @@ package model.level.collision;
 import java.awt.Rectangle;
 import java.util.Set;
 
-import model.Tile;
-import model.TileType;
 import model.units.Entity;
 import model.units.Hero;
+import model.units.Tile;
+import model.units.TileType;
 
 /**
  * Implementation of {@link HeroCollision}.

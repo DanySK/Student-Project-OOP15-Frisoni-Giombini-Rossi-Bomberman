@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import controller.utilities.Pair;
-import model.Tile;
 import model.units.Bomb;
 import model.units.Hero;
+import model.units.Tile;
 import model.units.enemy.Enemy;
 
 /**

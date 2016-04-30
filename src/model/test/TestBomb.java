@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import org.junit.Assert;
 
-import model.units.Detonator;
+import model.units.DetonatorImpl;
 import model.utilities.MapPoint;
 
 /**
@@ -22,7 +22,7 @@ public class TestBomb {
      */
     @Test
     public void test() {
-        final Detonator detonator = new Detonator(new Dimension(TILE_DIMENSION, TILE_DIMENSION));
+        final DetonatorImpl detonator = new DetonatorImpl(new Dimension(TILE_DIMENSION, TILE_DIMENSION));
         Assert.assertTrue(detonator.hasBombs());
         Assert.assertEquals(detonator.getActualBombs(), 1);
         Assert.assertEquals(detonator.getPlantedBombs().size(), 0);

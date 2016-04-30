@@ -2,9 +2,9 @@ package model.level;
 
 import java.util.Set;
 
-import model.Tile;
 import model.units.Direction;
 import model.units.Hero;
+import model.units.Tile;
 import model.units.enemy.Enemy;
 
 /**

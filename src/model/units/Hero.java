@@ -3,12 +3,10 @@ package model.units;
 import java.awt.Rectangle;
 import java.util.Set;
 
-import model.Tile;
 import model.level.collision.HeroCollision;
 
 /**
  * This class models a Hero.
- *
  */
 public interface Hero extends Entity {
 

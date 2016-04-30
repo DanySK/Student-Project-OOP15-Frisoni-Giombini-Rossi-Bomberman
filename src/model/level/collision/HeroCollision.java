@@ -3,7 +3,7 @@ package model.level.collision;
 import java.awt.Rectangle;
 import java.util.Set;
 
-import model.Tile;
+import model.units.Tile;
 
 /**
  * This class models all the hero's collision

@@ -35,11 +35,4 @@ public interface LevelElement {
      * @return the y coordinate
      */
     int getY();
-    
-    /**
-     * Returns the string describing the object.
-     *  
-     * @return the string describing the object
-     */
-    String toString();
 }

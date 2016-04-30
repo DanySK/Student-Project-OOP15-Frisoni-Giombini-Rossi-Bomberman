@@ -25,7 +25,7 @@ import javax.swing.plaf.LayerUI;
 
 import controller.GameController;
 import controller.GameLoop;
-import model.Tile;
+import model.units.Tile;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.LanguageHandler;

@@ -11,13 +11,14 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import model.Tile;
-import model.TileType;
-import model.TilesFactory;
+import model.TileFactory;
 import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
 import model.units.HeroImpl;
+import model.units.Tile;
+import model.units.TileImpl;
+import model.units.TileType;
 import model.units.enemy.Enemy;
 import model.units.enemy.EnemyImpl;
 import model.units.enemy.EnemyType;
@@ -112,8 +113,8 @@ public class LevelImpl implements Level {
      * with the specified size and block density.
      */
     private void createLevel() {
-        final TilesFactory factory = new TilesFactory(this.nTiles, this.nTiles);
-        this.gameMap = new Tile[this.nTiles][this.nTiles];
+        final TileFactory factory = new TileFactory(this.nTiles, this.nTiles);
+        this.gameMap = new TileImpl[this.nTiles][this.nTiles];
         for (int i = 0; i < this.nTiles; i++) {
             for (int j = 0; j < this.nTiles; j++) {
                 this.gameMap[i][j] = factory.createForCoordinates(i, j, this.tileDimension);
@@ -129,7 +130,7 @@ public class LevelImpl implements Level {
      * @param factory
      *          the TilesFactory object
      */
-    private void setDoor(final TilesFactory factory) {
+    private void setDoor(final TileFactory factory) {
         factory.setDoor(this.getGenericSet(t -> t.getType().equals(TileType.WALKABLE)));
     }
 
@@ -139,7 +140,7 @@ public class LevelImpl implements Level {
      * @param factory
      *          the TilesFactory object
      */
-    private void setKey(final TilesFactory factory) {
+    private void setKey(final TileFactory factory) {
         factory.setKey(this.getGenericSet(t -> t.getType().equals(TileType.RUBBLE)));
     }
 

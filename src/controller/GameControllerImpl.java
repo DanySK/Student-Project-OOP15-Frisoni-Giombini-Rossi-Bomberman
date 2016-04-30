@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import controller.utilities.Pair;
-import model.Tile;
 import model.level.Level;
 import model.units.Bomb;
 import model.units.Direction;
 import model.units.Hero;
+import model.units.Tile;
 import model.units.enemy.Enemy;
 import view.InputAction;
 import view.InputHandler;

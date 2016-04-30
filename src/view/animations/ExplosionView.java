@@ -4,12 +4,13 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import model.Tile;
+import model.units.Tile;
+import model.units.TileImpl;
 import view.animations.unit.AbstractSingleAnimationView;
 import view.animations.unit.Sprite;
 
 /**
- * This class handles the representation of a {@link Tile} involved in a bomb's explosion.
+ * This class handles the representation of a {@link TileImpl} involved in a bomb's explosion.
  *
  */
 public class ExplosionView extends AbstractSingleAnimationView {

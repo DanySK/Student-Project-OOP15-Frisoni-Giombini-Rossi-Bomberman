@@ -4,9 +4,9 @@ import java.awt.Rectangle;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import model.Tile;
 import model.units.Direction;
 import model.units.Entity;
+import model.units.Tile;
 
 /**
  * Implementation of {@link Collision}. 

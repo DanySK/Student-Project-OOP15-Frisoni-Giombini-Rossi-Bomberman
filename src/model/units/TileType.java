@@ -1,4 +1,4 @@
-package model;
+package model.units;
 
 /**
  * Possible types of tile.

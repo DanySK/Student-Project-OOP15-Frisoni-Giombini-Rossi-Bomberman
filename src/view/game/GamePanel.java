@@ -21,9 +21,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.GameController;
-import model.Tile;
-import model.TileType;
 import model.units.PowerUpType;
+import model.units.Tile;
+import model.units.TileType;
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
 import view.SoundEffect;

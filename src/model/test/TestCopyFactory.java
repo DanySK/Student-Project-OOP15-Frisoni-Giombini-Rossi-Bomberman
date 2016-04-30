@@ -5,13 +5,14 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Optional;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import org.junit.Assert;
-import model.Tile;
-import model.TileType;
 import model.units.Bomb;
 import model.units.BombImpl;
+import model.units.Tile;
+import model.units.TileImpl;
+import model.units.TileType;
 import model.utilities.CopyFactory;
 import model.utilities.MapPoint;
 
@@ -27,7 +28,7 @@ public class TestCopyFactory {
      */
     @Test
     public void testTile() {
-        final Tile tile = new Tile(new Point(MapPoint.getCoordinate(0, TILE_DIMENSION),
+        final Tile tile = new TileImpl(new Point(MapPoint.getCoordinate(0, TILE_DIMENSION),
                 MapPoint.getCoordinate(0, TILE_DIMENSION)), 
                 new Dimension(TILE_DIMENSION, TILE_DIMENSION),
                 TileType.CONCRETE, Optional.empty());

@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
-import model.Tile;
 import model.level.collision.HeroCollision;
 import model.level.collision.HeroCollisionImpl;
 import model.utilities.MapPoint;
@@ -30,7 +29,7 @@ public class HeroImpl extends EntityImpl implements Hero {
      */
     public HeroImpl(final Point pos, final Dimension dim) {
         super(pos, dim);
-        this.detonator = new Detonator(dim);
+        this.detonator = new DetonatorImpl(dim);
         this.heroCollision = new HeroCollisionImpl(this);
         this.inConfusion = false;
         this.key = false;
