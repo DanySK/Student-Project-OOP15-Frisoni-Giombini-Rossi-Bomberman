@@ -77,9 +77,7 @@ public class LevelImpl implements Level {
      * This method creates the hero.
      */
     private void createHero() {
-        //MapPoint.getPos(START_HERO_POS, this.tileDimension)
-        this.hero = new HeroImpl(new Point(MapPoint.getCoordinate(START_HERO_POS.x, this.tileDimension), 
-                MapPoint.getCoordinate(START_HERO_POS.y, this.tileDimension)),
+        this.hero = new HeroImpl(MapPoint.getPos(START_HERO_POS, this.tileDimension),
                 new Dimension(this.tileDimension, this.tileDimension));
     }
 
