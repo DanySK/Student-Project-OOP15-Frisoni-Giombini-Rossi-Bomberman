@@ -2,11 +2,11 @@ package view.menu;
 
 import javax.swing.JPanel;
 
-import view.menu.scenes.InformationView;
-import view.menu.scenes.MenuView;
-import view.menu.scenes.ScoresView;
-import view.menu.scenes.SettingsView;
-import view.menu.scenes.WelcomeView;
+import view.menu.scenes.InformationScene;
+import view.menu.scenes.MenuScene;
+import view.menu.scenes.ScoresScene;
+import view.menu.scenes.SettingsScene;
+import view.menu.scenes.WelcomeScene;
 
 /**
  * This interface handles the panel changes inside the {@link MenuFrameImpl}.
@@ -19,11 +19,11 @@ public interface MenuFrame {
      * The possible panels that can be displayed.
      */
     enum MenuCard {
-        HOME(new MenuView()),
-        SCORES(new ScoresView()),
-        SETTINGS(new SettingsView()),
-        CREDITS(new InformationView()),
-        WELCOME(new WelcomeView());
+        HOME(new MenuScene()),
+        SCORES(new ScoresScene()),
+        SETTINGS(new SettingsScene()),
+        CREDITS(new InformationScene()),
+        WELCOME(new WelcomeScene());
 
         private final JPanel panel;
 

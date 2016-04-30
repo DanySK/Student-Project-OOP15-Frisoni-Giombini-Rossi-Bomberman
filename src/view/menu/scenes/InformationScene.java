@@ -16,7 +16,7 @@ import view.menu.scenes.panels.PowerUpsPanel;
  * This class handles the information scene of the menu.
  *
  */
-public class InformationView extends AbstractMenuPanel {
+public class InformationScene extends AbstractMenuPanel {
 
     /**
      * Auto-generated UID.

@@ -24,7 +24,7 @@ import view.menu.components.StretchIcon;
  * This class handles the settings menu of the game.
  *
  */
-public class SettingsView extends AbstractMenuPanel {
+public class SettingsScene extends AbstractMenuPanel {
 
     /**
      * Auto-generated UID.
@@ -116,7 +116,7 @@ public class SettingsView extends AbstractMenuPanel {
     }
     
     /**
-     * Set the observer of the SettingsView.
+     * Set the observer of the SettingsScene.
      * 
      * @param observer
      *          the observer to use
@@ -127,7 +127,7 @@ public class SettingsView extends AbstractMenuPanel {
 
     /**
      * This interface indicates the operations that an observer
-     * of a SettingsView can do.
+     * of a SettingsScene can do.
      *
      */
     public interface SettingsObserver {
