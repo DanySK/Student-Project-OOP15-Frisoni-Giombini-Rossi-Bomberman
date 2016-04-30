@@ -99,7 +99,7 @@ public class TestGameLoop {
     /**
      * This class implements the abstract methods of AbstractGameLoop.
      */
-    private class GameLoop extends AbstractGameLoop{
+    private class GameLoop extends AbstractGameLoop {
         
         /**
          * Constructor for GameLoop.

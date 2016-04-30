@@ -115,6 +115,7 @@ public class GameControllerImpl implements GameController {
                 if (level.getHero().hasKey() 
                         && level.getHero().getHeroCollision().openDoorCollision(level.getDoor().getHitbox())) {
                     pauseLoop();
+                    super.stopThreads();
                     view.showMessage(GameMessage.STAGE);
                     level.setNextStage();
                     level.setTilesNumber();

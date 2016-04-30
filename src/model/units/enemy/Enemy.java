@@ -11,7 +11,7 @@ import model.units.Hero;
 /**
  * This class models a enemy.
  */
-public interface Enemy extends Entity{
+public interface Enemy extends Entity {
     
     /**
      * Enemies' movement.

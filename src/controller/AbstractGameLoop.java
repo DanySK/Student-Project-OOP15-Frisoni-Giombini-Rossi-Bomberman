@@ -1,6 +1,9 @@
 package controller;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -18,15 +21,21 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     private volatile boolean running;
     private volatile boolean paused;
     private volatile boolean wasPaused;
+    private Optional<Set<Agent>> threads = Optional.empty();
 
     /**
      * Constructor for AbstractGameLoop.
+     * @param gameSpeed
+     *          the speed of the game
      */
     public AbstractGameLoop(final int gameSpeed) {
         this.gameSpeed = gameSpeed;
         this.running = false;
         this.paused = false;
         this.wasPaused = false;
+        if (!this.threads.isPresent()) {
+            this.threads = Optional.of(new HashSet<>());
+        }
     }
 
     /**
@@ -101,12 +110,21 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
             this.paused = true;
         }
     }
+    
+    /**
+     * This method kills all agents.
+     */
+    protected void stopThreads() {
+        this.threads.get().forEach(thread -> thread.kill());
+    }
 
     /**
      * This method took a long time and an action type runnable,
      * creates a new thread to control the time.
-     * @param delay is the time after which must take some action
-     * @param run is the action to take
+     * @param delay 
+     *          is the time after which must take some action
+     * @param action 
+     *          is the action to take
      */
     protected void doOperationAfterDelay(final long delay, final Runnable action) {
         new Agent(delay, action).start();
@@ -122,11 +140,19 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         private long count;
         private volatile boolean stop;
 
+        /**
+         * Constructor for Agent.
+         * @param delay
+         *              is the time after which must take some action
+         * @param action
+         *              is the action to take
+         */
         public Agent(final long delay, final Runnable action) {
             this.action = action;
             this.delay = delay;
             this.count = 0;
             this.stop = false;
+            threads.get().add(this);
         }
 
         @Override
@@ -145,7 +171,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                                 count += 1;
                                 if (count >= delay) {
                                     action.run();
-                                    stop = true;
+                                    kill();
                                 }
                             }
                         }
@@ -154,6 +180,14 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                     System.err.println(e1);
                 }
             }
+            threads.get().remove(this);
+        }
+        
+        /**
+         * This method kills this agent.
+         */
+        public void kill() {
+            this.stop = true;
         }
     }
 

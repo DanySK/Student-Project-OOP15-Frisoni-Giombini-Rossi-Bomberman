@@ -4,13 +4,18 @@ import java.io.Serializable;
 
 /**
  * A standard generic Pair<X, Y>, with getters, hashCode, equals, and toString well implemented. 
+ * @param <X>
+ *      the type of the first element
+ * @param <Y>
+ *      the type of the second element 
  */
-public class Pair<X,Y> implements Serializable {
+public class Pair<X, Y> implements Serializable {
 
     /**
      * Auto-generated UID.
      */
     private static final long serialVersionUID = 568672775975227372L;
+    
     private final X x;
     private final Y y;
 
@@ -27,10 +32,18 @@ public class Pair<X,Y> implements Serializable {
         this.y = y;
     }
 
+    /**
+     * This method return the first element.
+     * @return the first element
+     */
     public X getX() {
         return x;
     }
 
+    /**
+     * This method return the second element.
+     * @return the second element
+     */
     public Y getY() {
         return y;
     }
