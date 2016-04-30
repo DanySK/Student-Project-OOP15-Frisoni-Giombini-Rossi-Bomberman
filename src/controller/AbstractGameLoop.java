@@ -110,7 +110,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
             this.paused = true;
         }
     }
-    
+
     /**
      * This method kills all agents.
      */
@@ -170,7 +170,9 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                                 }
                                 count += 1;
                                 if (count >= delay) {
-                                    action.run();
+                                    if (!stop) {
+                                        action.run();
+                                    }
                                     kill();
                                 }
                             }
@@ -182,7 +184,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
             }
             threads.get().remove(this);
         }
-        
+
         /**
          * This method kills this agent.
          */
@@ -210,7 +212,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      * This method is used to update the enemies.
      */
     public abstract void updateEnemies();
-    
+
     /**
      * This method is used to update the time of game.
      */
