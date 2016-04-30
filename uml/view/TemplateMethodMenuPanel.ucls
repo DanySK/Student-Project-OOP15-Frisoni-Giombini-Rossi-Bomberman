@@ -3,34 +3,34 @@
   associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="view.menu.AbstractMenuPanel" project="Bomberman" 
     file="/Bomberman/src/view/menu/AbstractMenuPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="375" y="118"/>    
+    <position height="-1" width="-1" x="319" y="76"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="view.menu.scenes.ScoresView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/scenes/ScoresView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="376" y="295"/>    
+  <class id="2" language="java" name="view.menu.scenes.ScoresScene" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/ScoresScene.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="320" y="253"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="view.menu.scenes.SettingsView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/scenes/SettingsView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="184" y="304"/>    
+  <class id="3" language="java" name="view.menu.scenes.SettingsScene" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/SettingsScene.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="128" y="262"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      
       <operations public="true" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="view.menu.scenes.InformationView" project="Bomberman" 
-    file="/Bomberman/src/view/menu/scenes/InformationView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="537" y="295"/>    
+  <class id="4" language="java" name="view.menu.scenes.InformationScene" project="Bomberman" 
+    file="/Bomberman/src/view/menu/scenes/InformationScene.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="481" y="253"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      

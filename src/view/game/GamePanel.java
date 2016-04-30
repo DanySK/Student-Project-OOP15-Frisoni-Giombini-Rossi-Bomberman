@@ -29,10 +29,10 @@ import view.ImageLoader.GameImage;
 import view.SoundEffect;
 import view.TextParticle;
 import view.animations.BombView;
-import view.animations.EnemyViewFactory;
 import view.animations.ExplosionView;
 import view.animations.HeroView;
 import view.animations.HeroViewImpl;
+import view.animations.factory.EnemyViewFactory;
 import view.animations.unit.AbstractEnemyView;
 
 /**
@@ -61,6 +61,8 @@ public class GamePanel extends JPanel {
     private final Deque<Set<ExplosionView>> explosions;
     private final Set<AbstractEnemyView> enemies;
     private final Set<TextParticle> scores;
+    
+    private final EnemyViewFactory enemyFactory;
 
     /**
      * Creates a new GamePanel.
@@ -78,6 +80,7 @@ public class GamePanel extends JPanel {
         this.explosions = new LinkedList<>();
         this.enemies = new HashSet<>();
         this.scores = new HashSet<>();
+        this.enemyFactory = new EnemyViewFactory();
         initialize();
     }
     
@@ -171,7 +174,7 @@ public class GamePanel extends JPanel {
         });
         // Draws the enemies
         this.controller.getEnemies().stream().filter(e -> !this.enemies.contains(e)).forEach(e -> {
-            this.enemies.add(EnemyViewFactory.getEnemyView(e, this.controller.getFPS()));
+            this.enemies.add(enemyFactory.createEnemyView(e, this.controller.getFPS()));
         });
         final Iterator<AbstractEnemyView> iterator = this.enemies.iterator();
         while (iterator.hasNext()) {

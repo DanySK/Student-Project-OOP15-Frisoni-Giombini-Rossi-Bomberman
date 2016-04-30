@@ -5,10 +5,10 @@ import model.level.LevelImpl;
 import view.game.GameFrame;
 import view.game.GameFrameImpl;
 import view.menu.MenuFrame.MenuCard;
-import view.menu.scenes.MenuView;
-import view.menu.scenes.SettingsView;
-import view.menu.scenes.WelcomeView;
-import view.menu.scenes.MenuView.MenuObserver;
+import view.menu.scenes.MenuScene;
+import view.menu.scenes.SettingsScene;
+import view.menu.scenes.WelcomeScene;
+import view.menu.scenes.MenuScene.MenuObserver;
 import view.menu.MenuFrameImpl;
 
 /**
@@ -25,18 +25,18 @@ public class MenuController implements MenuObserver {
      */
     public MenuController() {
         if (ScoreHandler.getHandler().isFilePresent()) {
-            final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
+            final MenuScene menuView = (MenuScene) MenuCard.HOME.getPanel();
             menuView.setObserver(this);
             MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
             MenuFrameImpl.getMenuFrame().showView();
         } else {
-            final WelcomeView welcome = (WelcomeView) MenuCard.WELCOME.getPanel();
-            welcome.setObserver(new WelcomeView.WelcomeObserver() {
+            final WelcomeScene welcome = (WelcomeScene) MenuCard.WELCOME.getPanel();
+            welcome.setObserver(new WelcomeScene.WelcomeObserver() {
                 @Override
                 public void setName(final String name) {
                     ScoreHandler.getHandler().createFile();
                     ScoreHandler.getHandler().saveName(name);
-                    final MenuView menuView = (MenuView) MenuCard.HOME.getPanel();
+                    final MenuScene menuView = (MenuScene) MenuCard.HOME.getPanel();
                     menuView.setObserver(MenuController.this);
                     MenuFrameImpl.getMenuFrame().replaceCard(MenuCard.HOME);
                 }
@@ -62,8 +62,8 @@ public class MenuController implements MenuObserver {
 
     @Override
     public void settings() {
-        final SettingsView settingsView = (SettingsView) MenuCard.SETTINGS.getPanel();
-        settingsView.setObserver(new SettingsView.SettingsObserver() {
+        final SettingsScene settingsView = (SettingsScene) MenuCard.SETTINGS.getPanel();
+        settingsView.setObserver(new SettingsScene.SettingsObserver() {
             @Override
             public void setDarkMode(final boolean darkMode) {
                 MenuController.this.darkMode = darkMode;

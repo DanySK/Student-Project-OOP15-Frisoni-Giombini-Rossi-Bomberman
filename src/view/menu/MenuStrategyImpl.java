@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import view.ImageLoader;
 import view.ImageLoader.GameImage;
-import view.menu.scenes.MenuView.MenuObserver;
+import view.menu.scenes.MenuScene.MenuObserver;
 import view.LanguageHandler;
 
 /**

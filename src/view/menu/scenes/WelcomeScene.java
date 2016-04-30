@@ -31,7 +31,7 @@ import view.menu.components.StretchIcon;
  * is started and there isn't a score file.
  *
  */
-public class WelcomeView extends JPanel {
+public class WelcomeScene extends JPanel {
 
     /**
      * Auto-generated UID.
@@ -48,9 +48,9 @@ public class WelcomeView extends JPanel {
     private JButton save;
 
     /**
-     * Creates a WelcomeView.
+     * Creates a new welcome scene.
      */
-    public WelcomeView() {
+    public WelcomeScene() {
         initialize();
     }
 
@@ -157,7 +157,7 @@ public class WelcomeView extends JPanel {
     }
 
     /**
-     * Set the observer of the WelcomeView.
+     * Set the observer of the WelcomeScene.
      * 
      * @param observer
      *          the observer to use
@@ -168,7 +168,7 @@ public class WelcomeView extends JPanel {
 
     /**
      * This interface indicates the operations that an observer
-     * of a WelcomeView can do.
+     * of a WelcomeScene can do.
      *
      */
     public interface WelcomeObserver {

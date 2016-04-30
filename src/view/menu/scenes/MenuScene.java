@@ -23,7 +23,7 @@ import view.LanguageHandler;
  * This class manages the main menu of the game.
  * 
  */
-public class MenuView extends JPanel {
+public class MenuScene extends JPanel {
 
     /**
      * Auto-generated UID.
@@ -38,9 +38,9 @@ public class MenuView extends JPanel {
     private MenuObserver observer;
     
     /**
-     * Creates a new panel.
+     * Creates a new menu scene.
      */
-    public MenuView() {
+    public MenuScene() {
         LanguageHandler.getHandler().addEObserver((s, msg) -> {
             this.removeAll();
             initialize();
@@ -103,7 +103,7 @@ public class MenuView extends JPanel {
     }
 
     /**
-     * Set the observer of the MenuView.
+     * Set the observer of the MenuScene.
      * 
      * @param observer
      *          the observer to use
@@ -114,7 +114,7 @@ public class MenuView extends JPanel {
 
     /**
      * This interface indicates the operations that an observer
-     * of the MenuView can do.
+     * of the MenuScene can do.
      *
      */
     public interface MenuObserver {

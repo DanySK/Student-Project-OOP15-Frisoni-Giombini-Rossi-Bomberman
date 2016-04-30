@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -47,6 +48,7 @@ public class DrawableFrameImpl extends JFrame implements DrawableFrame {
 
     @Override
     public void drawMessage(final GameMessage gameMessage) {
+        Objects.requireNonNull(gameMessage);
         if (gameMessage.getOpacity() < 0 || gameMessage.getOpacity() > 1) {
             throw new IllegalArgumentException("Opacity parameter outside of expected range");
         }

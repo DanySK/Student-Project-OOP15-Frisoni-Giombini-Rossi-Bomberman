@@ -31,7 +31,7 @@ import view.menu.components.StretchIcon;
  * This class handles the view dedicated to the display of the user's scores.
  *
  */
-public class ScoresView extends AbstractMenuPanel {
+public class ScoresScene extends AbstractMenuPanel {
 
     /**
      * Auto-generated UID.
@@ -50,9 +50,9 @@ public class ScoresView extends AbstractMenuPanel {
     private JPanel recordPanel;
 
     /**
-     * Constructs a new score view.
+     * Constructs a new score scene.
      */
-    public ScoresView() {
+    public ScoresScene() {
         super();
         ScoreHandler.getHandler().addEObserver((s, msg) -> {
             switch (msg) {
@@ -93,11 +93,11 @@ public class ScoresView extends AbstractMenuPanel {
     }
 
     private void refreshTabbedPane() {
-        ScoresView.this.jtb.removeAll();
-        ScoresView.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), this.recordPanel);
-        ScoresView.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("progress"), this.scorePanel);
-        ScoresView.this.jtb.revalidate();
-        ScoresView.this.jtb.repaint();
+        ScoresScene.this.jtb.removeAll();
+        ScoresScene.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("bestScore"), this.recordPanel);
+        ScoresScene.this.jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("progress"), this.scorePanel);
+        ScoresScene.this.jtb.revalidate();
+        ScoresScene.this.jtb.repaint();
     }
 
     private JPanel createBestScorePanel() {
