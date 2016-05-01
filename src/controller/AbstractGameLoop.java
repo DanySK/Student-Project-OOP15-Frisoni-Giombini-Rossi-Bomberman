@@ -86,18 +86,6 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     }
 
     @Override
-    public boolean isRunningLoop() {
-        return this.running;
-    }
-
-    /**
-     * @return true if the game is paused, otherwise false.
-     */
-    protected boolean isPaused() {
-        return this.paused;
-    }
-
-    @Override
     public void unPauseLoop() {
         if (this.isPaused()) {
             this.paused = false;
@@ -116,6 +104,18 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      */
     protected void stopThreads() {
         this.threads.get().forEach(thread -> thread.kill());
+    }
+    
+    @Override
+    public boolean isRunningLoop() {
+        return this.running;
+    }
+
+    /**
+     * @return true if the game is paused, otherwise false.
+     */
+    protected boolean isPaused() {
+        return this.paused;
     }
 
     /**

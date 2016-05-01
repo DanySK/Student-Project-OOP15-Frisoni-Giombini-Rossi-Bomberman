@@ -6,12 +6,6 @@ package controller;
 public interface GameLoop {
     
     /**
-     * This method check if the game is running.
-     * @return true if the game is running, false
-     */
-    boolean isRunningLoop();
-    
-    /**
      * Change the state of game in pause.
      */
     void pauseLoop();
@@ -25,5 +19,11 @@ public interface GameLoop {
      * Stops the game.
      */
     void stopLoop();
+    
+    /**
+     * This method check if the game is running.
+     * @return true if the game is running, false
+     */
+    boolean isRunningLoop();
     
 }
