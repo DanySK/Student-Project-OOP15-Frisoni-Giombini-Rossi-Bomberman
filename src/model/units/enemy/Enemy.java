@@ -66,9 +66,4 @@ public interface Enemy extends Entity {
      */
     EnemyCollision getEnemyCollision();
     
-    /**
-     * toString of enemy.
-     * @return the string describing enemy
-     */
-    String toString();
 }
