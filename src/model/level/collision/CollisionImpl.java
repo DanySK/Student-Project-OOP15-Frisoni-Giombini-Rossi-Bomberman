@@ -55,8 +55,14 @@ public class CollisionImpl implements Collision {
         return !set.stream().anyMatch(rec -> pred.test(rec));
     }
 
-    @Override
-    public boolean explosionIntersection(final Rectangle rec) {       
+    /**
+     * Checks if there's a collision with an explosion.
+     * 
+     * @param rec
+     *          the element hitbox
+     * @return true if there's a collision, false otherwise
+     */
+    private boolean explosionIntersection(final Rectangle rec) {       
         return this.entity.getHitbox().intersects(rec);
     }
 

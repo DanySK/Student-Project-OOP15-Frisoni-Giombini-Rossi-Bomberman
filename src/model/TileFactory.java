@@ -48,7 +48,7 @@ public class TileFactory {
      *          the dimension of a tile
      * @return the new tile
      */
-    public TileImpl createForCoordinates(final int row, final int column, final int tileDimension) {
+    public Tile createForCoordinates(final int row, final int column, final int tileDimension) {
         final TileType type = getTypeForCoordinates(row, column);
         final Optional<PowerUpType> powerup = this.getPowerup(type);
         return new TileImpl(new Point(MapPoint.getCoordinate(row, tileDimension),
@@ -112,7 +112,7 @@ public class TileFactory {
      * 
      * @return a powerup type
      */
-    public PowerUpType selectType() {
+    private PowerUpType selectType() {
         PowerUpType type = PowerUpType.KEY;
         while (type.equals(PowerUpType.KEY)) {
             type = PowerUpType.values()[new Random().nextInt(PowerUpType.values().length)];

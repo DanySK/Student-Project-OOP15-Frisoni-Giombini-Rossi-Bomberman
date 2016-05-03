@@ -85,11 +85,6 @@ public class EntityImpl extends DynamicLevelElement implements Entity {
     }
     
     @Override
-    public void setDirection(final Direction dir) {
-        this.curDir = dir;
-    }
-    
-    @Override
     public boolean isDead() {
         return this.lives <= 0;
     }

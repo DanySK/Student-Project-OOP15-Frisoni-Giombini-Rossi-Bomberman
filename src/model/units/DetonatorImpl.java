@@ -36,8 +36,13 @@ public class DetonatorImpl implements Detonator {
         this.bombList = new LinkedList<>();
     }
 
-    @Override
-    public void addBomb(final Point pos) {
+    /**
+     * It adds a bomb to the List.
+     * 
+     * @param pos
+     *          the bomb's position
+     */
+    private void addBomb(final Point pos) {
         this.bombList.addLast(new BombImpl(pos, this.dim, this.bombRange));
     }
 

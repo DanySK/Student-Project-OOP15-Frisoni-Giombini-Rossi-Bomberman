@@ -55,15 +55,6 @@ public interface Collision {
     <X> boolean elementCollision(final Set<X> set, final Predicate<X> pred);
     
     /**
-     * Checks if there's a collision with an explosion.
-     * 
-     * @param rec
-     *          the element hitbox
-     * @return true if there's a collision, false otherwise
-     */
-    boolean explosionIntersection(final Rectangle rec);
-    
-    /**
      * Updates entity's hitbox.
      * 
      * @param dir

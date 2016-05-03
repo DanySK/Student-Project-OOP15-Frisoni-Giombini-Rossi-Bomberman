@@ -77,13 +77,6 @@ public interface Entity extends LevelElement {
     int getRemainingLives();
     
     /**
-     * This method set the current direction.
-     * @param dir
-     *          the movement direction 
-     */
-    void setDirection(Direction dir);
-    
-    /**
      * Checks if the entity is dead.
      * 
      * @return true if the entity is dead

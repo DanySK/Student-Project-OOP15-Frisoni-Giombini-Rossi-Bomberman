@@ -7,14 +7,6 @@ import java.util.Set;
  * This class models a Detonator.
  */
 public interface Detonator {
-    
-    /**
-     * It adds a bomb to the List.
-     * 
-     * @param pos
-     *          the bomb's position
-     */
-    void addBomb(final Point pos);
 
     /**
      * It increases the range of a bomb.

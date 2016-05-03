@@ -166,7 +166,7 @@ public class LevelImpl implements Level {
     public void setDirectionEnemies() {
         synchronized (this.enemies) {
             this.enemies.stream().filter(enemy -> enemy.getEnemyType().equals(EnemyType.MINVO))
-            .forEach(enemy -> enemy.setDirection(enemy.getRandomDirection()));
+            .forEach(enemy -> enemy.updateDirection(enemy.getRandomDirection()));
         }
     }
 
