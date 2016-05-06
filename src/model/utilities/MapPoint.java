@@ -51,7 +51,7 @@ public final class MapPoint {
      *          the width of the tile
      * @return the coordinate in the map
      */
-    private static int getPos(final int coordinate, final int nTiles, final int tileDimension) {
+    private static int getBombCoordinate(final int coordinate, final int nTiles, final int tileDimension) {
         int index = 0;
         boolean stop = false;
         for (int i = tileDimension - 1; i < (tileDimension * nTiles) - 1 
@@ -78,12 +78,12 @@ public final class MapPoint {
      */
     public static int getCorrectPos(final int coordinate, final int nTiles,
             final int tileDimension) {
-        if (MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension) - coordinate 
+        if (MapPoint.getBombCoordinate(coordinate + tileDimension, nTiles, tileDimension) - coordinate 
                 < coordinate + tileDimension 
-                - MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension)) {
-            return MapPoint.getPos(coordinate + tileDimension, nTiles, tileDimension);
+                - MapPoint.getBombCoordinate(coordinate + tileDimension, nTiles, tileDimension)) {
+            return MapPoint.getBombCoordinate(coordinate + tileDimension, nTiles, tileDimension);
         } else {
-            return MapPoint.getPos(coordinate, nTiles, tileDimension);
+            return MapPoint.getBombCoordinate(coordinate, nTiles, tileDimension);
         }
     }
 
