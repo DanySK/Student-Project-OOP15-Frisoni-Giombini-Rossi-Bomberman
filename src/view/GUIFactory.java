@@ -302,6 +302,7 @@ public interface GUIFactory {
             button.setForeground(Color.WHITE);
             button.setBackground(COLOR_BUTTON);
             button.setFont(SMALL_FONT);
+            button.setOpaque(true);
             button.addActionListener(e -> SoundEffect.SELECT.playOnce());
             return button;
         }
@@ -396,6 +397,7 @@ public interface GUIFactory {
             combo.setFont(SMALL_FONT);
             combo.setBackground(Color.DARK_GRAY);
             combo.setForeground(Color.WHITE);
+            combo.setOpaque(true);
             combo.setEditable(false);
             return combo;
         }
