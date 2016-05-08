@@ -48,10 +48,6 @@ public enum SoundEffect {
      */
     HIT("/sounds/hit.wav", 1.0),
     /**
-     * Key found sound.
-     */
-    KEY("/sounds/key.wav", 1.0),
-    /**
      * Level completed sound.
      */
     NEXT_LEVEL("/sounds/nextLevel.wav", 1.0),
