@@ -1,11 +1,8 @@
 package controller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import javax.swing.SwingUtilities;
 
 /**
  *  Implementation of {@link GameLoop}.
@@ -57,6 +54,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                     nextTime += TIME_FACTOR / this.gameSpeed;
                     this.updateModel();
                     this.updateView();
+                    threads.get().stream().forEach(thread -> thread.tick());
                 } else {
                     final long sleepTime = (long) (SLEEP_FACTOR * (nextTime - currTime));
                     if (sleepTime > 0) {
@@ -105,7 +103,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     protected void stopThreads() {
         this.threads.get().forEach(thread -> thread.kill());
     }
-    
+
     @Override
     public boolean isRunningLoop() {
         return this.running;
@@ -135,9 +133,11 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      */
     private class Agent extends Thread {
 
+        private static final int MILLI = 1000;
+        
         private final Runnable action;
         private final long delay;
-        private long count;
+        private volatile long count;
         private volatile boolean stop;
 
         /**
@@ -149,7 +149,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
          */
         public Agent(final long delay, final Runnable action) {
             this.action = action;
-            this.delay = delay;
+            this.delay = delay * AbstractGameLoop.this.gameSpeed / MILLI;
             this.count = 0;
             this.stop = false;
             threads.get().add(this);
@@ -158,33 +158,25 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         @Override
         public void run() {
             while (!this.stop && running) {
-                try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!paused) {
-                                try {
-                                    Agent.sleep(1);
-                                } catch (InterruptedException e) {
-                                    System.err.println(e);
-                                }
-                                count += 1;
-                                if (count >= delay) {
-                                    if (!stop) {
-                                        action.run();
-                                    }
-                                    kill();
-                                }
-                            }
+                if (!paused) {
+                    if (count >= delay) {
+                        if (!stop) {
+                            action.run();
                         }
-                    });
-                } catch (InvocationTargetException | InterruptedException e1) {
-                    System.err.println(e1);
+                        kill();
+                    }
                 }
             }
             threads.get().remove(this);
         }
 
+        /**
+         * This method increase the time to get to the delay.
+         */
+        public void tick() {
+            this.count++;
+        }
+        
         /**
          * This method kills this agent.
          */
