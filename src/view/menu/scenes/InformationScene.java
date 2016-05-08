@@ -33,7 +33,6 @@ public class InformationScene extends AbstractMenuPanel {
         final JPanel panel = new JPanel(new BorderLayout());
 
         final JTabbedPane jtb = new GUIFactory.Standard().createLeftTabbedPane();
-
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("commands"), new CommandsPanel());
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("powerUps"), new PowerUpsPanel());
         jtb.addTab(LanguageHandler.getHandler().getLocaleResource().getString("authors"), new CreditsPanel());

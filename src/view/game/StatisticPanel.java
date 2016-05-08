@@ -55,11 +55,11 @@ public class StatisticPanel extends JPanel {
      */
     public StatisticPanel(final GameController controller) {
         this.controller = Objects.requireNonNull(controller);
-        
+
         final GUIFactory factory = new GUIFactory.Standard();
         this.setLayout(new GridLayout(0, 2));
         this.setBackground(BG_COLOR);
-        
+
         // Sets the panel containing the time and the score
         final JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(0, 2));
@@ -94,15 +94,12 @@ public class StatisticPanel extends JPanel {
      *          the number of seconds since the game's start
      */
     public final void updateTime(final long seconds) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                StatisticPanel.this.time.setText(
-                        LanguageHandler.getHandler().getLocaleResource().getString("statsTime") + VALUE_SEPARATOR
-                        + String.format("%02d:%02d",
-                        TimeUnit.SECONDS.toMinutes(seconds),
-                        TimeUnit.SECONDS.toSeconds(seconds) % TimeUnit.MINUTES.toSeconds(1L)));
-            }
+        SwingUtilities.invokeLater(() -> {
+            StatisticPanel.this.time.setText(
+                    LanguageHandler.getHandler().getLocaleResource().getString("statsTime") + VALUE_SEPARATOR
+                    + String.format("%02d:%02d",
+                            TimeUnit.SECONDS.toMinutes(seconds),
+                            TimeUnit.SECONDS.toSeconds(seconds) % TimeUnit.MINUTES.toSeconds(1L)));
         });
     }
 
@@ -113,12 +110,8 @@ public class StatisticPanel extends JPanel {
      *          the current score game
      */
     public final void updateScore(final long score) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                StatisticPanel.this.score.setText(LanguageHandler.getHandler().getLocaleResource().getString("statsScore")
-                        + VALUE_SEPARATOR + score);
-            }
+        SwingUtilities.invokeLater(() -> {
+            StatisticPanel.this.score.setText(LanguageHandler.getHandler().getLocaleResource().getString("statsScore") + VALUE_SEPARATOR + score);
         });
     }
 
@@ -126,14 +119,11 @@ public class StatisticPanel extends JPanel {
      * Updates the rendering of the Hero's statistics.
      */
     public final void updateStats() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                StatisticPanel.this.life.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getRemainingLives()));
-                StatisticPanel.this.attack.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getAttack()));
-                StatisticPanel.this.bombs.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getDetonator().getActualBombs()));
-                StatisticPanel.this.range.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getDetonator().getActualRange()));
-            }
+        SwingUtilities.invokeLater(() -> {
+            StatisticPanel.this.life.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getRemainingLives()));
+            StatisticPanel.this.attack.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getAttack()));
+            StatisticPanel.this.bombs.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getDetonator().getActualBombs()));
+            StatisticPanel.this.range.setText(String.valueOf(SEPARATOR + StatisticPanel.this.controller.getHero().getDetonator().getActualRange()));
         });
     }
 
