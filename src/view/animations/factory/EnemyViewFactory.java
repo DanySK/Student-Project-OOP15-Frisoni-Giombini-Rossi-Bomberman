@@ -9,7 +9,7 @@ import view.animations.unit.AbstractEnemyView;
 /**
  * This class associates an {@link AbstractEnemyView} to each type of enemy.
  * It uses the Simple Factory pattern.
- * In a similar design a factory like this is defined as a static method but it has
+ * In a similar design a factory like this is defined as a static method, but it has
  * the disadvantage that is not possible subclass and change the behavior of the create method.
  *
  */
@@ -33,7 +33,7 @@ public class EnemyViewFactory {
         case PASS:
             return new PassView(enemy, fps);
         default:
-            throw new IllegalArgumentException("There isn't a view animation associated to " + enemy.toString());
+            throw new IllegalArgumentException("There isn't a view animation associated to " + enemy.getEnemyType().toString());
         }
     }
 }

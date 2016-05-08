@@ -25,7 +25,7 @@ public class TextParticle {
      * The duration in seconds of the text animation.
      */
     private static final int DURATION = 3;
-    
+
     private static final int RGB = 256;
 
     private final Random seed;
@@ -39,13 +39,13 @@ public class TextParticle {
      * Creates a new text particle.
      * 
      * @param msg
-     *              the message to show
+     *          the message to show
      * @param x
-     *              the coordinate on the x-axis
+     *          the coordinate on the x-axis
      * @param y
-     *              the coordinate on the y-axis
+     *          the coordinate on the y-axis
      * @param fps
-     *              the number of frame per second
+     *          the number of frame per second
      */
     public TextParticle(final String msg, final int x, final int y, final int fps) {
         this.seed = new Random();
@@ -85,7 +85,7 @@ public class TextParticle {
             this.nTicks--;
         }
     }
-    
+
     /**
      * @return true if the text animation is completed, false otherwise.
      */
@@ -98,7 +98,7 @@ public class TextParticle {
      * It uses each time a random color for the rendering.
      * 
      * @param g
-     *              the graphic where to draw
+     *          the graphic where to draw
      */
     public void render(final Graphics g) {
         g.setColor(new Color(seed.nextInt(RGB), seed.nextInt(RGB), seed.nextInt(RGB)));
