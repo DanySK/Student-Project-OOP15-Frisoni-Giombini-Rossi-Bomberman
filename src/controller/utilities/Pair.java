@@ -3,7 +3,7 @@ package controller.utilities;
 import java.io.Serializable;
 
 /**
- * A standard generic Pair<X, Y>, with getters, hashCode, equals, and toString well implemented. 
+ * A standard generic Pair, with getters, hashCode, equals, and toString well implemented. 
  * @param <X>
  *      the type of the first element
  * @param <Y>
