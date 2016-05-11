@@ -143,7 +143,7 @@ public class GamePanel extends JPanel {
      * Draws all graphical components.
      */
     @Override
-    public void paintComponent(final Graphics g) {
+    public synchronized void paintComponent(final Graphics g) {
         // Updates sprites
         updateSprites();
         // Draws the power-ups
@@ -232,7 +232,7 @@ public class GamePanel extends JPanel {
      * @param tiles
      *          the tiles involved in a bomb's explosion
      */
-    public void addExplosion(final Set<Tile> tiles) {
+    public synchronized void addExplosion(final Set<Tile> tiles) {
         SoundEffect.EXPLOSION.playOnce();
         this.explosions.addLast(tiles.stream()
                 .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
@@ -242,7 +242,7 @@ public class GamePanel extends JPanel {
     /**
      * Removes the oldest set of exploded tiles.
      */
-    public void removeExplosion() {
+    public synchronized void removeExplosion() {
         if (!this.explosions.isEmpty()) {
             this.explosions.removeFirst();
         }
