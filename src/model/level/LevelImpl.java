@@ -97,7 +97,7 @@ public class LevelImpl implements Level {
      */
     private void createEnemies() {
         final Set<Tile> freeTilesSet = this.getFreeTiles();
-        this.enemies = Collections.synchronizedSet(new HashSet<>());
+        this.enemies = new HashSet<>();
         final EnemyType[] enemyType = EnemyType.values();
         for (int i = 0; i < this.getFreeTiles().size() / ENEMY_FACTOR; i++) {
             final Tile t = freeTilesSet.stream().findAny().get();

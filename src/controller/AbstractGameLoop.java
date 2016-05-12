@@ -54,7 +54,9 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                     nextTime += TIME_FACTOR / this.gameSpeed;
                     this.updateModel();
                     this.updateView();
-                    threads.get().stream().forEach(thread -> thread.tick());
+                    synchronized (threads) {
+                        threads.get().stream().forEach(thread -> thread.tick());
+                    }
                 } else {
                     final long sleepTime = (long) (SLEEP_FACTOR * (nextTime - currTime));
                     if (sleepTime > 0) {
@@ -101,7 +103,9 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
      * This method kills all agents.
      */
     protected void stopThreads() {
-        this.threads.get().forEach(thread -> thread.kill());
+        synchronized (threads) {
+            this.threads.get().forEach(thread -> thread.kill());
+        }
     }
 
     @Override
@@ -134,7 +138,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
     private class Agent extends Thread {
 
         private static final int MILLI = 1000;
-        
+
         private final Runnable action;
         private final long delay;
         private volatile long count;
@@ -152,7 +156,9 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
             this.delay = delay * AbstractGameLoop.this.gameSpeed / MILLI;
             this.count = 0;
             this.stop = false;
-            threads.get().add(this);
+            synchronized (threads) {
+                threads.get().add(this);
+            }
         }
 
         @Override
@@ -167,7 +173,9 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
                     }
                 }
             }
-            threads.get().remove(this);
+            synchronized (threads) {
+                threads.get().remove(this);
+            }
         }
 
         /**
@@ -176,7 +184,7 @@ public abstract class AbstractGameLoop extends Thread implements GameLoop {
         public void tick() {
             this.count++;
         }
-        
+
         /**
          * This method kills this agent.
          */
