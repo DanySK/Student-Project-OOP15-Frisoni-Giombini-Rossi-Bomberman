@@ -57,16 +57,14 @@ public class DetonatorImpl implements Detonator {
     }
 
     @Override
-    public void plantBomb(final Point pos) {
+    public synchronized void plantBomb(final Point pos) {
         this.addBomb(pos);
         this.getBombToPlant().setPlanted(true);
     }
 
     @Override
-    public void reactivateBomb() {
-        synchronized (this.bombList) {
-            this.bombList.removeFirst();
-        }
+    public synchronized void reactivateBomb() {
+        this.bombList.removeFirst();
     }
 
     /**
@@ -79,7 +77,7 @@ public class DetonatorImpl implements Detonator {
     }
 
     @Override
-    public Bomb getBombToReactivate() {
+    public synchronized Bomb getBombToReactivate() {
         return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
     }
 
@@ -89,17 +87,15 @@ public class DetonatorImpl implements Detonator {
     }
 
     @Override
-    public boolean hasBombs() {
+    public synchronized boolean hasBombs() {
         return this.bombList.size() < this.maxBombs;
     }
 
     @Override
-    public Set<Bomb> getPlantedBombs() {
-        synchronized (this.bombList) {
-            return this.bombList.stream().filter(b -> b.isPositioned())
-                    .map(b -> CopyFactory.getCopy(b))
-                    .collect(Collectors.toSet());
-        }        
+    public synchronized Set<Bomb> getPlantedBombs() {
+        return this.bombList.stream().filter(b -> b.isPositioned())
+                .map(b -> CopyFactory.getCopy(b))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -111,7 +107,7 @@ public class DetonatorImpl implements Detonator {
     public int getActualBombs() {
         return this.maxBombs;
     }
-    
+
     @Override
     public String toString() {
         return new StringBuilder().append("DETONATOR -  ")
@@ -120,7 +116,7 @@ public class DetonatorImpl implements Detonator {
                 .append(".\n")
                 .toString();
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
