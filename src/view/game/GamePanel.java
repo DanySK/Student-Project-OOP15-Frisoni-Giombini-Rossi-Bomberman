@@ -143,7 +143,7 @@ public class GamePanel extends JPanel {
      * Draws all graphical components.
      */
     @Override
-    public synchronized void paintComponent(final Graphics g) {
+    public void paintComponent(final Graphics g) {
         // Updates sprites
         updateSprites();
         // Draws the power-ups
@@ -155,10 +155,12 @@ public class GamePanel extends JPanel {
             g.drawImage(this.tilesImages.get(p.getType()), p.getX(), p.getY(), this);
         }
         // Draws the explosions
-        if (!this.explosions.isEmpty()) {
-            this.explosions.stream().forEach(s -> s.stream().forEach(e -> {
-                g.drawImage(e.getImage(), e.getX(), e.getY(), null);
-            }));
+        synchronized (this.explosions) {
+            if (!this.explosions.isEmpty()) {
+                this.explosions.stream().forEach(s -> s.stream().forEach(e -> {
+                    g.drawImage(e.getImage(), e.getX(), e.getY(), null);
+                }));
+            }
         }
         // Draws the bombs
         this.controller.getPlantedBombs().stream().filter(b -> !this.bombs.contains(b)).forEach(b -> {
@@ -200,7 +202,9 @@ public class GamePanel extends JPanel {
     private void updateSprites() {
         this.hero.ifPresent(h -> h.updateFrame());
         this.bombs.stream().forEach(b -> b.updateFrame());
-        this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
+        synchronized (this.explosions) {
+            this.explosions.stream().forEach(s -> s.forEach(e -> e.updateFrame()));
+        }
         this.enemies.stream().forEach(e -> e.updateFrame());
     }
 
@@ -232,19 +236,23 @@ public class GamePanel extends JPanel {
      * @param tiles
      *          the tiles involved in a bomb's explosion
      */
-    public synchronized void addExplosion(final Set<Tile> tiles) {
+    public void addExplosion(final Set<Tile> tiles) {
         SoundEffect.EXPLOSION.playOnce();
-        this.explosions.addLast(tiles.stream()
-                .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
-                .collect(Collectors.toSet()));
+        synchronized (this.explosions) {
+            this.explosions.addLast(tiles.stream()
+                           .map(t -> new ExplosionView(t, this.controller.getFPS(), EXPLOSION_DURATION))
+                           .collect(Collectors.toSet()));
+        }
     }
 
     /**
      * Removes the oldest set of exploded tiles.
      */
-    public synchronized void removeExplosion() {
-        if (!this.explosions.isEmpty()) {
-            this.explosions.removeFirst();
+    public void removeExplosion() {
+        synchronized (this.explosions) {
+            if (!this.explosions.isEmpty()) {
+                this.explosions.removeFirst();
+            }
         }
     }
 
