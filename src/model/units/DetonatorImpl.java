@@ -43,7 +43,9 @@ public class DetonatorImpl implements Detonator {
      *          the bomb's position
      */
     private void addBomb(final Point pos) {
-        this.bombList.addLast(new BombImpl(pos, this.dim, this.bombRange));
+        synchronized (this.bombList) {
+            this.bombList.addLast(new BombImpl(pos, this.dim, this.bombRange));
+        }
     }
 
     @Override
@@ -57,14 +59,16 @@ public class DetonatorImpl implements Detonator {
     }
 
     @Override
-    public synchronized void plantBomb(final Point pos) {
+    public void plantBomb(final Point pos) {
         this.addBomb(pos);
         this.getBombToPlant().setPlanted(true);
     }
 
     @Override
-    public synchronized void reactivateBomb() {
-        this.bombList.removeFirst();
+    public void reactivateBomb() {
+        synchronized (this.bombList) {
+            this.bombList.removeFirst();
+        }
     }
 
     /**
@@ -73,12 +77,16 @@ public class DetonatorImpl implements Detonator {
      * @return a bomb that can be planted.
      */
     private Bomb getBombToPlant() {
-        return this.bombList.stream().filter(b -> !b.isPositioned()).findFirst().get();
+        synchronized (this.bombList) {
+            return this.bombList.stream().filter(b -> !b.isPositioned()).findFirst().get();
+        }
     }
 
     @Override
-    public synchronized Bomb getBombToReactivate() {
-        return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
+    public Bomb getBombToReactivate() {
+        synchronized (this.bombList) {
+            return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
+        }
     }
 
     @Override
@@ -87,15 +95,19 @@ public class DetonatorImpl implements Detonator {
     }
 
     @Override
-    public synchronized boolean hasBombs() {
-        return this.bombList.size() < this.maxBombs;
+    public boolean hasBombs() {
+        synchronized (this.bombList) {
+            return this.bombList.size() < this.maxBombs;
+        }
     }
 
     @Override
-    public synchronized Set<Bomb> getPlantedBombs() {
-        return this.bombList.stream().filter(b -> b.isPositioned())
-                .map(b -> CopyFactory.getCopy(b))
-                .collect(Collectors.toSet());
+    public Set<Bomb> getPlantedBombs() {
+        synchronized (this.bombList) {
+            return this.bombList.stream().filter(b -> b.isPositioned())
+                    .map(b -> CopyFactory.getCopy(b))
+                    .collect(Collectors.toSet());
+        }
     }
 
     @Override
