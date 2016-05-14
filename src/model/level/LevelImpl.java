@@ -193,7 +193,7 @@ public class LevelImpl implements Level {
     @Override
     public Set<Tile> detonateBomb() {
         final Set<Tile> tiles = this.getAfflictedTiles(
-                CopyFactory.getCopy(this.hero.getDetonator().getBombToReactivate()));
+                CopyFactory.getCopy(this.hero.getDetonator().getBomb(b -> b.isPositioned())));
         if (this.hero.getHeroCollision().fireCollision(tiles)) {
             this.hero.modifyLife(-this.hero.getAttack());
         }

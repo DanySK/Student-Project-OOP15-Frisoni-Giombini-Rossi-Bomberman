@@ -28,8 +28,8 @@ public class TestBomb {
         Assert.assertEquals(detonator.getPlantedBombs().size(), 0);
         detonator.plantBomb(new Point(MapPoint.getCorrectPos(10, N_TILES, TILE_DIMENSION), 
                 MapPoint.getCorrectPos(0, N_TILES, TILE_DIMENSION)));
-        Assert.assertEquals(detonator.getBombToReactivate().getX(), 10);
-        Assert.assertEquals(detonator.getBombToReactivate().getY(), 0);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getX(), 10);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getY(), 0);
         Assert.assertEquals(detonator.getPlantedBombs().size(), 1);
         Assert.assertFalse(detonator.hasBombs());
         detonator.reactivateBomb();
@@ -40,8 +40,8 @@ public class TestBomb {
         Assert.assertTrue(detonator.hasBombs());
         detonator.plantBomb(new Point(MapPoint.getCorrectPos(25, N_TILES, TILE_DIMENSION), 
                 MapPoint.getCorrectPos(10, N_TILES, TILE_DIMENSION)));
-        Assert.assertEquals(detonator.getBombToReactivate().getX(), 20);
-        Assert.assertEquals(detonator.getBombToReactivate().getY(), 10);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getX(), 20);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getY(), 10);
         Assert.assertEquals(detonator.getPlantedBombs().size(), 1);
         Assert.assertTrue(detonator.hasBombs());
         detonator.plantBomb(new Point(MapPoint.getCorrectPos(10, N_TILES, TILE_DIMENSION), 
@@ -49,8 +49,8 @@ public class TestBomb {
         Assert.assertEquals(detonator.getPlantedBombs().size(), 2);
         Assert.assertFalse(detonator.hasBombs());
         detonator.reactivateBomb();
-        Assert.assertEquals(detonator.getBombToReactivate().getX(), 10);
-        Assert.assertEquals(detonator.getBombToReactivate().getY(), 20);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getX(), 10);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getY(), 20);
         Assert.assertTrue(detonator.hasBombs());
         Assert.assertEquals(detonator.getPlantedBombs().size(), 1);
         detonator.reactivateBomb();
@@ -58,8 +58,8 @@ public class TestBomb {
         Assert.assertTrue(detonator.hasBombs());
         detonator.plantBomb(new Point(MapPoint.getCorrectPos(30, N_TILES, TILE_DIMENSION), 
                 MapPoint.getCorrectPos(18, N_TILES, TILE_DIMENSION)));
-        Assert.assertEquals(detonator.getBombToReactivate().getX(), 30);
-        Assert.assertEquals(detonator.getBombToReactivate().getY(), 20);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getX(), 30);
+        Assert.assertEquals(detonator.getBomb(b -> b.isPositioned()).getY(), 20);
         Assert.assertEquals(detonator.getPlantedBombs().size(), 1);
     }
 }

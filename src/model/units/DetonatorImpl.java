@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import model.utilities.CopyFactory;
@@ -61,7 +62,7 @@ public class DetonatorImpl implements Detonator {
     @Override
     public void plantBomb(final Point pos) {
         this.addBomb(pos);
-        this.getBombToPlant().setPlanted(true);
+        this.getBomb(b -> !b.isPositioned()).setPlanted(true);
     }
 
     @Override
@@ -71,21 +72,10 @@ public class DetonatorImpl implements Detonator {
         }
     }
 
-    /**
-     * It returns a bomb to plant.
-     * 
-     * @return a bomb that can be planted.
-     */
-    private Bomb getBombToPlant() {
-        synchronized (this.bombList) {
-            return this.bombList.stream().filter(b -> !b.isPositioned()).findFirst().get();
-        }
-    }
-
     @Override
-    public Bomb getBombToReactivate() {
+    public Bomb getBomb(final Predicate<Bomb> pred) {
         synchronized (this.bombList) {
-            return this.bombList.stream().filter(b -> b.isPositioned()).findFirst().get();
+            return this.bombList.stream().filter(pred).findFirst().get();
         }
     }
 

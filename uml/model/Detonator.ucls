@@ -30,29 +30,33 @@
   </class>  
   <interface id="4" language="java" name="model.units.Detonator" project="Bomberman" 
     file="/Bomberman/src/model/units/Detonator.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="92" y="131"/>    
+    <position height="-1" width="-1" x="97" y="131"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="false"/>      
       <operations public="true" package="false" protected="true" private="false" static="false"/>    
     </display>  
   </interface>  
-  <realization id="5">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <realization id="6">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <association id="7">    
+  <association id="5">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="8" name="bombList"/>      
-      <multiplicity id="9" minimum="0" maximum="2147483647"/>    
+      <attribute id="6" name="bombList">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="7" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="8">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="9">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="false" protected="false" private="false" static="false"/>    

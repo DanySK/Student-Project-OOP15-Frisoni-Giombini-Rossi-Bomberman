@@ -2,6 +2,7 @@ package model.units;
 
 import java.awt.Point;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * This class models a Detonator.
@@ -32,11 +33,14 @@ public interface Detonator {
     void reactivateBomb();
 
     /**
-     * It returns the bomb to reactivate.
+     * It returns a bomb that satisfy the specified 
+     * predicate.
      * 
-     * @return a bomb that has to be reactivated
+     * @param pred
+     *          the predicate to satisfy 
+     * @return a bomb
      */
-    Bomb getBombToReactivate();
+    Bomb getBomb(final Predicate<Bomb> pred);
 
     /**
      * Gets bomb's delay.
