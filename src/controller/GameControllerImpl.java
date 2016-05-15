@@ -245,16 +245,16 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public Pair<Integer, Integer> getRecord() {
-        return null;
+        return ScoreHandler.getHandler().getRecord();
     }
 
     @Override
     public List<Pair<Integer, Integer>> getLastScores() {
-        return null;
+        return ScoreHandler.getHandler().getLastScores();
     }
 
     @Override
     public boolean isScoreEmpty() {
-        return false;
+        return ScoreHandler.getHandler().isScoreEmpty();
     }
 }
