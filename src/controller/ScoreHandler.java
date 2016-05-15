@@ -113,14 +113,14 @@ public final class ScoreHandler extends ESource<ScoreData> {
         if (score < 0 || time < 0) {
             throw new IllegalArgumentException("The score and time must be positive!");
         }
-        if (!this.record.isPresent() || score > this.record.get().getX()) {
-            this.record = Optional.of(new Pair<>(score, time));
-            this.notifyEObservers(ScoreData.RECORD);
-        }
         if (this.scores.size() >= MAX_LENGTH) {
             this.scores.removeFirst();
         }
         this.scores.addLast(new Pair<>(score, time));
+        if (!this.record.isPresent() || score > this.record.get().getX()) {
+            this.record = Optional.of(new Pair<>(score, time));
+            this.notifyEObservers(ScoreData.RECORD);
+        }
         this.notifyEObservers(ScoreData.LAST_SCORES);
         this.writeData();
     }
