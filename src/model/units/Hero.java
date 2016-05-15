@@ -68,7 +68,7 @@ public interface Hero extends Entity {
     /**
      * Gets hero's collision.
      * 
-     *@return hero's collision
+     * @return hero's collision
      */
     HeroCollision getHeroCollision();
 
@@ -82,14 +82,14 @@ public interface Hero extends Entity {
     Direction getCorrectDirection(final Direction dir);
 
     /**
-     * Returns hero's deonator.
+     * Returns hero's detonator.
      * 
      * @return hero's detonator
      */
     Detonator getDetonator();
 
     /**
-     * This method set the hero in movement or not. 
+     * This method sets the hero in movement or not. 
      * 
      * @param bool
      *          true if he's in movements, false otherwise
@@ -97,7 +97,7 @@ public interface Hero extends Entity {
     void setMoving(boolean bool);
 
     /**
-     * Set the hero to be confused or not.
+     * Sets the hero to be confused or not.
      * 
      * @param bool
      *          true if the's in confusion, false otherwise
@@ -105,7 +105,7 @@ public interface Hero extends Entity {
     void setConfusion(final boolean bool);
 
     /**
-     * Set the key.
+     * Sets the key.
      */
     void setKey();
 

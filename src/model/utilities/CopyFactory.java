@@ -17,7 +17,7 @@ public final class CopyFactory {
     private CopyFactory() { }
     
     /**
-     * Gets a copy of the tile.
+     * Gets a copy of a tile.
      * 
      * @param tile
      *          the tile to copy

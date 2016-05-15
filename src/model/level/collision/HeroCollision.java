@@ -21,7 +21,7 @@ public interface HeroCollision extends Collision {
     boolean powerUpCollision(final Set<Tile> powerUpSet);
     
     /**
-     * Cheks the collision with the open door.
+     * Checks the collision with the open door.
      * 
      *@param doorOpened
      *          the open door

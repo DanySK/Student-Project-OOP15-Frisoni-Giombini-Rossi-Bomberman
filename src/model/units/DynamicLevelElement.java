@@ -25,7 +25,7 @@ public class DynamicLevelElement extends LevelElementImpl {
     /**
      * This method is used to update the element's position.
      * 
-     * @param newPoss
+     * @param newPos
      *          the new position
      */
     private void updatePosition(final Point newPos) {

@@ -8,7 +8,7 @@ import java.awt.Point;
 public interface Entity extends LevelElement {
     
     /**
-     * This method allow the entity to move.
+     * This method allows the entity to move.
      * 
      * @param dir
      *          the direction where to move
@@ -16,7 +16,7 @@ public interface Entity extends LevelElement {
     void move(final Direction dir);
     
     /**
-     * Method that modify the current value of lives.
+     * Method that modifies the current value of lives.
      * 
      * @param change
      *          life to be added
@@ -24,7 +24,7 @@ public interface Entity extends LevelElement {
     void modifyLife(final int change);
     
     /**
-     * This method update the entity's direction.
+     * This method updates the entity's direction.
      * 
      * @param dir
      *          the new direction
@@ -32,7 +32,7 @@ public interface Entity extends LevelElement {
     void updateDirection(Direction dir);
     
     /**
-     * Increase hero's attack level.
+     * Increases hero's attack level.
      * 
      * @param attackToAdd
      *          the attack to add to the previous one
@@ -56,7 +56,7 @@ public interface Entity extends LevelElement {
     Direction getDirection();
     
     /**
-     * This method return the attack level.
+     * This method returns the attack level.
      * 
      * @return the hero's attack level
      */
@@ -84,7 +84,7 @@ public interface Entity extends LevelElement {
     boolean isDead();
     
     /**
-     * Check if the hero is in movement.
+     * Checks if the entity is in movement.
      * 
      * @return true if he's in movement, false otherwise
      */

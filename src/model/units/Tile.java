@@ -8,14 +8,14 @@ import java.util.Optional;
 public interface Tile extends LevelElement {
     
     /**
-     * This method return the type of the tile.
+     * This method returns the type of the tile.
      * 
      * @return the tile's type
      */
     TileType getType();
 
     /**
-     * Returns the Powerup.
+     * Returns the powerup.
      * 
      * @return the powerup associated
      */
@@ -35,7 +35,7 @@ public interface Tile extends LevelElement {
     void setKeyPowerUp();
 
     /**
-     * Remove the powerup.
+     * Removea the powerup.
      */
     void removePowerUp();
 

@@ -101,7 +101,7 @@ public final class MapPoint {
     }
 
     /**
-     * Check if the tile refers to a spawn point of the hero.
+     * Checks if the tile refers to a spawn point of the hero.
      * 
      * @param row
      *          the tile's row
@@ -154,7 +154,7 @@ public final class MapPoint {
     }
 
     /**
-     * Return the next value the coordinate has to add.
+     * Returns the next value the coordinate has to add.
      * 
      * @param dir
      *          the direction

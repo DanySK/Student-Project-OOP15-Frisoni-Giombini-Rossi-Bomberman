@@ -110,7 +110,7 @@ public class LevelImpl implements Level {
 
     /**
      * This method generates a random level 
-     * with the specified size and block density.
+     * with the specified size.
      */
     private void createLevel() {
         final TileFactory factory = new TileFactory(this.nTiles, this.nTiles);
@@ -328,7 +328,7 @@ public class LevelImpl implements Level {
 
     /**
      * Gets the entire set of tiles that are available
-     * to positionate enemies.
+     * to position enemies.
      * 
      * @return the set of free tiles
      */
@@ -393,7 +393,7 @@ public class LevelImpl implements Level {
     }
 
     /**
-     * Checks if its the first stage.
+     * Checks if it's the first stage.
      * 
      * @return true if it's the first stage, false otherwise
      */

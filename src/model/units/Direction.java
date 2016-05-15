@@ -44,7 +44,7 @@ public enum Direction {
     }
 
     /**
-     * This method return the point associated to the
+     * This method returns the point associated to the
      * Direction.
      * 
      * @return
@@ -55,7 +55,7 @@ public enum Direction {
     }
     
     /**
-     * This method return the opposite direction.
+     * This method returns the opposite direction.
      * 
      * @return
      *          the opposite direction
