@@ -8,7 +8,7 @@ import model.units.Direction;
 import model.units.Tile;
 
 /**
- * This class models a generic collision whith
+ * This class models a generic collision with
  * different game elements.
  */
 
@@ -24,7 +24,7 @@ public interface Collision {
     boolean blockCollision(final Set<Rectangle> blockSet);
     
     /**
-    * Cheks if there's a collision with a bomb.
+    * Checks if there's a collision with a bomb.
     * 
     * @param bombSet
     *          the set of planted bombs
@@ -42,7 +42,8 @@ public interface Collision {
     boolean fireCollision(final Set<Tile> afflictedTiles);
     
     /**
-     * Checks if there's a collision.
+     * Checks if there's a collision with a
+     * generic element.
      * 
      * @param set
      *          the set of elements 

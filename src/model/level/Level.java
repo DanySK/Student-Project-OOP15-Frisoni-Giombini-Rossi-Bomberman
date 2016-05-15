@@ -65,7 +65,7 @@ public interface Level {
     Tile getDoor();
 
     /**
-     * This method return the entity Hero.
+     * This method returns the entity Hero.
      * 
      * @return the Hero.
      */
@@ -86,7 +86,7 @@ public interface Level {
     void setTileDimension(final int dim);
 
     /**
-     * Set the tile type of the door to door_opened.
+     * Sets the tile type of the door to door_opened.
      */
     void setOpenDoor();
     

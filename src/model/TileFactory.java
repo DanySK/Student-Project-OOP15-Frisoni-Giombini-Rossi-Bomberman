@@ -14,7 +14,8 @@ import model.utilities.MapPoint;
 
 /**
  * This class allows to establish which type of tile
- * there will be in a specific position.
+ * there will be in a specific position and sets its
+ * characteristics.
  */
 public class TileFactory {
 
@@ -25,7 +26,7 @@ public class TileFactory {
     private final int columns;
 
     /**
-     * Construct a TileFactory.
+     * Constructs a TileFactory.
      * 
      * @param rows
      *          the number of rows
@@ -108,7 +109,7 @@ public class TileFactory {
     }
 
     /**
-     * Select a random type, except key.
+     * Selects a random type, except key.
      * 
      * @return a powerup type
      */
@@ -121,7 +122,7 @@ public class TileFactory {
     } 
 
     /**
-     * Set a random tile's type equals to the closed door.
+     * Sets a random tile's type equals to the closed door.
      * 
      * @param walkableTiles
      *          the set of walkable tiles
@@ -131,7 +132,7 @@ public class TileFactory {
     }
 
     /**
-     * Set the powerup of a random tile equals to the key.
+     * Sets the powerup of a random tile equals to the key.
      * 
      * @param rubbleTiles
      *          the set of rubbles tiles
