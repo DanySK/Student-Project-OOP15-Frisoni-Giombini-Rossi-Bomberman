@@ -178,7 +178,7 @@ public final class ImageLoader {
      * 
      * @param img
      *          the GameImage to use
-     * @return the specified ImageIcon.
+     * @return the specified ImageIcon
      */
     public static ImageIcon createImageIcon(final GameImage img) {
         final java.net.URL imgURL = MenuScene.class.getClassLoader().getResource(img.getPath());
@@ -193,7 +193,7 @@ public final class ImageLoader {
      * 
      * @param img
      *          the GameImage to use
-     * @return the specified Image.
+     * @return the specified Image
      */
     public static Image createImage(final GameImage img) {
         return createImageIcon(img).getImage();
@@ -208,7 +208,7 @@ public final class ImageLoader {
      *          the width of the image
      * @param height
      *          the height of the image
-     * @return the sized Image.
+     * @return the sized Image
      */
     public static Image createImageOfSize(final GameImage img, final int width, final int height) {
         return createImage(img).getScaledInstance(width, height, Image.SCALE_DEFAULT);
@@ -219,7 +219,7 @@ public final class ImageLoader {
      * 
      * @param img
      *          the GameImage to use
-     * @return the specified BufferedImage.
+     * @return the specified BufferedImage
      */
     public static BufferedImage createBufferedImage(final GameImage img) {
         final ImageIcon icon = createImageIcon(img);

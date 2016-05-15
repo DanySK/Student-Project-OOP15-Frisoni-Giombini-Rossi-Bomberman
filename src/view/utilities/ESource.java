@@ -18,7 +18,7 @@ public class ESource<T> {
      * Add an observer to the source.
      * 
      * @param obs
-     *      the EObserver object to add to the source's observers.
+     *      the EObserver object to add to the source's observers
      **/
     public void addEObserver(final EObserver<? super T> obs) {
         this.set.add(obs);

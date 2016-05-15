@@ -41,7 +41,7 @@ public final class LanguageHandler extends ESource<Locale> {
         }
         
         /**
-         * @return the locale associated to the supported language
+         * @return the locale associated to the supported language.
          */
         public Locale getLocale() {
             return this.locale;

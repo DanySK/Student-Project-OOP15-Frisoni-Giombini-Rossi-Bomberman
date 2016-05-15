@@ -15,7 +15,7 @@ import view.ImageLoader.GameImage;
 /**
  * The main frame of the menu game.
  * It contains all the panels that can be shown in a {@link CardLayout}.
- * It defines also the starting page and the background music.
+ * It defines also the background music.
  *
  */
 public final class MenuFrameImpl implements MenuFrame {

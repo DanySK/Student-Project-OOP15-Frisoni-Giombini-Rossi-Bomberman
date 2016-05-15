@@ -54,7 +54,7 @@ public final class InputHandler extends KeyAdapter {
     }
 
     /**
-     * Checks if the key associated with the specified @{link InputAction} is pressed or not.
+     * Checks if the key associated with the specified {@link InputAction} is pressed or not.
      * 
      * @param input
      *          the input action to check

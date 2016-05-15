@@ -24,7 +24,7 @@ public interface MenuButton {
      * The method called when a button is pressed.
      * 
      * @param controller
-     *              the {MenuController} that manages events.
+     *              the {@link MenuObserver} that manages events
      */
     void clickEvent(MenuObserver controller);
 }

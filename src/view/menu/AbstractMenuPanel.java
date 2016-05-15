@@ -38,12 +38,12 @@ public abstract class AbstractMenuPanel extends JPanel {
     }
     
     /**
-     * @return the title of the AbstractMenuPanel.
+     * @return the title of the menu panel.
      */
     public abstract String getTitle();
 
     /**
-     * @return the body of the AbstractMenuPanel.
+     * @return the body of the menu panel.
      */
     public abstract JPanel getCenterPanel();
     

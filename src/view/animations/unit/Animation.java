@@ -29,7 +29,7 @@ public class Animation {
      * @param frameDelay
      *          the delay between each frame
      * @param repeated
-     *          true if the animation restarts each time, false otherwise.      
+     *          true if the animation restarts each time, false otherwise
      */
     public Animation(final List<BufferedImage> frames, final int frameDelay, final boolean repeated) {
         Objects.requireNonNull(frames);

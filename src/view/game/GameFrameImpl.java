@@ -276,7 +276,7 @@ public class GameFrameImpl implements GameFrame {
          * Constructs a new spotlight layer.
          * 
          * @param tileSize
-         *      the size of a tile map, used for set the spotlight dimension.
+         *      the size of a tile map, used for set the spotlight dimension
          */
         SpotlightLayerUI(final int tileSize) {
             this.radius = tileSize * RADIUS_FACTOR;
